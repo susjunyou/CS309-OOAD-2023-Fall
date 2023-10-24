@@ -52,11 +52,11 @@ Our team has five members, they are:
 
 #### 4.2.2 UML Use Cases
 
-<img src="C:\Users\74035\Documents\WeChat Files\wxid_hti7z0dbpjyn22\FileStorage\Temp\3783da29fc87566e0a8e260271108d7.png" alt="3783da29fc87566e0a8e260271108d7" style="zoom: 40%;" />
+<img src="picture/user_case.png" alt="3783da29fc87566e0a8e260271108d7" style="zoom: 50%;" />
 
 #### 4.2.3 Mockup
 
-<img src="C:\Users\74035\Documents\WeChat Files\wxid_hti7z0dbpjyn22\FileStorage\Temp\3716646c4207d786f126dadd702e26c.png" alt="3716646c4207d786f126dadd702e26c" style="zoom:47%;" />
+<img src="picture/UI.png" alt="3716646c4207d786f126dadd702e26c" style="zoom:55%;" />
 
 ### 4.3 Requirements
 
@@ -79,11 +79,11 @@ Our team has five members, they are:
 
 #### 4.4.1 Architecture
 
-<img src="C:\Users\74035\Documents\WeChat Files\wxid_hti7z0dbpjyn22\FileStorage\Temp\7e5f1ce4efb644140c5bd284e7a2a0d.jpg" alt="7e5f1ce4efb644140c5bd284e7a2a0d" style="zoom: 20%;" />
+<img src="picture/class_diagram.jpg" alt="7e5f1ce4efb644140c5bd284e7a2a0d" style="zoom: 45%;" />
 
 #### 4.4.2 TimeLine
 
-<img src="C:\Users\74035\Documents\WeChat Files\wxid_hti7z0dbpjyn22\FileStorage\Temp\4757e01b90950314c981d9411b6b049.png" alt="4757e01b90950314c981d9411b6b049" style="zoom:67%;" />
+<img src="picture/timeline.png" alt="4757e01b90950314c981d9411b6b049" style="zoom:67%;" />
 
 #### 4.4.3 APIs, Services
 
