@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.List;
 
 @Data // 自动生成get、set方法
 @EqualsAndHashCode(callSuper = false)// 自动生成equals和 hashcode方法
