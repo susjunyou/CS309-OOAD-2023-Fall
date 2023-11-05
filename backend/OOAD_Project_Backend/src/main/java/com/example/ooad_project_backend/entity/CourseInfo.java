@@ -7,6 +7,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+<<<<<<< HEAD
+=======
+import java.util.List;
+>>>>>>> origin/main
 
 @Data
 @EqualsAndHashCode(callSuper = false)
