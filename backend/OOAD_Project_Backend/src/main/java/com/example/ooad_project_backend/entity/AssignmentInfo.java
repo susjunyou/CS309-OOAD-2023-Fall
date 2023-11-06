@@ -30,4 +30,11 @@ public class AssignmentInfo {
 
     private Long courseId;
 
+    private int MAXScore; //满分
+
+    private int Grade; // 评分
+
+    private GradeBook gradeBook;
+
+    private int proportion;// 分数占比
 }

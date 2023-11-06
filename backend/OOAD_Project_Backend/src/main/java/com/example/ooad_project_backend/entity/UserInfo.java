@@ -18,7 +18,7 @@ public class UserInfo {
     @TableId(value = "user_id", type = IdType.AUTO)
     private Long id;
 
-    private String SID;
+
 
     private String email;
 
