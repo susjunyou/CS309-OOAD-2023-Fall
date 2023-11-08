@@ -20,7 +20,7 @@ public class TeacherInfo extends UserInfo {
 
     private String department;
 
-    private List<Long> courseIds;
+    private List<Long> courseId;
 
 
 }

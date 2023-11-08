@@ -11,8 +11,6 @@ import java.util.List;
 @Accessors(chain = true)
 public class StudentInfo extends UserInfo{
 
-    private int team_id;
-
     private int SID;
 
     private boolean isSA;

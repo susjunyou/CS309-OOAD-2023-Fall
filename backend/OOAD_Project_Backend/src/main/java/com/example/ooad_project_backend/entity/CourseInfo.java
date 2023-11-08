@@ -23,7 +23,7 @@ public class CourseInfo {
 
     private String courseDescription;
 
-    private List<String> sa_ID;
+    private List<Integer> SA_ID;
 
 
 }
