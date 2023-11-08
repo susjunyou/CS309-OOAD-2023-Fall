@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -20,5 +22,8 @@ public class CourseInfo {
     private String courseName;
 
     private String courseDescription;
+
+    private List<String> sa_ID;
+
 
 }
