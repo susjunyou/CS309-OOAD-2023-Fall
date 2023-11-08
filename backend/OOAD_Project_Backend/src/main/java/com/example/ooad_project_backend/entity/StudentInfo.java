@@ -7,12 +7,16 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class StudentInfo extends UserInfo{
+public class StudentInfo extends UserInfo {
 
     private int team_id;
 
     private int SID;
 
+    private String majorName;
 
+    private Long majorId;
+
+    private int level;
 
 }

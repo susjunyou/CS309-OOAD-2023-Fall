@@ -28,7 +28,7 @@ public class AssignmentInfo {
 
     private UserInfo releaser;
 
-    private Long courseId;
+    private CourseInfo course;
 
     private int MAXScore; //满分
 

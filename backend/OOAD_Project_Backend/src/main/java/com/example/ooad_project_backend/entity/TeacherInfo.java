@@ -9,11 +9,11 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)    // 允许链式访问，例如：myObject.setField1("value1").setField2(42)。
 public class TeacherInfo extends UserInfo {
 
-//    @Column(name = "zhicheng")
-    private String zhicheng;
-//    @Column(name = "zhuanyeId")
-    private Long zhuanyeId;
-//    @Transient
-    private String zhuanyeName;
+    //    @Column(name = "zhicheng")
+    private String tenure;
+    //    @Column(name = "zhuanyeId")
+    private Long majorId;
+    //    @Transient
+    private String majorName;
 
 }
