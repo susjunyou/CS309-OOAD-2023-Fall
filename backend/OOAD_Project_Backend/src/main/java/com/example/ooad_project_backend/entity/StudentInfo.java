@@ -4,19 +4,20 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class StudentInfo extends UserInfo {
+public class StudentInfo extends UserInfo{
 
     private int team_id;
 
     private int SID;
 
-    private String majorName;
+    private boolean isSA;
 
-    private Long majorId;
+    private List<Long> SA_courses;
 
-    private int level;
 
 }
