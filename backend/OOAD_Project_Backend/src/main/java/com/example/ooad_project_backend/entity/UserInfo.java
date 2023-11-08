@@ -18,7 +18,7 @@ public class UserInfo {
     @TableId(value = "user_id", type = IdType.AUTO)
     private Long id;
 
-
+    private Integer level;
 
     private String email;
 
