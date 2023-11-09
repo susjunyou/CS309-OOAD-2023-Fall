@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Data
@@ -30,5 +31,5 @@ public class teamInfo implements Serializable {
 
     private Integer teamSize;
 
-
+    private List<UserInfo> teamMembers;
 }

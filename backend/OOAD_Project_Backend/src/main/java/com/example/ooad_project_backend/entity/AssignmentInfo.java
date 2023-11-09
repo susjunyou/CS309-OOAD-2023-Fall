@@ -1,7 +1,6 @@
 package com.example.ooad_project_backend.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.example.ooad_project_backend.enums.StatusType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -11,30 +10,16 @@ import java.sql.Date;
 @Data // 自动生成get、set方法
 @EqualsAndHashCode(callSuper = false)// 自动生成equals和 hashcode方法
 @Accessors(chain = true)    // 允许链式访问，例如：myObject.setField1("value1").setField2(42)。
-public class AssignmentInfo {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "assignment_id", type = IdType.AUTO)
-    private Long assignmentId;
+public class AssignmentInfo extends GradeInfo {
 
     private String assignmentTitle;
 
     private String assignmentDescription;
 
+    private Date assignmentStartTime;
+
     private Date assignmentDeadline;
 
-    private String assignmentStatus;
+    private StatusType assignmentStatus;
 
-    private UserInfo releaser;
-
-    private CourseInfo course;
-
-    private int MAXScore; //满分
-
-    private int Grade; // 评分
-
-    private GradeBook gradeBook;
-
-    private int proportion;// 分数占比
 }
