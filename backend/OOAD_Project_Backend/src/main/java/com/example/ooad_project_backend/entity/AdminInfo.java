@@ -1,6 +1,6 @@
 package com.example.ooad_project_backend.entity;
 
-
+// for test commit
 //@Table(name = "admin_info")
 
 import lombok.Data;
