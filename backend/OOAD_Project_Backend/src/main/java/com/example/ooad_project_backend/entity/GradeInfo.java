@@ -20,8 +20,10 @@ public class GradeInfo implements Serializable {
 
     private CourseInfo course;
 
-    private Integer proportion;
+    private Double proportion;
 
     private GradeBook gradeBook;
+
+    private String gradeDescription;
 
 }
