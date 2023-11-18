@@ -23,8 +23,6 @@ public class UserInfo implements Serializable {
     @TableId(value = "user_id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer level;
-
     private String email;
 
     private String phoneNumber;
@@ -32,6 +30,8 @@ public class UserInfo implements Serializable {
     private boolean sex;// True:male, False:female
 
     private String username;
+
+    private String account;
 
     private String password;
 

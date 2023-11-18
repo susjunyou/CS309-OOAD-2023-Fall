@@ -12,9 +12,11 @@ import java.util.List;
 @Accessors(chain = true)
 public class StudentInfo extends UserInfo {
 
-    private int SID;
-
     private boolean isSA;
+
+    private String major;
+
+    private Integer level;
 
     private DepartmentType department;
 

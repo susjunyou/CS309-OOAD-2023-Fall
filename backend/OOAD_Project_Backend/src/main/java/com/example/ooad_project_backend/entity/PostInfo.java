@@ -20,7 +20,6 @@ public class PostInfo implements Serializable {
 
     private String postContent;
 
-    private String postStatus;
 
     private UserInfo postAuthor;
 

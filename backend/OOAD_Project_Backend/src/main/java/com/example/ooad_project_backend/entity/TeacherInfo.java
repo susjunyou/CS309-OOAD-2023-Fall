@@ -1,6 +1,7 @@
 package com.example.ooad_project_backend.entity;
 
 import com.example.ooad_project_backend.enums.DepartmentType;
+import com.example.ooad_project_backend.enums.tenureType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -13,11 +14,9 @@ import java.util.List;
 public class TeacherInfo extends UserInfo {
 
 
-    private String tenure;
+    private tenureType tenure;
 
-    private Long majorId;
-
-    private String majorName;
+    private String major;
 
     private DepartmentType department;
 
