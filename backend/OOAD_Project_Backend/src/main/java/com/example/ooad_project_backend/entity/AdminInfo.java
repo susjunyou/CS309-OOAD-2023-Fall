@@ -10,5 +10,5 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)// 自动生成equals和 hashcode方法
 @Accessors(chain = true)    // 允许链式访问，例如：myObject.setField1("value1").setField2(42)。
 public class AdminInfo extends UserInfo {
-
+    //test
 }
