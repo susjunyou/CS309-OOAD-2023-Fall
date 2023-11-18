@@ -1,7 +1,6 @@
 -- create database OOAD_project;
 
 --! create table student
-
 create table student
 (
     student_id        serial primary key,

@@ -1,4 +1,4 @@
-package com.example.ooad_project_backend.Config;
+package common;
 
 import lombok.Getter;
 
