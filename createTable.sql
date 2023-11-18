@@ -1,6 +1,32 @@
 -- create database OOAD_project;
 
+--! drop table
+-- drop table if exists course_project;
+-- drop table if exists project;
+-- drop table if exists assignment;
+-- drop table if exists team_project;
+-- drop table if exists team;
+-- drop table if exists assignment_grade_book;
+-- drop table if exists project_grade_book;
+-- drop table if exists attendance_grade_book;
+-- drop table if exists attendance;
+-- drop table if exists reply;
+-- drop table if exists material;
+-- drop table if exists post;
+-- drop table if exists course_sa;
+-- drop table if exists course_student;
+-- drop table if exists course_teacher;
+-- drop table if exists course;
+-- drop table if exists admin;
+-- drop table if exists teacher;
+-- drop table if exists student;
+-- drop table if exists grade_book;
+-- drop table if exists team_student;
+
+
+
 --! create table student
+
 create table student
 (
     student_id        serial primary key,
@@ -55,7 +81,6 @@ create table admin
 create table course
 (
     course_id          serial primary key,
-    CID                integer      not null,
     course_name        varchar(255) not null,
     course_description varchar(255) not null
 );
@@ -96,6 +121,7 @@ create table project
     project_title       varchar(255)     not null,
     project_description varchar(255)     not null,
     teacher_id          integer          not null,
+    course_id           integer          not null,
     project_status      varchar(255)     not null,
     project_start_date  date             not null,
     project_deadline    date             not null,
@@ -115,14 +141,14 @@ create table project_grade_book
     grade_description     varchar(255) not null
 );
 
---! create table course_project
-
-create table course_project
-(
-    course_project_id serial primary key,
-    course_id         integer not null,
-    project_id        integer not null
-);
+-- --! create table course_project
+--
+-- create table course_project
+-- (
+--     course_project_id serial primary key,
+--     course_id         integer not null,
+--     project_id        integer not null
+-- );
 
 --! create table team
 
@@ -132,7 +158,8 @@ create table team
     team_name        varchar(255) not null,
     team_leader      integer      not null,
     team_description varchar(255) not null,
-    team_size        integer      not null
+    team_size        integer      not null,
+    project_id       integer      not null
 );
 
 --! create table team_project
@@ -173,7 +200,8 @@ create table assignment
     assignment_status      varchar(255)     not null,
     max_grade              integer          not null,
     proportion             double precision not null,
-    teacher_id             integer          not null
+    teacher_id             integer          not null,
+    course_id              integer          not null
 );
 
 --! create table assignment_grade_book
@@ -241,6 +269,109 @@ create table reply
     post_id    integer   not null
 );
 
+--! add foreign key to reply
+
+alter table reply
+    add foreign key (post_id) references post (post_id);
 
 
+--! add foreign key to post
+
+alter table post
+    add foreign key (course_id) references course (course_id);
+
+
+--! add foreign key to material
+
+alter table material
+    add foreign key (course_id) references course (course_id);
+
+
+--! add foreign key to assignment_grade_book
+alter table assignment_grade_book
+    add foreign key (assignment_id) references assignment (assignment_id);
+alter table assignment_grade_book
+    add foreign key (grade_book_id) references grade_book (grade_book_id);
+
+
+--! add foreign key to assignment
+
+alter table assignment
+    add foreign key (teacher_id) references teacher (teacher_id);
+alter table assignment
+    add foreign key (course_id) references course (course_id);
+
+
+--! add foreign key to project_grade_book
+
+alter table project_grade_book
+    add foreign key (project_id) references project (project_id);
+alter table project_grade_book
+    add foreign key (grade_book_id) references grade_book (grade_book_id);
+
+
+--! add foreign key to project
+
+alter table project
+    add foreign key (teacher_id) references teacher (teacher_id);
+alter table project
+    add foreign key (course_id) references course (course_id);
+
+
+--! add foreign key to team_student
+
+alter table team_student
+    add foreign key (student_id) references student (student_id);
+alter table team_student
+    add foreign key (team_id) references team (team_id);
+
+
+--! add foreign key to team
+
+alter table team
+    add foreign key (project_id) references project (project_id);
+
+
+--! add foreign key to attendance_grade_book
+
+alter table attendance_grade_book
+    add foreign key (attendance_id) references attendance (attendance_id);
+alter table attendance_grade_book
+    add foreign key (grade_book_id) references grade_book (grade_book_id);
+
+
+--! add foreign key to material
+
+alter table material
+    add foreign key (course_id) references course (course_id);
+
+
+--! add foreign key to course_sa
+
+alter table course_sa
+    add foreign key (course_id) references course (course_id);
+alter table course_sa
+    add foreign key (student_id) references student (student_id);
+
+--! add foreign key to course_teacher
+
+alter table course_teacher
+    add foreign key (course_id) references course (course_id);
+alter table course_teacher
+    add foreign key (teacher_id) references teacher (teacher_id);
+
+--! add foreign key to course_student
+
+alter table course_student
+    add foreign key (course_id) references course (course_id);
+alter table course_student
+    add foreign key (student_id) references student (student_id);
+
+
+--! add foreign key to grade_book
+
+alter table grade_book
+    add foreign key (student_id) references student (student_id);
+alter table grade_book
+    add foreign key (course_id) references course (course_id);
 
