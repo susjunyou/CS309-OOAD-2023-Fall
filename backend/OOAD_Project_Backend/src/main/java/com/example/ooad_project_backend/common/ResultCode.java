@@ -1,4 +1,4 @@
-package common;
+package com.example.ooad_project_backend.common;
 
 
 public enum ResultCode {

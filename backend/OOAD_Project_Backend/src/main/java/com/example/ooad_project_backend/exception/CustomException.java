@@ -1,7 +1,7 @@
 package com.example.ooad_project_backend.exception;
 
 
-import common.ResultCode;
+import com.example.ooad_project_backend.common.ResultCode;
 
 public class CustomException extends RuntimeException {
     private String code;
