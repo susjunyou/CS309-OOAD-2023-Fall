@@ -5,5 +5,5 @@ import com.example.ooad_project_backend.entity.AdminInfo;
 
 public interface AdminInfoService extends IService<AdminInfo> {
 
-    AdminInfo AdminLogin(String account);
+    AdminInfo findAdminInfoByAccount(String account);
 }

@@ -17,9 +17,9 @@ public class AdminInfoServiceImp extends ServiceImpl<AdminInfoMapper, AdminInfo>
 
 
     @Override
-    public AdminInfo AdminLogin(String account) {
+    public AdminInfo findAdminInfoByAccount(String account) {
         //通过用户名和密码去数据库查一条记录
-        return adminInfoMapper.findPasswordByName(account);
+        return adminInfoMapper.findAdminInfoByName(account);
     }
 }
 
