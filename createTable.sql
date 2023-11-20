@@ -1,28 +1,28 @@
 -- create database OOAD_project;
 
 --! drop table
--- drop table if exists course_project;
--- drop table if exists project;
--- drop table if exists assignment;
--- drop table if exists team_project;
--- drop table if exists team;
--- drop table if exists assignment_grade_book;
--- drop table if exists project_grade_book;
--- drop table if exists attendance_grade_book;
--- drop table if exists attendance;
--- drop table if exists reply;
--- drop table if exists material;
--- drop table if exists post;
--- drop table if exists course_sa;
--- drop table if exists course_student;
--- drop table if exists course_teacher;
--- drop table if exists course;
--- drop table if exists admin;
--- drop table if exists teacher;
--- drop table if exists student;
--- drop table if exists grade_book;
--- drop table if exists team_student;
 
+-- drop table if exists course_project cascade ;
+-- drop table if exists project cascade ;
+-- drop table if exists assignment cascade ;
+-- drop table if exists team_project cascade ;
+-- drop table if exists team cascade ;
+-- drop table if exists assignment_grade_book cascade ;
+-- drop table if exists project_grade_book cascade ;
+-- drop table if exists attendance_grade_book cascade ;
+-- drop table if exists attendance cascade ;
+-- drop table if exists reply cascade ;
+-- drop table if exists material cascade ;
+-- drop table if exists post cascade ;
+-- drop table if exists course_sa cascade ;
+-- drop table if exists course_student cascade ;
+-- drop table if exists course_teacher cascade ;
+-- drop table if exists course cascade ;
+-- drop table if exists admin cascade ;
+-- drop table if exists teacher cascade ;
+-- drop table if exists student cascade ;
+-- drop table if exists grade_book cascade ;
+-- drop table if exists team_student cascade ;
 
 
 --! create table student
@@ -30,16 +30,16 @@
 create table student
 (
     student_id        serial primary key,
-    SID               integer               not null,
-    student_name      varchar(255)          not null,
-    student_account   varchar(255)          not null,
-    student_password  varchar(255)          not null,
-    student_email     varchar(255)          not null,
+    id                integer               not null,
+    name              varchar(255)          not null,
+    account           varchar(255)          not null,
+    password          varchar(255)          not null,
+    email             varchar(255)          not null,
     self_Introduction text,
     phone_number      varchar(255)          not null,
     sex               bool                  not null,
     major             varchar(255)          not null,
-    student_level     varchar(255)          not null,
+    level             varchar(255)          not null,
     isSA              boolean default false not null,
     department        varchar(255)          not null
 );
@@ -50,11 +50,11 @@ create table student
 create table teacher
 (
     teacher_id        serial primary key,
-    TID               integer      not null,
-    teacher_name      varchar(255) not null,
-    teacher_account   varchar(255) not null,
-    teacher_password  varchar(255) not null,
-    teacher_email     varchar(255) not null,
+    id                integer      not null,
+    name              varchar(255) not null,
+    account           varchar(255) not null,
+    password          varchar(255) not null,
+    email             varchar(255) not null,
     self_Introduction text,
     phone_number      varchar(255) not null,
     sex               bool         not null,
@@ -66,14 +66,14 @@ create table teacher
 
 create table admin
 (
-    admin_id       serial primary key,
-    AID            integer      not null,
-    admin_name     varchar(255) not null,
-    admin_account  varchar(255) not null,
-    admin_password varchar(255) not null,
-    admin_email    varchar(255) not null,
-    phone_number   varchar(255) not null,
-    sex            bool         not null
+    admin_id     serial primary key,
+    id           integer      not null,
+    name         varchar(255) not null,
+    account      varchar(255) not null,
+    password     varchar(255) not null,
+    email        varchar(255) not null,
+    phone_number varchar(255) not null,
+    sex          bool         not null
 );
 
 --! create table course
@@ -117,17 +117,18 @@ create table course_sa
 
 create table project
 (
-    project_id          serial primary key,
-    project_title       varchar(255)     not null,
-    project_description varchar(255)     not null,
-    teacher_id          integer          not null,
-    course_id           integer          not null,
-    project_status      varchar(255)     not null,
-    project_start_date  date             not null,
-    project_deadline    date             not null,
-    max_people_in_team  integer          not null,
-    max_grade           integer          not null,
-    proportion          double precision not null
+    project_id            serial primary key,
+    project_title         varchar(255)     not null,
+    project_description   varchar(255)     not null,
+    teacher_id            integer          not null,
+    course_id             integer          not null,
+    assignment_start_time date             not null,
+    project_status        varchar(255)     not null,
+    project_start_date    date             not null,
+    project_deadline      date             not null,
+    max_people_in_team    integer          not null,
+    max_grade             integer          not null,
+    proportion            double precision not null
 );
 
 --! create table project_grade_book
@@ -156,7 +157,7 @@ create table team
 (
     team_id          serial primary key,
     team_name        varchar(255) not null,
-    team_leader      integer      not null,
+    leader           integer      not null,
     team_description varchar(255) not null,
     team_size        integer      not null,
     project_id       integer      not null
@@ -220,7 +221,7 @@ create table assignment_grade_book
 create table material
 (
     material_id          serial primary key,
-    material_title       varchar(255) not null,
+    material_name        varchar(255) not null,
     material_description varchar(255) not null,
     course_id            integer      not null
 );
@@ -231,6 +232,7 @@ create table material
 create table attendance
 (
     attendance_id serial primary key,
+    releaser      integer          not null,
     max_grade     integer          not null,
     proportion    double precision not null
 );
@@ -249,12 +251,12 @@ create table attendance_grade_book
 
 create table post
 (
-    post_id   serial primary key,
-    title     varchar(255) not null,
-    content   text         not null,
-    author    integer      not null,
-    time      timestamp    not null,
-    course_id integer      not null
+    post_id      serial primary key,
+    post_title   varchar(255) not null,
+    post_content text         not null,
+    post_author  integer      not null,
+    time         date         not null,
+    course_id    integer      not null
 );
 
 
@@ -263,9 +265,9 @@ create table post
 create table reply
 (
     comment_id serial primary key,
-    content    text      not null,
-    author     integer   not null,
-    time       timestamp not null,
+    reply_content    text      not null,
+    reply_author     integer   not null,
+    reply_time       timestamp not null,
     post_id    integer   not null
 );
 
