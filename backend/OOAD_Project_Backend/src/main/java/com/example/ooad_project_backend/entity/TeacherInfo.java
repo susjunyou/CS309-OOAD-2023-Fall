@@ -16,8 +16,6 @@ public class TeacherInfo extends UserInfo {
 
     private tenureType tenure;
 
-    private String major;
-
     private DepartmentType department;
 
     private List<Long> courseId;
