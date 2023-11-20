@@ -1,2 +1,3 @@
 # CS309-OOAD Project Helper #
-h
+
+**database name: OOAD_Project**
