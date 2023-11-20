@@ -27,8 +27,6 @@ public class teamInfo implements Serializable {
 
     private UserInfo leader;
 
-    private UserInfo teacher;
-
     private Integer teamSize;
 
     private List<UserInfo> teamMembers;

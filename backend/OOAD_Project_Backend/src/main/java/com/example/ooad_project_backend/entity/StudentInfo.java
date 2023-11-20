@@ -22,4 +22,6 @@ public class StudentInfo extends UserInfo {
 
     private List<Long> SA_courses;
 
+    private String selfIntroduction;
+
 }

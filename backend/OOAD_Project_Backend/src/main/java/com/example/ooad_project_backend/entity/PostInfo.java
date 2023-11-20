@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -20,8 +21,9 @@ public class PostInfo implements Serializable {
 
     private String postContent;
 
-
+    private Date postTime;
     private UserInfo postAuthor;
+    private CourseInfo course;
 
     private List<replyInfo> replyList;
 }
@@ -30,5 +32,9 @@ class replyInfo {
     private UserInfo replyAuthor;
 
     private String replyContent;
+
+    private PostInfo post;
+
+    private Date replyTime;
 }
 

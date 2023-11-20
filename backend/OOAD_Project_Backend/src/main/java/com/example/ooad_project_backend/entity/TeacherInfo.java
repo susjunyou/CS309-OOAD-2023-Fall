@@ -22,5 +22,5 @@ public class TeacherInfo extends UserInfo {
 
     private List<Long> courseId;
 
-
+    private String selfIntroduction;
 }

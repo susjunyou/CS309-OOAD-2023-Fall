@@ -1,5 +1,7 @@
 package com.example.ooad_project_backend.controller;
 
+import com.example.ooad_project_backend.entity.AdminInfo;
+import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.Imp.AdminInfoServiceImp;
 import com.example.ooad_project_backend.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,10 @@ public class LoginController {
 
     @GetMapping("/Admin")
     public Result AdminLogin(String account, String password) {
-        String password_get = adminInfoService.AdminLogin(account);
-        if (password_get != null && password_get.equals(password)) {
-            return Result.success();
+        AdminInfo adminInfo = adminInfoService.AdminLogin(account);
+        if (adminInfo != null && adminInfo.getPassword() != null && adminInfo.getPassword().equals(password)) {
+            adminInfo.setUserType(UserType.ADMIN);
+            return Result.success(adminInfo);
         } else {
             return Result.error("1", "账号或密码错误");
         }

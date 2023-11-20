@@ -20,7 +20,6 @@ public class UserInfo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "user_id", type = IdType.AUTO)
     private Integer id;
 
     private String email;
@@ -29,7 +28,7 @@ public class UserInfo implements Serializable {
 
     private boolean sex;// True:male, False:female
 
-    private String username;
+    private String name;
 
     private String account;
 
@@ -37,7 +36,7 @@ public class UserInfo implements Serializable {
 
     private UserType userType;
 
-    private String selfIntroduction;
+
 
 
 }
