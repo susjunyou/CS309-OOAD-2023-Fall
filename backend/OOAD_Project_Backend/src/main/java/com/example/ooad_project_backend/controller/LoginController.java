@@ -2,7 +2,6 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.service.Imp.AdminInfoServiceImp;
 import com.example.ooad_project_backend.common.Result;
-import com.example.ooad_project_backend.entity.AdminInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,21 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
-@RequestMapping("/adminInfo")
+@RequestMapping("/login")
 @CrossOrigin
-public class AdminInfoController {
+public class LoginController {
     @Autowired
     private AdminInfoServiceImp adminInfoService;
 
-    @GetMapping("/login")
-    public Result AdminLogin(String name, String password) {
-        AdminInfo adminInfo = adminInfoService.AdminLogin(name, password);
-        if (adminInfo!= null) {
-            return Result.success(adminInfo);
+    @GetMapping("/Admin")
+    public Result AdminLogin(String account, String password) {
+        String password_get = adminInfoService.AdminLogin(account);
+        if (password_get != null && password_get.equals(password)) {
+            return Result.success();
         } else {
-            return Result.error();
+            return Result.error("1", "账号或密码错误");
         }
     }
 }

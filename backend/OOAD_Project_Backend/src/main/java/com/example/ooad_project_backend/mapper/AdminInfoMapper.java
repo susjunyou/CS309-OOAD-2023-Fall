@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface AdminInfoMapper extends BaseMapper<AdminInfo> {
-    @Select("select * from admin where name = #{name} and password = #{password}")
-    AdminInfo findByNameAndPass(String name, String password);
+    @Select("select admin_password from admin where admin_account = #{account}")
+    String findPasswordByName(String account);
 }
