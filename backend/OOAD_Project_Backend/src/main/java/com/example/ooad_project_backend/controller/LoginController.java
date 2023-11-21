@@ -44,7 +44,7 @@ public class LoginController {
     public Result studentLogin(String account, String password) {
         StudentInfo studentInfo = studentInfoService.findStudentInfoByAccount(account);
         if (studentInfo != null && studentInfo.getPassword() != null && studentInfo.getPassword().equals(password)) {
-            studentInfo.setUserType(UserType.ADMIN);
+            studentInfo.setUserType(UserType.STUDENT);
             return Result.success(studentInfo);
         } else {
             return Result.error("1", "账号或密码错误");
@@ -55,7 +55,7 @@ public class LoginController {
     public Result teacherLogin(String account, String password) {
         TeacherInfo teacherInfo = teacherInfoService.findTeacherInfoByAccount(account);
         if (teacherInfo != null && teacherInfo.getPassword() != null && teacherInfo.getPassword().equals(password)) {
-            teacherInfo.setUserType(UserType.ADMIN);
+            teacherInfo.setUserType(UserType.TEACHER);
             return Result.success(teacherInfo);
         } else {
             return Result.error("1", "账号或密码错误");
