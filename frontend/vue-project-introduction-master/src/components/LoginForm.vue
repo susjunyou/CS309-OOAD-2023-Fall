@@ -22,7 +22,7 @@
       <input type="radio" id="admin" value="admin" v-model="form.userType">
       <label for="admin">Administrator</label>
     </div>
-    <p class="login" v-if="isLoginClick && isWrongPassword" style="color: red">Wrong Password or Valid Username</p>
+    <p class="login" v-if="isLoginClick" style="color: red">Wrong Password or Valid Username</p>
 
   </el-form>
 </template>
@@ -61,11 +61,24 @@ export default {
   },
   methods: {
     loginClick() {
-      this.$store.dispatch("purchase/loginCheck")
-      this.isLoginClick = true
-      if (!this.isWrongPassword) {
-        this.$router.push('/purchase')
-      }
+      let _this = this;
+      _this.isLoginClick = true;
+      _this.$axios.get('/login/admin', {
+        params: {
+          account: _this.form.username,
+          password: _this.form.password
+        }
+      }).then(response => {
+        console.log(_this.form.username)
+        console.log(_this.form.password)
+        console.log(response)
+        if (response.data.code === "0") {
+          console.log(response.data.data);
+          this.$router.push('/StudentHomePage');
+        } else {
+          console.log("error")
+        }
+      })
     },
     registerClick() {
       this.$router.push('/register')
@@ -79,13 +92,7 @@ export default {
       return this.form.username === null
     }
   },
-  watch: {
-    isWrongPassword() {
-      if (!this.isWrongPassword) {
-        this.$router.push('/purchase')
-      }
-    }
-  }
+
 
 }
 </script>
