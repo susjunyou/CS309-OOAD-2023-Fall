@@ -17,7 +17,9 @@ public class CourseInfo {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "course_id", type = IdType.AUTO)
-    private Long courseId;
+    private Integer courseId;
+
+    private String courseCode;
 
     private String courseName;
 
