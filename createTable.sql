@@ -2,34 +2,33 @@
 
 --! drop table
 
-drop table if exists course_project cascade ;
-drop table if exists project cascade ;
-drop table if exists assignment cascade ;
-drop table if exists team_project cascade ;
-drop table if exists team cascade ;
-drop table if exists assignment_grade_book cascade ;
-drop table if exists project_grade_book cascade ;
-drop table if exists attendance_grade_book cascade ;
-drop table if exists attendance cascade ;
-drop table if exists reply cascade ;
-drop table if exists material cascade ;
-drop table if exists post cascade ;
-drop table if exists course_sa cascade ;
-drop table if exists course_student cascade ;
-drop table if exists course_teacher cascade ;
-drop table if exists course cascade ;
-drop table if exists admin cascade ;
-drop table if exists teacher cascade ;
-drop table if exists student cascade ;
-drop table if exists grade_book cascade ;
-drop table if exists team_student cascade ;
+drop table if exists course_project cascade;
+drop table if exists project cascade;
+drop table if exists assignment cascade;
+drop table if exists team_project cascade;
+drop table if exists team cascade;
+drop table if exists assignment_grade_book cascade;
+drop table if exists project_grade_book cascade;
+drop table if exists attendance_grade_book cascade;
+drop table if exists attendance cascade;
+drop table if exists reply cascade;
+drop table if exists material cascade;
+drop table if exists post cascade;
+drop table if exists course_sa cascade;
+drop table if exists course_student cascade;
+drop table if exists course_teacher cascade;
+drop table if exists course cascade;
+drop table if exists admin cascade;
+drop table if exists teacher cascade;
+drop table if exists student cascade;
+drop table if exists grade_book cascade;
+drop table if exists team_student cascade;
 
 
 --! create table student
 
 create table student
 (
-    student_id        serial primary key,
     id                integer               not null unique,
     name              varchar(255)          not null,
     account           varchar(255)          not null unique,
@@ -49,7 +48,6 @@ create table student
 
 create table teacher
 (
-    teacher_id        serial primary key,
     id                integer      not null unique,
     name              varchar(255) not null,
     account           varchar(255) not null unique,
@@ -66,7 +64,6 @@ create table teacher
 
 create table admin
 (
-    admin_id     serial primary key,
     id           integer      not null unique,
     name         varchar(255) not null,
     account      varchar(255) not null unique,
@@ -81,6 +78,7 @@ create table admin
 create table course
 (
     course_id          serial primary key,
+    course_code        varchar(255) not null unique,
     course_name        varchar(255) not null,
     course_description varchar(255)
 );
@@ -158,7 +156,7 @@ create table team
     team_id          serial primary key,
     team_name        varchar(255) not null,
     leader           integer      not null,
-    team_description varchar(255) ,
+    team_description varchar(255),
     team_size        integer      not null,
     project_id       integer      not null
 );
@@ -196,7 +194,7 @@ create table assignment
 (
     assignment_id          serial primary key,
     assignment_title       varchar(255)     not null,
-    assignment_description varchar(255)     ,
+    assignment_description varchar(255),
     assignment_deadline    date             not null,
     assignment_status      varchar(255)     not null,
     max_grade              integer          not null,
@@ -210,9 +208,9 @@ create table assignment
 create table assignment_grade_book
 (
     assignment_grade_book_id serial primary key,
-    assignment_id            integer      not null,
-    grade_book_id            integer      not null,
-    grade                    integer      not null,
+    assignment_id            integer not null,
+    grade_book_id            integer not null,
+    grade                    integer not null,
     grade_description        varchar(255)
 );
 
@@ -299,7 +297,7 @@ alter table assignment_grade_book
 --! add foreign key to assignment
 
 alter table assignment
-    add foreign key (teacher_id) references teacher (teacher_id);
+    add foreign key (teacher_id) references teacher (id);
 alter table assignment
     add foreign key (course_id) references course (course_id);
 
@@ -315,7 +313,7 @@ alter table project_grade_book
 --! add foreign key to project
 
 alter table project
-    add foreign key (teacher_id) references teacher (teacher_id);
+    add foreign key (teacher_id) references teacher (id);
 alter table project
     add foreign key (course_id) references course (course_id);
 
@@ -323,7 +321,7 @@ alter table project
 --! add foreign key to team_student
 
 alter table team_student
-    add foreign key (student_id) references student (student_id);
+    add foreign key (student_id) references student (id);
 alter table team_student
     add foreign key (team_id) references team (team_id);
 
@@ -353,27 +351,27 @@ alter table material
 alter table course_sa
     add foreign key (course_id) references course (course_id);
 alter table course_sa
-    add foreign key (student_id) references student (student_id);
+    add foreign key (student_id) references student (id);
 
 --! add foreign key to course_teacher
 
 alter table course_teacher
     add foreign key (course_id) references course (course_id);
 alter table course_teacher
-    add foreign key (teacher_id) references teacher (teacher_id);
+    add foreign key (teacher_id) references teacher (id);
 
 --! add foreign key to course_student
 
 alter table course_student
     add foreign key (course_id) references course (course_id);
 alter table course_student
-    add foreign key (student_id) references student (student_id);
+    add foreign key (student_id) references student (id);
 
 
 --! add foreign key to grade_book
 
 alter table grade_book
-    add foreign key (student_id) references student (student_id);
+    add foreign key (student_id) references student (id);
 alter table grade_book
     add foreign key (course_id) references course (course_id);
 
