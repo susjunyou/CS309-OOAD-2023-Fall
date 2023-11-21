@@ -20,7 +20,8 @@ const state = () => ({
         "password": null,
         "confirmPassword": null,
         "emailAddress": null,
-        "verifyCode": null
+        "verifyCode": null,
+        "usertype":null
     },
     accountValid: false,
     errorMsg: null

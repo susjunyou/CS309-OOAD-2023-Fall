@@ -1,26 +1,22 @@
 <template>
-  <div class="container">
-    <div id="main-pane">
-      <el-row class="boundary" style="width: 100%; height: calc(30% - 4px); overflow: hidden">
-        <div class="titletext">
-          <p>OOAD Vue Introduction Project</p>
-        </div>
-      </el-row>
-
-      <el-col :span="12" :offset="6">
-        <el-row class="boundary" style="width: 100%; height: calc(80% - 10px); overflow: hidden; margin-top: 20px">
-          <el-row>
-            <p style="font-size: 30px;">Login</p>
-          </el-row>
-          <div id="loginForm">
-            <el-col :span="20" :offset="2">
-              <LoginForm :form="form"></LoginForm>
-            </el-col>
-          </div>
-        </el-row>
-      </el-col>
-
+  <div>
+    <div class="titletext">
+      <p>Project helper login</p>
     </div>
+
+
+
+  <div class="container">
+    <el-col :span="7" :offset="9">
+      <div id="loginForm">
+      <p style="font-size: 30px;">Login</p>
+      <LoginForm :form="form"></LoginForm>
+
+      </div>
+
+    </el-col>
+
+  </div>
   </div>
 </template>
 
@@ -46,34 +42,63 @@ export default {
 </script>
 
 <style>
+.user-type {
+  margin: 20px 0;
+}
 
+.user-type label {
+  margin-right: 10px;
+}
+
+.user-type input[type="radio"] {
+  margin-right: 5px;
+}
 .container {
+  background-image: url("../assets/login.png");
   width: 100%;
-  height: 100%;
+  min-height: 848.5px;
+ background-size: 100% 100%;
+  background-repeat: no-repeat; /* 背景图片不重复 */
+
 }
 
 .titletext {
   font-size: 20px;
-
+  background-image: url("../assets/schoolHUI.png");
+  background-size: 18% 100%;
+  background-repeat: no-repeat;
   border-bottom-right-radius: 4px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   border-top-right-radius: 4px;
   list-style-type: none;
 
-  background: #dddede;
   height: 50px;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  color: #444444;
+  color: yellow;
   text-align: center;
+  background-color: #2bb7b3;
 }
 
 #loginForm {
   text-align: center;
-  font-size: 20px;
-  margin-top: 0px;
+  background-color: white;
+  margin-top: 170px;
+  padding: 20px;
+  border-radius: 10px;
+  height: 350px;
+  opacity: 0.85;
+}
+
+#main-pane {
+  /*margin: 6px;*/
+  /*width: calc(100% - 12px);*/
+  /*height: calc(100% - 12px - 42px);*/
+  margin: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
 }
 
 #main-pane {
@@ -88,5 +113,19 @@ export default {
 
 }
 
+.boundary1 {
+  /*border-style: dashed;*/
+  border-style: solid;
+  border-color: #2bb7b3;;
+  border-width: 0.5px;
+  border-radius: 100px;
+}
 
+.boundary2 {
+  /*border-style: dashed;*/
+  border-style: solid;
+  border-color: #2bb7b3;
+  border-width: 0.5px;
+  border-radius: 100px;
+}
 </style>
