@@ -2,27 +2,27 @@
 
 --! drop table
 
--- drop table if exists course_project cascade ;
--- drop table if exists project cascade ;
--- drop table if exists assignment cascade ;
--- drop table if exists team_project cascade ;
--- drop table if exists team cascade ;
--- drop table if exists assignment_grade_book cascade ;
--- drop table if exists project_grade_book cascade ;
--- drop table if exists attendance_grade_book cascade ;
--- drop table if exists attendance cascade ;
--- drop table if exists reply cascade ;
--- drop table if exists material cascade ;
--- drop table if exists post cascade ;
--- drop table if exists course_sa cascade ;
--- drop table if exists course_student cascade ;
--- drop table if exists course_teacher cascade ;
--- drop table if exists course cascade ;
--- drop table if exists admin cascade ;
--- drop table if exists teacher cascade ;
--- drop table if exists student cascade ;
--- drop table if exists grade_book cascade ;
--- drop table if exists team_student cascade ;
+drop table if exists course_project cascade ;
+drop table if exists project cascade ;
+drop table if exists assignment cascade ;
+drop table if exists team_project cascade ;
+drop table if exists team cascade ;
+drop table if exists assignment_grade_book cascade ;
+drop table if exists project_grade_book cascade ;
+drop table if exists attendance_grade_book cascade ;
+drop table if exists attendance cascade ;
+drop table if exists reply cascade ;
+drop table if exists material cascade ;
+drop table if exists post cascade ;
+drop table if exists course_sa cascade ;
+drop table if exists course_student cascade ;
+drop table if exists course_teacher cascade ;
+drop table if exists course cascade ;
+drop table if exists admin cascade ;
+drop table if exists teacher cascade ;
+drop table if exists student cascade ;
+drop table if exists grade_book cascade ;
+drop table if exists team_student cascade ;
 
 
 --! create table student
@@ -30,14 +30,14 @@
 create table student
 (
     student_id        serial primary key,
-    id                integer               not null,
+    id                integer               not null unique,
     name              varchar(255)          not null,
-    account           varchar(255)          not null,
+    account           varchar(255)          not null unique,
     password          varchar(255)          not null,
-    email             varchar(255)          not null,
+    email             varchar(255)          not null unique,
     self_Introduction text,
-    phone_number      varchar(255)          not null,
-    sex               bool                  not null,
+    phone_number      varchar(255),
+    sex               bool,
     major             varchar(255)          not null,
     level             varchar(255)          not null,
     isSA              boolean default false not null,
@@ -50,14 +50,14 @@ create table student
 create table teacher
 (
     teacher_id        serial primary key,
-    id                integer      not null,
+    id                integer      not null unique,
     name              varchar(255) not null,
-    account           varchar(255) not null,
+    account           varchar(255) not null unique,
     password          varchar(255) not null,
-    email             varchar(255) not null,
+    email             varchar(255) not null unique,
     self_Introduction text,
-    phone_number      varchar(255) not null,
-    sex               bool         not null,
+    phone_number      varchar(255),
+    sex               bool,
     department        varchar(255) not null,
     tenure            varchar(255) not null
 );
@@ -67,13 +67,13 @@ create table teacher
 create table admin
 (
     admin_id     serial primary key,
-    id           integer      not null,
+    id           integer      not null unique,
     name         varchar(255) not null,
-    account      varchar(255) not null,
+    account      varchar(255) not null unique,
     password     varchar(255) not null,
     email        varchar(255) not null,
-    phone_number varchar(255) not null,
-    sex          bool         not null
+    phone_number varchar(255),
+    sex          bool
 );
 
 --! create table course
@@ -82,7 +82,7 @@ create table course
 (
     course_id          serial primary key,
     course_name        varchar(255) not null,
-    course_description varchar(255) not null
+    course_description varchar(255)
 );
 
 --! create table course_teacher
@@ -124,7 +124,7 @@ create table project
     course_id             integer          not null,
     assignment_start_time date             not null,
     project_status        varchar(255)     not null,
-    project_start_date    date             not null,
+    project_start_date    date,
     project_deadline      date             not null,
     max_people_in_team    integer          not null,
     max_grade             integer          not null,
@@ -158,7 +158,7 @@ create table team
     team_id          serial primary key,
     team_name        varchar(255) not null,
     leader           integer      not null,
-    team_description varchar(255) not null,
+    team_description varchar(255) ,
     team_size        integer      not null,
     project_id       integer      not null
 );
@@ -196,7 +196,7 @@ create table assignment
 (
     assignment_id          serial primary key,
     assignment_title       varchar(255)     not null,
-    assignment_description varchar(255)     not null,
+    assignment_description varchar(255)     ,
     assignment_deadline    date             not null,
     assignment_status      varchar(255)     not null,
     max_grade              integer          not null,
@@ -213,7 +213,7 @@ create table assignment_grade_book
     assignment_id            integer      not null,
     grade_book_id            integer      not null,
     grade                    integer      not null,
-    grade_description        varchar(255) not null
+    grade_description        varchar(255)
 );
 
 --! create table material
@@ -264,11 +264,11 @@ create table post
 
 create table reply
 (
-    comment_id serial primary key,
-    reply_content    text      not null,
-    reply_author     integer   not null,
-    reply_time       timestamp not null,
-    post_id    integer   not null
+    comment_id    serial primary key,
+    reply_content text      not null,
+    reply_author  integer   not null,
+    reply_time    timestamp not null,
+    post_id       integer   not null
 );
 
 --! add foreign key to reply
