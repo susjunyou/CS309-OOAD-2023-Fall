@@ -1,12 +1,17 @@
 package com.example.ooad_project_backend.service.Imp;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.ooad_project_backend.common.ResultCode;
 import com.example.ooad_project_backend.entity.CourseInfo;
 import com.example.ooad_project_backend.entity.TeacherInfo;
+import com.example.ooad_project_backend.exception.CustomException;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
 import com.example.ooad_project_backend.mapper.CourseTeacherMapper;
 import com.example.ooad_project_backend.mapper.TeacherInfoMapper;
 import com.example.ooad_project_backend.service.TeacherInfoService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +42,32 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
             courseInfoList.add(courseInfoMapper.findCourseInfoByCourseId(courseId));
         }
         return courseInfoList;
+    }
+
+
+    public List<TeacherInfo> findALl() {
+        return teacherInfoMapper.getAll();
+    }
+
+    public void update(TeacherInfo teacherInfo) {
+        System.out.println(teacherInfo.toString());
+        teacherInfoMapper.updateTeacherInfo(teacherInfo);
+    }
+
+
+    public void deleteById(Long id) {
+        teacherInfoMapper.deleteTeacherInfo(id);
+    }
+
+    public PageInfo<TeacherInfo> findPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<TeacherInfo> list = teacherInfoMapper.getAll();
+        return PageInfo.of(list);
+    }
+
+    public PageInfo<TeacherInfo> findPageSearch(String search, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<TeacherInfo> teacherInfos = teacherInfoMapper.findByLikeName(search);
+        return PageInfo.of(teacherInfos);
     }
 }
