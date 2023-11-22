@@ -18,7 +18,7 @@ public class ProjectInfo extends GradeInfo {
 
     private String projectDescription;
 
-    private Date projectStartTime;
+    private Date projectStartDate;
 
     private Date projectDeadline;
 
