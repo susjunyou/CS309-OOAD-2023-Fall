@@ -8,7 +8,7 @@
       <el-input v-model="form.password" type="password" ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="loginClick">Login</el-button>
+      <el-button type="primary" @click="loginClick ">Login</el-button>
       <el-button @click="registerClick">Register</el-button>
     </el-form-item>
     <div class="user-type">
@@ -63,25 +63,92 @@ export default {
     loginClick() {
       let _this = this;
       _this.isLoginClick = true;
-      _this.$axios.get('/login/admin', {
-        params: {
-          account: _this.form.username,
-          password: _this.form.password
-        }
-      }).then(response => {
-        console.log(_this.form.username)
-        console.log(_this.form.password)
-        console.log(response)
-        if (response.data.code === "0") {
-          console.log(response.data.data);
-          this.$router.push('/StudentHomePage');
-        } else {
-          console.log("error")
-        }
-      })
+      console.log(_this.form.userType);
+      if (_this.form.userType ==='admin') {
+        _this.$axios.get('/login/admin', {
+          params: {
+            account: _this.form.username,
+            password: _this.form.password
+          }
+        }).then(response => {
+          console.log(_this.form.username)
+          console.log(_this.form.password)
+          console.log(response)
+          if (response.data.code === "0") {
+            console.log(response.data.data);
+            this.$router.push('/StudentHomePage');
+            return false
+          } else {
+            console.log("error")
+            return true
+          }
+        })
+
+      }else if (_this.form.userType ==='student') {
+        _this.$axios.get('/login/student', {
+          params: {
+            account: _this.form.username,
+            password: _this.form.password
+          }
+        }).then(response => {
+          console.log(_this.form.username)
+          console.log(_this.form.password)
+          console.log(response)
+          if (response.data.code === "0") {
+            console.log(response.data.data);
+            localStorage.setItem('phoneNumber', response.data.data.phoneNumber);
+            localStorage.setItem('major', response.data.data.major);
+            localStorage.setItem('id', response.data.data.id);
+            console.log(localStorage.getItem('id'));
+            console.log(localStorage.getItem('major'));
+            console.log(localStorage.getItem('phoneNumber'));
+            this.getCourses();
+            this.$router.push('/StudentHomePage');
+          } else {
+            console.log("error")
+          }
+
+        })
+      }else if (_this.form.userType === 'teacher') {
+        _this.$axios.get('/login/teacher', {
+          params: {
+            account: _this.form.username,
+            password: _this.form.password
+          }
+        }).then(response => {
+          console.log(_this.form.username)
+          console.log(_this.form.password)
+          console.log(response)
+          if (response.data.code === "0") {
+            console.log(response.data.data);
+            this.$router.push('/StudentHomePage');
+          } else {
+            console.log("error")
+          }
+        })
+      }
     },
     registerClick() {
       this.$router.push('/register')
+    },
+    getCourses() {
+      this.$axios.get('/student/getCourseInfo',{
+        params:{
+          studentId:localStorage.getItem('id')
+        }
+      })
+          .then((res) => {
+            console.log(res.data);
+            localStorage.setItem('length',res.data.data.length);
+            console.log(localStorage.getItem('length'));
+            for (let i = 0; i < localStorage.getItem('length'); i++) {
+              localStorage.setItem('courses'+i,res.data.data[i].courseName);
+            }
+            console.log(localStorage.getItem('courses0'));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     }
   },
   computed: {
