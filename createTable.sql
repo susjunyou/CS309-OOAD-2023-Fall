@@ -115,18 +115,17 @@ create table course_sa
 
 create table project
 (
-    project_id            serial primary key,
-    project_title         varchar(255)     not null,
-    project_description   varchar(255)     not null,
-    teacher_id            integer          not null,
-    course_id             integer          not null,
-    assignment_start_time date             not null,
-    project_status        varchar(255)     not null,
-    project_start_date    date,
-    project_deadline      date             not null,
-    max_people_in_team    integer          not null,
-    max_grade             integer          not null,
-    proportion            double precision not null
+    project_id          serial primary key,
+    project_title       varchar(255)     not null,
+    project_description varchar(255)     not null,
+    teacher_id          integer          not null,
+    course_id           integer          not null,
+    project_status      varchar(255)     not null,
+    project_start_date  date,
+    project_deadline    date             not null,
+    max_people_in_team  integer          not null,
+    max_grade           integer          not null,
+    proportion          double precision not null
 );
 
 --! create table project_grade_book
@@ -229,10 +228,11 @@ create table material
 
 create table attendance
 (
-    attendance_id serial primary key,
-    releaser      integer          not null,
-    max_grade     integer          not null,
-    proportion    double precision not null
+    attendance_id   serial primary key,
+    attendance_date date             not null,
+    max_grade       integer          not null,
+    proportion      double precision not null,
+    course_id       integer          not null
 );
 
 --! create table attendance_grade_book
@@ -253,6 +253,7 @@ create table post
     post_title   varchar(255) not null,
     post_content text         not null,
     post_author  integer      not null,
+    author_type  varchar(255) not null,
     time         date         not null,
     course_id    integer      not null
 );

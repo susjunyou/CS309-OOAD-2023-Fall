@@ -31,25 +31,31 @@
     </el-container>
   </div>
 </template>
-
 <script>
 export default {
   name: 'StudentHomepage',
   data() {
     return {
-      courses: [
-        { id: 1, title: '人工智能 Fall 2023' },
-        { id: 2, title: '计算机网络 Fall 2023' },
-        // ...其他课程
-      ]
+      courses: [],
     };
   },
   methods: {
-    goTo(page) {
-      // 在这里处理页面跳转
-      this.$router.push({ name: page });
-    }
-  }
+    async loadLocalStorageData() {
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 模拟异步操作，这里不是必要的，只是演示用例
+
+      for (let i = 0; i < localStorage.getItem('length'); i++) {
+        this.courses.push({
+          id: i + 1,
+          title: localStorage.getItem('courses' + i),
+        });
+      }
+    },
+
+  },
+  async created() {
+    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+
+  },
 };
 </script>
 
