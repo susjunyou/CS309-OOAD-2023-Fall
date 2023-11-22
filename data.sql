@@ -87,3 +87,68 @@ values (2, 11);
 
 insert into course_teacher(course_id, teacher_id)
 values (3, 22);
+
+--! project data
+
+insert into project(project_title, project_description, teacher_id, course_id, project_status,
+                    project_start_date, project_deadline, max_people_in_team, max_grade, proportion)
+Values ('project1', 'project_description', 11, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+
+insert into project(project_title, project_description, teacher_id, course_id, project_status,
+                    project_start_date, project_deadline, max_people_in_team, max_grade, proportion)
+Values ('project2', 'project_description', 22, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+
+insert into project(project_title, project_description, teacher_id, course_id, project_status,
+                    project_start_date, project_deadline, max_people_in_team, max_grade, proportion)
+Values ('project3', 'project_description', 11, 2, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+
+--! Assignment data
+
+insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_grade,
+                       proportion, teacher_id, course_id)
+values ('assignment1', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1);
+
+insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_grade,
+                       proportion, teacher_id, course_id)
+values ('assignment2', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1);
+
+insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_grade,
+                       proportion, teacher_id, course_id)
+values ('assignment3', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 22, 2);
+
+--! Attendance data
+
+insert into attendance(attendance_date, max_grade, proportion, course_id)
+values ('2021-01-01', 100, 0.5, 1);
+
+insert into attendance(attendance_date, max_grade, proportion, course_id)
+values ('2021-01-02', 100, 0.5, 1);
+
+insert into attendance(attendance_date, max_grade, proportion, course_id)
+values ('2021-01-01', 100, 0.5, 2);
+
+
+--! material data
+
+insert into material(material_name, material_description, course_id)
+values ('material1', 'material_description', 1);
+
+insert into material(material_name, material_description, course_id)
+values ('material2', 'material_description', 1);
+
+insert into material(material_name, material_description, course_id)
+values ('material3', 'material_description', 2);
+
+--! post data
+insert into post(post_title, post_content, post_author, author_type, time, course_id)
+values ('post1', 'post_content', 1, 'STUDENT', '2021-01-01', 1);
+
+insert into post(post_title, post_content, post_author, author_type, time, course_id)
+values ('post2', 'post_content', 2,'STUDENT', '2021-01-01', 1);
+
+insert into post(post_title, post_content, post_author, author_type, time, course_id)
+values ('post3', 'post_content', 3,'STUDENT', '2021-01-01', 2);
+
+
+
+
