@@ -46,8 +46,8 @@ public class teacherController {
 
         return Result.success();
     }
-    @DeleteMapping("/deleteById/{id}")
-    public Result deleteById(@PathVariable Long id) {
+    @DeleteMapping("/deleteById")
+    public Result deleteById( Long id) {
         teacherInfoService.deleteById(id);
         return Result.success();
     }
