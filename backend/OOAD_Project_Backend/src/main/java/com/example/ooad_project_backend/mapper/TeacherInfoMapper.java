@@ -11,20 +11,20 @@ public interface TeacherInfoMapper extends BaseMapper<TeacherInfo> {
     @Select("select * from teacher where account = #{account}")
     TeacherInfo findTeacherInfoByAccount(String account);
 
-    @Select("select * from teacher_Info where name = #{name}")
+    @Select("select * from teacher where name = #{name}")
     TeacherInfo findByName(@Param("name") String name);
 
-    @Select("select * from teacher_Info")
+    @Select("select * from teacher")
     List<TeacherInfo> getAll();
 
-    @Update("UPDATE teacher_info SET account=#{#account},name = #{name}, password = #{password}, sex = #{sex}, age = #{age}, level = #{level}," +
+    @Update("UPDATE teacher SET account=#{#account},name = #{name}, password = #{password}, sex = #{sex}, age = #{age}, level = #{level}," +
             " tenure = #{tenure}, phone_number = #{phone_number},selfIntroduction = #{self_Introduction}, department= #{department},email=#{email},  WHERE id = #{id}")
     void updateTeacherInfo(TeacherInfo teacherInfo);
 
-    @Delete("DELETE FROM teacher_info WHERE id = #{id}")
+    @Delete("DELETE FROM teacher WHERE id = #{id}")
     void deleteTeacherInfo(@Param("id") long id);
 
-    @Select("SELECT * FROM teacher_info " +
+    @Select("SELECT * FROM teacher " +
             "WHERE (name LIKE CONCAT('%', #{search}, '%') OR department LIKE CONCAT('%', #{search}, '%'))")
     List<TeacherInfo> findByLikeName(@Param("search") String search);
 

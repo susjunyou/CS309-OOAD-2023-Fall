@@ -45,6 +45,20 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
     }
 
 
+
+    public void add(TeacherInfo teacherInfo) {
+        // 1. 检测数据库中有没有同名的教师，如果有，需要提示前台用户重新输入
+        TeacherInfo info = teacherInfoMapper.findByName(teacherInfo.getName());
+        if (ObjectUtil.isNotEmpty(info)) {
+            throw new CustomException(ResultCode.USER_EXIST_ERROR);
+        }
+        if (ObjectUtil.isEmpty(teacherInfo.getPassword())) {
+            teacherInfo.setPassword("123456");
+        }
+        teacherInfoMapper.insert(teacherInfo);
+    }
+
+
     public List<TeacherInfo> findALl() {
         return teacherInfoMapper.getAll();
     }

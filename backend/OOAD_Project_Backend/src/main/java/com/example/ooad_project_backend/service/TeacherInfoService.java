@@ -16,4 +16,5 @@ public interface TeacherInfoService extends IService<TeacherInfo> {
     public void deleteById(Long id);
     public PageInfo<TeacherInfo> findPage(Integer pageNum, Integer pageSize);
     public PageInfo<TeacherInfo> findPageSearch(String search, Integer pageNum, Integer pageSize);
+    public void add(TeacherInfo teacherInfo);
 }

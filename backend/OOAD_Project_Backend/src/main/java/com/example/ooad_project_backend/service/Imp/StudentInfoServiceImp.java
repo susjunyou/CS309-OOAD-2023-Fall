@@ -1,8 +1,12 @@
 package com.example.ooad_project_backend.service.Imp;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.ooad_project_backend.common.ResultCode;
 import com.example.ooad_project_backend.entity.CourseInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
+import com.example.ooad_project_backend.entity.TeacherInfo;
+import com.example.ooad_project_backend.exception.CustomException;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
 import com.example.ooad_project_backend.mapper.CourseStudentMapper;
 import com.example.ooad_project_backend.mapper.StudentInfoMapper;
@@ -40,5 +44,16 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
         return courseInfoList;
     }
 
+    public void add(StudentInfo studentInfo) {
+        // 1. 检测数据库中有没有同名的教师，如果有，需要提示前台用户重新输入
+        TeacherInfo info = studentInfoMapper.findByName(studentInfo.getName());
+        if (ObjectUtil.isNotEmpty(info)) {
+            throw new CustomException(ResultCode.USER_EXIST_ERROR);
+        }
+        if (ObjectUtil.isEmpty(studentInfo.getPassword())) {
+            studentInfo.setPassword("123456");
+        }
+       studentInfoMapper.insert(studentInfo);
+    }
 
 }

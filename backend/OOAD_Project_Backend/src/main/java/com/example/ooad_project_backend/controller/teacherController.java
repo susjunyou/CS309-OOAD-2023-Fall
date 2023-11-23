@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.controller;
 
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.common.ResultCode;
 import com.example.ooad_project_backend.entity.CourseInfo;
@@ -32,20 +33,20 @@ public class teacherController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/findAll")
     public Result findAll() {
         List<TeacherInfo> List = teacherInfoService.findALl();
         return Result.success(List);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public Result update(@RequestBody TeacherInfo teacherInfo) {
         System.out.println(teacherInfo.toString());
         teacherInfoService.update(teacherInfo);
 
         return Result.success();
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public Result deleteById(@PathVariable Long id) {
         teacherInfoService.deleteById(id);
         return Result.success();

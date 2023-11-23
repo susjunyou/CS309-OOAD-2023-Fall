@@ -10,4 +10,6 @@ public interface StudentInfoService extends IService<StudentInfo> {
     StudentInfo findStudentInfoByAccount(String account);
 
     List<CourseInfo> findCourseInfoByStudentId(Integer studentId);
+    public void add(StudentInfo studentInfo);
+
 }
