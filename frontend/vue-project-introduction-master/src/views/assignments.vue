@@ -50,12 +50,17 @@ export default {
     this.myValue=localStorage.getItem("currentcourse")
   },
   methods: {
+
     goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourse",route);
       this.myValue=route;
       this.loadLocalStorageData();
       this.$router.push({ path: '/course' });
+    },
+    go(route) {
+
+      this.$router.push(route);
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 模拟异步操作，这里不是必要的，只是演示用例

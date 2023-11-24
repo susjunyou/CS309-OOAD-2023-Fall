@@ -1,10 +1,27 @@
 <template>
   <div>
-  <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
-    <el-menu-item v-for="course in courses" :key="course" @click="goTo(course.title)" >
-      {{ course.title }}
-    </el-menu-item>
-  </el-menu>
+    <div>
+      <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
+        <el-menu-item v-for="course in courses" :key="course" @click="goTo(course.title)" >
+          {{ course.title }}
+        </el-menu-item>
+      </el-menu>
+
+
+
+      <el-menu
+          class="course-navbar"
+          mode="vertical"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+        <el-menu-item index="1" @click="go('materials')">Materials</el-menu-item>
+        <el-menu-item index="2" @click="go('gradebook')">Gradebook</el-menu-item>
+        <el-menu-item index="3" @click="go('projects')">Projects</el-menu-item>
+        <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+      </el-menu>
+      <!--  <div>-->
+      </div>
 
   <div>
     <div v-for="material in materials" :key="material.id" class="material">
@@ -42,6 +59,10 @@ export default {
       this.myValue=route;
       this.loadLocalStorageData();
       this.$router.push({ path: '/course' });
+    },
+    go(route) {
+
+      this.$router.push(route);
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 模拟异步操作，这里不是必要的，只是演示用例
@@ -92,7 +113,7 @@ export default {
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
       }
-
+      console.log(this.materials)
 
     },
 
