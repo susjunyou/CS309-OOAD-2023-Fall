@@ -119,6 +119,7 @@ export default {
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
     },
+
   },
 }
 </script>

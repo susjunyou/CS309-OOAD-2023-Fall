@@ -38,11 +38,14 @@ export default {
       assignments: [],
       projects: [],
       materials: [],
-      myValue: '',    };
+      teams: [],
+      myValue: '',  //projectid
+    };
   },
 
 
   async created() {
+    this.myValue=localStorage.getItem("currentprojectid")
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     this.myValue=localStorage.getItem("currentcourse")
   },
@@ -67,7 +70,7 @@ export default {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: i + 1,
+          id: localStorage.getItem('coursesid' + i),
           title: localStorage.getItem('courses' + i),
         });
       }
@@ -115,10 +118,36 @@ export default {
           title: this.projects[i].title,
         });
       }
+
+
       console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
+    },
+    async getTeam() {
+      await this.$axios.get('/team/findTeamInfoByProjectId', {
+        params: {
+          projectId: localStorage.getItem("currentprojectid")
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          // localStorage.setItem('courseprojectteamLength'+this.myValue.title,res.d)
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.teams.push({
+              id:res.data.data[i].teamId,
+              name: res.data.data[i].teamName,
+              description: res.data.data[i].teamDescription,
+              leader: res.data.data[i].leader,
+              projectid: res.data.data[i].projectId,
+              teamsize: res.data.data[i].teamSize,
+            })
+
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading course assignments:', error);
+      });
     },
   },
 }

@@ -27,7 +27,7 @@
       <!-- ... 其他代码 ... -->
 
       <!-- 显示项目信息 -->
-      <div v-for="project in projects" :key="project.id" class="project">
+      <div v-for="project in projects" :key="project" class="project">
         <h3 >{{ project.title }}</h3>
         <p>{{ project.description }}</p>
         <p>开始日期: {{ project.startdate }}</p>
@@ -35,7 +35,7 @@
         <p>状态: {{ project.status }}</p>
         <p>团队人数上限: {{ project.maxpeopleinteam }}</p>
         <p @click="go('createTeam')" class="clickable-text">创建team</p>
-        <p @click="go('joinTeam')" class="clickable-text">加入 team</p>
+        <p @click="join(project)" class="clickable-text">加入 team</p>
 
       </div>
 
@@ -71,6 +71,10 @@ export default {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("coursename",route)
       this.$router.push( "course" );
+    },
+    join(route) {
+      localStorage.setItem("currentprojectid",route.id)
+      this.$router.push('joinTeam');
     },
     go(route) {
 
