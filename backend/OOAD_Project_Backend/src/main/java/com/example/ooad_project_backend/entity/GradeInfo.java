@@ -12,7 +12,6 @@ public class GradeInfo implements Serializable {
 
     @TableId(value = "grade_id", type = IdType.AUTO)
     private Integer gradeId;
-
     private UserInfo releaser;
     private Integer maxScore;
 

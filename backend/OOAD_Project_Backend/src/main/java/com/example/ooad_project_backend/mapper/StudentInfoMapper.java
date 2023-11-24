@@ -13,6 +13,9 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
     @Select("select * from student where account = #{account}")
     StudentInfo findStudentInfoByName(String account);
 
+    @Select("select * from student where id = #{id}")
+    StudentInfo findStudentInfoById(Integer id);
+
     @Select("select * from student where name = #{name}")
     StudentInfo findByName(@Param("name") String name);
 

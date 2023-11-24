@@ -1,6 +1,7 @@
 package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
+import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeacherInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 import com.example.ooad_project_backend.service.TeamInfoService;
@@ -35,6 +36,16 @@ public class TeamController {
             return Result.error("1", "no teams");
         } else {
             return Result.success(teamInfos);
+        }
+    }
+
+    @GetMapping("/findTeamMembers")
+    public Result findTeamNumberByTeamId(Integer teamId) {
+        List<StudentInfo> studentInfos = teamInfoService.findStudentInfoByTeamId(teamId);
+        if (studentInfos.size() == 0) {
+            return Result.error("1", "no team ");
+        } else {
+            return Result.success(studentInfos);
         }
     }
 

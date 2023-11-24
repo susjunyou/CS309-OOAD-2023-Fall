@@ -30,4 +30,7 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select * from team where project_id = #{projectId}")
     List<TeamInfo> findTeamInfoByProjectId(Integer projectId);
 
+    @Select("select student_id from team_student where team_id = #{teamId}")
+    List<Integer> findStudentIdsByTeamId(Integer teamId);
+
 }

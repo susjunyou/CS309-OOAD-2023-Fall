@@ -1,13 +1,16 @@
 package com.example.ooad_project_backend.service.Imp;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 import com.example.ooad_project_backend.mapper.ProjectInfoMapper;
+import com.example.ooad_project_backend.mapper.StudentInfoMapper;
 import com.example.ooad_project_backend.mapper.TeamMapper;
 import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +21,9 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Autowired
     private ProjectInfoMapper projectInfoMapper;
+
+    @Autowired
+    private StudentInfoMapper studentInfoMapper;
 
     @Override
     public boolean createTeam(TeamInfo teamInfo) {
@@ -58,5 +64,15 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     @Override
     public List<TeamInfo> findAllTeamInfoByProjectId(Integer projectId) {
         return teamMapper.findTeamInfoByProjectId(projectId);
+    }
+
+    @Override
+    public List<StudentInfo> findStudentInfoByTeamId(Integer teamId) {
+        List<Integer> studentIds = teamMapper.findStudentIdsByTeamId(teamId);
+        List<StudentInfo> studentInfos = new ArrayList<>();
+        for (int i = 0; i < studentIds.size(); i++) {
+            studentInfos.add(studentInfoMapper.findStudentInfoById(studentIds.get(i)));
+        }
+        return studentInfos;
     }
 }
