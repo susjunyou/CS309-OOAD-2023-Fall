@@ -8,7 +8,6 @@ import materials from "@/views/materials.vue";
 import gradebook from "@/views/gradebook.vue";
 import projects from "@/views/projects.vue";
 import assignments from "@/views/assignments.vue";
-
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},

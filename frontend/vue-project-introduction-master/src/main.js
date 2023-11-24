@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VCalendar from 'v-calendar';
 import App from './App.vue'
 
 import Vuex from "vuex";
@@ -10,7 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from '@/router'
 import store from '@/store'
 import axios from "axios";
-
+Vue.use(VCalendar);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 Vue.use(VueRouter)
