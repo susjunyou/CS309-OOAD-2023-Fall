@@ -29,7 +29,7 @@ drop table if exists team_student cascade;
 
 create table student
 (
-    id                integer               not null unique,
+    id                integer primary key,
     name              varchar(255)          not null,
     account           varchar(255)          not null unique,
     password          varchar(255)          not null,
@@ -48,7 +48,7 @@ create table student
 
 create table teacher
 (
-    id                integer      not null unique,
+    id                integer primary key,
     name              varchar(255) not null,
     account           varchar(255) not null unique,
     password          varchar(255) not null,
@@ -64,7 +64,7 @@ create table teacher
 
 create table admin
 (
-    id           integer      not null unique,
+    id           integer primary key,
     name         varchar(255) not null,
     account      varchar(255) not null unique,
     password     varchar(255) not null,
@@ -162,12 +162,12 @@ create table team
 
 --! create table team_project
 
-create table team_project
-(
-    team_project_id serial primary key,
-    team_id         integer not null,
-    project_id      integer not null
-);
+-- create table team_project
+-- (
+--     team_project_id serial primary key,
+--     team_id         integer not null,
+--     project_id      integer not null
+-- );
 
 --! create table team_student
 
@@ -175,7 +175,8 @@ create table team_student
 (
     team_student_id serial primary key,
     student_id      integer not null,
-    team_id         integer not null
+    team_id         integer not null,
+    project_id      integer not null
 );
 
 --! create table grade_book
@@ -298,6 +299,8 @@ alter table assignment_grade_book
 --! add foreign key to assignment
 
 alter table assignment
+    add foreign key (teacher_id) references teacher (id);
+alter table assignment
     add foreign key (course_id) references course (course_id);
 
 
@@ -311,6 +314,8 @@ alter table project_grade_book
 
 --! add foreign key to project
 
+alter table project
+    add foreign key (teacher_id) references teacher (id);
 alter table project
     add foreign key (course_id) references course (course_id);
 
@@ -354,6 +359,8 @@ alter table course_sa
 
 alter table course_teacher
     add foreign key (course_id) references course (course_id);
+alter table course_teacher
+    add foreign key (teacher_id) references teacher (id);
 
 --! add foreign key to course_student
 
@@ -369,4 +376,12 @@ alter table grade_book
     add foreign key (student_id) references student (id);
 alter table grade_book
     add foreign key (course_id) references course (course_id);
+
+--! add foreign key to team
+
+alter table team
+    add foreign key (project_id) references project (project_id);
+
+alter table team
+    add foreign key (leader) references student (id);
 

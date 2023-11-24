@@ -14,10 +14,13 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b">
-      <el-menu-item index="1" @click="go('materials')">Materials</el-menu-item>
-      <el-menu-item index="2" @click="go('gradebook')">Gradebook</el-menu-item>
-      <el-menu-item index="3" @click="go('projects')">Projects</el-menu-item>
+      <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+      <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+      <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+      <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+      <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+      <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
     <!--  <div>-->
     <div>
@@ -53,6 +56,10 @@ export default {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
   },
   methods: {
+    logoutClick() {
+      this.$router.push('/Login');
+      localStorage.clear();
+    },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("coursename",route)
