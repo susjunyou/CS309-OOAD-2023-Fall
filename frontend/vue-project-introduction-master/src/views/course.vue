@@ -139,9 +139,9 @@ console.log("course name="+this.myValue)
 }
 
 /* 为了美观，您可能还想调整菜单项的样式 */
-.el-menu-item {
-  text-align: left; /* 将文字对齐方式设置为左对齐 */
-  padding: 10px 20px; /* 添加一些内边距 */
-}
+//.el-menu-item {
+//  text-align: left; /* 将文字对齐方式设置为左对齐 */
+//  padding: 10px 20px; /* 添加一些内边距 */
+//}
 </style>
 

@@ -33,7 +33,7 @@
 
 </template>
 
-<script setup>
+<script >
 export default {
 
   data() {
