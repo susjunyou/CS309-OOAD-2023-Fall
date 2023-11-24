@@ -23,6 +23,7 @@
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
   </el-menu>
 <!--  <div>-->
+
     <div>
     <div v-for="post in posts" :key="post.id" class="post">
       <h3>{{ post.title }}</h3>
@@ -30,16 +31,25 @@
       <small>作者: {{ post.author }}</small>
     </div>
   </div>
+    <div>
+      <v-calendar :attributes="attrs"></v-calendar>
+    </div>
 <!--    <p>welcome to {{myValue}}</p>-->
 <!--  </div>-->
   </div>
 </template>
 
 <script>
+
 export default {
 
   data() {
     return {
+      // 假设每个DDL是一个对象，包含日期和标题
+      ddls: [
+        // ...其他DDL
+      ],
+      attrs: [],
       // 初始化组件数据属性
       courses: [],
       posts: [],
@@ -54,7 +64,27 @@ export default {
 
   async created() {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    this.myValue=localStorage.getItem("currentcourse")
+    this.myValue=localStorage.getItem("currentcourse");
+    this.attrs = this.ddls.map(ddl => ({
+      key: ddl.date,
+      dates: new Date(ddl.date),
+      highlight: {
+        contentClass: 'ddl-highlight', // 应用于内容的CSS类
+      },
+      popover: {
+        label: ddl.title, // 弹出显示的信息
+      },
+    }));
+    this.attrs.push({
+      key: 'today',
+      highlight: {
+        contentClass: 'today-highlight', // 应用于当前日期的CSS类
+      },
+      dates: new Date(), // 当前日期
+      popover: {
+        label: 'Today', // 在这里添加你想要显示的文本
+      },
+    });
   },
   methods: {
     logoutClick() {
@@ -119,6 +149,10 @@ this.courses=[];
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
+        this.ddls.push({
+          date: this.projects[i].ddl,
+          title: this.projects[i].title,
+        });
       }
 console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
@@ -143,6 +177,15 @@ console.log("course name="+this.myValue)
   float: left; /* 使导航栏浮动在左侧 */
   height: 100vh; /* 设置导航栏高度与视口高度相同 */
   padding-top: 20px; /* 在顶部添加一些内边距 */
+}
+
+.ddl-highlight {
+  border: 2px solid red;
+  border-radius: 50%;
+}
+.today-highlight {
+  border: 2px solid blue;
+  border-radius: 50%;
 }
 
 
