@@ -14,10 +14,13 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
-    <el-menu-item index="1" @click="go('materials')">Materials</el-menu-item>
-    <el-menu-item index="2" @click="go('gradebook')">Gradebook</el-menu-item>
-    <el-menu-item index="3" @click="go('projects')">Projects</el-menu-item>
-    <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+      <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+      <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+      <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+      <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+      <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+      <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+      <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
   </el-menu>
 <!--  <div>-->
     <div>
@@ -54,6 +57,10 @@ export default {
     this.myValue=localStorage.getItem("currentcourse")
   },
   methods: {
+    logoutClick() {
+      this.$router.push('/Login');
+      localStorage.clear();
+    },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourse",route);
@@ -138,10 +145,6 @@ console.log("course name="+this.myValue)
   padding-top: 20px; /* 在顶部添加一些内边距 */
 }
 
-/* 为了美观，您可能还想调整菜单项的样式 */
-//.el-menu-item {
-//  text-align: left; /* 将文字对齐方式设置为左对齐 */
-//  padding: 10px 20px; /* 添加一些内边距 */
-//}
+
 </style>
 
