@@ -42,10 +42,9 @@ public class teacherController {
     //done
 
     @PutMapping("/update")
-    public Result update( TeacherInfo teacherInfo) {
+    public Result update(TeacherInfo teacherInfo) {
         System.out.println(teacherInfo.toString());
         teacherInfoService.update(teacherInfo);
-
         return Result.success();
     }
     //done!

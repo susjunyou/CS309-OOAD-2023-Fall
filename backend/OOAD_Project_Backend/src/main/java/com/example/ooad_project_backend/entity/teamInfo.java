@@ -14,18 +14,20 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class teamInfo implements Serializable {
+public class TeamInfo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "team_id", type = IdType.AUTO)
-    private Integer team_id;
+    private Integer teamId;
 
     private String teamName;
 
     private String teamDescription;
 
-    private UserInfo leader;
+    private Integer leader; // leader's student_id
+
+    private Integer projectId;
 
     private Integer teamSize;
 
