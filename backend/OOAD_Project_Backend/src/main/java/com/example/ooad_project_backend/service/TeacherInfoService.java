@@ -13,7 +13,7 @@ public interface TeacherInfoService extends IService<TeacherInfo> {
     List<CourseInfo> findCourseInfoByTeacherId(Integer teacherId);
     public List<TeacherInfo> findALl();
     public void update(TeacherInfo teacherInfo);
-    public void deleteById(Long id);
+    public void deleteById(Integer id);
     public PageInfo<TeacherInfo> findPage(Integer pageNum, Integer pageSize);
     public PageInfo<TeacherInfo> findPageSearch(String search, Integer pageNum, Integer pageSize);
     public void add(TeacherInfo teacherInfo);

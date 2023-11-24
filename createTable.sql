@@ -298,8 +298,6 @@ alter table assignment_grade_book
 --! add foreign key to assignment
 
 alter table assignment
-    add foreign key (teacher_id) references teacher (id);
-alter table assignment
     add foreign key (course_id) references course (course_id);
 
 
@@ -313,8 +311,6 @@ alter table project_grade_book
 
 --! add foreign key to project
 
-alter table project
-    add foreign key (teacher_id) references teacher (id);
 alter table project
     add foreign key (course_id) references course (course_id);
 
@@ -358,8 +354,6 @@ alter table course_sa
 
 alter table course_teacher
     add foreign key (course_id) references course (course_id);
-alter table course_teacher
-    add foreign key (teacher_id) references teacher (id);
 
 --! add foreign key to course_student
 

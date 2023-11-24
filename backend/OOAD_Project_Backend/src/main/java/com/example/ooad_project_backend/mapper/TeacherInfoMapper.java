@@ -17,8 +17,13 @@ public interface TeacherInfoMapper extends BaseMapper<TeacherInfo> {
     @Select("select * from teacher")
     List<TeacherInfo> getAll();
 
-    @Update("UPDATE teacher SET account=#{#account},name = #{name}, password = #{password}, sex = #{sex}, age = #{age}, level = #{level}," +
-            " tenure = #{tenure}, phone_number = #{phone_number},selfIntroduction = #{self_Introduction}, department= #{department},email=#{email},  WHERE id = #{id}")
+    @Insert("INSERT INTO teacher (id,account, name, password, sex, tenure, phone_number, self_introduction, department, email) " +
+            "VALUES (#{id},#{account}, #{name}, #{password}, #{sex}, #{tenure}, #{phoneNumber}, #{selfIntroduction}, #{department}, #{email})")
+    void insertTeacherInfo(TeacherInfo teacherInfo);
+
+
+    @Update("UPDATE teacher SET account=#{account},name = #{name}, password = #{password}, sex = #{sex}, " +
+            " tenure = #{tenure}, phone_number = #{phoneNumber},self_introduction = #{selfIntroduction}, department= #{department},email=#{email} WHERE id = #{id}")
     void updateTeacherInfo(TeacherInfo teacherInfo);
 
     @Delete("DELETE FROM teacher WHERE id = #{id}")

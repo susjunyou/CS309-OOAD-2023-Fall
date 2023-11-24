@@ -24,9 +24,12 @@ public class RegisterController {
     @Autowired
     private TeacherInfoServiceImp teacherInfoServiceImp;
 
+    @Autowired
+    private StudentInfoServiceImp studentInfoServiceImp;
+
     //注册功能的实现
-    @PostMapping("/register")
-    public Result register(@RequestBody UserInfo user, HttpServletRequest request) {
+    @PostMapping("/registerTeacher")
+    public Result register(TeacherInfo user) {
         //校验数据有没有填
         if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getUserType())) {
             return Result.error("-1", "Please Input All The Information !");
@@ -38,12 +41,21 @@ public class RegisterController {
             teacherInfoServiceImp.add(teacherInfo);
             //Account拷贝到teacher_info
         }
+
+        return Result.success();
+    }
+    @PostMapping("/registerStudent")
+    public Result registerStu(StudentInfo user) {
+        //校验数据有没有填
+        if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getUserType())) {
+            return Result.error("-1", "Please Input All The Information !");
+        }
         if (user.getUserType()== UserType.STUDENT) {
             //学生注册
             StudentInfo studentInfo = new StudentInfo();
-            BeanUtil.copyProperties(user,studentInfo);
-            studentInfoService.add(studentInfo);
-
+            BeanUtil.copyProperties(user, studentInfo);
+            studentInfoServiceImp.add(studentInfo);
+            //Account拷贝到teacher_info
         }
 
         return Result.success();

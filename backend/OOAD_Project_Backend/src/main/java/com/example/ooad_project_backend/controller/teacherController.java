@@ -10,6 +10,7 @@ import com.example.ooad_project_backend.entity.TeacherInfo;
 import com.example.ooad_project_backend.exception.CustomException;
 import com.example.ooad_project_backend.service.TeacherInfoService;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,29 +39,36 @@ public class teacherController {
         List<TeacherInfo> List = teacherInfoService.findALl();
         return Result.success(List);
     }
+    //done
 
     @PutMapping("/update")
-    public Result update(@RequestBody TeacherInfo teacherInfo) {
+    public Result update( TeacherInfo teacherInfo) {
         System.out.println(teacherInfo.toString());
         teacherInfoService.update(teacherInfo);
 
         return Result.success();
     }
-    @DeleteMapping("/deleteById/{id}")
-    public Result deleteById(@PathVariable Long id) {
+    //done!
+
+    @DeleteMapping("/deleteById")
+    public Result deleteById( Integer id) {
         teacherInfoService.deleteById(id);
         return Result.success();
     }
+    //done
+
 
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         PageInfo<TeacherInfo> pageInfo = teacherInfoService.findPage(pageNum, pageSize);
         return Result.success(pageInfo);
     }
-    @GetMapping("/{search}")
-    public Result findPageSearch(@PathVariable String search, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        PageInfo<TeacherInfo> pageInfo = teacherInfoService.findPageSearch(search, pageNum, pageSize);
+    //done
+    @GetMapping("/search/{target}")
+    public Result findPageSearch(@PathVariable String target, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        PageInfo<TeacherInfo> pageInfo = teacherInfoService.findPageSearch(target, pageNum, pageSize);
         return Result.success(pageInfo);
     }
+//done
 }
 
