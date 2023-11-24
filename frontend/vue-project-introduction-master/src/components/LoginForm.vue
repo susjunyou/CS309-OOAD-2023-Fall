@@ -142,6 +142,7 @@ export default {
             localStorage.setItem('length',res.data.data.length);
             console.log(localStorage.getItem('length'));
             for (let i = 0; i < localStorage.getItem('length'); i++) {
+              localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
               localStorage.setItem('courses'+i,res.data.data[i].courseName);
             }
             console.log(localStorage.getItem('courses0'));

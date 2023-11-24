@@ -8,6 +8,9 @@ import materials from "@/views/materials.vue";
 import gradebook from "@/views/gradebook.vue";
 import projects from "@/views/projects.vue";
 import assignments from "@/views/assignments.vue";
+import createTeam from "@/views/createTeam.vue";
+import joinTeam from "@/views/joinTeam.vue";
+
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -19,6 +22,8 @@ const routes = [
     {path: '/gradebook',component: gradebook},
     {path: '/projects',component: projects},
     {path: '/assignments',component: assignments},
+    {path: '/createTeam',component: createTeam},
+    {path: '/joinTeam',component: joinTeam},
     {path: '/', redirect: '/login'}
 
 ]

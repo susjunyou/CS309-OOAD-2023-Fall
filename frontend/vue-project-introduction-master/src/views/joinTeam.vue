@@ -23,25 +23,8 @@
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
     <!--  <div>-->
-    <div>
-      <!-- ... 其他代码 ... -->
 
-      <!-- 显示项目信息 -->
-      <div v-for="project in projects" :key="project.id" class="project">
-        <h3 >{{ project.title }}</h3>
-        <p>{{ project.description }}</p>
-        <p>开始日期: {{ project.startdate }}</p>
-        <p>截止日期: {{ project.ddl }}</p>
-        <p>状态: {{ project.status }}</p>
-        <p>团队人数上限: {{ project.maxpeopleinteam }}</p>
-        <p @click="go('createTeam')" class="clickable-text">创建team</p>
-        <p @click="go('joinTeam')" class="clickable-text">加入 team</p>
-
-      </div>
-
-      <!-- ... 其他代码 ... -->
-    </div>
-    </div>
+  </div>
 </template>
 
 <script >
@@ -49,18 +32,19 @@ export default {
 
   data() {
     return {
+      // 初始化组件数据属性
       courses: [],
       posts: [],
       assignments: [],
       projects: [],
       materials: [],
-      myValue: '',
-    };
+      myValue: '',    };
   },
 
 
   async created() {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    this.myValue=localStorage.getItem("currentcourse")
   },
   methods: {
     logoutClick() {
@@ -69,8 +53,10 @@ export default {
     },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-      localStorage.setItem("coursename",route)
-      this.$router.push( "course" );
+      localStorage.setItem("currentcourse",route);
+      this.myValue=route;
+      this.loadLocalStorageData();
+      this.$router.push({ path: '/course' });
     },
     go(route) {
 
@@ -133,18 +119,12 @@ export default {
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
-    },  },
+    },
+  },
 }
 </script>
 
 
 <style scoped>
-.clickable-text{
-  text-decoration: underline; /* 添加下划线 */
-  color: blue; /* 设置为蓝色或其他突出的颜色 */
-  cursor: pointer; /* 鼠标悬停时显示手形光标 */
-  .clickable-text:hover {
-    color: darkblue; /* 悬停时改变颜色 */
-  }
-}
+
 </style>

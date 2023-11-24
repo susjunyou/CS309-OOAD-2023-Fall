@@ -63,6 +63,7 @@ export default {
           if (res.data.code === "0") {
             localStorage.setItem('coursePostLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+              localStorage.setItem('postid'+course.title+i,res.data.data[i].postId);
               localStorage.setItem('post'+course.title+i,res.data.data[i].postContent);
               localStorage.setItem('posttitle'+course.title+i,res.data.data[i].postTitle);
               localStorage.setItem('postauthor'+course.title+i,res.data.data[i].postAuthor);
@@ -80,7 +81,7 @@ export default {
           if (res.data.code === "0") {
             localStorage.setItem('courseMaterialLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
-
+              localStorage.setItem('materialid'+course.title+i,res.data.data[i].materialId);
               localStorage.setItem('materialname' + course.title + i, res.data.data[i].materialName);
               localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].materialDescription);
             }
@@ -97,6 +98,7 @@ export default {
           if (res.data.code === "0") {
             localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+              localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].assignmentId);
               localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);
               localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
@@ -115,6 +117,7 @@ export default {
           if (res.data.code === "0") {
             localStorage.setItem('projectsLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+              localStorage.setItem('projectid'+course.title+i,res.data.data[i].projectId);
               localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
               localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
               localStorage.setItem('projectstartdate'+course.title+i,res.data.data[i].projectStartDate);
@@ -171,7 +174,7 @@ localStorage.setItem('currentcourse',route.title);
 
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: i + 1,
+          id: localStorage.getItem('coursesid' + i),
           title: localStorage.getItem('courses' + i),
         });
       }
