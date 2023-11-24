@@ -30,13 +30,10 @@ public class UserInfo implements Serializable {
 
     private String name;
 
-    private String account;
+    public String account;
 
     private String password;
 
     private UserType userType;
-
-
-
 
 }

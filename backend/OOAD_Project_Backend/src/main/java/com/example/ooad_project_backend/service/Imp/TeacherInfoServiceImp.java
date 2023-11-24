@@ -55,7 +55,8 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
         if (ObjectUtil.isEmpty(teacherInfo.getPassword())) {
             teacherInfo.setPassword("123456");
         }
-        teacherInfoMapper.insert(teacherInfo);
+
+        teacherInfoMapper.insertTeacherInfo(teacherInfo);
     }
 
 
@@ -69,7 +70,7 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
     }
 
 
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         teacherInfoMapper.deleteTeacherInfo(id);
     }
 
@@ -78,6 +79,7 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
         List<TeacherInfo> list = teacherInfoMapper.getAll();
         return PageInfo.of(list);
     }
+
 
     public PageInfo<TeacherInfo> findPageSearch(String search, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);

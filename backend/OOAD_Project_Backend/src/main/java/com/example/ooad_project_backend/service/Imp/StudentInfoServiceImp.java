@@ -45,15 +45,15 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
     }
 
     public void add(StudentInfo studentInfo) {
-        // 1. 检测数据库中有没有同名的教师，如果有，需要提示前台用户重新输入
-        TeacherInfo info = studentInfoMapper.findByName(studentInfo.getName());
+        // 1. 检测数据库中有没有同名的学生，如果有，需要提示前台用户重新输入
+        StudentInfo info = studentInfoMapper.findByName(studentInfo.getName());
         if (ObjectUtil.isNotEmpty(info)) {
             throw new CustomException(ResultCode.USER_EXIST_ERROR);
         }
         if (ObjectUtil.isEmpty(studentInfo.getPassword())) {
             studentInfo.setPassword("123456");
         }
-       studentInfoMapper.insert(studentInfo);
+       studentInfoMapper.insertStudent(studentInfo);
     }
 
 }
