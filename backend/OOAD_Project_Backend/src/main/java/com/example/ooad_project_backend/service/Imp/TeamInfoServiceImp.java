@@ -70,8 +70,8 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     public List<StudentInfo> findStudentInfoByTeamId(Integer teamId) {
         List<Integer> studentIds = teamMapper.findStudentIdsByTeamId(teamId);
         List<StudentInfo> studentInfos = new ArrayList<>();
-        for (int i = 0; i < studentIds.size(); i++) {
-            studentInfos.add(studentInfoMapper.findStudentInfoById(studentIds.get(i)));
+        for (Integer studentId : studentIds) {
+            studentInfos.add(studentInfoMapper.findStudentInfoById(studentId));
         }
         return studentInfos;
     }
