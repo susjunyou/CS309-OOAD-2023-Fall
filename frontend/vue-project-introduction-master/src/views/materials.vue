@@ -65,7 +65,7 @@ export default {
       this.$router.push(route);
     },
     async loadLocalStorageData() {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 模拟异步操作，这里不是必要的，只是演示用例
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
@@ -84,7 +84,7 @@ export default {
       }
       this.materials=[];
 
-      for (let i = 0; i < localStorage.getItem('courseMaterialsLength'+localStorage.getItem("currentcourse")); i++) {
+      for (let i = 0; i < localStorage.getItem('courseMaterialLength'+localStorage.getItem("currentcourse")); i++) {
         this.materials.push({
           id: i + 1,
           name: localStorage.getItem('materialname' + localStorage.getItem("currentcourse")+i),
@@ -92,7 +92,7 @@ export default {
         });
       }
       this.assignments=[];
-      for (let i = 0; i < localStorage.getItem('courseAssignmentsLength'+localStorage.getItem("currentcourse")); i++) {
+      for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
         this.assignments.push({
           id: i + 1,
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
@@ -102,7 +102,7 @@ export default {
         });
       }
       this.projects=[];
-      for (let i = 0; i < localStorage.getItem('courseProjectsLength'+localStorage.getItem("currentcourse")); i++) {
+      for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
         this.projects.push({
           id: i + 1,
           title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
@@ -113,10 +113,9 @@ export default {
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
       }
-      console.log(this.materials)
+
 
     },
-
   },
 }
 </script>

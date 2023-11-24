@@ -20,6 +20,21 @@
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
     </el-menu>
     <!--  <div>-->
+    <div>
+      <!-- ... 其他代码 ... -->
+
+      <!-- 显示项目信息 -->
+      <div v-for="project in projects" :key="project.id" class="project">
+        <h3>{{ project.title }}</h3>
+        <p>{{ project.description }}</p>
+        <p>开始日期: {{ project.startdate }}</p>
+        <p>截止日期: {{ project.ddl }}</p>
+        <p>状态: {{ project.status }}</p>
+        <p>团队人数上限: {{ project.maxpeopleinteam }}</p>
+      </div>
+
+      <!-- ... 其他代码 ... -->
+    </div>
     </div>
 </template>
 
@@ -48,15 +63,57 @@ export default {
       this.$router.push(route);
     },
     async loadLocalStorageData() {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 模拟异步操作，这里不是必要的，只是演示用例
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
           id: i + 1,
           title: localStorage.getItem('courses' + i),
         });
       }
-    },
+      this.posts=[];
+      for (let i = 0; i < localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse")); i++) {
+        this.posts.push({
+          id: i + 1,
+          content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('posttitle' + localStorage.getItem("currentcourse")+i),
+          author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
+        });
+      }
+      this.materials=[];
 
+      for (let i = 0; i < localStorage.getItem('courseMaterialLength'+localStorage.getItem("currentcourse")); i++) {
+        this.materials.push({
+          id: i + 1,
+          name: localStorage.getItem('materialname' + localStorage.getItem("currentcourse")+i),
+          description: localStorage.getItem('materialdescription' + localStorage.getItem("currentcourse")+i),
+        });
+      }
+      this.assignments=[];
+      for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
+        this.assignments.push({
+          id: i + 1,
+          status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+          description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+          ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+        });
+      }
+      this.projects=[];
+      for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
+        this.projects.push({
+          id: i + 1,
+          title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+          description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+          startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+          ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+          status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+          maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+        });
+      }
+
+
+    },
   },
 }
 </script>
