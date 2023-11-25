@@ -36,9 +36,13 @@
 
       <!-- 右侧内容区 -->
       <el-main>
-        <!-- 右侧内容区的其它内容 -->
+        <div class="rili2">
+        <v-calendar :attributes="attrs"></v-calendar>
+      </div>
       </el-main>
+
     </el-container>
+
   </div>
 </template>
 <script>
@@ -47,7 +51,10 @@ export default {
   data() {
     return {
       courses: [],
-
+      ddls: [
+        // ...其他DDL
+      ],
+      attrs: [],
     };
   },
   methods: {
@@ -80,7 +87,7 @@ export default {
         }).then((res) => {
           if (res.data.code === "0") {
             localStorage.setItem('courseMaterialLength'+course.title,res.data.data.length)
-            for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+            for (let i = 0; i < localStorage.getItem('courseMaterialLength'+course.title); i++) {
               localStorage.setItem('materialid'+course.title+i,res.data.data[i].materialId);
               localStorage.setItem('materialname' + course.title + i, res.data.data[i].materialName);
               localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].materialDescription);
@@ -97,12 +104,16 @@ export default {
         }).then((res) => {
           if (res.data.code === "0") {
             localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
-            for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+            for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
               localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].assignmentId);
               localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);
               localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
               localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
+              this.ddls.push({
+                  date : res.data.data[i].assignmentDeadline,
+                title : course.title+"   "+res.data.data[i].assignmentTitle,
+              })
             }
           }
         }).catch(error => {
@@ -116,7 +127,7 @@ export default {
         }).then((res) => {
           if (res.data.code === "0") {
             localStorage.setItem('projectsLength'+course.title,res.data.data.length)
-            for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+            for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
               localStorage.setItem('projectid'+course.title+i,res.data.data[i].projectId);
               localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
               localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
@@ -124,6 +135,10 @@ export default {
               localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
               localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
+              this.ddls.push({
+                date : res.data.data[i].projectDeadline,
+                title : course.title+"   "+res.data.data[i].projectTitle,
+              })
             }
           }
         }).catch(error => {
@@ -184,6 +199,26 @@ localStorage.setItem('currentcourse',route.title);
   async created() {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadAllCoursesinfo();
+    this.attrs = this.ddls.map(ddl => ({
+      key: ddl.date,
+      dates: new Date(ddl.date),
+      highlight: {
+        contentClass: 'ddl-highlight', // 应用于内容的CSS类
+      },
+      popover: {
+        label: ddl.title, // 弹出显示的信息
+      },
+    }));
+    this.attrs.push({
+      key: 'today',
+      highlight: {
+        contentClass: 'today-highlight', // 应用于当前日期的CSS类
+      },
+      dates: new Date(), // 当前日期
+      popover: {
+        label: 'Today', // 在这里添加你想要显示的文本
+      },
+    });
   },
 };
 </script>
@@ -212,6 +247,15 @@ el-button{
   color: cornflowerblue;
   background-color: cornflowerblue;
 }
-
+.ddl-highlight {
+  border: 2px solid red;
+  border-radius: 50%;
+}
+.today-highlight {
+  border: 2px solid blue;
+  border-radius: 50%;
+}
+.rili2{
+}
 </style>
 

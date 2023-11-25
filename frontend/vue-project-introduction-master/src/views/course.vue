@@ -23,16 +23,17 @@
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
   </el-menu>
 <!--  <div>-->
-
-    <div>
+<div class="containerOfCourse">
+    <div class="post">
     <div v-for="post in posts" :key="post.id" class="post">
       <h3>{{ post.title }}</h3>
       <p>{{ post.content }}</p>
       <small>作者: {{ post.author }}</small>
     </div>
   </div>
-    <div>
+    <div class="rili">
       <v-calendar :attributes="attrs"></v-calendar>
+    </div>
     </div>
 <!--    <p>welcome to {{myValue}}</p>-->
 <!--  </div>-->
@@ -165,6 +166,12 @@ console.log("course name="+this.myValue)
 
 </script>
 <style>
+.containerOfCourse {
+  display: flex;
+  justify-content: space-between; /* 两个子元素间隔开 */
+  width: 70%; /* 容器宽度 */
+
+}
 .top_menu{
   background-color: black;
   border-color: yellow;
@@ -189,5 +196,19 @@ console.log("course name="+this.myValue)
 }
 
 
+/* 为帖子添加样式 */
+.post {
+  padding-top: 100px;
+  border: 1px solid #ccc; /* 边框 */
+  margin: 10px; /* 间距 */
+  padding: 10px; /* 内边距 */
+  flex-basis: 45%; /* 占据容器的比例 */
+}
+
+/* 日历的样式 */
+.rili {
+  padding-top: 100px;
+  flex-basis: 45%; /* 占据容器的比例 */
+}
 </style>
 
