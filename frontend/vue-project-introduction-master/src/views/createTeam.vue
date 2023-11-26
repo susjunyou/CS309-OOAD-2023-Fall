@@ -1,9 +1,11 @@
 <template>
   <div>
+
     <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
       <el-menu-item v-for="course in courses" :key="course" @click="goTo(course.title)" >
         {{ course.title }}
       </el-menu-item>
+
     </el-menu>
 
 
@@ -23,7 +25,31 @@
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
     <!--  <div>-->
-
+    <div class="center-container">
+    <div class="form-container">
+      <form @click="createTeam">
+        <div class="form-group">
+          <input type="text" v-model="team.title" placeholder="团队标题" class="form-control" />
+        </div>
+        <div class="form-group">
+          <input type="text" v-model="team.description" placeholder="团队描述" class="form-control" />
+        </div>
+        <div class="form-group">
+          <select v-model="team.teamSize" class="form-control">
+            <option disabled value="0">请选择团队大小</option>
+            <option v-for="number in maxpeople" :key="number" :value="number">{{ number }}</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">创建团队</button>
+      </form>
+    </div>
+    </div>
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>团队创建成功！</p>
+        <button @click="isPopupVisible = false">关闭</button>
+      </div>
+    </div>
   </div>
 </template>
 <script >
@@ -37,19 +63,51 @@ export default {
       assignments: [],
       projects: [],
       materials: [],
-      myValue: '',    };
+      myValue: '',
+      team: {
+        title: '',
+        description: '',
+        teamSize: 0
+      },
+      maxpeople:0,
+      projectid:0,
+      sid:0,
+      isPopupVisible: false, // 控制弹窗显示的布尔值
+    };
   },
 
 
   async created() {
-    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    this.maxpeople = Number(localStorage.getItem("currentprojectmaxpeopleinteam"));
+    this.projectid=localStorage.getItem("currentprojectid");
+    this.sid=localStorage.getItem("id");
     this.myValue=localStorage.getItem("currentcourse")
+    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
   },
   methods: {
+  async  createTeam() {
+      await this.$axios.get('/team/create', {
+        params: {
+          teamName: String(this.team.title),
+          teamDescription: String(this.team.description),
+          teamSize: Number(this.team.teamSize),
+          projectId:Number(this.projectid),
+          leader:Number(this.sid),
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.isPopupVisible = true;
+console.log(res.data.data);
+        }
+      }).catch(error => {
+        console.error('Error loading course posts:', error);
+      });
+    },
     logoutClick() {
       this.$router.push('/Login');
       localStorage.clear();
     },
+
     goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourse",route);
@@ -126,5 +184,61 @@ export default {
 
 
 <style scoped>
+.center-container {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  height: 100vh; /* 使容器占满整个视口高度 */
+}
 
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 200px;
+  background-color: #f5f5f5; /* 浅灰色背景 */
+  box-shadow: 0 4px 8px rgba(0.2, 0.5, 0.5, 0.3); /* 可选：为表单添加阴影效果 */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit-btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: white;
+  background-color: cornflowerblue;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.submit-btn:hover {
+  background-color: royalblue;
+}
 </style>
