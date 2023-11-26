@@ -36,9 +36,24 @@
 
       <!-- 右侧内容区 -->
       <el-main>
-        <div class="rili2">
-        <v-calendar :attributes="attrs"></v-calendar>
-      </div>
+        <!-- 使用flex布局 -->
+        <div class="content-wrapper">
+          <!-- 帖子列表 -->
+          <div class="posts-wrapper">
+            <div v-for="post in posts" :key="post.id" class="post">
+
+                <h2>课程：{{ post.course }}</h2>
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.content }}</p>
+              <small>作者: {{ post.author }}</small>
+            </div>
+          </div>
+
+          <!-- 日历 -->
+          <div class="rili2">
+            <v-calendar :attributes="attrs"></v-calendar>
+          </div>
+        </div>
       </el-main>
 
     </el-container>
@@ -55,6 +70,7 @@ export default {
         // ...其他DDL
       ],
       attrs: [],
+      posts:[],
     };
   },
   methods: {
@@ -74,6 +90,13 @@ export default {
               localStorage.setItem('post'+course.title+i,res.data.data[i].postContent);
               localStorage.setItem('posttitle'+course.title+i,res.data.data[i].postTitle);
               localStorage.setItem('postauthor'+course.title+i,res.data.data[i].postAuthor);
+              this.posts.push({
+                course:course.title,
+                id:res.data.data[i].postId,
+                title:res.data.data[i].postTitle,
+                content:res.data.data[i].postContent,
+                author:res.data.data[i].postAuthor,
+              })
             }
           }
         }).catch(error => {
@@ -250,7 +273,25 @@ el-button{
   border: 2px solid blue;
   border-radius: 50%;
 }
-.rili2{
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
+
+.posts-wrapper {
+  flex: 1; /* 使帖子列表占据多余空间 */
+  margin-right: 50px; /* 和日历之间的距离 */
+}
+
+.post {
+  border: 1px solid #ccc; /* 帖子之间的边框 */
+  margin-bottom: 20px; /* 帖子之间的间距 */
+  padding: 10px;
+}
+
+.rili2 {
+  flex-basis: 300px; /* 日历的宽度 */
+}
+
 </style>
 
