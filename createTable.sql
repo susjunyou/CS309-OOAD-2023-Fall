@@ -7,9 +7,9 @@ drop table if exists project cascade;
 drop table if exists assignment cascade;
 drop table if exists team_project cascade;
 drop table if exists team cascade;
-drop table if exists assignment_grade_book cascade;
-drop table if exists project_grade_book cascade;
-drop table if exists attendance_grade_book cascade;
+drop table if exists assignment_submission cascade;
+drop table if exists project_submission cascade;
+drop table if exists attendance_submission cascade;
 drop table if exists attendance cascade;
 drop table if exists reply cascade;
 drop table if exists material cascade;
@@ -115,26 +115,26 @@ create table course_sa
 
 create table project
 (
-    project_id          serial primary key,
+    id          serial primary key,
     project_title       varchar(255)     not null,
     project_description varchar(255)     not null,
-    teacher_id          integer          not null,
+    releaser          integer          not null,
     course_id           integer          not null,
     project_status      varchar(255)     not null,
     project_start_date  date,
     project_deadline    date             not null,
     max_people_in_team  integer          not null,
-    max_grade           integer          not null,
+    max_score           integer          not null,
     proportion          double precision not null
 );
 
---! create table project_grade_book
+--! create table project_submission
 
-create table project_grade_book
+create table project_submission
 (
-    project_grade_book_id serial primary key,
+    project_submission_id serial primary key,
     project_id            integer      not null,
-    grade_book_id         integer      not null,
+    student_id            integer      not null,
     grade                 integer      not null,
     grade_description     varchar(255) not null
 );
@@ -181,35 +181,36 @@ create table team_student
 
 --! create table grade_book
 
-create table grade_book
-(
-    grade_book_id serial primary key,
-    student_id    integer not null,
-    course_id     integer not null
-);
+-- create table grade_book
+-- (
+--     grade_book_id serial primary key,
+--     student_id    integer not null,
+--     course_id     integer not null
+-- );
 
 --！ create table assignment
 
 create table assignment
 (
-    assignment_id          serial primary key,
+    id          serial primary key,
     assignment_title       varchar(255)     not null,
     assignment_description varchar(255),
     assignment_deadline    date             not null,
     assignment_status      varchar(255)     not null,
-    max_grade              integer          not null,
+    max_score              integer          not null,
     proportion             double precision not null,
-    teacher_id             integer          not null,
+    releaser             integer          not null,
     course_id              integer          not null
 );
 
---! create table assignment_grade_book
+--! create table assignment_submission
 
-create table assignment_grade_book
+create table assignment_submission
 (
-    assignment_grade_book_id serial primary key,
+    assignment_submission_id serial primary key,
     assignment_id            integer not null,
-    grade_book_id            integer not null,
+    student_id               integer not null,
+    submission_date          date,
     grade                    integer not null,
     grade_description        varchar(255)
 );
@@ -229,19 +230,22 @@ create table material
 
 create table attendance
 (
-    attendance_id   serial primary key,
-    attendance_date date             not null,
-    max_grade       integer          not null,
-    proportion      double precision not null,
-    course_id       integer          not null
+    id         serial primary key,
+    attendance_date       date             not null,
+    attendance_start_time time             not null,
+    attendance_deadline   time             not null,
+    attendance_status     varchar(255)     not null,
+    max_score             integer          not null,
+    proportion            double precision not null,
+    course_id             integer          not null
 );
 
---! create table attendance_grade_book
+--! create table attendance_submission
 
-create table attendance_grade_book
+create table attendance_submission
 (
-    attendance_grade_book_id serial primary key,
-    grade_book_id            integer not null,
+    attendance_submission_id serial primary key,
+    student_id               integer not null,
     attendance_id            integer not null,
     is_attended              bool    not null
 );
@@ -273,115 +277,116 @@ create table reply
 
 --! add foreign key to reply
 
-alter table reply
-    add foreign key (post_id) references post (post_id);
+-- alter table reply
+--     add foreign key (post_id) references post (post_id);
 
 
 --! add foreign key to post
 
-alter table post
-    add foreign key (course_id) references course (course_id);
+-- alter table post
+--     add foreign key (course_id) references course (course_id);
 
 
 --! add foreign key to material
 
-alter table material
-    add foreign key (course_id) references course (course_id);
+-- alter table material
+--     add foreign key (course_id) references course (course_id);
 
 
 --! add foreign key to assignment_grade_book
-alter table assignment_grade_book
-    add foreign key (assignment_id) references assignment (assignment_id);
-alter table assignment_grade_book
-    add foreign key (grade_book_id) references grade_book (grade_book_id);
+
+-- alter table assignment_submission
+--     add foreign key (assignment_id) references assignment (assignment_id);
+-- alter table assignment_submission
+--     add foreign key (student_id) references student (id);
 
 
 --! add foreign key to assignment
 
-alter table assignment
-    add foreign key (teacher_id) references teacher (id);
-alter table assignment
-    add foreign key (course_id) references course (course_id);
+-- alter table assignment
+--     add foreign key (teacher_id) references teacher (id);
+-- alter table assignment
+--     add foreign key (course_id) references course (course_id);
 
 
 --! add foreign key to project_grade_book
 
-alter table project_grade_book
-    add foreign key (project_id) references project (project_id);
-alter table project_grade_book
-    add foreign key (grade_book_id) references grade_book (grade_book_id);
+-- alter table project_submission
+--     add foreign key (project_id) references project (project_id);
+-- alter table project_submission
+--     add foreign key (student_id) references student (id);
 
 
 --! add foreign key to project
 
-alter table project
-    add foreign key (teacher_id) references teacher (id);
-alter table project
-    add foreign key (course_id) references course (course_id);
+-- alter table project
+--     add foreign key (teacher_id) references teacher (id);
+-- alter table project
+--     add foreign key (course_id) references course (course_id);
 
 
 --! add foreign key to team_student
 
-alter table team_student
-    add foreign key (student_id) references student (id);
-alter table team_student
-    add foreign key (team_id) references team (team_id);
+-- alter table team_student
+--     add foreign key (student_id) references student (id);
+-- alter table team_student
+--     add foreign key (team_id) references team (team_id);
 
 
 --! add foreign key to team
 
-alter table team
-    add foreign key (project_id) references project (project_id);
+-- alter table team
+--     add foreign key (project_id) references project (project_id);
 
 
 --! add foreign key to attendance_grade_book
 
-alter table attendance_grade_book
-    add foreign key (attendance_id) references attendance (attendance_id);
-alter table attendance_grade_book
-    add foreign key (grade_book_id) references grade_book (grade_book_id);
+-- alter table attendance_submission
+--     add foreign key (attendance_id) references attendance (attendance_id);
+-- alter table attendance_submission
+--     add foreign key (student_id) references student (id);
 
 
 --! add foreign key to material
 
-alter table material
-    add foreign key (course_id) references course (course_id);
+-- alter table material
+--     add foreign key (course_id) references course (course_id);
 
 
 --! add foreign key to course_sa
 
-alter table course_sa
-    add foreign key (course_id) references course (course_id);
-alter table course_sa
-    add foreign key (student_id) references student (id);
+-- alter table course_sa
+--     add foreign key (course_id) references course (course_id);
+-- alter table course_sa
+--     add foreign key (student_id) references student (id);
 
 --! add foreign key to course_teacher
 
-alter table course_teacher
-    add foreign key (course_id) references course (course_id);
-alter table course_teacher
-    add foreign key (teacher_id) references teacher (id);
+-- alter table course_teacher
+--     add foreign key (course_id) references course (course_id);
+-- alter table course_teacher
+--     add foreign key (teacher_id) references teacher (id);
 
 --! add foreign key to course_student
 
-alter table course_student
-    add foreign key (course_id) references course (course_id);
-alter table course_student
-    add foreign key (student_id) references student (id);
+-- alter table course_student
+--     add foreign key (course_id) references course (course_id);
+-- alter table course_student
+--     add foreign key (student_id) references student (id);
 
 
 --! add foreign key to grade_book
 
-alter table grade_book
-    add foreign key (student_id) references student (id);
-alter table grade_book
-    add foreign key (course_id) references course (course_id);
+-- alter table grade_book
+--     add foreign key (student_id) references student (id);
+-- alter table grade_book
+--     add foreign key (course_id) references course (course_id);
 
 --! add foreign key to team
 
-alter table team
-    add foreign key (project_id) references project (project_id);
-
-alter table team
-    add foreign key (leader) references student (id);
+-- alter table team
+--     add foreign key (project_id) references project (project_id);
+--
+-- alter table team
+--     add foreign key (leader) references student (id);
 
