@@ -22,6 +22,14 @@
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
+    <div class="attendance-list">
+      <h2>出勤记录</h2>
+      <ul>
+        <li v-for="attendance in attendances" :key="attendance.date">
+          {{ attendance.date }}
+        </li>
+      </ul>
+    </div>
     <!--  <div>-->
     </div>
 </template>
@@ -32,6 +40,7 @@ export default {
   data() {
     return {
       courses: [],
+      attendances:[],
     };
   },
 
@@ -106,6 +115,12 @@ export default {
           title: this.projects[i].title,
         });
       }
+      for (let i = 0; i < localStorage.getItem('attendancesLength'+localStorage.getItem("currentcourse")); i++) {
+        this.attendances.push({
+          date: localStorage.getItem('attendancedate' + localStorage.getItem("currentcourse")+i),
+        });
+      }
+
       console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
@@ -117,5 +132,19 @@ export default {
 
 
 <style scoped>
+.attendance-list h2 {
+  margin-bottom: 0.5em;
+}
 
+.attendance-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.attendance-list li {
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+  margin-bottom: 0.5em;
+  padding: 0.5em;
+}
 </style>

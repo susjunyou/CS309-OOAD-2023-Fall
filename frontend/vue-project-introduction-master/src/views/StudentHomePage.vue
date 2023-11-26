@@ -145,25 +145,20 @@ export default {
           console.error('Error loading course projects:', error);
         });
         //加载attendances
-        // await this.$axios.get('/course/attendances', {
-        //   params: {
-        //     courseId: course.id
-        //   }
-        // }).then((res) => {
-        //   if (res.data.code === "0") {
-        //     localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
-        //     for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
-        //       localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendancedate);
-        //       localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
-        //       localStorage.setItem('projectstartdate'+course.title+i,res.data.data[i].projectStartDate);
-        //       localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
-        //       localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
-        //       localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
-        //     }
-        //   }
-        // }).catch(error => {
-        //   console.error('Error loading course attendances:', error);
-        // });
+        await this.$axios.get('/course/attendances', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
+              localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course attendances:', error);
+        });
 
 
 
