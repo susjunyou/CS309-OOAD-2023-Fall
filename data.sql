@@ -162,14 +162,14 @@ Values ('project3', 'project_description', 11, 2, 'Started', '2021-01-01', '2021
 
 --! project submission data
 
-insert into project_submission(project_id, student_id, grade, grade_description,submission_date)
-values (1, 1, 100, 'good job', '2021-01-01');
+insert into project_submission(project_id, student_id, grade, grade_description,submission_date,content)
+values (1, 1, 100, 'good job', '2021-01-01','aaaa');
 
-insert into project_submission(project_id, student_id, grade, grade_description,submission_date)
-values (2, 1, 100, 'good job', '2021-01-01');
+insert into project_submission(project_id, student_id, grade, grade_description,submission_date,content)
+values (2, 1, 100, 'good job', '2021-01-01','aaaa');
 
-insert into project_submission(project_id, student_id, grade, grade_description,submission_date)
-values (3, 1, 100, 'good job','2021-01-02');
+insert into project_submission(project_id, student_id, grade, grade_description,submission_date,content)
+values (3, 1, 100, 'good job','2021-01-02','basabasd');
 
 
 --! Assignment data
@@ -188,14 +188,14 @@ values ('assignment3', 'assignment_description', '2021-01-01', 'Started', 100, 0
 
 --! assignment submission data
 
-insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description)
-VALUES (1, 1, '2021-01-01', 90, 'grade_description');
+insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description,content)
+VALUES (1, 1, '2021-01-01', 90, 'grade_description','ass');
 
-insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description)
-VALUES (2, 1, '2021-01-01', 80, 'grade_description2');
+insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description,content)
+VALUES (2, 1, '2021-01-01', 80, 'grade_description2','bss');
 
-insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description)
-VALUES (3, 1, '2021-01-01', 100, 'grade_description3');
+insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description,content)
+VALUES (3, 1, '2021-01-01', 100, 'grade_description3','sss');
 
 
 --! Attendance data
