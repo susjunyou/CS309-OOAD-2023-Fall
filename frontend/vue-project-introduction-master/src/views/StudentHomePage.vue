@@ -151,7 +151,7 @@ export default {
           if (res.data.code === "0") {
             localStorage.setItem('projectsLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
-              localStorage.setItem('projectid'+course.title+i,res.data.data[i].projectId);
+              localStorage.setItem('projectid'+course.title+i,res.data.data[i].id);
               localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
               localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
               localStorage.setItem('projectstartdate'+course.title+i,res.data.data[i].projectStartDate);

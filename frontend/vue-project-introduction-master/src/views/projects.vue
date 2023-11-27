@@ -34,7 +34,7 @@
         <p>截止日期: {{ project.ddl }}</p>
         <p>状态: {{ project.status }}</p>
         <p>团队人数上限: {{ project.maxpeopleinteam }}</p>
-        <p @click="go('createTeam')" class="clickable-text">创建team</p>
+        <p @click="go1(project)" class="clickable-text">创建team</p>
         <p @click="join(project)" class="clickable-text">加入 team</p>
 
       </div>
@@ -54,6 +54,7 @@ export default {
       assignments: [],
       projects: [],
       materials: [],
+      ddls:[],
       myValue: '',
     };
   },
@@ -69,15 +70,21 @@ export default {
     },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-      localStorage.setItem("coursename",route)
+      localStorage.setItem("currentcourse",route)
       this.$router.push( "course" );
     },
     join(route) {
       localStorage.setItem("currentprojectid",route.id)
       this.$router.push('joinTeam');
     },
+    go1(route) {
+      console.log(route.id)
+      localStorage.setItem("currentprojectid",route.id);
+      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
+      this.$router.push('createTeam');
+    },
     go(route) {
-
+      // localStorage.setItem("currentprojectid",route)
       this.$router.push(route);
     },
     async loadLocalStorageData() {
@@ -119,7 +126,7 @@ export default {
       }
       this.projects=[];
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
-        this.projects.push({
+            this.projects.push({
           id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
           title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
@@ -128,14 +135,12 @@ export default {
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
+        this.ddls=[];
         this.ddls.push({
           date: this.projects[i].ddl,
           title: this.projects[i].title,
         });
       }
-      console.log("course name="+this.myValue)
-      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
     },  },
 }
