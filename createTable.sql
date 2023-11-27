@@ -136,6 +136,7 @@ create table project_submission
     project_submission_id serial primary key,
     project_id            integer not null,
     student_id            integer not null,
+    submission_date       date    not null,
     grade                 integer,
     grade_description     varchar(255)
 );
@@ -391,4 +392,5 @@ create table reply
 --
 -- alter table team
 --     add foreign key (leader) references student (id);
+
 
