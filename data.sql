@@ -148,30 +148,30 @@ values (3, 22);
 --! project data
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion)
-Values ('project1', 'project_description', 11, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion,releaser_type)
+Values ('project1', 'project_description', 11, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5,'TEACHER');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion)
-Values ('project2', 'project_description', 22, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion,releaser_type)
+Values ('project2', 'project_description', 22, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5,'TEACHER');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion)
-Values ('project3', 'project_description', 11, 2, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion,releaser_type)
+Values ('project3', 'project_description', 11, 2, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5,'TEACHER');
 
 --! Assignment data
 
 insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
-                       proportion, releaser, course_id)
-values ('assignment1', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1);
+                       proportion, releaser, course_id,releaser_type)
+values ('assignment1', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1,'TEACHER');
 
 insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
-                       proportion, releaser, course_id)
-values ('assignment2', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1);
+                       proportion, releaser, course_id,releaser_type)
+values ('assignment2', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1,'TEACHER');
 
 insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
-                       proportion, releaser, course_id)
-values ('assignment3', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 22, 2);
+                       proportion, releaser, course_id,releaser_type)
+values ('assignment3', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 22, 2,'TEACHER');
 
 --! Attendance data
 
