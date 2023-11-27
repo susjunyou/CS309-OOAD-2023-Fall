@@ -20,7 +20,7 @@ public class GradeInfo implements Serializable {
 
     private Integer id;
 
-    private UserInfo releaser;
+    private Integer releaser;
 
     private UserType releaserType;
 
@@ -28,11 +28,11 @@ public class GradeInfo implements Serializable {
 
     private Integer grade;
 
-    private CourseInfo course;
+    private Integer courseId;
 
     private Double proportion;
 
-    private StudentInfo student;
+    private Integer studentId;
 
     private String gradeDescription;
 
