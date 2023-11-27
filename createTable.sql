@@ -105,7 +105,7 @@ create table course_student
 
 create table course_sa
 (
-    course_teacher_id serial primary key,
+    course_sa_id serial primary key,
     student_id        integer not null,
     course_id         integer not null
 );
