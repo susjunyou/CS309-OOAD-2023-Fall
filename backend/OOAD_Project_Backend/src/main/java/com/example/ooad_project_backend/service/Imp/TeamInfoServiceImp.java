@@ -32,8 +32,15 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         if (maxTeamSize < teamInfo.getTeamSize()) {
             return false;
         }
+        // 检查创建队伍的人是否位于其他的队伍
+        Integer teamId = teamMapper.findTeamIdByProjectIdAndStudentId(teamInfo.getProjectId(), teamInfo.getLeader());
+        if (teamId != null) {
+            return false;
+        }
         try {
-            teamMapper.createTeam(teamInfo);
+            if (teamInfo.getLeader() == null || teamInfo.getTeamSize() == null || teamInfo.getProjectId() == null || teamInfo.getTeamName() == null) {
+                teamMapper.createTeam(teamInfo);
+            }
         } catch (Exception e) {
             return false;
         }
