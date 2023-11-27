@@ -35,7 +35,7 @@
         <p>状态: {{ project.status }}</p>
         <p>团队人数上限: {{ project.maxpeopleinteam }}</p>
         <p @click="go1(project)" class="clickable-text">创建team</p>
-        <p @click="join(project)" class="clickable-text">加入 team</p>
+        <p @click="join(project)" class="clickable-text">查看组队信息</p>
 
       </div>
 
