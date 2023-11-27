@@ -54,6 +54,7 @@ export default {
       assignments: [],
       projects: [],
       materials: [],
+      ddls:[],
       myValue: '',
     };
   },
@@ -77,6 +78,7 @@ export default {
       this.$router.push('joinTeam');
     },
     go1(route) {
+      console.log(route.id)
       localStorage.setItem("currentprojectid",route.id);
       localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
       this.$router.push('createTeam');
@@ -124,7 +126,7 @@ export default {
       }
       this.projects=[];
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
-        this.projects.push({
+            this.projects.push({
           id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
           title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
@@ -133,14 +135,12 @@ export default {
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
+        this.ddls=[];
         this.ddls.push({
           date: this.projects[i].ddl,
           title: this.projects[i].title,
         });
       }
-      console.log("course name="+this.myValue)
-      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
     },  },
 }

@@ -35,6 +35,7 @@
       <v-calendar :attributes="attrs"></v-calendar>
     </div>
     </div>
+
 <!--    <p>welcome to {{myValue}}</p>-->
 <!--  </div>-->
   </div>
@@ -104,7 +105,7 @@ export default {
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
-this.courses=[];
+      this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
           id: i + 1,
@@ -155,6 +156,8 @@ this.courses=[];
           title: this.projects[i].title,
         });
       }
+      console.log(this.projects[0])
+      console.log(this.projects[1])
 console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))

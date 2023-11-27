@@ -27,7 +27,7 @@
     <!--  <div>-->
     <div class="center-container">
     <div class="form-container">
-      <form @click="createTeam">
+      <form >
         <div class="form-group">
           <input type="text" v-model="team.title" placeholder="团队标题" class="form-control" />
         </div>
@@ -40,14 +40,14 @@
             <option v-for="number in maxpeople" :key="number" :value="number">{{ number }}</option>
           </select>
         </div>
-        <button type="submit" class="submit-btn">创建团队</button>
+        <button type="submit" class="submit-btn" @click.prevent="createTeam">创建团队</button>
       </form>
     </div>
     </div>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
         <p>团队创建成功！</p>
-        <button @click="isPopupVisible = false">关闭</button>
+        <button @click="returnToprotects">关闭</button>
       </div>
     </div>
   </div>
@@ -85,8 +85,15 @@ export default {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
   },
   methods: {
+    returnToprotects(){
+       this.isPopupVisible = false;
+      this.$router.push('/projects');
+    },
   async  createTeam() {
-      await this.$axios.get('/team/create', {
+    console.log(this.team);
+    console.log("projectid="+this.projectid);
+    console.log(this.sid);
+    await this.$axios.get('/team/create', {
         params: {
           teamName: String(this.team.title),
           teamDescription: String(this.team.description),
@@ -95,9 +102,9 @@ export default {
           leader:Number(this.sid),
         }
       }).then((res) => {
+        console.log("code====================================="+res.data.code)
         if (res.data.code === "0") {
           this.isPopupVisible = true;
-console.log(res.data.data);
         }
       }).catch(error => {
         console.error('Error loading course posts:', error);
@@ -167,10 +174,10 @@ console.log(res.data.data);
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
-        this.ddls.push({
-          date: this.projects[i].ddl,
-          title: this.projects[i].title,
-        });
+        // this.ddls.push({
+        //   date: this.projects[i].ddl,
+        //   title: this.projects[i].title,
+        // });
       }
       console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
