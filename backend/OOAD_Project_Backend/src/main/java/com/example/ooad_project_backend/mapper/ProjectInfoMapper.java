@@ -13,6 +13,6 @@ public interface ProjectInfoMapper {
     @Select("select * from project where course_id = #{courseId}")
     List<ProjectInfo> findProjectInfoByCourseId(Integer courseId);
 
-    @Select("select max_people_in_team from project where project_id = #{projectId}")
+    @Select("select max_people_in_team from project where id = #{projectId}")
     Integer findMaxPeopleInTeamById(Integer projectId);
 }
