@@ -105,7 +105,7 @@ create table course_student
 
 create table course_sa
 (
-    course_teacher_id serial primary key,
+    course_sa_id serial primary key,
     student_id        integer not null,
     course_id         integer not null
 );
@@ -115,10 +115,11 @@ create table course_sa
 
 create table project
 (
-    id          serial primary key,
+    id                  serial primary key,
     project_title       varchar(255)     not null,
     project_description varchar(255)     not null,
-    releaser          integer          not null,
+    releaser            integer          not null,
+    releaser_type       varchar(255)     not null,
     course_id           integer          not null,
     project_status      varchar(255)     not null,
     project_start_date  date,
@@ -133,10 +134,10 @@ create table project
 create table project_submission
 (
     project_submission_id serial primary key,
-    project_id            integer      not null,
-    student_id            integer      not null,
-    grade                 integer      not null,
-    grade_description     varchar(255) not null
+    project_id            integer not null,
+    student_id            integer not null,
+    grade                 integer,
+    grade_description     varchar(255)
 );
 
 -- --! create table course_project
@@ -192,14 +193,15 @@ create table team_student
 
 create table assignment
 (
-    id          serial primary key,
+    id                     serial primary key,
     assignment_title       varchar(255)     not null,
     assignment_description varchar(255),
     assignment_deadline    date             not null,
     assignment_status      varchar(255)     not null,
     max_score              integer          not null,
     proportion             double precision not null,
-    releaser             integer          not null,
+    releaser               integer          not null,
+    releaser_type          varchar(255)     not null,
     course_id              integer          not null
 );
 
@@ -211,7 +213,7 @@ create table assignment_submission
     assignment_id            integer not null,
     student_id               integer not null,
     submission_date          date,
-    grade                    integer not null,
+    grade                    integer,
     grade_description        varchar(255)
 );
 
@@ -230,7 +232,7 @@ create table material
 
 create table attendance
 (
-    id         serial primary key,
+    id                    serial primary key,
     attendance_date       date             not null,
     attendance_start_time time             not null,
     attendance_deadline   time             not null,
@@ -247,7 +249,7 @@ create table attendance_submission
     attendance_submission_id serial primary key,
     student_id               integer not null,
     attendance_id            integer not null,
-    is_attended              bool    not null
+    is_attended              bool
 );
 
 --! create table post
