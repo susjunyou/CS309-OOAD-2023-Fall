@@ -37,13 +37,11 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         if (teamId != null) {
             return false;
         }
-        try {
-            if (teamInfo.getLeader() == null || teamInfo.getTeamSize() == null || teamInfo.getProjectId() == null || teamInfo.getTeamName() == null) {
-                teamMapper.createTeam(teamInfo);
-            }
-        } catch (Exception e) {
+        System.out.println(teamInfo.toString());
+        if (teamInfo.getLeader() == null || teamInfo.getTeamSize() == null || teamInfo.getProjectId() == null || teamInfo.getTeamName() == null) {
             return false;
         }
+        teamMapper.createTeam(teamInfo);
         TeamInfo team = teamMapper.findTeamInfoByProjectIdAndLeader(teamInfo.getProjectId(), teamInfo.getLeader());
         teamMapper.joinTeam(team.getTeamId(), teamInfo.getLeader(), teamInfo.getProjectId());
         return true;
