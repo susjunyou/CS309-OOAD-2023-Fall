@@ -11,11 +11,16 @@ public interface StudentInfoService extends IService<StudentInfo> {
     StudentInfo findStudentInfoByAccount(String account);
 
     List<CourseInfo> findCourseInfoByStudentId(Integer studentId);
-    void add(StudentInfo studentInfo);
 
+    void add(StudentInfo studentInfo);
 
     boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate);
 
     boolean submitProject(Integer studentId, Integer projectId, String content, Date submitDate);
 
+    StudentInfo findStudentInfoById(Integer id);
+
+    boolean updatePassword(Integer id, String password);
+
+    boolean updateStudentDetails(Integer id, String email,String phoneNumber, String selfIntroduction);
 }

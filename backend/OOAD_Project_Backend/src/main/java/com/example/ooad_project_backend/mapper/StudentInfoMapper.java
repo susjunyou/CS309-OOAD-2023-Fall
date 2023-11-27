@@ -2,10 +2,7 @@ package com.example.ooad_project_backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.ooad_project_backend.entity.StudentInfo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.Date;
 
@@ -30,5 +27,12 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
 
     @Insert("insert into project_submission (student_id, project_id, content, submission_date) values (#{studentId},#{projectId},#{content},#{submitDate})")
     void submitProject(Integer studentId, Integer projectId, String content, Date submitDate);
+
+    @Update("update student set password = #{password} where id = #{id}")
+    void updatePassword(Integer id, String password);
+
+
+    @Update("update student set email = #{email}, phone_number = #{phoneNumber}, self_introduction = #{selfIntroduction} where id = #{id}")
+    void updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction);
 
 }

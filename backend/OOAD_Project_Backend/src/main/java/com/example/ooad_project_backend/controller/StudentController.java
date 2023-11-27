@@ -3,6 +3,8 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.CourseInfo;
+import com.example.ooad_project_backend.entity.StudentInfo;
+import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +34,7 @@ public class StudentController {
     }
 
     @GetMapping("/submitAssignment")
-        public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+    public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
         return studentInfoService.submitAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
     }
 
@@ -40,4 +42,27 @@ public class StudentController {
     public Result submitProject(Integer studentId, Integer projectId, String content, Date submitDate) {
         return studentInfoService.submitProject(studentId, projectId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
     }
+
+    @GetMapping("/getStudent")
+    public Result getStudentInfoById(Integer id) {
+        StudentInfo studentInfo = studentInfoService.findStudentInfoById(id);
+        if (studentInfo != null) {
+            studentInfo.setUserType(UserType.STUDENT);
+            return Result.success(studentInfo);
+        } else {
+            return Result.error("1", "该学生不存在");
+        }
+    }
+
+    @GetMapping("/updatePassword")
+    public Result updatePassword(Integer id, String password) {
+        return studentInfoService.updatePassword(id, password) ? Result.success() : Result.error("1", "修改失败");
+    }
+
+    @GetMapping("/updateStudentDetails")
+    public Result updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction) {
+        return studentInfoService.updateStudentDetails(id, email, phoneNumber, selfIntroduction) ? Result.success() : Result.error("1", "修改失败");
+    }
+
+
 }

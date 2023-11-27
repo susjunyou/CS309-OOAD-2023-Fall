@@ -69,4 +69,22 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
         return true;
     }
 
+    @Override
+    public StudentInfo findStudentInfoById(Integer id) {
+        return studentInfoMapper.findStudentInfoById(id);
+    }
+
+    @Override
+    public boolean updatePassword(Integer id, String password) {
+        studentInfoMapper.updatePassword(id, password);
+        return true;
+    }
+
+    @Override
+    public boolean updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction) {
+        studentInfoMapper.updateStudentDetails(id, email, phoneNumber, selfIntroduction);
+        return true;
+    }
+
+
 }
