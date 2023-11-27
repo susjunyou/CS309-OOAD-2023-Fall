@@ -31,5 +31,5 @@ public class TeamInfo implements Serializable {
 
     private Integer teamSize;
 
-    private List<UserInfo> teamMembers;
+    private List<Integer> teamMembers;
 }

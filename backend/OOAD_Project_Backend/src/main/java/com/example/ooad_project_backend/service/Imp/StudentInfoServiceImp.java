@@ -14,6 +14,7 @@ import com.example.ooad_project_backend.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,19 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
         if (ObjectUtil.isEmpty(studentInfo.getPassword())) {
             studentInfo.setPassword("123456");
         }
-       studentInfoMapper.insertStudent(studentInfo);
+        studentInfoMapper.insertStudent(studentInfo);
+    }
+
+    @Override
+    public boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+        studentInfoMapper.submitAssignment(studentId, assignmentId, content, submitDate);
+        return true;
+    }
+
+    @Override
+    public boolean submitProject(Integer studentId, Integer projectId, String content, Date submitDate) {
+        studentInfoMapper.submitProject(studentId, projectId, content, submitDate);
+        return true;
     }
 
 }

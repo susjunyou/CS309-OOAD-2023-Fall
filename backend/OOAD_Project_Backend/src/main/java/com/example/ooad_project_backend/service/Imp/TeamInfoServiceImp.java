@@ -37,7 +37,6 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         if (teamId != null) {
             return false;
         }
-        System.out.println(teamInfo.toString());
         if (teamInfo.getLeader() == null || teamInfo.getTeamSize() == null || teamInfo.getProjectId() == null || teamInfo.getTeamName() == null) {
             return false;
         }

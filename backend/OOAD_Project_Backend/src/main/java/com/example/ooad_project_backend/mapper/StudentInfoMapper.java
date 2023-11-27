@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.sql.Date;
+
 
 @Mapper
 public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
@@ -22,5 +24,11 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
     @Insert("INSERT INTO student (id, name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA, department) " +
             "VALUES (#{id}, #{name}, #{account}, #{password}, #{email}, #{selfIntroduction}, #{phoneNumber}, #{sex}, #{major}, #{level}, false, #{department})")
     void insertStudent(StudentInfo studentInfo);
+
+    @Insert("insert into assignment_submission (student_id, assignment_id, content, submission_date) values (#{studentId},#{assignmentId},#{content},#{submitDate})")
+    void submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate);
+
+    @Insert("insert into project_submission (student_id, project_id, content, submission_date) values (#{studentId},#{projectId},#{content},#{submitDate})")
+    void submitProject(Integer studentId, Integer projectId, String content, Date submitDate);
 
 }

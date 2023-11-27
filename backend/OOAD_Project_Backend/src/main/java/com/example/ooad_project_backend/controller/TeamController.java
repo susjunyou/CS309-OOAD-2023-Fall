@@ -43,7 +43,7 @@ public class TeamController {
     public Result findTeamNumberByTeamId(Integer teamId) {
         List<StudentInfo> studentInfos = teamInfoService.findStudentInfoByTeamId(teamId);
         if (studentInfos.size() == 0) {
-            return Result.error("1", "no team ");
+            return Result.error("1", "no team");
         } else {
             return Result.success(studentInfos);
         }
