@@ -76,7 +76,6 @@ export default {
   methods: {
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
-
         //加载posts
         await this.$axios.get('/course/posts', {
           params: {
@@ -128,7 +127,7 @@ export default {
           if (res.data.code === "0") {
             localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
-              localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].assignmentId);
+              localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].id);
               localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);
               localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
@@ -182,11 +181,36 @@ export default {
         }).catch(error => {
           console.error('Error loading course attendances:', error);
         });
-
-
-
-
-
+        //加载assignment成绩
+        for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
+          await this.$axios.get('/grade/AssignmentGrade', {
+            params: {
+              studentId: localStorage.getItem('id'),
+              assignmentId: localStorage.getItem('assignmentid'+course.title+i)
+            }
+          }).then((res) => {
+            if (res.data.code === "0") {
+              localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
+            }
+          }).catch(error => {
+            console.error('Error loading assignment grade:', error);
+          });
+        }
+        //加载project成绩
+        for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
+          await this.$axios.get('/grade/ProjectGrade', {
+            params: {
+              studentId: localStorage.getItem('id'),
+              projectId: localStorage.getItem('projectid'+course.title+i)
+            }
+          }).then((res) => {
+            if (res.data.code === "0") {
+              localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
+            }
+          }).catch(error => {
+            console.error('Error loading project grade:', error);
+          });
+        }
       }
     },
 

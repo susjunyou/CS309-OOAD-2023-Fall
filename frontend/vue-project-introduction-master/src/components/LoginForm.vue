@@ -98,7 +98,7 @@ export default {
             console.log(response.data.data);
             localStorage.setItem('phoneNumber', response.data.data.phoneNumber);
             localStorage.setItem('major', response.data.data.major);
-            localStorage.setItem('id', response.data.data.id);
+            localStorage.setItem('id', response.data.data.id);//student id
             console.log(localStorage.getItem('id'));
             console.log(localStorage.getItem('major'));
             console.log(localStorage.getItem('phoneNumber'));

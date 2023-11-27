@@ -30,6 +30,24 @@
         </li>
       </ul>
     </div>
+    <div class="assigment-list">
+      <h2>Assignments</h2>
+      <ul>
+        <li v-for="assignment in assignments" :key="assignment.title">
+          {{ assignment.title }}
+          {{assignment.assignmentsgrade}}
+        </li>
+      </ul>
+    </div>
+    <div class="project-list">
+      <h2>Projects</h2>
+      <ul>
+        <li v-for="project in projects" :key="project.title">
+          {{ project.title}}
+          {{project.projectsgrade}}
+        </li>
+      </ul>
+    </div>
     <!--  <div>-->
     </div>
 </template>
@@ -41,6 +59,8 @@ export default {
     return {
       courses: [],
       attendances:[],
+      assignments:[],
+      projects:[]
     };
   },
 
@@ -94,9 +114,10 @@ export default {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+          assignmentsgrade: localStorage.getItem('assignmentgrade' + localStorage.getItem("currentcourse")+i)
         });
       }
       this.projects=[];
@@ -109,7 +130,9 @@ export default {
           ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+          projectsgrade: localStorage.getItem('projectgrade' + localStorage.getItem("currentcourse")+i)
         });
+        this.ddls =[]
         this.ddls.push({
           date: this.projects[i].ddl,
           title: this.projects[i].title,
