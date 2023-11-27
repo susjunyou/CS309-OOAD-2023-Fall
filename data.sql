@@ -148,30 +148,55 @@ values (3, 22);
 --! project data
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion)
-Values ('project1', 'project_description', 11, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
+Values ('project1', 'project_description', 11, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5, 'TEACHER');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion)
-Values ('project2', 'project_description', 22, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
+Values ('project2', 'project_description', 22, 1, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5, 'TEACHER');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion)
-Values ('project3', 'project_description', 11, 2, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5);
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
+Values ('project3', 'project_description', 11, 2, 'Started', '2021-01-01', '2021-01-01', 3, 100, 0.5, 'TEACHER');
+
+
+--! project submission data
+
+insert into project_submission(project_id, student_id, grade, grade_description,submission_date)
+values (1, 1, 100, 'good job', '2021-01-01');
+
+insert into project_submission(project_id, student_id, grade, grade_description,submission_date)
+values (2, 1, 100, 'good job', '2021-01-01');
+
+insert into project_submission(project_id, student_id, grade, grade_description,submission_date)
+values (3, 1, 100, 'good job','2021-01-02');
+
 
 --! Assignment data
 
 insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
-                       proportion, releaser, course_id)
-values ('assignment1', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1);
+                       proportion, releaser, course_id, releaser_type)
+values ('assignment1', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1, 'TEACHER');
 
 insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
-                       proportion, releaser, course_id)
-values ('assignment2', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1);
+                       proportion, releaser, course_id, releaser_type)
+values ('assignment2', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 11, 1, 'TEACHER');
 
 insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
-                       proportion, releaser, course_id)
-values ('assignment3', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 22, 2);
+                       proportion, releaser, course_id, releaser_type)
+values ('assignment3', 'assignment_description', '2021-01-01', 'Started', 100, 0.5, 22, 2, 'TEACHER');
+
+--! assignment submission data
+
+insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description)
+VALUES (1, 1, '2021-01-01', 90, 'grade_description');
+
+insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description)
+VALUES (2, 1, '2021-01-01', 80, 'grade_description2');
+
+insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description)
+VALUES (3, 1, '2021-01-01', 100, 'grade_description3');
+
 
 --! Attendance data
 
@@ -207,6 +232,7 @@ values ('post2', 'post_content', 2, 'STUDENT', '2021-01-01', 1);
 
 insert into post(post_title, post_content, post_author, author_type, time, course_id)
 values ('post3', 'post_content', 3, 'STUDENT', '2021-01-01', 2);
+
 
 
 

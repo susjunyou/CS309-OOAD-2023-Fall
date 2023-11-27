@@ -17,7 +17,7 @@ public class TeamController {
     @Autowired
     private TeamInfoService teamInfoService;
 
-    @PutMapping("/create")
+    @GetMapping("/create")
     public Result create(TeamInfo teamInfo) {
         System.out.println(teamInfo.toString());
         return teamInfoService.createTeam(teamInfo) ? Result.success() : Result.error();

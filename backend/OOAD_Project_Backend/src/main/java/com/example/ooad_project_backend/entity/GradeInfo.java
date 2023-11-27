@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.example.ooad_project_backend.enums.UserType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -19,17 +20,19 @@ public class GradeInfo implements Serializable {
 
     private Integer id;
 
-    private UserInfo releaser;
+    private Integer releaser;
+
+    private UserType releaserType;
 
     private Integer maxScore;
 
     private Integer grade;
 
-    private CourseInfo course;
+    private Integer courseId;
 
     private Double proportion;
 
-    private StudentInfo student;
+    private Integer studentId;
 
     private String gradeDescription;
 
