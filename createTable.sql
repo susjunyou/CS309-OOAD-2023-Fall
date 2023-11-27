@@ -106,8 +106,8 @@ create table course_student
 create table course_sa
 (
     course_sa_id serial primary key,
-    student_id        integer not null,
-    course_id         integer not null
+    student_id   integer not null,
+    course_id    integer not null
 );
 
 
@@ -136,7 +136,8 @@ create table project_submission
     project_submission_id serial primary key,
     project_id            integer not null,
     student_id            integer not null,
-    submission_date       date    not null,
+    submission_date       date    ,
+    content               text   ,
     grade                 integer,
     grade_description     varchar(255)
 );
@@ -214,6 +215,7 @@ create table assignment_submission
     assignment_id            integer not null,
     student_id               integer not null,
     submission_date          date,
+    content                  text,
     grade                    integer,
     grade_description        varchar(255)
 );
@@ -392,5 +394,4 @@ create table reply
 --
 -- alter table team
 --     add foreign key (leader) references student (id);
-
 
