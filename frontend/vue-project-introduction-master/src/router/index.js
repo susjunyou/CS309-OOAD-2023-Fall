@@ -13,6 +13,7 @@ import joinTeam from "@/views/joinTeam.vue";
 import projectsubmit from "@/views/projectsubmit.vue";
 import assignmentsubmit from "@/views/assignmentsubmit.vue";
 import updatePassword from "@/views/updatePassword.vue";
+import personInformation from "@/views/PersonInformation.vue";
 
 const routes = [
     {path: '/login', component: Login},
@@ -29,6 +30,7 @@ const routes = [
     {path: '/assignmentsubmit',component: assignmentsubmit},
     {path: '/projectsubmit', component: projectsubmit},
     {path: '/updatePassword', component: updatePassword},
+    {path: '/personInformation', component: personInformation},
     {path: '/', redirect: '/login'}
 
 ]
