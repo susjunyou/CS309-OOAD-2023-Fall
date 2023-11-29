@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
       <el-menu-item v-for="course in courses" :key="course" @click="goTo(course.title)" >
         {{ course.title }}
@@ -22,75 +23,107 @@
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
-    <!--  <div>-->
-    <div>
-      <!-- ... 其他代码 ... -->
 
-      <!-- 显示项目信息 -->
-      <div v-for="project in projects" :key="project" class="project">
-        <h3 >{{ project.title }}</h3>
-        <p>{{ project.description }}</p>
-        <p>开始日期: {{ project.startdate }}</p>
-        <p>截止日期: {{ project.ddl }}</p>
-        <p>状态: {{ project.status }}</p>
-        <p>团队人数上限: {{ project.maxpeopleinteam }}</p>
-        <p @click="go1(project)" class="clickable-text">创建team</p>
-        <p @click="join(project)" class="clickable-text">查看组队信息</p>
-        <p @click="submitproject(project)" class="clickable-text">提交project</p>
+    <div class="assignment-submission">
+      <h1>Assignment Submission</h1>
+      <div class="text-submission">
+        <textarea v-model="textSubmission" placeholder="Write Submission"></textarea>
+      </div>
+      <div class="file-upload">
+        <input type="file"  />
+        <!--        @change="handleFileUpload"-->
+      </div>
+      <div class="button-container">
+        <button class="submit" @click.prevent="submitProject">Submit</button>
+        <button class="cancel" @click="cancel">Cancel</button>
       </div>
 
-      <!-- ... 其他代码 ... -->
     </div>
+    <!--    <p>welcome to {{myValue}}</p>-->
+    <!--  </div>-->
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>提交成功！</p>
+        <button @click="returnToprojects">关闭</button>
+      </div>
     </div>
+  </div>
 </template>
-
 <script >
+
 export default {
 
   data() {
     return {
+      // 初始化组件数据属性
+      ddls: [
+        // ...其他DDL
+      ],
+      attrs: [],
+      // 初始化组件数据属性
       courses: [],
       posts: [],
       assignments: [],
       projects: [],
+      isPopupVisible: false, // 控制弹窗显示的布尔值
       materials: [],
-      ddls:[],
       myValue: '',
+      textSubmission: '', // 绑定文本提交的数据
+      file: null, // 用于存储文件上传的数据
     };
   },
 
 
   async created() {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    this.myValue=localStorage.getItem("currentcourse")
   },
   methods: {
 
+
+
+
+    async  submitProject() {
+      // 创建一个新的日期对象
+      const submitDate = new Date();
+      const formattedDate = submitDate.toISOString().split('T')[0]; // 获取 yyyy-MM-dd 格式
+      await this.$axios.get('/student/submitProject', {
+        params: {
+          studentId: Number(localStorage.getItem("id")),
+          projectId: localStorage.getItem("currentprojectid"),
+          content: this.textSubmission,
+          submitDate: formattedDate,
+        }
+      }).then((res) => {
+        console.log("code====================================="+res.data.code)
+        if (res.data.code === "0") {
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading course posts:', error);
+      });
+    },
     logoutClick() {
       this.$router.push('/Login');
       localStorage.clear();
     },
+    cancel() {
+      this.$router.push('/projects');
+    },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-      localStorage.setItem("currentcourse",route)
-      this.$router.push( "course" );
-    },
-    submitproject(route) {
-      localStorage.setItem("currentprojectid",route.id)
-      this.$router.push('projectsubmit');
-    },
-    join(route) {
-      localStorage.setItem("currentprojectid",route.id)
-      this.$router.push('joinTeam');
-    },
-    go1(route) {
-      console.log(route.id)
-      localStorage.setItem("currentprojectid",route.id);
-      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
-      this.$router.push('createTeam');
+      localStorage.setItem("currentcourse",route);
+      this.myValue=route;
+      this.loadLocalStorageData();
+      this.$router.push({ path: '/course' });
     },
     go(route) {
-      // localStorage.setItem("currentprojectid",route)
+
       this.$router.push(route);
+    },
+    returnToprojects(){
+      this.isPopupVisible = false;
+      this.$router.push('/projects');
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
@@ -124,14 +157,14 @@ export default {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
       }
       this.projects=[];
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
-            this.projects.push({
+        this.projects.push({
           id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
           title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
@@ -140,25 +173,108 @@ export default {
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
-        this.ddls=[];
         this.ddls.push({
           date: this.projects[i].ddl,
           title: this.projects[i].title,
         });
       }
+      console.log("course name="+this.myValue)
+      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
-    },  },
+    },
+  },
 }
 </script>
 
 
 <style scoped>
-.clickable-text{
-  text-decoration: underline; /* 添加下划线 */
-  color: blue; /* 设置为蓝色或其他突出的颜色 */
-  cursor: pointer; /* 鼠标悬停时显示手形光标 */
-  .clickable-text:hover {
-    color: darkblue; /* 悬停时改变颜色 */
-  }
+.assignment-submission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+  padding: 20px;
+  box-sizing: border-box;
 }
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.text-submission {
+  padding-right: 0; /* 减少右侧内边距 */
+}
+
+.text-submission textarea {
+  width: 600px; /* 保持宽度为100% */
+  min-height: 400px; /* 最小高度 */
+  padding: 20px; /* 适当的内边距 */
+  margin-bottom: 20px; /* 下边距 */
+  margin-left: auto; /* 左边距自动，这将使元素居中 */
+  margin-right: auto; /* 右边距自动 */
+  border: 1px solid #ccc; /* 边框 */
+  border-radius: 4px; /* 圆角 */
+  resize: vertical; /* 允许垂直调整大小 */
+}
+
+
+.file-upload input {
+  margin-bottom: 20px;
+}
+
+/* 提交按钮的样式 */
+
+
+.button-container {
+  display: flex;
+  justify-content: space-around; /* 在按钮之间提供空间 */
+  padding: 20px; /* 容器内边距 */
+}
+
+.button-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex-grow: 1; /* 按钮占据可用空间 */
+}
+
+.button-container button.submit {
+  background-color: #3498db; /* 蓝色背景 */
+  color: white;
+  margin-right: 10px; /* 在按钮之间提供空间 */
+}
+
+.button-container button.cancel {
+  background-color: #e74c3c; /* 红色背景 */
+  color: white;
+  margin-left: 10px; /* 在按钮之间提供空间 */
+}
+
+.button-container button:hover {
+  filter: brightness(90%);
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
 </style>

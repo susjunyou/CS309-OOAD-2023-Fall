@@ -10,6 +10,7 @@ import projects from "@/views/projects.vue";
 import assignments from "@/views/assignments.vue";
 import createTeam from "@/views/createTeam.vue";
 import joinTeam from "@/views/joinTeam.vue";
+import projectsubmit from "@/views/projectsubmit.vue";
 import assignmentsubmit from "@/views/assignmentsubmit.vue";
 
 const routes = [
@@ -26,6 +27,7 @@ const routes = [
     {path: '/createTeam',component: createTeam},
     {path: '/joinTeam',component: joinTeam},
     {path: '/assignmentsubmit', component: assignmentsubmit},
+    {path: '/projectsubmit', component: projectsubmit},
     {path: '/', redirect: '/login'}
 
 ]
