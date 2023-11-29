@@ -12,6 +12,7 @@ import createTeam from "@/views/createTeam.vue";
 import joinTeam from "@/views/joinTeam.vue";
 import projectsubmit from "@/views/projectsubmit.vue";
 import assignmentsubmit from "@/views/assignmentsubmit.vue";
+import updatePassword from "@/views/updatePassword.vue";
 
 const routes = [
     {path: '/login', component: Login},
@@ -19,15 +20,15 @@ const routes = [
     {path: '/purchase', component: Purchase},
     {path: '/StudentHomePage', component: StudentHomePage},
     {path: '/course',component: course},
-    // {path: '/PersonInformation',component: PersonInformation},
     {path: '/materials',component: materials},
     {path: '/gradebook',component: gradebook},
     {path: '/projects',component: projects},
     {path: '/assignments',component: assignments},
     {path: '/createTeam',component: createTeam},
     {path: '/joinTeam',component: joinTeam},
-    {path: '/assignmentsubmit', component: assignmentsubmit},
+    {path: '/assignmentsubmit',component: assignmentsubmit},
     {path: '/projectsubmit', component: projectsubmit},
+    {path: '/updatePassword', component: updatePassword},
     {path: '/', redirect: '/login'}
 
 ]

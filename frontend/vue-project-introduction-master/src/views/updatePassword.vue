@@ -27,24 +27,28 @@
 
       <!-- 右侧内容区 -->
       <el-main>
-        <!-- 使用flex布局 -->
-        <div class="content-wrapper">
-          <!-- 帖子列表 -->
-          <div class="posts-wrapper">
-            <div v-for="post in posts" :key="post.id" class="post">
-
-                <h2>课程：{{ post.course }}</h2>
-              <h3>{{ post.title }}</h3>
-              <p>{{ post.content }}</p>
-              <small>作者: {{ post.author }}</small>
-            </div>
+        <template>
+          <div>
+            <h2>修改密码</h2>
+            <form @submit.prevent="changePassword">
+              <div>
+                <label for="currentPassword">当前密码:</label>
+                <input type="password" id="currentPassword" v-model="currentPassword" required>
+              </div>
+              <div>
+                <label for="newPassword">新密码:</label>
+                <input type="password" id="newPassword" v-model="newPassword" required>
+              </div>
+              <div>
+                <label for="confirmPassword">确认新密码:</label>
+                <input type="password" id="confirmPassword" v-model="confirmPassword" required>
+              </div>
+              <button type="submit">提交</button>
+            </form>
+            <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+            <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
           </div>
-
-          <!-- 日历 -->
-          <div class="rili2">
-            <v-calendar :attributes="attrs"></v-calendar>
-          </div>
-        </div>
+        </template>
       </el-main>
 
     </el-container>
@@ -62,9 +66,53 @@ export default {
       ],
       attrs: [],
       posts:[],
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      errorMessage: '',
+      successMessage: ''
     };
   },
   methods: {
+    changePassword() {
+      // 这里可以添加逻辑来验证密码是否符合要求
+      this.successMessage = '';
+      let value=this.newPassword;
+      if(this.currentPassword !== localStorage.getItem('password')){
+        this.errorMessage = '原密码错误';
+        return;
+      }
+      if (this.newPassword !== this.confirmPassword) {
+        this.errorMessage = '新密码和确认密码不匹配';
+        return;
+      }
+      if(this.currentPassword === this.newPassword) {
+        this.errorMessage = '新密码不能与原密码相同';
+        return;
+      }
+      this.$axios.get('/student/updatePassword',{
+        params: {
+          id:localStorage.getItem('id'),
+          password:this.newPassword
+        }
+      }).then(res => {
+        if(res.data.code === "0"){
+          this.successMessage = '密码修改成功';
+          this.errorMessage = '';
+          this.currentPassword = '';
+          this.newPassword = '';
+          this.confirmPassword = '';
+          localStorage.setItem('password',value);
+        }else {
+          console.log("error")
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+      setTimeout(() => {
+        this.successMessage = '';
+      }, 3000); // 这里的 3000 表示消息会在 3 秒后消失，你可以根据需要修改时间
+    },
     go(route) {
       this.$router.push(route);
     },
@@ -112,7 +160,7 @@ export default {
         }).catch(error => {
           console.error('Error loading course materials:', error);
         });
-      //加载assignments
+        //加载assignments
         await this.$axios.get('/course/assignments', {
           params: {
             courseId: course.id
@@ -127,7 +175,7 @@ export default {
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
               localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
               this.ddls.push({
-                  date : res.data.data[i].assignmentDeadline,
+                date : res.data.data[i].assignmentDeadline,
                 title : course.title+"   "+res.data.data[i].assignmentTitle,
               })
             }
@@ -210,7 +258,7 @@ export default {
 
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-localStorage.setItem('currentcourse',route.title);
+      localStorage.setItem('currentcourse',route.title);
       this.$router.push( "course" );
     },
     logoutClick() {
