@@ -1,14 +1,12 @@
 package com.example.ooad_project_backend.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.*;
 import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -69,5 +67,43 @@ public class CourseController {
             return Result.success(attendanceInfos);
         }
     }
+
+    @PostMapping("/addStudent")
+    public Result addStudent(Integer courseId, Integer studentId) {
+        if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(studentId)) {
+            return Result.error("-1", "No such course or student");
+        }
+        else
+        {
+            courseInfoService.addStudent(courseId, studentId);
+            return Result.success();
+        }
+    }
+
+    @PostMapping("/addSA")
+    public Result addSA(Integer courseId, Integer studentId) {
+        if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(studentId)) {
+            return Result.error("-1", "No such course or student");
+        }
+        else
+        {
+            courseInfoService.addSA(courseId, studentId);
+            return Result.success();
+        }
+    }
+
+    @PostMapping("/addTeacher")
+    public Result addTeacher(Integer courseId, Integer teacherId) {
+        if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(teacherId)) {
+            return Result.error("-1", "No such course or teacher");
+        }
+        else
+        {
+            courseInfoService.addTeacher(courseId, teacherId);
+            return Result.success();
+        }
+    }
+
+
 
 }

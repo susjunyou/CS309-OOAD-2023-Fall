@@ -44,4 +44,19 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     public List<MaterialInfo> findMaterialInfoByCourseId(Integer courseId) {
         return courseDetailsMapper.findMaterialInfoByCourseId(courseId);
     }
+
+    @Override
+    public void addStudent(Integer courseId, Integer studentId) {
+        courseDetailsMapper.insertStudent(courseId, studentId);
+    }
+
+    @Override
+    public void addSA(Integer courseId, Integer studentId) {
+        courseDetailsMapper.insertSA(courseId, studentId);
+    }
+
+    @Override
+    public void addTeacher(Integer courseId, Integer teacherId) {
+        courseDetailsMapper.insertTeacher(courseId, teacherId);
+    }
 }

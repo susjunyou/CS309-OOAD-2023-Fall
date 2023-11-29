@@ -4,6 +4,7 @@ import com.example.ooad_project_backend.entity.AssignmentInfo;
 import com.example.ooad_project_backend.entity.AttendanceInfo;
 import com.example.ooad_project_backend.entity.MaterialInfo;
 import com.example.ooad_project_backend.entity.PostInfo;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -24,4 +25,14 @@ public interface CourseDetailsMapper {
     @Select("select * from material where course_id = #{courseId}")
     List<MaterialInfo> findMaterialInfoByCourseId(Integer CourseId);
 
+    @Insert("insert into course_student (course_id, student_id) values (#{courseId}, #{studentId})")
+    void insertStudent(Integer courseId, Integer studentId);
+
+    @Insert("insert into course_sa (course_id, student_id) values (#{courseId}, #{studentId})")
+    void insertSA(Integer courseId, Integer studentId);
+
+    @Insert("insert into course_teacher (course_id, teacher_id) values (#{courseId}, #{teacherId})")
+    void insertTeacher(Integer courseId, Integer teacherId);
 }
+
+
