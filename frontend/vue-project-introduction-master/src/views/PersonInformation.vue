@@ -29,6 +29,9 @@
       <input v-model="phoneNumber" type="text" placeholder="PhoneNumber">
       <textarea v-model="selfIntroduction" placeholder="SelfIntroduction"></textarea>
       <button @click.prevent="updateStudentDetails">Update Details</button>
+
+
+
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
         <p>修改成功！</p>
@@ -64,13 +67,14 @@ export default {
   async created() {
     this.id=localStorage.getItem('id');
     // this.email=localStorage.getItem('email');
-    this.phoneNumber=localStorage.getItem('phoneNumber');
 
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadinfo();
     this.myValue=localStorage.getItem("currentcourse")
     this.email=localStorage.getItem('email');
     this.selfIntroduction=localStorage.getItem('selfIntroduction');
+    this.phoneNumber=localStorage.getItem('phoneNumber');
+
   },
   methods: {
     returnTohomepage(){
@@ -122,6 +126,7 @@ localStorage.setItem('email',res.data.data.email);
 console.log(res.data.data.email);
 localStorage.setItem('selfIntroduction',res.data.data.selfIntroduction);
 console.log(res.data.data.selfIntroduction);
+localStorage.setItem('phoneNumber',res.data.data.phoneNumber);
         }
       }).catch(error => {
         console.error('Error loading student info', error);
