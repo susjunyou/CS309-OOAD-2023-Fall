@@ -79,4 +79,17 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         }
         return studentInfos;
     }
+
+    @Override
+    public boolean leaveTeam(Integer teamId, Integer studentId) {
+        teamMapper.leaveTeam(teamId, studentId);
+        return true;
+    }
+
+    @Override
+    public boolean deleteTeam(Integer teamId) {
+        teamMapper.deleteTeamInTeamStudent(teamId);
+        teamMapper.deleteTeamInTeam(teamId);
+        return true;
+    }
 }

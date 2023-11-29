@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.ooad_project_backend.entity.TeamInfo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -17,6 +18,15 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
 
     @Insert("insert into team_student(team_id, student_id, project_id) VALUES (#{teamId}, #{studentId}, #{projectId})")
     void joinTeam(Integer teamId, Integer studentId, Integer projectId);
+
+    @Delete("delete from team_student where team_id = #{teamId} and student_id = #{studentId}")
+    void leaveTeam(Integer teamId, Integer studentId);
+
+    @Delete("delete from team where team_id = #{teamId}")
+    void deleteTeamInTeam(Integer teamId);
+
+    @Delete("delete from team_student where team_id = #{teamId}")
+    void deleteTeamInTeamStudent(Integer projectId);
 
     @Select("select team_id from team_student where student_id = #{studentId} and project_id  = #{projectId}")
     Integer findTeamIdByProjectIdAndStudentId(Integer projectId, Integer studentId);

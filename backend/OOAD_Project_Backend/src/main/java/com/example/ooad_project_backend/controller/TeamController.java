@@ -29,6 +29,17 @@ public class TeamController {
         return teamInfoService.joinTeam(teamInfo, studentId) ? Result.success() : Result.error();
     }
 
+    @DeleteMapping("/leave")
+    public Result leave(Integer studentId, Integer teamId) {
+        return teamInfoService.leaveTeam(teamId, studentId) ? Result.success() : Result.error();
+    }
+
+    @DeleteMapping("/delete")
+    public Result delete(Integer teamId) {
+        return teamInfoService.deleteTeam(teamId) ? Result.success() : Result.error();
+    }
+
+
     @GetMapping("/findTeamInfoByProjectId")
     public Result findTeamInfoByProjectId(Integer projectId) {
         List<TeamInfo> teamInfos = teamInfoService.findAllTeamInfoByProjectId(projectId);
