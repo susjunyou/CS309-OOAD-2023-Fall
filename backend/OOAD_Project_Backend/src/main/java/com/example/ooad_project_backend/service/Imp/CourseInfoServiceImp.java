@@ -59,4 +59,14 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     public void addTeacher(Integer courseId, Integer teacherId) {
         courseDetailsMapper.insertTeacher(courseId, teacherId);
     }
+
+    @Override
+    public List<Integer> findMySACourseIdByStudentId(Integer studentId) {
+        return courseDetailsMapper.findMySACourseIdByStudentId(studentId);
+    }
+
+    @Override
+    public List<Integer> findMySAIdByCourseId(Integer courseId) {
+        return courseDetailsMapper.findMySAIdByCourseId(courseId);
+    }
 }

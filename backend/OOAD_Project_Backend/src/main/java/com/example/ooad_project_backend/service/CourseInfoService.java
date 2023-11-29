@@ -22,4 +22,8 @@ public interface CourseInfoService extends IService<CourseInfo> {
     public void addSA(Integer courseId, Integer studentId);
 
     public void addTeacher(Integer courseId, Integer teacherId);
+
+    List<Integer> findMySACourseIdByStudentId(Integer studentId);
+
+    List<Integer> findMySAIdByCourseId(Integer courseId);
 }

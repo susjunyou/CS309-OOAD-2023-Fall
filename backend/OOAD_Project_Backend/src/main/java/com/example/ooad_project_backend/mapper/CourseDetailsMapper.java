@@ -33,6 +33,12 @@ public interface CourseDetailsMapper {
 
     @Insert("insert into course_teacher (course_id, teacher_id) values (#{courseId}, #{teacherId})")
     void insertTeacher(Integer courseId, Integer teacherId);
+
+    @Select("select course_id from course_sa where student_id = #{studentId}")
+    List<Integer> findMySACourseIdByStudentId(Integer studentId);
+
+    @Select("select course_sa_id from course_sa where course_id = #{courseId}")
+    List<Integer> findMySAIdByCourseId(Integer courseId);
 }
 
 
