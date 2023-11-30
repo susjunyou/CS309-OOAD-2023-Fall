@@ -33,8 +33,16 @@ public class StudentController {
         }
     }
 
+
+
+    @GetMapping("/updateAssignment")
+    public Result updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+        return studentInfoService.updateAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
+    }
+
     @GetMapping("/submitAssignment")
     public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+        // 自动填充提交时间为当前时间，暂未实现
         return studentInfoService.submitAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
     }
 

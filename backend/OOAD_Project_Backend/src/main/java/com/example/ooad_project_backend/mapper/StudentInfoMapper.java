@@ -22,8 +22,13 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
             "VALUES (#{id}, #{name}, #{account}, #{password}, #{email}, #{selfIntroduction}, #{phoneNumber}, #{sex}, #{major}, #{level}, false, #{department})")
     void insertStudent(StudentInfo studentInfo);
 
+
+    //自动填充提交时间为当前时间
     @Insert("insert into assignment_submission (student_id, assignment_id, content, submission_date) values (#{studentId},#{assignmentId},#{content},#{submitDate})")
     void submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate);
+
+    @Update("update assignment_submission set content = #{content}, submission_date = #{submitDate} where student_id = #{studentId} and assignment_id = #{assignmentId}")
+    void updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate);
 
     @Insert("insert into project_submission (student_id, project_id, content, submission_date) values (#{studentId},#{projectId},#{content},#{submitDate})")
     void submitProject(Integer studentId, Integer projectId, String content, Date submitDate);

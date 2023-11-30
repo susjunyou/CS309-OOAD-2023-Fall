@@ -26,4 +26,8 @@ public interface CourseInfoService extends IService<CourseInfo> {
     List<Integer> findMySACourseIdByStudentId(Integer studentId);
 
     List<Integer> findMySAIdByCourseId(Integer courseId);
+
+    List<StudentInfo> findAllStudentInfoByCourseId(Integer courseId);
+
+    List<StudentInfo> findAllSAInfoByCourseId(Integer courseId);
 }

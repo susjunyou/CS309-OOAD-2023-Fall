@@ -1,9 +1,6 @@
 package com.example.ooad_project_backend.mapper;
 
-import com.example.ooad_project_backend.entity.AssignmentInfo;
-import com.example.ooad_project_backend.entity.AttendanceInfo;
-import com.example.ooad_project_backend.entity.MaterialInfo;
-import com.example.ooad_project_backend.entity.PostInfo;
+import com.example.ooad_project_backend.entity.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -24,6 +21,12 @@ public interface CourseDetailsMapper {
 
     @Select("select * from material where course_id = #{courseId}")
     List<MaterialInfo> findMaterialInfoByCourseId(Integer CourseId);
+
+    @Select("select * from student where id in (select student_id from course_student where course_id = #{courseId})")
+    List<StudentInfo> findAllStudentInfoByCourseId(Integer courseId);
+
+    @Select("select * from student where id in (select student_id from course_sa where course_id = #{courseId})")
+    List<StudentInfo> findAllSAInfoByCourseId(Integer courseId);
 
     @Insert("insert into course_student (course_id, student_id) values (#{courseId}, #{studentId})")
     void insertStudent(Integer courseId, Integer studentId);

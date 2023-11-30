@@ -5,10 +5,7 @@ import com.example.ooad_project_backend.entity.AssignmentInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
 import com.example.ooad_project_backend.service.Imp.GradeServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,18 @@ public class GradeController {
             return Result.success(assignmentInfos);
         }
     }
+
+
+    @PostMapping("/addAssignmentGrade")
+    public Result addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
+        return gradeServiceImp.addAssignmentGrade(studentId, assignmentId, grade) ? Result.success() : Result.error("1", "提交失败");
+    }
+
+    @GetMapping("/updateAssignmentGrade")
+    public Result updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
+        return gradeServiceImp.addAssignmentGrade(studentId, assignmentId, grade) ? Result.success() : Result.error("1", "提交失败");
+    }
+
 
 
     @GetMapping("/ProjectGrade")

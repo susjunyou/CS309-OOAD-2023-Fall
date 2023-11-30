@@ -59,7 +59,15 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
 
     @Override
     public boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+        // 自动填充提交时间为当前时间
+
         studentInfoMapper.submitAssignment(studentId, assignmentId, content, submitDate);
+        return true;
+    }
+
+    @Override
+    public boolean updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+        studentInfoMapper.updateAssignment(studentId, assignmentId, content, submitDate);
         return true;
     }
 

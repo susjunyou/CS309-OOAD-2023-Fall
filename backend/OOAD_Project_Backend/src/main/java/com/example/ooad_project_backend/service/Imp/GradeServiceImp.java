@@ -29,4 +29,14 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     public List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId) {
         return gradeMapper.findProjectGrade(studentId, projectId);
     }
+
+    @Override
+    public boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
+        return gradeMapper.addAssignmentGrade(studentId, assignmentId, grade);
+    }
+
+    @Override
+    public boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
+        return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade);
+    }
 }

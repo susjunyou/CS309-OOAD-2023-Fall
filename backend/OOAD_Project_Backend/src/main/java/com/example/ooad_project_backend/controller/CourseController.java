@@ -28,6 +28,26 @@ public class CourseController {
         }
     }
 
+    @GetMapping("/getAllStudents")
+    public Result getAllStudents(Integer courseId) {
+        List<StudentInfo> studentInfos = courseInfoService.findAllStudentInfoByCourseId(courseId);
+        if (studentInfos.size() == 0) {
+            return Result.error("1", "Maybe No such course or no students");
+        } else {
+            return Result.success(studentInfos);
+        }
+    }
+
+    @GetMapping("/getAllSA")
+    public Result getAllSA(Integer courseId) {
+        List<StudentInfo> studentInfos = courseInfoService.findAllSAInfoByCourseId(courseId);
+        if (studentInfos.size() == 0) {
+            return Result.success(studentInfos);
+        } else {
+            return Result.success(studentInfos);
+        }
+    }
+
     @GetMapping("/assignments")
     public Result getAssignmentsByCourseId(Integer courseId) {
         List<AssignmentInfo> assignmentInfos = courseInfoService.findAssignmentInfoByCourseId(courseId);
@@ -103,6 +123,7 @@ public class CourseController {
             return Result.success();
         }
     }
+
 
 
 
