@@ -28,11 +28,11 @@ public class GradeInfo implements Serializable {
 
     private Integer grade;
 
-    private Integer courseId;
+    private Integer course_id;
 
     private Double proportion;
 
-    private Integer studentId;
+    private Integer student_id;
 
     private String gradeDescription;
 

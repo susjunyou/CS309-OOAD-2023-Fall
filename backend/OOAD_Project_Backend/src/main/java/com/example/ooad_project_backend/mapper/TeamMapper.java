@@ -43,4 +43,8 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select student_id from team_student where team_id = #{teamId}")
     List<Integer> findStudentIdsByTeamId(Integer teamId);
 
+    //team_id在team_student表里通过student_id找到，然后在team表里通过team_id找到
+    @Select("select * from team where team_id in (select team_id from team_student where student_id = #{studentId})")
+    List<TeamInfo> findTeamInfoByStudentId(Integer studentId);
+
 }

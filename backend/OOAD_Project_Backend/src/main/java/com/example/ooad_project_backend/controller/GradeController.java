@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
+import com.example.ooad_project_backend.entity.AttendanceInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
 import com.example.ooad_project_backend.service.Imp.GradeServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,16 @@ public class GradeController {
             return Result.error("1", "No such assignment");
         } else {
             return Result.success(assignmentInfos);
+        }
+    }
+
+    @GetMapping("/getAttendanceGradeByStudentId")
+    public Result getAttendanceGradeByStudentId(Integer studentId) {
+        List<AttendanceInfo> attendanceInfos = gradeServiceImp.findAttendanceGradeByStudentId(studentId);
+        if (attendanceInfos.size() == 0) {
+            return Result.error("1", "No such student or the student does not check in !");
+        } else {
+            return Result.success(attendanceInfos);
         }
     }
 

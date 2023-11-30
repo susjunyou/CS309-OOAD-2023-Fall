@@ -39,6 +39,16 @@ public class TeamController {
         return teamInfoService.deleteTeam(teamId) ? Result.success() : Result.error();
     }
 
+    @GetMapping("/findTeamInfoByStudentId")
+    public Result findTeamInfoByStudentId(Integer studentId) {
+        List<TeamInfo> teamInfos = teamInfoService.findAllTeamInfoByStudentId(studentId);
+        if (teamInfos.size() == 0) {
+            return Result.error("1", "no teams");
+        } else {
+            return Result.success(teamInfos);
+        }
+    }
+
 
     @GetMapping("/findTeamInfoByProjectId")
     public Result findTeamInfoByProjectId(Integer projectId) {
