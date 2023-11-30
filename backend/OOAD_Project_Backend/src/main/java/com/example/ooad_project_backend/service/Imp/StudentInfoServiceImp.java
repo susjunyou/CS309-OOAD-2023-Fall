@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ooad_project_backend.common.ResultCode;
 import com.example.ooad_project_backend.entity.CourseInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
-import com.example.ooad_project_backend.entity.TeacherInfo;
 import com.example.ooad_project_backend.exception.CustomException;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
 import com.example.ooad_project_backend.mapper.CourseStudentMapper;

@@ -35,6 +35,8 @@ public class SAController {
         }
     }
 
+
+    // 这个和 courseController 的 getAllSA 里面的重复了吧
     @GetMapping("/getAllSAIdByCourseId")
     public Result getAllSAIdByCourseId(Integer courseId) {
         List<Integer> studentIdList = courseInfoService.findMySAIdByCourseId(courseId);

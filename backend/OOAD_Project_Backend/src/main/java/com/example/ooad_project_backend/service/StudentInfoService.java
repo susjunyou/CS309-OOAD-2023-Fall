@@ -24,5 +24,5 @@ public interface StudentInfoService extends IService<StudentInfo> {
 
     boolean updatePassword(Integer id, String password);
 
-    boolean updateStudentDetails(Integer id, String email,String phoneNumber, String selfIntroduction);
+    boolean updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction);
 }
