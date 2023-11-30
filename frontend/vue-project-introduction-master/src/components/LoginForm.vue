@@ -100,6 +100,8 @@ export default {
             localStorage.setItem('major', response.data.data.major);
             localStorage.setItem('id', response.data.data.id);//student id
             localStorage.setItem('password',response.data.data.password);
+            localStorage.setItem('email',response.data.data.email);
+            localStorage.setItem('name',response.data.data.name);
             console.log(localStorage.getItem('id'));
             console.log(localStorage.getItem('major'));
             console.log(localStorage.getItem('phoneNumber'));
@@ -145,6 +147,8 @@ export default {
             for (let i = 0; i < localStorage.getItem('length'); i++) {
               localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
               localStorage.setItem('courses'+i,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
             }
             console.log(localStorage.getItem('courses0'));
           })
