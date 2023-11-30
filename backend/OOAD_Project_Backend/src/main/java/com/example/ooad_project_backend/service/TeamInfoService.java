@@ -19,4 +19,6 @@ public interface TeamInfoService extends IService<TeamInfo> {
     boolean leaveTeam(Integer teamId, Integer studentId);
 
     boolean deleteTeam(Integer teamId);
+
+    List<TeamInfo> findAllTeamInfoByStudentId(Integer studentId);
 }

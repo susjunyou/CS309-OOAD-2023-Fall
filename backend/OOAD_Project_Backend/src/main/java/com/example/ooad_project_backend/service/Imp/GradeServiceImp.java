@@ -8,7 +8,7 @@ import com.example.ooad_project_backend.mapper.GradeMapper;
 import com.example.ooad_project_backend.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.ooad_project_backend.entity.AttendanceInfo;
 import java.sql.Date;
 import java.util.List;
 
@@ -38,5 +38,10 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     @Override
     public boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
         return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade);
+    }
+
+    @Override
+    public List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId) {
+        return gradeMapper.findAttendanceGradeByStudentId(studentId);
     }
 }

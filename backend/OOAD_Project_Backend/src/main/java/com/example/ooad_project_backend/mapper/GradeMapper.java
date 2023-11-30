@@ -2,12 +2,10 @@ package com.example.ooad_project_backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
+import com.example.ooad_project_backend.entity.AttendanceInfo;
 import com.example.ooad_project_backend.entity.GradeInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -32,4 +30,12 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
     @Update("update assignment_submission set grade = #{grade} where student_id = #{studentId} and assignment_id = #{assignmentId}")
     boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
 
+    @Select("select * from attendance_submission where student_id = #{studentId}")
+    @Results({
+            @Result(property = "student_id", column = "student_id"),
+            @Result(property = "attendance_id", column = "attendance_id"),
+            @Result(property = "is_attended", column = "is_attended"),
+            @Result(property = "attendance_submission_id", column = "attendance_submission_id")
+    })
+    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
 }

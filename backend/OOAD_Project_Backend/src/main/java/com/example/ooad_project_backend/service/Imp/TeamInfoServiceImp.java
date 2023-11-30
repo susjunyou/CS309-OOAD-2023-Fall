@@ -92,4 +92,9 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         teamMapper.deleteTeamInTeam(teamId);
         return true;
     }
+
+    @Override
+    public List<TeamInfo> findAllTeamInfoByStudentId(Integer studentId) {
+        return teamMapper.findTeamInfoByStudentId(studentId);
+    }
 }

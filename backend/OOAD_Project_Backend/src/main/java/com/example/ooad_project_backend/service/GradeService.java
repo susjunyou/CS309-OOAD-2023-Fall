@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
+import com.example.ooad_project_backend.entity.AttendanceInfo;
 import com.example.ooad_project_backend.entity.GradeInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
 
@@ -17,4 +18,6 @@ public interface GradeService extends IService<GradeInfo> {
     boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
 
     boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
+
+    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
 }
