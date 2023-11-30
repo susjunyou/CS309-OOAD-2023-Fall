@@ -258,8 +258,9 @@ export default {
 
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-      localStorage.setItem('currentcourse',route.title);
-      this.$router.push( "course" );
+      localStorage.setItem("currentcourse",route.title);
+      localStorage.setItem("currentcourseid",route.id);
+      this.$router.push({ path: '/course' });
     },
     logoutClick() {
       this.$router.push('/Login');

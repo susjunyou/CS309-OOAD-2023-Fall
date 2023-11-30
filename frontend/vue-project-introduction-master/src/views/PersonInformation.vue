@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
-      <el-menu-item v-for="course in courses" :key="course" @click="goTo(course.title)" >
+      <el-menu-item v-for="course in courses" :key="course" @click="goTo(course)" >
         {{ course.title }}
       </el-menu-item>
     </el-menu>
@@ -72,6 +72,7 @@ export default {
     await this.loadinfo();
     this.myValue=localStorage.getItem("currentcourse")
     this.email=localStorage.getItem('email');
+    console.log(this.email);
     this.selfIntroduction=localStorage.getItem('selfIntroduction');
     this.phoneNumber=localStorage.getItem('phoneNumber');
 
@@ -103,9 +104,9 @@ export default {
     },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-      localStorage.setItem("currentcourse",route);
-      this.myValue=route;
-      this.loadLocalStorageData();
+      localStorage.setItem("currentcourse",route.title);
+      localStorage.setItem("currentcourseid",route.id);
+      this.myValue=route.title;
       this.$router.push({ path: '/course' });
     },
     go(route) {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
-      <el-menu-item v-for="course in courses" :key="course" @click="goTo(course.title)" >
+      <el-menu-item v-for="course in courses" :key="course" @click="goTo(course)" >
         {{ course.title }}
       </el-menu-item>
     </el-menu>
@@ -55,7 +55,7 @@ export default {
       projects: [],
       materials: [],
       ddls:[],
-      myValue: '',
+      // myValue: '',
     };
   },
 
@@ -71,8 +71,11 @@ export default {
     },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-      localStorage.setItem("currentcourse",route)
-      this.$router.push( "course" );
+      localStorage.setItem("currentcourse",route.title);
+      localStorage.setItem("currentcourseid",route.id);
+      // this.myValue=route.title;
+      this.loadLocalStorageData();
+      this.$router.push({ path: '/course' });
     },
     submitproject(route) {
       localStorage.setItem("currentprojectid",route.id)

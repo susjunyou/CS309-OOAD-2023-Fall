@@ -1,11 +1,32 @@
 <template>
   <div id="app">
-
-    <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
-      <el-menu-item v-for="course in courses" :key="course" @click="goTo(course)" >
-        {{ course.title }}
-      </el-menu-item>
-    </el-menu>
+    <el-row class="top_menu">
+      <el-col :span="22">
+        <el-menu mode="horizontal" text-color="#fff" background-color="cornflowerblue">
+          <el-menu-item v-for="course in courses" :key="course" @click="goTo(course)">
+            {{ course.title }}
+          </el-menu-item>
+        </el-menu>
+      </el-col>
+      <el-col :span="2" class="menu-profile" background-color="cornflowerblue">
+        <el-button type="text" v-popover:profilePopover class="profile-button">
+          <p>个人资料</p>
+        </el-button>
+        <el-popover ref="profilePopover" placement="bottom" width="200" trigger="click">
+          <div class="user-profile">
+            <img src="../assets/人脸.png" alt="个人信息" class="avatar">
+            <h3>姓名：{{ this.name }}</h3>
+            <p>学号：{{ this.id }}</p>
+            <p>邮箱：{{ this.email }}</p>
+            <p>专业：{{ this.major }}</p>
+            <el-menu>
+              <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
+              <el-menu-item index="2" @click="go('PersonInformation')">修改个人信息</el-menu-item>
+            </el-menu>
+          </div>
+        </el-popover>
+      </el-col>
+    </el-row>
 
 
 
@@ -18,8 +39,6 @@
           <el-menu-item index="2" @click="go('StudentHomePage')">Home</el-menu-item>
           <el-menu-item index="7" @click="goTo('settings')">Set</el-menu-item>
           <el-menu-item index="8" @click="goTo('help')">Help</el-menu-item>
-          <el-menu-item index="9" @click="go('PersonInformation')">personInformation</el-menu-item>
-          <el-menu-item index="11" @click="go('updatePassword')">updatePassword</el-menu-item>
           <el-menu-item index="10" @click="logoutClick">LogOut</el-menu-item>
         </el-menu>
       </el-aside>
@@ -60,6 +79,10 @@ export default {
       ddls: [
         // ...其他DDL
       ],
+      id: 0,
+      name: '',
+      email: '',
+      major: '',
       attrs: [],
       posts:[],
     };
@@ -210,8 +233,9 @@ export default {
 
     goTo(route) {
 // 假设使用 Vue Router 进行导航
-localStorage.setItem('currentcourse',route.title);
-      this.$router.push( "course" );
+      localStorage.setItem("currentcourse",route.title);
+      localStorage.setItem("currentcourseid",route.id);
+      this.$router.push({ path: '/course' });
     },
     logoutClick() {
       this.$router.push('/Login');
@@ -230,6 +254,11 @@ localStorage.setItem('currentcourse',route.title);
 
   },
   async created() {
+    this.id = localStorage.getItem('id');
+    this.name = localStorage.getItem('name');
+    this.major = localStorage.getItem('major');
+    // this.phoneNumber = localStorage.getItem('phoneNumber');
+    this.email = localStorage.getItem('email');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadAllCoursesinfo();
     this.attrs = this.ddls.map(ddl => ({
@@ -306,6 +335,29 @@ el-button{
 
 .rili2 {
   flex-basis: 300px; /* 日历的宽度 */
+}
+ .user-profile {
+   text-align: center; /* 居中用户信息 */
+ }
+
+.avatar {
+  width: 80px; /* 头像大小 */
+  height: 80px; /* 头像大小 */
+  border-radius: 50%; /* 圆形头像 */
+  margin-bottom: 10px; /* 头像与姓名之间的间距 */
+}
+.top_menu {
+  line-height: 60px;
+}
+
+.menu-profile {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.profile-button i {
+  font-size: 20px; /* 调整图标大小 */
+  color: #fff; /* 图标颜色 */
 }
 
 </style>

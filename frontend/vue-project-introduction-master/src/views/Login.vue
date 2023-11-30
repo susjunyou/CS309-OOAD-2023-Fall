@@ -42,9 +42,7 @@ export default {
 </script>
 
 <style>
-.user-type {
-  margin: 20px 0;
-}
+
 
 .user-type label {
   margin-right: 10px;
@@ -92,40 +90,9 @@ export default {
   opacity: 0.85;
 }
 
-#main-pane {
-  /*margin: 6px;*/
-  /*width: calc(100% - 12px);*/
-  /*height: calc(100% - 12px - 42px);*/
-  margin: 6px;
-  width: calc(100% - 12px);
-  height: calc(100% - 12px);
-}
 
-#main-pane {
-  /*margin: 6px;*/
-  /*width: calc(100% - 12px);*/
-  /*height: calc(100% - 12px - 42px);*/
-  margin: 6px;
-  width: calc(100% - 12px);
-  height: calc(100% - 12px);
-  /* use grid layout rather than el-row */
-  /* because el-row and el-scrollbar can't be used together */
 
-}
 
-.boundary1 {
-  /*border-style: dashed;*/
-  border-style: solid;
-  border-color: #2bb7b3;;
-  border-width: 0.5px;
-  border-radius: 100px;
-}
 
-.boundary2 {
-  /*border-style: dashed;*/
-  border-style: solid;
-  border-color: #2bb7b3;
-  border-width: 0.5px;
-  border-radius: 100px;
-}
+
 </style>
