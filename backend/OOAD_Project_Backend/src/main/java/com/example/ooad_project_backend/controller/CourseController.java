@@ -48,6 +48,17 @@ public class CourseController {
         }
     }
 
+
+    @GetMapping("/getTeacher")
+    public Result getTeacherByCourseId(Integer courseId) {
+        List<TeacherInfo> teacherInfos = courseInfoService.findAllTeacherInfoByCourseId(courseId);
+        if (teacherInfos.size() == 0) {
+            return Result.error("1", "Maybe No such course");
+        } else {
+            return Result.success(teacherInfos);
+        }
+    }
+
     @GetMapping("/assignments")
     public Result getAssignmentsByCourseId(Integer courseId) {
         List<AssignmentInfo> assignmentInfos = courseInfoService.findAssignmentInfoByCourseId(courseId);

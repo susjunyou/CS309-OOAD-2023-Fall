@@ -17,11 +17,11 @@ public interface CourseInfoService extends IService<CourseInfo> {
 
     List<MaterialInfo> findMaterialInfoByCourseId(Integer courseId);
 
-    public void addStudent(Integer courseId, Integer studentId);
+    void addStudent(Integer courseId, Integer studentId);
 
-    public void addSA(Integer courseId, Integer studentId);
+    void addSA(Integer courseId, Integer studentId);
 
-    public void addTeacher(Integer courseId, Integer teacherId);
+    void addTeacher(Integer courseId, Integer teacherId);
 
     List<Integer> findMySACourseIdByStudentId(Integer studentId);
 
@@ -30,4 +30,6 @@ public interface CourseInfoService extends IService<CourseInfo> {
     List<StudentInfo> findAllStudentInfoByCourseId(Integer courseId);
 
     List<StudentInfo> findAllSAInfoByCourseId(Integer courseId);
+
+    List<TeacherInfo> findAllTeacherInfoByCourseId(Integer courseId);
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ooad_project_backend.entity.*;
 import com.example.ooad_project_backend.mapper.CourseDetailsMapper;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
+import com.example.ooad_project_backend.mapper.CourseTeacherMapper;
 import com.example.ooad_project_backend.mapper.ProjectInfoMapper;
 import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
 
     @Autowired
     private ProjectInfoMapper projectInfoMapper;
+
+    @Autowired
+    private CourseTeacherMapper courseTeacherMapper;
 
     @Override
     public List<ProjectInfo> findProjectInfoByCourseId(Integer courseId) {
@@ -78,5 +82,10 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     @Override
     public List<StudentInfo> findAllSAInfoByCourseId(Integer courseId) {
         return courseDetailsMapper.findAllSAInfoByCourseId(courseId);
+    }
+
+    @Override
+    public List<TeacherInfo> findAllTeacherInfoByCourseId(Integer courseId) {
+        return courseTeacherMapper.findTeacherIdByCourseId(courseId);
     }
 }

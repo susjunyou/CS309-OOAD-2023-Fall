@@ -11,6 +11,9 @@ public interface TeacherInfoMapper extends BaseMapper<TeacherInfo> {
     @Select("select * from teacher where account = #{account}")
     TeacherInfo findTeacherInfoByAccount(String account);
 
+    @Select("select * from teacher where id = #{id}")
+    TeacherInfo findTeacherInfoById(Integer id);
+
     @Select("select * from teacher where name = #{name}")
     TeacherInfo findByName(@Param("name") String name);
 
