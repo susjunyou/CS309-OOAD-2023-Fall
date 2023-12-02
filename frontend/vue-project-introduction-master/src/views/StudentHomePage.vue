@@ -45,19 +45,19 @@
 
 
       >
-        <el-form-item label="e_id" prop="e_id">
-          <el-input v-model="edit.e_id"/>
+        <el-form-item label="id" prop="e_id">
+          <el-input v-model="edit.e_id" disabled="disabled"/>
         </el-form-item>
 
-        <el-form-item label="e_email" prop="e_email">
+        <el-form-item label="email" prop="e_email">
           <el-input v-model="edit.e_email"/>
         </el-form-item>
 
-        <el-form-item label="e_phoneNumber" prop="e_phoneNumber">
+        <el-form-item label="phoneNumber" prop="e_phoneNumber">
           <el-input v-model="edit.e_phoneNumber"/>
         </el-form-item>
 
-        <el-form-item label="e_selfIntroduction" prop="e_selfIntroduction">
+        <el-form-item label="selfIntroduction" prop="e_selfIntroduction">
           <el-input v-model="edit.e_selfIntroduction"/>
         </el-form-item>
 
@@ -162,7 +162,7 @@ export default {
 
     },
     commitUpdate(){
-      this.id = this.edit.e_id;
+      //this.id = this.edit.e_id;
       this.email = this.edit.e_email;
       localStorage.setItem('id',this.edit.e_id);
       localStorage.setItem('email',this.edit.e_email);
