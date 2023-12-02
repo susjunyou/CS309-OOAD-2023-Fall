@@ -136,8 +136,8 @@ create table project_submission
     project_submission_id serial primary key,
     project_id            integer not null,
     student_id            integer not null,
-    submission_date       date    ,
-    content               text   ,
+    submission_date       date,
+    content               text,
     grade                 integer,
     grade_description     varchar(255)
 );
@@ -274,10 +274,11 @@ create table post
 create table reply
 (
     comment_id    serial primary key,
-    reply_content text      not null,
-    reply_author  integer   not null,
-    reply_time    timestamp not null,
-    post_id       integer   not null
+    reply_content text         not null,
+    author_type   varchar(255) not null,
+    reply_author  integer      not null,
+    reply_time    timestamp    not null,
+    post_id       integer      not null
 );
 
 --! add foreign key to reply

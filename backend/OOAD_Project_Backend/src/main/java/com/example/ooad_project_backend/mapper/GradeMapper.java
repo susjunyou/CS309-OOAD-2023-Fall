@@ -30,12 +30,23 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
     @Update("update assignment_submission set grade = #{grade} where student_id = #{studentId} and assignment_id = #{assignmentId}")
     boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
 
-    @Select("select * from attendance_submission where student_id = #{studentId}")
-    @Results({
-            @Result(property = "student_id", column = "student_id"),
-            @Result(property = "attendance_id", column = "attendance_id"),
-            @Result(property = "is_attended", column = "is_attended"),
-            @Result(property = "attendance_submission_id", column = "attendance_submission_id")
-    })
-    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
+//    @Select("select * from attendance_submission where student_id = #{studentId}")
+//    @Results({
+//            @Result(property = "student_id", column = "student_id"),
+//            @Result(property = "attendance_id", column = "attendance_id"),
+//            @Result(property = "is_attended", column = "is_attended"),
+//            @Result(property = "attendance_submission_id", column = "attendance_submission_id")
+//    })
+//    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
+
+//    @Results({
+//            @Result(property = "student_id", column = "student_id"),
+//            @Result(property = "attendance_id", column = "attendance_id"),
+//            @Result(property = "is_attended", column = "is_attended"),
+//            @Result(property = "attendance_submission_id", column = "attendance_submission_id"),
+//            @Result(property = "course_id", column = "course_id")
+//    })
+
+    @Select("select * from attendance_submission left join attendance a on a.id = attendance_submission.attendance_id where student_id = #{studentId} and a.course_id = #{courseId}")
+    List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId);
 }

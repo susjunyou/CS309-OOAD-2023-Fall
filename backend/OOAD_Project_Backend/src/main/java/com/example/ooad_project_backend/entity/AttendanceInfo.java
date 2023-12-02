@@ -12,6 +12,7 @@ import java.sql.Date;
 @Accessors(chain = true)    // 允许链式访问，例如：myObject.setField1("value1").setField2(42)。
 public class AttendanceInfo {
 
+
     private Integer student_id;
 
     private Integer attendance_id;
@@ -19,5 +20,7 @@ public class AttendanceInfo {
     private boolean is_attended;
 
     private Integer attendance_submission_id;
+
+    private Integer course_id;
 
 }

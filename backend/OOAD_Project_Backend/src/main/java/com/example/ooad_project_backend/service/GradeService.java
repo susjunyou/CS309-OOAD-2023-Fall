@@ -19,5 +19,7 @@ public interface GradeService extends IService<GradeInfo> {
 
     boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
 
-    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
+//    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
+
+    List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId);
 }
