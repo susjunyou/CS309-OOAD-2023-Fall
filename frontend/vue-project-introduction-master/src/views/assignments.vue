@@ -1,13 +1,25 @@
+
 <template>
   <div>
-    <el-menu mode="horizontal" class="top_menu" text-color="#fff" background-color="cornflowerblue" >
-      <el-menu-item v-for="course in courses" :key="course" @click="goTo(course)" >
-        {{ course.title }}
-      </el-menu-item>
-    </el-menu>
+    <el-row class="header-bar" background-color="#545c64" text-color="#fff">
+      <el-col :span="15">
+        <h1 class="header-title">Project Helper</h1>
+      </el-col>
+      <el-col :span="9">
+        <el-dropdown trigger="click">
+          <span class="el-dropdown-link">
+            课程列表<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="course in courses" :key="course.id" @click.native="goTo(course)">
+              {{ course.title }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
+    </el-row>
 
-
-
+<div>
     <el-menu
         class="course-navbar"
         mode="vertical"
@@ -22,13 +34,17 @@
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
+    </div>
     <!--  <div>-->
-    <div>
-      <div v-for="assignment in assignments" :key="assignment.id" class="assignment">
-        <h3>{{ assignment.title }}</h3>
-        <p>{{ assignment.ddl }}</p>
-        <p @click="submitassignment(assignment)" class="clickable-text">提交作业</p>
-      </div>
+    <div class="assignment-container">
+      <el-row :gutter="20">
+        <el-col v-for="assignment in assignments" :key="assignment.id" :span="6">
+          <el-card @click.native="submitassignment(assignment)" class="assignment-card">
+            <h3>{{ assignment.title }}</h3>
+            <p>截止日期：{{ assignment.ddl }}</p>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
     <!--    <p>welcome to {{myValue}}</p>-->
     <!--  </div>-->
@@ -121,10 +137,10 @@ export default {
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
-        this.ddls.push({
-          date: this.projects[i].ddl,
-          title: this.projects[i].title,
-        });
+        // this.ddls.push({
+        //   date: this.projects[i].ddl,
+        //   title: this.projects[i].title,
+        // });
       }
       console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
@@ -137,12 +153,42 @@ export default {
 
 
 <style scoped>
-.clickable-text{
-  text-decoration: underline; /* 添加下划线 */
-  color: blue; /* 设置为蓝色或其他突出的颜色 */
-  cursor: pointer; /* 鼠标悬停时显示手形光标 */
-  .clickable-text:hover {
-    color: darkblue; /* 悬停时改变颜色 */
-  }
+
+.header-bar {
+  background-color: cornflowerblue;
+  color: #fff;
+  line-height: 60px; /* 根据需要调整高度 */
+  padding: 0 20px; /* 根据需要调整内边距 */
 }
+.header-title {
+  text-align: right; /* 将文本对齐到右边 */
+  padding-right: 100px; /* 或者您需要的任何值，以便向右移动标题 */
+}
+.header-bar h1 {
+  margin: 0; /* 移除默认的margin */
+}
+
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
+/* ...之前的样式... */
+
+.assignment-container {
+  margin: 20px;
+}
+
+.assignment-card {
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid greenyellow;
+}
+
+.assignment-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+}
+
+/* ...之后的样式... */
+
 </style>

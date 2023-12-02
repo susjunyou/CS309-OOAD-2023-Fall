@@ -1,32 +1,36 @@
+
 <template>
+
   <div id="app">
     <el-row class="top_menu">
-      <el-col :span="22">
-        <el-menu mode="horizontal" text-color="#fff" background-color="cornflowerblue">
-          <el-menu-item v-for="course in courses" :key="course" @click="goTo(course)">
-            {{ course.title }}
-          </el-menu-item>
-        </el-menu>
-      </el-col>
-      <el-col :span="2" class="menu-profile" background-color="cornflowerblue">
-        <el-button type="text" v-popover:profilePopover class="profile-button">
-          <p>个人资料</p>
-        </el-button>
-        <el-popover ref="profilePopover" placement="bottom" width="200" trigger="click">
-          <div class="user-profile">
-            <img src="../assets/人脸.png" alt="个人信息" class="avatar">
-            <h3>姓名：{{ this.name }}</h3>
-            <p>学号：{{ this.id }}</p>
-            <p>邮箱：{{ this.email }}</p>
-            <p>专业：{{ this.major }}</p>
-            <el-menu>
-              <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
-              <el-menu-item index="2" @click="go('PersonInformation')">修改个人信息</el-menu-item>
-            </el-menu>
-          </div>
-        </el-popover>
-      </el-col>
+      <el-menu mode="horizontal" text-color="#fff" background-color="cornflowerblue" class="full-width">
+        <el-menu-item v-for="course in courses" :key="course.id" @click="goTo(course)">
+          {{ course.title }}
+        </el-menu-item>
+        <!-- 用一个el-menu-item包裹profile-button，但不包含在el-menu的v-for循环中 -->
+        <el-menu-item class="menu-profile">
+          <el-button type="text" v-popover:profilePopover class="profile-button">
+            <i class="el-icon-user"></i> 个人资料
+          </el-button>
+          <el-popover ref="profilePopover" placement="bottom" width="200" trigger="click">
+            <!-- popover内容 -->
+              <div class="user-profile">
+                <img src="../assets/人脸.png" alt="个人信息" class="avatar">
+                <h3>姓名：{{ this.name }}</h3>
+                <p>学号：{{ this.id }}</p>
+                <p>邮箱：{{ this.email }}</p>
+                <p>专业：{{ this.major }}</p>
+                <el-menu>
+                  <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
+                  <el-menu-item index="2" @click="go('PersonInformation')">修改个人信息</el-menu-item>
+                </el-menu>
+              </div>
+
+          </el-popover>
+        </el-menu-item>
+      </el-menu>
     </el-row>
+
 
 
 
@@ -34,16 +38,6 @@
     <!-- 主内容区 -->
     <el-container class="class_lists">
       <!-- 侧边栏：课程列表 -->
-      <el-aside width="120px">
-        <el-menu mode="horizontal" class="top_menu">
-          <el-menu-item index="2" @click="go('StudentHomePage')">Home</el-menu-item>
-          <el-menu-item index="7" @click="goTo('settings')">Set</el-menu-item>
-          <el-menu-item index="8" @click="goTo('help')">Help</el-menu-item>
-          <el-menu-item index="10" @click="logoutClick">LogOut</el-menu-item>
-        </el-menu>
-      </el-aside>
-
-
       <!-- 右侧内容区 -->
       <el-main>
         <!-- 使用flex布局 -->
@@ -350,14 +344,20 @@ el-button{
   line-height: 60px;
 }
 
-.menu-profile {
-  text-align: right;
-  padding-right: 20px;
+.full-width {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* 这会将菜单项推到左侧，个人资料按钮到右侧 */
 }
 
-.profile-button i {
-  font-size: 20px; /* 调整图标大小 */
-  color: #fff; /* 图标颜色 */
+/* 自定义profile按钮样式 */
+.menu-profile {
+  float: right; /* 将按钮浮动到右边 */
+}
+
+.profile-button {
+  color: #fff; /* 文本颜色 */
+  /* 其他需要的样式 */
 }
 
 </style>
