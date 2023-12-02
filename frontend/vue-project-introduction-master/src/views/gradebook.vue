@@ -34,33 +34,79 @@
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
+
     <div class="attendance-list">
-      <h2>出勤记录</h2>
+      <hr class="separator">
+      <h1>出勤记录</h1>
       <ul>
-        <li v-for="attendance in attendances" :key="attendance.date">
-          {{ attendance.date }}
+        <li>
+          <table>
+            <thead>
+            <tr>
+              <th>时间</th>
+              <th>分数</th>
+              <th>比例</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="attendance in attendances" :key="attendance.data">
+              <td>{{ attendance.date }}</td>
+              <td>{{ attendance.attendancesgrade }}</td>
+              <td>{{ attendance.proportion }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <h1>作业成绩</h1>
+      <ul>
+        <li>
+          <table>
+            <thead>
+            <tr>
+              <th>名称</th>
+              <th>分数</th>
+              <th>比例</th>
+              <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="assignment in assignments" :key="assignment.title">
+              <td>{{ assignment.title }}</td>
+              <td>{{assignment.assignmentsgrade}}</td>
+              <td>{{ assignment.proportion }}</td>
+              <td>{{ assignment.gardedescription }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <hr class="separator">
+      <h1>项目成绩</h1>
+      <ul>
+        <li>
+          <table>
+            <thead>
+            <tr>
+              <th>时间</th>
+              <th>分数</th>
+              <th>比例</th>
+              <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="project in projects" :key="project.title">
+              <td>{{ project.title }}</td>
+              <td>{{ project.projectsgrade }}</td>
+              <td>{{ project.proportion }}</td>
+              <td>{{ project.gardedescription }}</td>
+            </tr>
+            </tbody>
+          </table>
         </li>
       </ul>
     </div>
-    <div class="assigment-list">
-      <h2>Assignments</h2>
-      <ul>
-        <li v-for="assignment in assignments" :key="assignment.title">
-          {{ assignment.title }}
-          {{assignment.assignmentsgrade}}
-        </li>
-      </ul>
-    </div>
-    <div class="project-list">
-      <h2>Projects</h2>
-      <ul>
-        <li v-for="project in projects" :key="project.title">
-          {{ project.title}}
-          {{project.projectsgrade}}
-        </li>
-      </ul>
-    </div>
-    <!--  <div>-->
+
     </div>
 </template>
 
@@ -130,7 +176,9 @@ export default {
           title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
-          assignmentsgrade: localStorage.getItem('assignmentgrade' + localStorage.getItem("currentcourse")+i)
+          assignmentsgrade: localStorage.getItem('assignmentgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i),
+          proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+          gardedescription: localStorage.getItem('assignmentgradeDescription' + localStorage.getItem("currentcourse")+i)
         });
       }
       this.projects=[];
@@ -143,7 +191,9 @@ export default {
           ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-          projectsgrade: localStorage.getItem('projectgrade' + localStorage.getItem("currentcourse")+i)
+          projectsgrade: localStorage.getItem('projectgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('projectmaxScore' + localStorage.getItem("currentcourse") + i),
+          proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+          gardedescription: localStorage.getItem('projectgradeDescription' + localStorage.getItem("currentcourse")+i)
         });
         this.ddls =[]
         this.ddls.push({
@@ -151,9 +201,12 @@ export default {
           title: this.projects[i].title,
         });
       }
+
       for (let i = 0; i < localStorage.getItem('attendancesLength'+localStorage.getItem("currentcourse")); i++) {
         this.attendances.push({
           date: localStorage.getItem('attendancedate' + localStorage.getItem("currentcourse")+i),
+          attendancesgrade: localStorage.getItem('attendancegrade' + localStorage.getItem("currentcourse")+i)+'/'+localStorage.getItem('attendancemaxScore' + localStorage.getItem("currentcourse") + i),
+          proportion:localStorage.getItem('attendanceproportion' + localStorage.getItem("currentcourse")+i)
         });
       }
 
@@ -195,6 +248,54 @@ export default {
 }
 .header-bar h1 {
   margin: 0; /* 移除默认的margin */
+}
+
+.attendance-list li {
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+  margin-bottom: 0.5em;
+  padding: 0.5em;
+}
+.attendance-list {
+  margin: 20px; /* 设置外边距 */
+  padding: 20px; /* 设置内边距 */
+  border: 1px solid #ccc; /* 设置边框 */
+  border-radius: 8px; /* 设置边框圆角 */
+  font-family: Arial, sans-serif; /* 设置字体 */
+}
+
+.attendance-list h1 {
+  font-size: 1.5em; /* 调整标题字体大小 */
+  margin-bottom: 1em; /* 调整标题底部间距 */
+}
+
+.attendance-list table {
+  width: 100%; /* 表格宽度占满容器 */
+  border-collapse: collapse; /* 边框合并 */
+  margin-bottom: 1em; /* 调整表格底部间距 */
+}
+
+.attendance-list th, .attendance-list td {
+  border: 1px solid #ccc; /* 设置单元格边框 */
+  padding: 8px; /* 设置单元格内边距 */
+  text-align: left; /* 文本左对齐 */
+}
+
+.attendance-list th {
+  background-color: #f2f2f2; /* 表头背景色 */
+}
+
+.attendance-list tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行背景色 */
+}
+.main-container {
+  position: relative;
+}
+
+.attendance-list {
+  position: absolute;
+  width: 80%;
+  left: 200px; /* 右移 50px，根据需要调整 */
 }
 
 </style>
