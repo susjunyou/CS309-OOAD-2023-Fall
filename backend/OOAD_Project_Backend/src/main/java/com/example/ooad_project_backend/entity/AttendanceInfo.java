@@ -13,6 +13,6 @@ import java.sql.Date;
 public class AttendanceInfo extends GradeInfo {
     private Date attendanceDate;
 
-    private boolean isAttendance;
+    private boolean isAttended ;
 
 }
