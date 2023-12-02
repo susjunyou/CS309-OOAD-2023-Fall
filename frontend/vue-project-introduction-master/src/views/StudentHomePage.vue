@@ -175,15 +175,19 @@ export default {
           console.error('Error loading course projects:', error);
         });
         //加载attendances
-        await this.$axios.get('/course/attendances', {
+        await this.$axios.get('/grade/getAttendanceGradeByCourseIdAndStudentId', {
           params: {
-            courseId: course.id
+            courseId: course.id,
+            studentId: this.id
           }
         }).then((res) => {
           if (res.data.code === "0") {
             localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
               localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
+              localStorage.setItem('attendancegrade'+course.title+i,res.data.data[i].grade);
+              localStorage.setItem('attendancemaxScore'+course.title+i,res.data.data[i].maxScore);
+              localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
             }
           }
         }).catch(error => {
@@ -219,13 +223,9 @@ export default {
             console.error('Error loading project grade:', error);
           });
         }
-        this.coursemodified.push({
-          title: course.title,
-          id: course.id,
-
-        })
       }
     },
+
 
     goTo(route) {
 // 假设使用 Vue Router 进行导航
