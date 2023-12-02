@@ -249,6 +249,7 @@ create table attendance
 
 create table attendance_submission
 (
+    course_id                integer not null,
     attendance_submission_id serial primary key,
     student_id               integer not null,
     attendance_id            integer not null,

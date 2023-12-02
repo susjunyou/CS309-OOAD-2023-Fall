@@ -44,4 +44,9 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     public List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId) {
         return gradeMapper.findAttendanceGradeByStudentId(studentId);
     }
+
+    @Override
+    public List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId) {
+        return gradeMapper.findAttendanceGradeByCourseIdAndStudentId(courseId, studentId);
+    }
 }

@@ -38,4 +38,13 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
             @Result(property = "attendance_submission_id", column = "attendance_submission_id")
     })
     List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
+
+    @Select("select * from attendance_submission where student_id = #{studentId} and course_id = #{courseId}")
+    @Results({
+            @Result(property = "student_id", column = "student_id"),
+            @Result(property = "attendance_id", column = "attendance_id"),
+            @Result(property = "is_attended", column = "is_attended"),
+            @Result(property = "attendance_submission_id", column = "attendance_submission_id")
+    })
+    List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId);
 }

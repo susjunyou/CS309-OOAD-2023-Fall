@@ -38,6 +38,16 @@ public class GradeController {
         }
     }
 
+    @GetMapping("/getAttendanceGradeByCourseIdAndStudentId")
+    public Result getAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId) {
+        List<AttendanceInfo> attendanceInfos = gradeServiceImp.findAttendanceGradeByCourseIdAndStudentId(courseId, studentId);
+        if (attendanceInfos.size() == 0) {
+            return Result.error("1", "No such student or the student does not check in !");
+        } else {
+            return Result.success(attendanceInfos);
+        }
+    }
+
 
     @PostMapping("/addAssignmentGrade")
     public Result addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
