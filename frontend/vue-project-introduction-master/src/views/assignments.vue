@@ -19,7 +19,7 @@
       </el-col>
     </el-row>
 
-<div>
+
     <el-menu
         class="course-navbar"
         mode="vertical"
@@ -34,17 +34,20 @@
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
-    </div>
+
     <!--  <div>-->
     <div class="assignment-container">
+      <!-- ...之前的代码... -->
       <el-row :gutter="20">
-        <el-col v-for="assignment in assignments" :key="assignment.id" :span="6">
+        <el-col v-for="assignment in assignments" :key="assignment.id" :span="6" >
           <el-card @click.native="submitassignment(assignment)" class="assignment-card">
             <h3>{{ assignment.title }}</h3>
             <p>截止日期：{{ assignment.ddl }}</p>
           </el-card>
         </el-col>
       </el-row>
+      <!-- ...之后的代码... -->
+
     </div>
     <!--    <p>welcome to {{myValue}}</p>-->
     <!--  </div>-->
@@ -86,7 +89,6 @@ export default {
       this.$router.push({ path: '/course' });
     },
     go(route) {
-
       this.$router.push(route);
     },
     async loadLocalStorageData() {
@@ -153,6 +155,18 @@ export default {
 
 
 <style scoped>
+.course-navbar .menu-item {
+  background-color: #545c64;
+  color: #fff;
+  margin-bottom: 10px; /* 菜单项之间的间隔 */
+  padding: 10px; /* 菜单项的内边距 */
+  cursor: pointer;
+}
+
+.course-navbar .menu-item:hover {
+  background-color: #ffd04b;
+  color: #545c64;
+}
 
 .header-bar {
   background-color: cornflowerblue;
@@ -177,6 +191,7 @@ export default {
 
 .assignment-container {
   margin: 20px;
+  padding-left: 200px;
 }
 
 .assignment-card {

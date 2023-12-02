@@ -2,66 +2,51 @@
 <template>
 
   <div id="app">
-    <el-row class="top_menu">
-      <el-menu mode="horizontal" text-color="#fff" background-color="cornflowerblue" class="full-width">
-        <el-menu-item v-for="course in courses" :key="course.id" @click="goTo(course)">
-          {{ course.title }}
-        </el-menu-item>
-        <!-- 用一个el-menu-item包裹profile-button，但不包含在el-menu的v-for循环中 -->
-        <el-menu-item class="menu-profile">
+      <el-row class="header-bar" background-color="#545c64" text-color="#fff">
+        <el-col :span="14">
+          <h1 class="header-title">Project Helper</h1>
+        </el-col>
+        <el-col :span="10">
           <el-button type="text" v-popover:profilePopover class="profile-button">
             <i class="el-icon-user"></i> 个人资料
           </el-button>
           <el-popover ref="profilePopover" placement="bottom" width="200" trigger="click">
             <!-- popover内容 -->
-              <div class="user-profile">
-                <img src="../assets/人脸.png" alt="个人信息" class="avatar">
-                <h3>姓名：{{ this.name }}</h3>
-                <p>学号：{{ this.id }}</p>
-                <p>邮箱：{{ this.email }}</p>
-                <p>专业：{{ this.major }}</p>
-                <el-menu>
-                  <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
-                  <el-menu-item index="2" @click="go('PersonInformation')">修改个人信息</el-menu-item>
-                </el-menu>
-              </div>
-
-          </el-popover>
-        </el-menu-item>
-      </el-menu>
-    </el-row>
-
-
-
-
-
-    <!-- 主内容区 -->
-    <el-container class="class_lists">
-      <!-- 侧边栏：课程列表 -->
-      <!-- 右侧内容区 -->
-      <el-main>
-        <!-- 使用flex布局 -->
-        <div class="content-wrapper">
-          <!-- 帖子列表 -->
-          <div class="posts-wrapper">
-            <div v-for="post in posts" :key="post.id" class="post">
-
-                <h2>课程：{{ post.course }}</h2>
-              <h3>{{ post.title }}</h3>
-              <p>{{ post.content }}</p>
-              <small>作者: {{ post.author }}</small>
+            <div class="user-profile">
+              <img src="../assets/人脸.png" alt="个人信息" class="avatar">
+              <h3>姓名：{{ this.name }}</h3>
+              <p>学号：{{ this.id }}</p>
+              <p>邮箱：{{ this.email }}</p>
+              <p>专业：{{ this.major }}</p>
+              <el-menu>
+                <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
+                <el-menu-item index="2" @click="go('PersonInformation')">修改个人信息</el-menu-item>
+              </el-menu>
             </div>
-          </div>
+          </el-popover>
 
-          <!-- 日历 -->
-          <div class="rili2">
-            <v-calendar :attributes="attrs"></v-calendar>
-          </div>
-        </div>
-      </el-main>
+        </el-col>
+      </el-row>
 
-    </el-container>
 
+    <el-row class="content-wrapper">
+      <!-- 课程卡片列表 -->
+      <el-col :span="18" class="course-list">
+        <el-row :gutter="20">
+          <el-col v-for="course in courses" :key="course.id" :span="8">
+            <el-card class="course-card" @click.native="goTo(course)">
+              <h3>{{ course.code }}</h3>
+              <h3>{{ course.title }}</h3>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-col>
+
+      <!-- 日历 -->
+      <el-col :span="6" class="calendar">
+        <v-calendar :attributes="attrs"></v-calendar>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -79,6 +64,9 @@ export default {
       major: '',
       attrs: [],
       posts:[],
+      assignments:[],
+      currentddl:[],
+      coursemodified:[],
     };
   },
   methods: {
@@ -88,6 +76,7 @@ export default {
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
         //加载posts
+        this.currentddl = [];
         await this.$axios.get('/course/posts', {
           params: {
             courseId: course.id
@@ -147,6 +136,10 @@ export default {
                   date : res.data.data[i].assignmentDeadline,
                 title : course.title+"   "+res.data.data[i].assignmentTitle,
               })
+              this.currentddl.push({
+                date : res.data.data[i].assignmentDeadline,
+                title : course.title+"   "+res.data.data[i].assignmentTitle,
+              })
             }
           }
         }).catch(error => {
@@ -169,6 +162,10 @@ export default {
               localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
               this.ddls.push({
+                date : res.data.data[i].projectDeadline,
+                title : course.title+"   "+res.data.data[i].projectTitle,
+              })
+              this.currentddl.push({
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,
               })
@@ -222,6 +219,11 @@ export default {
             console.error('Error loading project grade:', error);
           });
         }
+        this.coursemodified.push({
+          title: course.title,
+          id: course.id,
+
+        })
       }
     },
 
@@ -242,6 +244,8 @@ export default {
         this.courses.push({
           id: localStorage.getItem('coursesid' + i),
           title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
         });
       }
     },
@@ -280,12 +284,7 @@ export default {
 </script>
 
 <style>
-.top_menu{
-  background-color: black;
-  border-color: yellow;
-  width:100%;
 
-}
 /* 在这里添加一些基础样式 */
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -311,21 +310,6 @@ el-button{
   border: 2px solid blue;
   border-radius: 50%;
 }
-.content-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
-.posts-wrapper {
-  flex: 1; /* 使帖子列表占据多余空间 */
-  margin-right: 50px; /* 和日历之间的距离 */
-}
-
-.post {
-  border: 1px solid #ccc; /* 帖子之间的边框 */
-  margin-bottom: 20px; /* 帖子之间的间距 */
-  padding: 10px;
-}
 
 .rili2 {
   flex-basis: 300px; /* 日历的宽度 */
@@ -340,24 +324,55 @@ el-button{
   border-radius: 50%; /* 圆形头像 */
   margin-bottom: 10px; /* 头像与姓名之间的间距 */
 }
-.top_menu {
-  line-height: 60px;
-}
 
-.full-width {
-  width: 100%;
-  display: flex;
-  justify-content: space-between; /* 这会将菜单项推到左侧，个人资料按钮到右侧 */
-}
+
+
 
 /* 自定义profile按钮样式 */
-.menu-profile {
-  float: right; /* 将按钮浮动到右边 */
-}
+
 
 .profile-button {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
+}
+.header-bar {
+  background-color: cornflowerblue;
+  color: #fff;
+  line-height: 60px; /* 根据需要调整高度 */
+  padding: 0 20px; /* 根据需要调整内边距 */
+}
+.header-title {
+  text-align: right; /* 将文本对齐到右边 */
+  padding-right: 100px; /* 或者您需要的任何值，以便向右移动标题 */
+}
+.header-bar h1 {
+  margin: 0; /* 移除默认的margin */
+}
+.course-cards-wrapper {
+  padding: 20px 0;
+}
+
+.course-card {
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+  border: 1px solid greenyellow;
+
+}
+
+.course-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.content-wrapper {
+  margin-top: 20px; /* 或者您需要的空间 */
+}
+
+.course-list {
+  padding-right: 20px; /* 在课程列表和日历之间添加一些空间 */
+}
+
+.calendar {
+  width: 300px; /* 固定日历的宽度 */
 }
 
 </style>
