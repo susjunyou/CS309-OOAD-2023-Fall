@@ -40,10 +40,10 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
         return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade);
     }
 
-    @Override
-    public List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId) {
-        return gradeMapper.findAttendanceGradeByStudentId(studentId);
-    }
+//    @Override
+//    public List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId) {
+//        return gradeMapper.findAttendanceGradeByStudentId(studentId);
+//    }
 
     @Override
     public List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId) {

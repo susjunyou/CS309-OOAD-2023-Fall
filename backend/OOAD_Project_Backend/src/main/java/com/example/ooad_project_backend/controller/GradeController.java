@@ -28,15 +28,15 @@ public class GradeController {
         }
     }
 
-    @GetMapping("/getAttendanceGradeByStudentId")
-    public Result getAttendanceGradeByStudentId(Integer studentId) {
-        List<AttendanceInfo> attendanceInfos = gradeServiceImp.findAttendanceGradeByStudentId(studentId);
-        if (attendanceInfos.size() == 0) {
-            return Result.error("1", "No such student or the student does not check in !");
-        } else {
-            return Result.success(attendanceInfos);
-        }
-    }
+//    @GetMapping("/getAttendanceGradeByStudentId")
+//    public Result getAttendanceGradeByStudentId(Integer studentId) {
+//        List<AttendanceInfo> attendanceInfos = gradeServiceImp.findAttendanceGradeByStudentId(studentId);
+//        if (attendanceInfos.size() == 0) {
+//            return Result.error("1", "No such student or the student does not check in !");
+//        } else {
+//            return Result.success(attendanceInfos);
+//        }
+//    }
 
     @GetMapping("/getAttendanceGradeByCourseIdAndStudentId")
     public Result getAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId) {
