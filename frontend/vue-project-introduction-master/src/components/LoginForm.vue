@@ -102,6 +102,7 @@ export default {
             localStorage.setItem('password',response.data.data.password);
             localStorage.setItem('email',response.data.data.email);
             localStorage.setItem('name',response.data.data.name);
+            localStorage.setItem('userType',response.data.data.userType);
             localStorage.setItem('selfIntroduction',response.data.data.selfIntroduction);
             console.log(localStorage.getItem('id'));
             console.log(localStorage.getItem('major'));

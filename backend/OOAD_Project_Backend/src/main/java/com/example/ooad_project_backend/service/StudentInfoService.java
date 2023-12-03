@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.ooad_project_backend.entity.CourseInfo;
+import com.example.ooad_project_backend.entity.FileInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 
 import java.sql.Date;
@@ -14,9 +15,9 @@ public interface StudentInfoService extends IService<StudentInfo> {
 
     void add(StudentInfo studentInfo);
 
-    boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate);
+    boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, Integer fileId);
 
-    boolean submitProject(Integer studentId, Integer projectId, String content, Date submitDate);
+    boolean submitProject(Integer studentId, Integer projectId, String content, Date submitDate, Integer fileId);
 
     StudentInfo findStudentInfoById(Integer id);
 
