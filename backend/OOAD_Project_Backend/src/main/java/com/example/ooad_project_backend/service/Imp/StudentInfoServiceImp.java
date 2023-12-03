@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ooad_project_backend.common.ResultCode;
 import com.example.ooad_project_backend.entity.CourseInfo;
+import com.example.ooad_project_backend.entity.FileInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.exception.CustomException;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
@@ -57,10 +58,9 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
     }
 
     @Override
-    public boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+    public boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, Integer fileId) {
         // 自动填充提交时间为当前时间
-
-        studentInfoMapper.submitAssignment(studentId, assignmentId, content, submitDate);
+        studentInfoMapper.submitAssignment(studentId, assignmentId, content, submitDate, fileId);
         return true;
     }
 
@@ -71,8 +71,8 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
     }
 
     @Override
-    public boolean submitProject(Integer studentId, Integer projectId, String content, Date submitDate) {
-        studentInfoMapper.submitProject(studentId, projectId, content, submitDate);
+    public boolean submitProject(Integer studentId, Integer projectId, String content, Date submitDate, Integer fileId) {
+        studentInfoMapper.submitProject(studentId, projectId, content, submitDate, fileId);
         return true;
     }
 

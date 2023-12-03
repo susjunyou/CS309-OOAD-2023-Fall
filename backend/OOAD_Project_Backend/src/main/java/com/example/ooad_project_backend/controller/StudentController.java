@@ -3,12 +3,16 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.CourseInfo;
+import com.example.ooad_project_backend.entity.FileInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.enums.UserType;
+import com.example.ooad_project_backend.service.Imp.FileServiceImp;
 import com.example.ooad_project_backend.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
@@ -18,6 +22,9 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentInfoService studentInfoService;
+
+    @Autowired
+    private FileServiceImp fileServiceImp;
 
 
     @GetMapping("/getCourseInfo")
@@ -31,21 +38,38 @@ public class StudentController {
     }
 
 
-
     @GetMapping("/updateAssignment")
     public Result updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
         return studentInfoService.updateAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/submitAssignment")
-    public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
+    public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, MultipartFile file) {
         // 自动填充提交时间为当前时间，暂未实现
-        return studentInfoService.submitAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
+        FileInfo fileInfo = new FileInfo();
+        try {
+            fileInfo.setFileName(file.getOriginalFilename());
+            fileInfo.setFileType(file.getContentType());
+            fileInfo.setFileData(file.getBytes());
+            fileInfo.setId(fileServiceImp.insertFile(fileInfo).getId());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return studentInfoService.submitAssignment(studentId, assignmentId, content, submitDate, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/submitProject")
-    public Result submitProject(Integer studentId, Integer projectId, String content, Date submitDate) {
-        return studentInfoService.submitProject(studentId, projectId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
+    public Result submitProject(Integer studentId, Integer projectId, String content, Date submitDate, MultipartFile file) {
+        FileInfo fileInfo = new FileInfo();
+        try {
+            fileInfo.setFileName(file.getOriginalFilename());
+            fileInfo.setFileType(file.getContentType());
+            fileInfo.setFileData(file.getBytes());
+            fileInfo.setId(fileServiceImp.insertFile(fileInfo).getId());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return studentInfoService.submitProject(studentId, projectId, content, submitDate, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/getStudent")
