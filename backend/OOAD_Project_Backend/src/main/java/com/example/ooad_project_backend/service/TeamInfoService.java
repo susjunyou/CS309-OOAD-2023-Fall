@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface TeamInfoService extends IService<TeamInfo> {
 
+    boolean updateTeamInfo(TeamInfo teamInfo);
+
+    boolean updateTeamLeader(Integer teamId, Integer studentId);
+
     boolean createTeam(TeamInfo teamInfo);
 
     boolean joinTeam(TeamInfo teamInfo, Integer studentId);
@@ -16,9 +20,25 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     List<StudentInfo> findStudentInfoByTeamId(Integer teamId);
 
+    TeamInfo findTeamInfoByTeamId(Integer teamId);
+
     boolean leaveTeam(Integer teamId, Integer studentId);
 
     boolean deleteTeam(Integer teamId);
 
     List<TeamInfo> findAllTeamInfoByStudentId(Integer studentId);
+
+    boolean requestJoinTeam(Integer teamId, Integer studentId);
+
+    List<StudentInfo> getRequestsJoinTeam(Integer teamId);
+
+    boolean manageTeamRequest(Integer requestId,boolean isAccepted);
+
+    boolean manageInvite(Integer id,boolean isAccepted);
+
+    boolean inviteStudent(Integer teamId, Integer studentId);
+
+    List<TeamInfo> getInvitesJoinTeam(Integer studentId);
+
+
 }

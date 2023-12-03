@@ -22,4 +22,8 @@ public interface GradeService extends IService<GradeInfo> {
 //    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
 
     List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId);
+
+    List<AssignmentInfo> getAssignmentSubmissionHistory(Integer studentId, Integer assignmentId);
+
+    List<ProjectInfo> getProjectSubmissionHistory(Integer studentId, Integer projectId);
 }

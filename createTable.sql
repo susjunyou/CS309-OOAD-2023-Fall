@@ -287,8 +287,7 @@ create table request_join_team
 (
     id serial primary key,
     student_id           integer not null,
-    team_id              integer not null,
-    project_id           integer not null
+    team_id              integer not null
 );
 
 --! create table invite_join_team
@@ -297,8 +296,7 @@ create table invite_join_team
 (
     id serial primary key,
     student_id          integer not null,
-    team_id             integer not null,
-    project_id          integer not null
+    team_id             integer not null
 );
 
 

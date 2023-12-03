@@ -47,6 +47,12 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
 //            @Result(property = "course_id", column = "course_id")
 //    })
 
+    @Select("select * from assignment_submission where student_id = #{studentId} and assignment_id = #{assignmentId}")
+    List<AssignmentInfo> getAssignmentSubmissionHistory(Integer studentId, Integer assignmentId);
+
+    @Select("select * from project_submission where student_id = #{studentId} and project_id = #{projectId}")
+    List<ProjectInfo> getProjectSubmissionHistory(Integer studentId, Integer projectId);
+
     @Select("select * from attendance_submission left join attendance a on a.id = attendance_submission.attendance_id where student_id = #{studentId} and a.course_id = #{courseId}")
     List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId);
 }

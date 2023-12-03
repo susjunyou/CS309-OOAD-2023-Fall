@@ -9,7 +9,7 @@ import com.example.ooad_project_backend.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.ooad_project_backend.entity.AttendanceInfo;
-import java.sql.Date;
+
 import java.util.List;
 
 @Service
@@ -49,4 +49,15 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     public List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId) {
         return gradeMapper.findAttendanceGradeByCourseIdAndStudentId(courseId, studentId);
     }
+
+    @Override
+    public List<AssignmentInfo> getAssignmentSubmissionHistory(Integer studentId, Integer assignmentId) {
+        return gradeMapper.getAssignmentSubmissionHistory(studentId, assignmentId);
+    }
+
+    @Override
+    public List<ProjectInfo> getProjectSubmissionHistory(Integer studentId, Integer projectId) {
+        return gradeMapper.getProjectSubmissionHistory(studentId, projectId);
+    }
+
 }
