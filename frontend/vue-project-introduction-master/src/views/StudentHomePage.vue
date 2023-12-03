@@ -21,6 +21,7 @@
             <el-menu>
               <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
               <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
+              <el-menu-item index="3" @click="logoutClick">LogOut</el-menu-item>
             </el-menu>
           </div>
         </el-popover>
