@@ -1,6 +1,7 @@
 package com.example.ooad_project_backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 
@@ -30,7 +31,7 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     boolean requestJoinTeam(Integer teamId, Integer studentId);
 
-    List<StudentInfo> getRequestsJoinTeam(Integer teamId);
+    List<JoinTeamInfo> getRequestsJoinTeam(Integer teamId);
 
     boolean manageTeamRequest(Integer requestId,boolean isAccepted);
 
@@ -38,7 +39,7 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     boolean inviteStudent(Integer teamId, Integer studentId);
 
-    List<TeamInfo> getInvitesJoinTeam(Integer studentId);
+    List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 
 
 }

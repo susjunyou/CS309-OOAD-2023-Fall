@@ -1,6 +1,7 @@
 package com.example.ooad_project_backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 import org.apache.ibatis.annotations.*;
 
@@ -61,11 +62,11 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select student_id from team_student where team_id = #{teamId}")
     List<Integer> findStudentIdsByTeamId(Integer teamId);
 
-    @Select("select student_id from request_join_team where team_id = #{teamId}")
-    List<Integer> getRequestsStudentIdByTeamId(Integer teamId);
+    @Select("select * from request_join_team where team_id = #{teamId}")
+    List<JoinTeamInfo> getRequestsStudentIdByTeamId(Integer teamId);
 
     @Select("select team_id from request_join_team where student_id = #{studentId}")
-    List<Integer> getInvitesJoinTeam(Integer studentId);
+    List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 
 
     //team_id在team_student表里通过student_id找到，然后在team表里通过team_id找到
@@ -78,6 +79,9 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select student_id from request_join_team where id = #{requestId}")
     Integer findStudentIdByRequestId(Integer requestId);
 
+    @Select("select team_id from request_join_team where student_id = #{studentId}")
+    List<Integer> findTeamIdByStudentIdInRequest(Integer studentId);
+
     @Select("select team_id from request_join_team where id = #{requestId}")
     Integer findTeamIdByRequestId(Integer requestId);
 
@@ -89,6 +93,9 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
 
     @Delete("delete from invite_join_team where id = #{inviteId}")
     void deleteInvite(Integer inviteId);
+
+    @Select("select team_id from invite_join_team where student_id = #{studentId}")
+    List<Integer> findTeamIdByStudentIdInInvite(Integer studentId);
 
     @Select("select team_id from team where project_id = #{projectId}")
     Integer findProjectIdByTeamId(Integer teamId);

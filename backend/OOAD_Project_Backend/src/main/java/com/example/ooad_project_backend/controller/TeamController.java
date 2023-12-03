@@ -1,6 +1,7 @@
 package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
+import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeacherInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
@@ -8,6 +9,7 @@ import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.rowset.Joinable;
 import java.net.Inet4Address;
 import java.util.List;
 
@@ -72,7 +74,7 @@ public class TeamController {
 
     @GetMapping("/getRequestsJoinTeam")
     public Result getRequestsJoinTeam(Integer teamId) {
-        List<StudentInfo> studentInfos = teamInfoService.getRequestsJoinTeam(teamId);
+        List<JoinTeamInfo> studentInfos = teamInfoService.getRequestsJoinTeam(teamId);
         if (studentInfos.size() == 0) {
             return Result.error("1", "no requests");
         } else {
@@ -116,7 +118,7 @@ public class TeamController {
 
     @GetMapping("/getInvites")
     public Result getInvites(Integer studentId) {
-        List<TeamInfo> teamInfos = teamInfoService.getInvitesJoinTeam(studentId);
+        List<JoinTeamInfo> teamInfos = teamInfoService.getInvitesJoinTeam(studentId);
         if (teamInfos.size() == 0) {
             return Result.error("1", "no invites");
         } else {
