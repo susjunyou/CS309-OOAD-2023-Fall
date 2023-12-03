@@ -1,6 +1,7 @@
 package com.example.ooad_project_backend.service.Imp;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 import com.example.ooad_project_backend.mapper.ProjectInfoMapper;
@@ -10,7 +11,6 @@ import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,29 +118,34 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Override
     public boolean requestJoinTeam(Integer teamId, Integer studentId) {
-
+        List<Integer> teamIds = teamMapper.findTeamIdByStudentIdInRequest(studentId);
+        for (Integer teamId1 : teamIds) {
+            if (teamId1.equals(teamId)) {
+                return false;
+            }
+        }
         teamMapper.requestJoinTeam(teamId, studentId);
         return true;
     }
 
     @Override
-    public List<StudentInfo> getRequestsJoinTeam(Integer teamId) {
-        List<Integer> studentIds = teamMapper.getRequestsStudentIdByTeamId(teamId);
-        List<StudentInfo> studentInfos = new ArrayList<>();
-        for (Integer studentId : studentIds) {
-            studentInfos.add(studentInfoMapper.findStudentInfoById(studentId));
-        }
-        return studentInfos;
+    public List<JoinTeamInfo> getRequestsJoinTeam(Integer teamId) {
+        List<JoinTeamInfo> joinTeamInfos = teamMapper.getRequestsStudentIdByTeamId(teamId);
+//        List<StudentInfo> studentInfos = new ArrayList<>();
+//        for (JoinTeamInfo joinTeamInfo : joinTeamInfos) {
+//            studentInfos.add(studentInfoMapper.findStudentInfoById(joinTeamInfo.getStudentId()));
+//        }
+        return joinTeamInfos;
     }
 
     @Override
-    public List<TeamInfo> getInvitesJoinTeam(Integer studentId) {
-        List<Integer> teamIds = teamMapper.getInvitesJoinTeam(studentId);
-        List<TeamInfo> teamInfos = new ArrayList<>();
-        for (Integer teamId : teamIds) {
-            teamInfos.add(teamMapper.findTeamInfoByTeamId(teamId));
-        }
-        return teamInfos;
+    public List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId) {
+        List<JoinTeamInfo> joinTeamInfos = teamMapper.getInvitesJoinTeam(studentId);
+//        List<TeamInfo> teamInfos = new ArrayList<>();
+//        for (Integer teamId : teamIds) {
+//            teamInfos.add(teamMapper.findTeamInfoByTeamId(teamId));
+//        }
+        return joinTeamInfos;
     }
 
     @Override
@@ -179,6 +184,11 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         // 判断这个team是否已经满员
         if (teamMapper.findStudentIdsByTeamIdAndProjectId(teamInfo.getTeamId(), teamInfo.getProjectId()).size() >= teamInfo.getTeamSize()) {
             return false;
+        }
+        for (JoinTeamInfo joinTeamInfo : teamMapper.getInvitesJoinTeam(studentId)) {
+            if (joinTeamInfo.getTeamId().equals(teamId)) {
+                return false;
+            }
         }
         try {
             teamMapper.addInviteJoinTeam(teamId, studentId);
