@@ -33,6 +33,7 @@
             <el-menu>
               <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
               <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
+              <el-menu-item index="3" @click="logoutClick">LogOut</el-menu-item>
             </el-menu>
           </div>
         </el-popover>
@@ -95,7 +96,6 @@
           <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
           <el-menu-item index="7" @click="studentClick">查看members信息</el-menu-item>
           <el-menu-item index="8" @click="go('gradebook')">Gradebook</el-menu-item>
-          <el-menu-item index="9" @click="logoutClick">LogOut</el-menu-item>
         </el-menu>
 
 
@@ -505,5 +505,6 @@ export default {
   /* 其他需要的样式 */
 }
 </style>
+
 
 
