@@ -297,5 +297,11 @@ export default {
   width: 80%;
   left: 200px; /* 右移 50px，根据需要调整 */
 }
-
+.course-navbar {
+  border: none;
+  width: 200px; /* 设置导航栏宽度 */
+  float: left; /* 使导航栏浮动在左侧 */
+  height: 100vh; /* 设置导航栏高度与视口高度相同 */
+  padding-top: 20px; /* 在顶部添加一些内边距 */
+}
 </style>

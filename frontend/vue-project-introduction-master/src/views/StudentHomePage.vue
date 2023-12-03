@@ -148,8 +148,7 @@ export default {
       attrs: [],
       posts:[],
       assignments:[],
-      currentddl:[],
-      coursemodified:[],
+
     };
   },
   methods: {
@@ -199,7 +198,6 @@ export default {
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
         //加载posts
-        this.currentddl = [];
         await this.$axios.get('/course/posts', {
           params: {
             courseId: course.id
@@ -259,10 +257,7 @@ export default {
                 date : res.data.data[i].assignmentDeadline,
                 title : course.title+"   "+res.data.data[i].assignmentTitle,
               })
-              this.currentddl.push({
-                date : res.data.data[i].assignmentDeadline,
-                title : course.title+"   "+res.data.data[i].assignmentTitle,
-              })
+
             }
           }
         }).catch(error => {
@@ -288,10 +283,7 @@ export default {
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,
               })
-              this.currentddl.push({
-                date : res.data.data[i].projectDeadline,
-                title : course.title+"   "+res.data.data[i].projectTitle,
-              })
+
             }
           }
         }).catch(error => {

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-row class="header-bar" background-color="#545c64" text-color="#fff">
+  <div id="app">
+    <el-row class="header-bar">
       <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
       </el-col>
@@ -14,49 +14,50 @@
               {{ course.title }}
             </el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>
-      </el-col>
+        </el-dropdown>      </el-col>
     </el-row>
 
+    <el-row class="main-content">
+      <el-aside :span="3" class="course-navbar" style="width: 205px">
 
-    <el-menu
-      class="course-navbar"
-      mode="vertical"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b">
-      <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-      <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
-      <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-      <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-      <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-      <el-menu-item index="6" @click="saClick">查看本课程SA信息</el-menu-item>
-      <el-menu-item index="7" @click="studentClick">查看本课程学生信息</el-menu-item>
-      <el-menu-item index="8" @click="go('gradebook')">Gradebook</el-menu-item>
-      <el-menu-item index="9" @click="logoutClick">LogOut</el-menu-item>
-  </el-menu>
-<!--    <div class="sa-info" v-for="sa in saInfos" :key="sa.email">-->
-<!--      <h3>{{ sa.name }}</h3>-->
-<!--      <p>Email: {{ sa.email }}</p>-->
-<!--      <p>{{ sa.duties }}</p>-->
-<!--    </div>-->
+        <el-menu
+            class="course-navbar"
+            mode="vertical"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b">
+          <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+          <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+          <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+          <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+          <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+          <el-menu-item index="7" @click="studentClick">查看members信息</el-menu-item>
+          <el-menu-item index="8" @click="go('gradebook')">Gradebook</el-menu-item>
+          <el-menu-item index="9" @click="logoutClick">LogOut</el-menu-item>
+        </el-menu>
 
 
-    <!--  <div>-->
-<div class="containerOfCourse">
-    <div class="post">
-    <div v-for="post in posts" :key="post.id" class="post">
-      <h3>{{ post.title }}</h3>
-      <p>{{ post.content }}</p>
-      <small>作者: {{ post.author }}</small>
-    </div>
-  </div>
-    <div class="rili">
-      <v-calendar :attributes="attrs"></v-calendar>
-    </div>
-    </div>
+      </el-aside>
 
+      <el-col :span="17" class="posts-container">
+        <div v-for="post in posts" :key="post.id" class="post">
+          <h3>{{ post.title }} 作者: {{ post.author }}</h3>
+          <p>{{ post.content }}</p>
+        </div>
+      </el-col>
 
+      <el-col :span="4" class="calendar-container">
+        <div class="calendar-container">
+          <v-calendar :attributes="attrs"></v-calendar>
+
+          <div class="course-description">
+            <h3>课程描述</h3>
+            <p>{{ this.courseDescription }}</p>
+          </div>
+        </div>
+
+      </el-col>
+    </el-row>
     <el-dialog title="SA信息" :visible.sync="showSaDialog" width="60%">
       <div v-for="sa in saInfos" :key="sa.id" class="sa-info">
         <h3>{{ sa.name }}</h3>
@@ -76,12 +77,11 @@
       </div>
     </el-dialog>
 
-
-
-    <!--    <p>welcome to {{myValue}}</p>-->
-<!--  </div>-->
   </div>
 </template>
+
+
+
 
 <script>
 
@@ -105,6 +105,7 @@ export default {
       studentInfos: [],
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
+      courseDescription:'',
     };
   },
   name: 'CourseNavbar',
@@ -114,6 +115,7 @@ export default {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
+    this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
     this.attrs = this.ddls.map(ddl => ({
       key: ddl.date,
       dates: new Date(ddl.date),
@@ -140,7 +142,7 @@ export default {
       this.showSaDialog = true;
     },
     studentClick() {
-      this.showStudentDialog = true;
+      this.$router.push('/members');
     },
     logoutClick() {
       this.$router.push('/Login');
@@ -170,11 +172,11 @@ export default {
         if (res.data.code === "0") {
           for (let i = 0; i < res.data.data.length; i++) {
             this.saInfos.push({
-            email: res.data.data[i].email,
-            name: res.data.data[i].name,
-            id: res.data.data[i].id,
-            major: res.data.data[i].major,
-            selfIntroduction: res.data.data[i].selfIntroduction,
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
             })
           }
         }
@@ -208,8 +210,10 @@ export default {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: i + 1,
+          id: localStorage.getItem('coursesid' + i),
           title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
         });
       }
       this.posts=[];
@@ -239,6 +243,10 @@ export default {
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
+        this.ddls.push({
+          date: this.assignments[i].ddl,
+          title: this.assignments[i].title,
+        });
       }
       this.projects=[];
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
@@ -258,7 +266,7 @@ export default {
       }
       console.log(this.projects[0])
       console.log(this.projects[1])
-console.log("course name="+this.myValue)
+      console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
@@ -268,27 +276,9 @@ console.log("course name="+this.myValue)
 }
 
 </script>
-<style>
-.containerOfCourse {
-  display: flex;
-  padding: 180px;
-  justify-content: space-between; /* 两个子元素间隔开 */
-  width: 70%; /* 容器宽度 */
+<style scoped>
 
-}
-.top_menu{
-  background-color: black;
-  border-color: yellow;
-  width:100%;
 
-}
-.course-navbar {
-  border: none;
-  width: 200px; /* 设置导航栏宽度 */
-  float: left; /* 使导航栏浮动在左侧 */
-  height: 100vh; /* 设置导航栏高度与视口高度相同 */
-  padding-top: 20px; /* 在顶部添加一些内边距 */
-}
 .sa-info {
   padding: 10px;
   border: 1px solid #ddd;
@@ -311,32 +301,51 @@ console.log("course name="+this.myValue)
 
 
 /* 为帖子添加样式 */
-.post {
-  padding-top: 100px;
-  border: 1px solid #ccc; /* 边框 */
-  margin: 10px; /* 间距 */
-  padding: 10px; /* 内边距 */
-  flex-basis: 45%; /* 占据容器的比例 */
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 
-/* 日历的样式 */
-.rili {
-  padding-top: 100px;
-  flex-basis: 45%; /* 占据容器的比例 */
-}
 .header-bar {
   background-color: cornflowerblue;
-  color: #fff;
-  line-height: 60px; /* 根据需要调整高度 */
-  padding: 0 20px; /* 根据需要调整内边距 */
-}
-.header-title {
-  text-align: right; /* 将文本对齐到右边 */
-  padding-right: 100px; /* 或者您需要的任何值，以便向右移动标题 */
-}
-.header-bar h1 {
-  margin: 0; /* 移除默认的margin */
+  color: white;
+  line-height: 60px;
+  padding: 0 20px;
 }
 
+.main-content {
+  display: flex;
+}
+
+.course-navbar {
+  width: 200px;
+  background-color: #f2f2f2;
+  height: 100vh; /* 设置高度为视口的100% */
+  overflow-y: auto; /* 如果内容太多可以滚动 */
+}
+
+.posts-container {
+  margin-right: 10px; /* Adjust the margin as needed */
+  padding: 10px;
+  overflow: auto;
+}
+
+.post {
+  text-align: left;
+  border: 1px solid gainsboro;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.calendar-container {
+  padding: 20px;
+}
+.course-description {
+  margin-top: 20px; /* 与日历的间距 */
+  padding: 10px;
+  border: 1px solid #ccc; /* 描述框的边框 */
+  background-color: #f9f9f9; /* 轻微背景颜色区分 */
+}
 </style>
+
 

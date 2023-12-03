@@ -35,14 +35,15 @@
         <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
       </el-menu>
       <!--  <div>-->
+      <div>
+      <div v-for="material in materials" :key="material.id" class="material">
+        <h3>{{ material.name }}</h3>
+        <p>{{ material.description }}</p>
+      </div>
+    </div>
       </div>
 
-  <div>
-    <div v-for="material in materials" :key="material.id" class="material">
-      <h3>{{ material.name }}</h3>
-      <p>{{ material.description }}</p>
-    </div>
-  </div>
+
   </div>
 
 </template>
@@ -159,5 +160,11 @@ export default {
 .header-bar h1 {
   margin: 0; /* 移除默认的margin */
 }
-
+.course-navbar {
+  border: none;
+  width: 200px; /* 设置导航栏宽度 */
+  float: left; /* 使导航栏浮动在左侧 */
+  height: 100vh; /* 设置导航栏高度与视口高度相同 */
+  padding-top: 20px; /* 在顶部添加一些内边距 */
+}
 </style>

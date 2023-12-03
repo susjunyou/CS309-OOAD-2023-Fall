@@ -35,6 +35,26 @@
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
     <!--  <div>-->
+    <div v-if="hasJoinedTeam" style="width: 85%; padding-left: 10px;position: absolute; left:215px;">
+      <h2>我的队伍信息</h2>
+      <el-table :data="myTeam" style="width: 85%; padding-left: 10px; " border stripe>
+        <el-table-column prop="name" label="队伍名称"></el-table-column>
+        <el-table-column prop="description" label="队伍描述"></el-table-column>
+        <el-table-column prop="teammembers" label="团队成员">
+          <template slot-scope="scope">
+            <ul>
+              <li v-for="member in scope.row.teammembers" :key="member.id">
+                {{ member.name }}
+              </li>
+            </ul>
+          </template>
+        </el-table-column>
+        <!-- 添加更多列来显示团队信息 -->
+      </el-table>
+      <button class="sumbitt" @click="() => submitproject()">提交project</button>
+    </div>
+    <div v-else>
+      <h2>所有可加入的队伍</h2>
     <div class="team-grid">
       <div class="team-card" v-for="team in teams" :key="team.id">
         <h3>{{ team.name }}</h3>
@@ -47,9 +67,10 @@
           </li>
         </ul>
 
-        <button @click.prevent="joinTeam(team)">加入队伍</button>
+        <button class="sumbitt" @click="joinTeam(team)">加入队伍</button>
       </div>
-
+    </div>
+      <button class="sumbitt" @click="go('createTeam')">创建队伍</button>
     </div>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
@@ -75,7 +96,8 @@ export default {
       teams: [],
       myValue: '',
       isPopupVisible: false, // 控制弹窗显示的布尔值
-
+      hasJoinedTeam: false,
+      myTeam:[],
     };
   },
 
@@ -111,6 +133,10 @@ export default {
         console.error('Error loading course assignments:', error);
       });
     // console.log("Joining team with ID:", teamId);
+    },
+    submitproject() {
+      // localStorage.setItem("currentprojectid",route.id)
+      this.$router.push('projectsubmit');
     },
     logoutClick() {
       this.$router.push('/Login');
@@ -226,6 +252,21 @@ export default {
                 teamId: team.teamId
               }
             });
+            const isMember = res1.data.data.some(member => member.id === Number(localStorage.getItem('id')));
+            if (isMember) {
+              this.myTeam.push( {
+                id: team.teamId,
+                name: team.teamName,
+                description: team.teamDescription,
+                leader: team.leader,
+                projectid: team.projectId,
+                teamsize: team.teamSize,
+                teammembers: res1.data.data,
+                currentmembercount: res1.data.data ? res1.data.data.length : 0,
+              });
+              this.hasJoinedTeam = true;
+              console.log(this.myTeam);
+            }
             if (res1.data.code === "0") {
               this.teams.push({
                 id: team.teamId,
@@ -314,5 +355,43 @@ export default {
 .header-bar h1 {
   margin: 0; /* 移除默认的margin */
 }
+.course-navbar {
+  border: none;
+  width: 200px; /* 设置导航栏宽度 */
+  float: left; /* 使导航栏浮动在左侧 */
+  height: 100vh; /* 设置导航栏高度与视口高度相同 */
+  padding-top: 20px; /* 在顶部添加一些内边距 */
+}
 
+.clickable-text{
+  text-decoration: underline; /* 添加下划线 */
+  color: blue; /* 设置为蓝色或其他突出的颜色 */
+  cursor: pointer; /* 鼠标悬停时显示手形光标 */
+  .clickable-text:hover {
+    color: darkblue; /* 悬停时改变颜色 */
+  }
+}
+.sumbitt {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #6dd5ed, #2193b0);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sumbitt:hover {
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sumbitt:active {
+  transform: translateY(2px);
+}
 </style>
