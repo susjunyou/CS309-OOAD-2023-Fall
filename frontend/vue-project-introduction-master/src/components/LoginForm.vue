@@ -152,6 +152,7 @@ export default {
               localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
               localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
               localStorage.setItem('courseDescription'+i,res.data.data[i].courseDescription);
+              localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
             }
             console.log(localStorage.getItem('courses0'));
           })

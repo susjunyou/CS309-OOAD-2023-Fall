@@ -155,6 +155,14 @@ export default {
 
 
 <style scoped>
+.post {
+  text-align: left; /* 文本靠左对齐 */
+  padding-left: 10px; /* 左侧填充，确保文本不会紧贴边框 */
+  border: 1px solid #ccc; /* 维持原有的边框样式 */
+  margin-bottom: 20px; /* 保持原有的下边距 */
+  padding: 10px; /* 保持原有的内边距 */
+}
+
 .course-navbar .menu-item {
   background-color: #545c64;
   color: #fff;
@@ -167,7 +175,13 @@ export default {
   background-color: #ffd04b;
   color: #545c64;
 }
-
+.course-navbar {
+  border: none;
+  width: 200px; /* 设置导航栏宽度 */
+  float: left; /* 使导航栏浮动在左侧 */
+  height: 100vh; /* 设置导航栏高度与视口高度相同 */
+  padding-top: 20px; /* 在顶部添加一些内边距 */
+}
 .header-bar {
   background-color: cornflowerblue;
   color: #fff;
@@ -197,12 +211,13 @@ export default {
 .assignment-card {
   cursor: pointer;
   transition: box-shadow .3s;
-  border: 1px solid greenyellow;
+  border: 1px solid gainsboro;
 }
 
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
+
 
 /* ...之后的样式... */
 

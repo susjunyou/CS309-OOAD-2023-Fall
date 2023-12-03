@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-row class="header-bar" background-color="#545c64" text-color="#fff">
       <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
@@ -20,7 +19,8 @@
     </el-row>
 
 
-
+<el-row>
+  <el-col :span="3">
     <el-menu
         class="course-navbar"
         mode="vertical"
@@ -35,107 +35,162 @@
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
-
-    <div class="assignment-submission">
-      <h1>Assignment Submission</h1>
-      <div class="text-submission">
-        <textarea v-model="textSubmission" placeholder="Write Submission"></textarea>
-      </div>
-      <div class="file-upload">
-        <input type="file"  />
-        <!--        @change="handleFileUpload"-->
-      </div>
-      <div class="button-container">
-        <button class="submit" @click.prevent="submitProject">Submit</button>
-        <button class="cancel" @click="cancel">Cancel</button>
-      </div>
-
+    </el-col>
+  <el-col :span="21">
+    <div class="table-section">
+      <h2 class="table-title">Teacher Information</h2>
+      <el-table :data="teachers" style="width: 100%;" border stripe>
+        <el-table-column prop="name" label="Name"></el-table-column>
+        <el-table-column prop="tenure" label="Tenure"></el-table-column>
+        <el-table-column prop="email" label="Email"></el-table-column>
+        <el-table-column prop="department" label="Department"></el-table-column>
+      </el-table>
     </div>
-    <!--    <p>welcome to {{myValue}}</p>-->
-    <!--  </div>-->
-    <div v-if="isPopupVisible" class="popup">
-      <div class="popup-content">
-        <p>提交成功！</p>
-        <button @click="returnToprojects">关闭</button>
-      </div>
+
+    <!-- 学习助手(SA)信息表格 -->
+    <div class="table-section">
+      <h2 class="table-title">SA Information</h2>
+      <el-table :data="saInfos" style="width: 100%;" border stripe>
+        <el-table-column prop="name" label="Name"></el-table-column>
+        <el-table-column prop="email" label="Email"></el-table-column>
+        <el-table-column prop="major" label="Major"></el-table-column>
+      </el-table>
     </div>
+
+    <!-- 学生信息表格 -->
+    <div class="table-section">
+      <h2 class="table-title">Student Information</h2>
+      <el-table :data="studentInfos" style="width: 100%;" border stripe>
+        <el-table-column prop="name" label="Name"></el-table-column>
+        <el-table-column prop="email" label="Email"></el-table-column>
+        <el-table-column prop="major" label="Major"></el-table-column>
+      </el-table>
+    </div>
+  </el-col>
+</el-row>>
   </div>
 </template>
-<script >
 
+<script >
 export default {
 
   data() {
     return {
-      // 初始化组件数据属性
-      ddls: [
-        // ...其他DDL
-      ],
-      attrs: [],
-      // 初始化组件数据属性
       courses: [],
       posts: [],
       assignments: [],
       projects: [],
-      isPopupVisible: false, // 控制弹窗显示的布尔值
       materials: [],
-      myValue: '',
-      textSubmission: '', // 绑定文本提交的数据
-      file: null, // 用于存储文件上传的数据
+      ddls:[],
+      saInfos: [],
+      studentInfos: [],
+      teachers:[],
+      // myValue: '',
     };
   },
 
 
   async created() {
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    this.myValue=localStorage.getItem("currentcourse")
+    await this.loadStudentsAndSA();
+
   },
   methods: {
 
-
-
-
-    async  submitProject() {
-      // 创建一个新的日期对象
-      const submitDate = new Date();
-      const formattedDate = submitDate.toISOString().split('T')[0]; // 获取 yyyy-MM-dd 格式
-      await this.$axios.get('/student/submitProject', {
-        params: {
-          studentId: Number(localStorage.getItem("id")),
-          projectId: localStorage.getItem("currentprojectid"),
-          content: this.textSubmission,
-          submitDate: formattedDate,
-        }
-      }).then((res) => {
-        console.log("code====================================="+res.data.code)
-        if (res.data.code === "0") {
-          this.isPopupVisible = true;
-        }
-      }).catch(error => {
-        console.error('Error loading course posts:', error);
-      });
-    },
     logoutClick() {
       this.$router.push('/Login');
       localStorage.clear();
-    },
-    cancel() {
-      this.$router.push('/projects');
     },
     goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourse",route.title);
       localStorage.setItem("currentcourseid",route.id);
-      this.myValue=route.title;
+      // this.myValue=route.title;
+      this.loadLocalStorageData();
       this.$router.push({ path: '/course' });
     },
+    submitproject(route) {
+      localStorage.setItem("currentprojectid",route.id)
+      this.$router.push('projectsubmit');
+    },
+    join(route) {
+      localStorage.setItem("currentprojectid",route.id)
+      this.$router.push('joinTeam');
+    },
+    go1(route) {
+      console.log(route.id)
+      localStorage.setItem("currentprojectid",route.id);
+      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
+      this.$router.push('createTeam');
+    },
     go(route) {
-
+      // localStorage.setItem("currentprojectid",route)
       this.$router.push(route);
     },
-    returnToprojects(){
-      this.isPopupVisible = false;
-      this.$router.push('/projects');
+    async loadStudentsAndSA(){
+      this.saInfos = [];
+      this.studentInfos = [];
+      this.teachers = [];
+      await this.$axios.get('/course/getAllSA', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.saInfos.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      await this.$axios.get('/course/getTeacher', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.teachers.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              department: res.data.data[i].department,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+              tenure: res.data.data[i].tenure,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      //加载学生信息
+      await this.$axios.get('/course/getAllStudents', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.studentInfos.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
@@ -169,7 +224,7 @@ export default {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
@@ -185,108 +240,26 @@ export default {
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
+        this.ddls=[];
         this.ddls.push({
           date: this.projects[i].ddl,
           title: this.projects[i].title,
         });
       }
-      console.log("course name="+this.myValue)
-      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
-    },
-  },
+    },  },
 }
 </script>
 
 
 <style scoped>
-.assignment-submission {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #f7f7f7;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-.text-submission {
-  padding-right: 0; /* 减少右侧内边距 */
-}
-
-.text-submission textarea {
-  width: 600px; /* 保持宽度为100% */
-  min-height: 400px; /* 最小高度 */
-  padding: 20px; /* 适当的内边距 */
-  margin-bottom: 20px; /* 下边距 */
-  margin-left: auto; /* 左边距自动，这将使元素居中 */
-  margin-right: auto; /* 右边距自动 */
-  border: 1px solid #ccc; /* 边框 */
-  border-radius: 4px; /* 圆角 */
-  resize: vertical; /* 允许垂直调整大小 */
-}
-
-
-.file-upload input {
-  margin-bottom: 20px;
-}
-
-/* 提交按钮的样式 */
-
-
-.button-container {
-  display: flex;
-  justify-content: space-around; /* 在按钮之间提供空间 */
-  padding: 20px; /* 容器内边距 */
-}
-
-.button-container button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  flex-grow: 1; /* 按钮占据可用空间 */
-}
-
-.button-container button.submit {
-  background-color: #3498db; /* 蓝色背景 */
-  color: white;
-  margin-right: 10px; /* 在按钮之间提供空间 */
-}
-
-.button-container button.cancel {
-  background-color: #e74c3c; /* 红色背景 */
-  color: white;
-  margin-left: 10px; /* 在按钮之间提供空间 */
-}
-
-.button-container button:hover {
-  filter: brightness(90%);
-}
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+.clickable-text{
+  text-decoration: underline; /* 添加下划线 */
+  color: blue; /* 设置为蓝色或其他突出的颜色 */
+  cursor: pointer; /* 鼠标悬停时显示手形光标 */
+  .clickable-text:hover {
+    color: darkblue; /* 悬停时改变颜色 */
+  }
 }
 .header-bar {
   background-color: cornflowerblue;
@@ -302,10 +275,19 @@ h1 {
   margin: 0; /* 移除默认的margin */
 }
 .course-navbar {
-  border: none;
-  width: 200px; /* 设置导航栏宽度 */
-  float: left; /* 使导航栏浮动在左侧 */
-  height: 100vh; /* 设置导航栏高度与视口高度相同 */
-  padding-top: 20px; /* 在顶部添加一些内边距 */
+   width: 200px;
+   background-color: #f2f2f2;
+   height: 100vh; /* 设置高度为视口的100% */
+   overflow-y: auto; /* 如果内容太多可以滚动 */
+ }
+.table-section {
+  margin-bottom: 30px; /* 表格间距 */
 }
+
+.table-title {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px; /* 标题和表格之间的间距 */
+}
+
 </style>

@@ -39,18 +39,21 @@
       <!-- ... 其他代码 ... -->
 
       <!-- 显示项目信息 -->
-      <div v-for="project in projects" :key="project" class="project">
-        <h3 >{{ project.title }}</h3>
-        <p>{{ project.description }}</p>
-        <p>开始日期: {{ project.startdate }}</p>
-        <p>截止日期: {{ project.ddl }}</p>
-        <p>状态: {{ project.status }}</p>
-        <p>团队人数上限: {{ project.maxpeopleinteam }}</p>
-        <p @click="go1(project)" class="clickable-text">创建team</p>
-        <p @click="join(project)" class="clickable-text">查看组队信息</p>
-        <p @click="submitproject(project)" class="clickable-text">提交project</p>
-      </div>
 
+
+      <div class="assignment-container">
+        <!-- ...之前的代码... -->
+        <el-row :gutter="20">
+          <el-col v-for="project in projects" :key="project.id" :span="6" >
+            <el-card  class="assignment-card" @click.native="join(project)">
+              <h3>{{ project.title }}</h3>
+              <p>截止日期：{{ project.ddl }}</p>
+            </el-card>
+          </el-col>
+        </el-row>
+        <!-- ...之后的代码... -->
+
+      </div>
       <!-- ... 其他代码 ... -->
     </div>
     </div>
@@ -95,6 +98,7 @@ export default {
     },
     join(route) {
       localStorage.setItem("currentprojectid",route.id)
+      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
       this.$router.push('joinTeam');
     },
     go1(route) {
@@ -188,6 +192,27 @@ export default {
 }
 .header-bar h1 {
   margin: 0; /* 移除默认的margin */
+}
+.course-navbar {
+  border: none;
+  width: 200px; /* 设置导航栏宽度 */
+  float: left; /* 使导航栏浮动在左侧 */
+  height: 100vh; /* 设置导航栏高度与视口高度相同 */
+  padding-top: 20px; /* 在顶部添加一些内边距 */
+}
+.assignment-container {
+  margin: 20px;
+  padding-left: 200px;
+}
+
+.assignment-card {
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+}
+
+.assignment-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
 
 </style>
