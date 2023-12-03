@@ -281,6 +281,28 @@ create table reply
     post_id       integer      not null
 );
 
+--! create table request_join_team
+
+create table request_join_team
+(
+    id serial primary key,
+    student_id           integer not null,
+    team_id              integer not null,
+    project_id           integer not null
+);
+
+--! create table invite_join_team
+
+create table invite_join_team
+(
+    id serial primary key,
+    student_id          integer not null,
+    team_id             integer not null,
+    project_id          integer not null
+);
+
+
+
 --! add foreign key to reply
 
 -- alter table reply
