@@ -15,6 +15,9 @@ import assignmentsubmit from "@/views/assignmentsubmit.vue";
 import updatePassword from "@/views/updatePassword.vue";
 import personInformation from "@/views/PersonInformation.vue";
 import members from "@/views/members.vue";
+import post from "@/views/post.vue";
+import postReply from "@/views/postReply.vue";
+
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -32,6 +35,8 @@ const routes = [
     {path: '/updatePassword', component: updatePassword},
     {path: '/personInformation', component: personInformation},
     {path: '/members', component: members},
+    {path: '/post', component: post},
+    {path: '/postReply', component: postReply},
     {path: '/', redirect: '/login'}
 
 ]

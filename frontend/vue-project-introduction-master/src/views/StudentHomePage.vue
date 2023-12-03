@@ -301,8 +301,7 @@ export default {
             for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
               localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
               localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
-              console.log(res.data.data[i].isAttendance);
-              if (res.data.data[i].isAttendance === true) {
+              if (res.data.data[i].attended) {
                 localStorage.setItem('attendancegrade'+course.title+i,100);
               }else {
                 localStorage.setItem('attendancegrade'+course.title+i,0);
