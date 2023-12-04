@@ -97,7 +97,7 @@
     <!--  <div>-->
 
     <div v-if="hasJoinedTeam" style="display: flex;">
-      <div style="width: 50%; padding-left: 10px;">
+      <div style="width: 55%; padding-left: 10px;">
         <h2 style=" padding-right: 200px; ">我的队伍信息</h2>
         <el-table :data="myTeam" style="width: 70%; padding-left: 10px; " border stripe>
           <el-table-column prop="name" label="队伍名称"></el-table-column>
@@ -113,16 +113,43 @@
           </el-table-column>
           <!-- 添加更多列来显示团队信息 -->
         </el-table>
-        <button class="sumbitt" @click="() => leaveTeam()">离开小队</button>
-        <button class="sumbitt" @click="() => submitproject()">提交project</button>
+        <div class="button-container">
+          <button class="sumbitt" @click="() => leaveTeam()">离开小队</button>
+          <button class="sumbitt" @click="() => submitproject()">提交project</button>
+        </div>
+
       </div>
-      <div style="width: 50%; padding-left: 10px;">
-        <h2>申请信息</h2>
-        <ul>
-          <li v-for="applier in requeststudent" :key="applier.id">
-            学号: {{ applier.studentid }}
-          </li>
-        </ul>
+      <div style="width: 45%; padding-left: 10px;">
+        <h2>申请人信息</h2>
+        <div style="height: 300px; overflow-y: auto; border: 1px solid #ccc;">
+
+        <el-table :data="students" style="width: 100%">
+          <!-- 其他列定义 -->
+          <el-table-column prop="id" label="学号"></el-table-column>
+          <el-table-column prop="name" label="姓名"></el-table-column>
+          <el-table-column prop="email" label="邮箱"></el-table-column>
+          <el-table-column prop="major" label="专业"></el-table-column>
+          <!-- 操作列 -->
+          <el-table-column label="操作" width="180">
+            <template v-slot="scope">
+              <el-button type="success" size="small" @click="agreeApplication(scope.row.requestid)">同意</el-button>
+              <el-button type="danger" size="small" @click="rejectApplication(scope.row.requestid)">拒绝</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+          </div>
+        <div style="width: 100%; padding: 20px 10px;">
+          <h2>邀请栏</h2>
+          <div style="height: 300px; overflow-y: auto; border: 1px solid #ccc;">
+            <el-table :data="allStudents" style="width: 100%">
+              <el-table-column prop="id" label="学号"></el-table-column>
+              <el-table-column prop="name" label="姓名"></el-table-column>
+              <el-table-column prop="email" label="邮箱"></el-table-column>
+              <el-table-column prop="major" label="专业"></el-table-column>
+              <!-- 可以添加更多的列来显示学生信息 -->
+            </el-table>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -233,8 +260,11 @@ export default {
       wenzi:'',
       // applier:[],
       requeststudent:[],
+      students:[],
+      count:0
     };
   },
+
 
 
   async created() {
@@ -300,6 +330,35 @@ export default {
     studentClick() {
       this.$router.push('/members');
     },
+    async loadstudentinfos() {
+      console.log(this.requeststudent.length);
+      console.log(this.requeststudent);
+      console.log(this.requeststudent[0]);
+      for (let i = 0; i < this.requeststudent.length; i++) {
+        this.$axios.get('/student/getStudent',{
+          params: {
+            id:this.requeststudent[i].studentid,
+          }
+        }).then(res => {
+          console.log('ddasdawdadwdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdaw');
+          if(res.data.code === "0"){
+            this.students.push({
+              requestid:this.requeststudent[i].id,
+              id:res.data.data.id,
+              name:res.data.data.name,
+              major:res.data.data.major,
+              email:res.data.data.email,
+            })
+            console.log('sss');
+          }else {
+            console.log("error")
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+
+    },
     async loadStudentsAndSA(){
       this.saInfos = [];
       this.studentInfos = [];
@@ -345,6 +404,8 @@ export default {
 
     },
    async loaddisplay(){
+      this.requeststudent = [];
+      this.students = [];
      console.log("myteamid==============="+localStorage.getItem("myteamid"));
       this.$axios.get('/team/getRequestsJoinTeam', {
         params: {
@@ -355,19 +416,82 @@ export default {
         if (res.data.code === "0") {
           for (let i = 0; i < res.data.data.length; i++) {
             this.requeststudent.push({
-              id:res.data.data[i].Id,
+              id:res.data.data[i].id,
               teamid:res.data.data[i].teamId,
               studentid:res.data.data[i].studentId,
             });
           }
-console.log(this.requeststudent);
+          console.log(this.requeststudent);
+          for (let i = 0; i < this.requeststudent.length; i++) {
+            this.$axios.get('/student/getStudent',{
+              params: {
+                id:this.requeststudent[i].studentid,
+              }
+            }).then(res => {
+              if(res.data.code === "0"){
+                this.students.push({
+                  requestid:this.requeststudent[i].id,
+                  id:res.data.data.id,
+                  name:res.data.data.name,
+                  major:res.data.data.major,
+                  email:res.data.data.email,
+                })
+                console.log('sss');
+              }else {
+                console.log("error")
+              }
+            }).catch(error => {
+              console.log(error)
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading course assignments:', error);
+      });
+    },
+  async agreeApplication(requestid) {
+      // 同意申请的逻辑
+     console.log(requestid);
+
+     this.$axios.get('/team/manageTeamRequest', {
+        params: {
+          requestId: Number(requestid),
+          isAccepted: true,
+            },
+      }).then((res) => {
+        console.log(res.data.code);
+        if (res.data.code === "0") {
+           this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+           this.loadStudentsAndSA();
+
+           this.getTeam();
+           this.loaddisplay();
+        }
+      }).catch(error => {
+        console.error('Error loading course assignments:', error);
+      });
+    },
+    async rejectApplication(requestid) {
+      // 拒绝申请的逻辑
+      this.$axios.get('/team/manageTeamRequest', {
+        params: {
+          requestId: Number(requestid),
+          isAccepted: false,
+        },
+      }).then((res) => {
+        console.log(res.data.code);
+        if (res.data.code === "0") {
+           this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+           this.loadStudentsAndSA();
+
+           this.getTeam();
+           this.loaddisplay();
 
         }
       }).catch(error => {
         console.error('Error loading course assignments:', error);
       });
     },
-
     requestTeam(team){
       this.$axios.get('/team/requestJoinTeam', {
         params: {
@@ -529,6 +653,7 @@ console.log(this.requeststudent);
     // },
 
     async getTeam() {
+      this.myTeam=[];
       console.log("projectid="+localStorage.getItem("currentprojectid"));
       try {
         const res = await this.$axios.get('/team/findTeamInfoByProjectId', {
@@ -669,8 +794,10 @@ console.log(this.requeststudent);
   }
 }
 .sumbitt {
+  padding: 10px 20px;
   margin-top: 20px;
   padding: 10px 20px;
+  margin-right: 20px;
   background: linear-gradient(45deg, #6dd5ed, #2193b0);
   color: white;
   border: none;
@@ -682,7 +809,11 @@ console.log(this.requeststudent);
   transition: all 0.3s ease;
   cursor: pointer;
 }
-
+.button-container {
+  display: flex;
+  justify-content: flex-start; /* 按钮向左对齐 */
+  padding-left: 150px; /* 或者增加一些内边距来向右推 */
+}
 .sumbitt:hover {
   background: linear-gradient(45deg, #2193b0, #6dd5ed);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
