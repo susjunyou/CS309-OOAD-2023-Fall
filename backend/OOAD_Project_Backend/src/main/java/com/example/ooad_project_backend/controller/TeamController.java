@@ -80,9 +80,6 @@ public class TeamController {
     }
 
 
-
-
-
     @GetMapping("/findTeamInfoByProjectId")
     public Result findTeamInfoByProjectId(Integer projectId) {
         List<TeamInfo> teamInfos = teamInfoService.findAllTeamInfoByProjectId(projectId);
@@ -130,6 +127,16 @@ public class TeamController {
             return Result.error("1", "no team");
         } else {
             return Result.success(teamInfo);
+        }
+    }
+
+    @GetMapping("/getStudentNotJoinTeam")
+    public Result getStudentNotJoinTeam(Integer projectId, Integer courseId) {
+        List<StudentInfo> studentInfos = teamInfoService.findStudentNotJoinTeam(projectId, courseId);
+        if (studentInfos.size() == 0) {
+            return Result.error("1", "no students");
+        } else {
+            return Result.success(studentInfos);
         }
     }
 

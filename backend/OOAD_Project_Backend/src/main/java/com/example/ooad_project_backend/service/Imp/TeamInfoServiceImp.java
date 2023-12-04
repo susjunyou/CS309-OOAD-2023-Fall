@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
+import com.example.ooad_project_backend.mapper.CourseDetailsMapper;
 import com.example.ooad_project_backend.mapper.ProjectInfoMapper;
 import com.example.ooad_project_backend.mapper.StudentInfoMapper;
 import com.example.ooad_project_backend.mapper.TeamMapper;
@@ -26,6 +27,9 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Autowired
     private StudentInfoMapper studentInfoMapper;
+
+    @Autowired
+    private CourseDetailsMapper courseDetailsMapper;
 
     @Override
     public boolean updateTeamInfo(TeamInfo teamInfo) {
@@ -204,5 +208,18 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     public boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate) {
         teamMapper.updatePresentationDateByTeamId(teamId, presentationDate);
         return true;
+    }
+
+    @Override
+    public List<StudentInfo> findStudentNotJoinTeam(Integer projectId, Integer courseId) {
+        List<Integer> alreadyJoinStudentIds = teamMapper.findAlreadyJoinedTeamStudentIdsByProjectId(projectId);
+        List<StudentInfo> allStudentIds = courseDetailsMapper.findAllStudentInfoByCourseId(courseId);
+        List<StudentInfo> studentInfos = new ArrayList<>();
+        for (StudentInfo studentInfo : allStudentIds) {
+            if (!alreadyJoinStudentIds.contains(studentInfo.getId())) {
+                studentInfos.add(studentInfo);
+            }
+        }
+        return studentInfos;
     }
 }

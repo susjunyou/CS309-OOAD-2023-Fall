@@ -106,4 +106,7 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
 
     @Update("update team set presentation_date = #{presentationDate} where team_id = #{teamId}")
     void updatePresentationDateByTeamId(Integer teamId, Date presentationDate);
+
+    @Select("select * from team_student where project_id =#{projectId}")
+    List<Integer> findAlreadyJoinedTeamStudentIdsByProjectId(Integer projectId);
 }
