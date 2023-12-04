@@ -24,4 +24,11 @@ public class StudentInfo extends UserInfo {
 
     private String selfIntroduction;
 
+    private String technologyStack;
+
+    private String programmingSkill;
+
+    private String intendedTeammate;
+
+
 }

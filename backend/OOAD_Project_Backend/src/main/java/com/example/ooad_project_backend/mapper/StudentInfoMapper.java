@@ -18,8 +18,8 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
     @Select("select * from student where name = #{name}")
     StudentInfo findByName(@Param("name") String name);
 
-    @Insert("INSERT INTO student (id, name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA, department) " +
-            "VALUES (#{id}, #{name}, #{account}, #{password}, #{email}, #{selfIntroduction}, #{phoneNumber}, #{sex}, #{major}, #{level}, false, #{department})")
+    @Insert("INSERT INTO student (id, name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA, department, technology_stack, programming_skill, intended_teammate) " +
+            "VALUES (#{id}, #{name}, #{account}, #{password}, #{email}, #{selfIntroduction}, #{phoneNumber}, #{sex}, #{major}, #{level}, false, #{department},#{technologyStack},#{programmingSkill},#{intendedTeammate})")
     void insertStudent(StudentInfo studentInfo);
 
 
@@ -37,7 +37,7 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
     void updatePassword(Integer id, String password);
 
 
-    @Update("update student set email = #{email}, phone_number = #{phoneNumber}, self_introduction = #{selfIntroduction} where id = #{id}")
-    void updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction);
+    @Update("update student set email = #{email}, phone_number = #{phoneNumber}, self_introduction = #{selfIntroduction}, technology_stack =#{technologyStack}, programming_skill =#{programmingSkill}, intended_teammate =#{intendedTeammate} where id = #{id}")
+    void updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction, String technologyStack, String programmingSkill, String intendedTeammate);
 
 }

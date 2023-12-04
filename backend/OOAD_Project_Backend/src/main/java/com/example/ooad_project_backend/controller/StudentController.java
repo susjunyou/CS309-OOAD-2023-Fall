@@ -89,8 +89,8 @@ public class StudentController {
     }
 
     @GetMapping("/updateStudentDetails")
-    public Result updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction) {
-        return studentInfoService.updateStudentDetails(id, email, phoneNumber, selfIntroduction) ? Result.success() : Result.error("1", "修改失败");
+    public Result updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction, String technologyStack, String programmingSkill, String intendedTeammate) {
+        return studentInfoService.updateStudentDetails(id, email, phoneNumber, selfIntroduction, technologyStack, programmingSkill, intendedTeammate) ? Result.success() : Result.error("1", "修改失败");
     }
 
 
