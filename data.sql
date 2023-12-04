@@ -49,19 +49,19 @@ values (22, 'admin3', '125', '123456', '123458@qq.com', '13636364747', true);
 
 --! student data
 insert into student (id, name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
-                     department)
+                     department, technology_stack, programming_skill, intended_teammate)
 values (1, 'student1', '123', '123456', '123456@qq.com', 'self_Introduction', '13636364747', true, 'cs', '1', true,
-        'COMPUTER_SCIENCE');
+        'COMPUTER_SCIENCE', 'vue', 'C++', 'Li Hua');
 
 insert into student (id, name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
-                     department)
+                     department, technology_stack, programming_skill, intended_teammate)
 values (2, 'student2', '124', '123456', '123457@qq.com', 'self_Introduction', '13636364747', true, 'cs', '1', false,
-        'COMPUTER_SCIENCE');
+        'COMPUTER_SCIENCE', 'sprint boot', 'java', 'zhang san');
 
 insert into student (id, name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
-                     department)
+                     department, technology_stack, programming_skill, intended_teammate)
 values (3, 'student3', '125', '123456', '123458@qq.com', 'self_Introduction', '13636364747', true, 'cs', '1', true,
-        'COMPUTER_SCIENCE');
+        'COMPUTER_SCIENCE', 'evaluation algorithm', 'python', 'Li Ming');
 
 --! teacher data
 insert into teacher (id, name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
@@ -259,3 +259,5 @@ values (2, 3, true);
 
 insert into attendance_submission(student_id, attendance_id, is_attended)
 values (3, 3, true);
+
+
