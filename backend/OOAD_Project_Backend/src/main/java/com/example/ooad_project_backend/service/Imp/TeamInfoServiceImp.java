@@ -11,6 +11,7 @@ import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -196,6 +197,12 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
             System.out.println(e.getMessage());
             return false;
         }
+        return true;
+    }
+
+    @Override
+    public boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate) {
+        teamMapper.updatePresentationDateByTeamId(teamId, presentationDate);
         return true;
     }
 }

@@ -1,10 +1,7 @@
 package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
-import com.example.ooad_project_backend.entity.JoinTeamInfo;
-import com.example.ooad_project_backend.entity.StudentInfo;
-import com.example.ooad_project_backend.entity.TeacherInfo;
-import com.example.ooad_project_backend.entity.TeamInfo;
+import com.example.ooad_project_backend.entity.*;
 import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -135,7 +132,6 @@ public class TeamController {
             return Result.success(teamInfo);
         }
     }
-
 
 
 }

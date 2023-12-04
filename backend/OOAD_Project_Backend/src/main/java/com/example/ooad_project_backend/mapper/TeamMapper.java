@@ -5,6 +5,7 @@ import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Mapper
@@ -102,4 +103,7 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
 
     @Delete("delete from request_join_team where id = #{requestId}")
     void deleteRequest(Integer requestId);
+
+    @Update("update team set presentation_date = #{presentationDate} where team_id = #{teamId}")
+    void updatePresentationDateByTeamId(Integer teamId, Date presentationDate);
 }
