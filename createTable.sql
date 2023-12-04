@@ -23,6 +23,9 @@ drop table if exists teacher cascade;
 drop table if exists student cascade;
 drop table if exists grade_book cascade;
 drop table if exists team_student cascade;
+drop table if exists request_join_team cascade;
+drop table if exists invite_join_team cascade;
+drop table if exists file cascade;
 
 
 --! create table student
@@ -35,6 +38,9 @@ create table student
     password          varchar(255)          not null,
     email             varchar(255)          not null unique,
     self_Introduction text,
+    technology_stack  varchar(255),
+    programming_skill varchar(255),
+    Intended_teammate varchar(255),
     phone_number      varchar(255),
     sex               bool,
     major             varchar(255)          not null,
@@ -155,12 +161,14 @@ create table project_submission
 
 create table team
 (
-    team_id          serial primary key,
-    team_name        varchar(255) not null,
-    leader           integer      not null,
-    team_description varchar(255),
-    team_size        integer      not null,
-    project_id       integer      not null
+    team_id           serial primary key,
+    team_name         varchar(255) not null,
+    leader            integer      not null,
+    teacher_id        integer,
+    presentation_date date,
+    team_description  varchar(255),
+    team_size         integer      not null,
+    project_id        integer      not null
 );
 
 --! create table team_project
@@ -285,20 +293,30 @@ create table reply
 
 create table request_join_team
 (
-    id serial primary key,
-    student_id           integer not null,
-    team_id              integer not null
+    id         serial primary key,
+    student_id integer not null,
+    team_id    integer not null
 );
 
 --! create table invite_join_team
 
 create table invite_join_team
 (
-    id serial primary key,
-    student_id          integer not null,
-    team_id             integer not null
+    id         serial primary key,
+    student_id integer not null,
+    team_id    integer not null
 );
 
+
+--! create table file
+
+create table file
+(
+    id        serial primary key,
+    file_name varchar(255) not null,
+    file_type varchar(255) not null,
+    file_data BYTEA
+);
 
 
 --! add foreign key to reply
