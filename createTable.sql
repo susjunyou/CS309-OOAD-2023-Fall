@@ -271,6 +271,7 @@ create table post
     post_title   varchar(255) not null,
     post_content text         not null,
     post_author  integer      not null,
+    post_type    varchar(255) not null,
     author_type  varchar(255) not null,
     time         date         not null,
     course_id    integer      not null
