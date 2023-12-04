@@ -224,14 +224,14 @@ insert into material(material_name, material_description, course_id)
 values ('material3', 'material_description', 2);
 
 --! post data
-insert into post(post_title, post_content, post_author, author_type, time, course_id)
-values ('post1', 'post_content', 1, 'STUDENT', '2021-01-01', 1);
+insert into post(post_title, post_content, post_author, author_type, time, course_id, post_type)
+values ('post1', 'post_content', 1, 'STUDENT', '2021-01-01', 1, 'QUESTION');
 
-insert into post(post_title, post_content, post_author, author_type, time, course_id)
-values ('post2', 'post_content', 2, 'STUDENT', '2021-01-01', 1);
+insert into post(post_title, post_content, post_author, author_type, time, course_id, post_type)
+values ('post2', 'post_content', 2, 'STUDENT', '2021-01-01', 1, 'QUESTION');
 
-insert into post(post_title, post_content, post_author, author_type, time, course_id)
-values ('post3', 'post_content', 3, 'STUDENT', '2021-01-01', 2);
+insert into post(post_title, post_content, post_author, author_type, time, course_id, post_type)
+values ('post3', 'post_content', 3, 'STUDENT', '2021-01-01', 2, 'QUESTION');
 
 
 --! attendance_submission data
