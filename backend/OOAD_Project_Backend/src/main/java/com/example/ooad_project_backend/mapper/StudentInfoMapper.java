@@ -28,8 +28,8 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
     @Insert("insert into assignment_submission (student_id, assignment_id, content, submission_date, file_id) values (#{studentId},#{assignmentId},#{content},#{submitDate},#{fileId})")
     void submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, Integer fileId);
 
-    @Update("update assignment_submission set content = #{content}, submission_date = #{submitDate} where student_id = #{studentId} and assignment_id = #{assignmentId}")
-    void updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate);
+    @Update("update assignment_submission set content = #{content}, submission_date = #{submitDate},technology_stack= #{technologyStack}, programming_skill =#{programmingSkill}, intended_teammate =#{intendedTeammate} where student_id = #{studentId} and assignment_id = #{assignmentId}")
+    void updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, String technologyStack, String programmingSkill, String intendedTeammate);
 
     @Insert("insert into project_submission (student_id, project_id, content, submission_date,file_id) values (#{studentId},#{projectId},#{content},#{submitDate},#{fileId})")
     void submitProject(Integer studentId, Integer projectId, String content, Date submitDate, Integer fileId);

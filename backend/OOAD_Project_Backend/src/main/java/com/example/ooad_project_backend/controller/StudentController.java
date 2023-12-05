@@ -39,8 +39,8 @@ public class StudentController {
 
 
     @GetMapping("/updateAssignment")
-    public Result updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
-        return studentInfoService.updateAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
+    public Result updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, String technologyStack, String programmingSkill, String intendedTeammate) {
+        return studentInfoService.updateAssignment(studentId, assignmentId, content, submitDate, technologyStack, programmingSkill, intendedTeammate) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/submitAssignment")

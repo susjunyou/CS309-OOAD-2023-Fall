@@ -64,8 +64,8 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
     }
 
     @Override
-    public boolean updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate) {
-        studentInfoMapper.updateAssignment(studentId, assignmentId, content, submitDate);
+    public boolean updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, String technologyStack, String programmingSkill, String intendedTeammate) {
+        studentInfoMapper.updateAssignment(studentId, assignmentId, content, submitDate, technologyStack, programmingSkill, intendedTeammate);
         return true;
     }
 

@@ -20,7 +20,7 @@ public interface StudentInfoService extends IService<StudentInfo> {
 
     StudentInfo findStudentInfoById(Integer id);
 
-    boolean updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate);
+    boolean updateAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, String technologyStack, String programmingSkill, String intendedTeammate);
 
     boolean updatePassword(Integer id, String password);
 
