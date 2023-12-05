@@ -30,7 +30,7 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     List<TeamInfo> findAllTeamInfoByStudentId(Integer studentId);
 
-    boolean requestJoinTeam(Integer teamId, Integer studentId);
+    boolean requestJoinTeam(Integer teamId, Integer studentId,Integer projectId);
 
     List<JoinTeamInfo> getRequestsJoinTeam(Integer teamId);
 
@@ -38,7 +38,7 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     boolean manageInvite(Integer id, boolean isAccepted);
 
-    boolean inviteStudent(Integer teamId, Integer studentId);
+    boolean inviteStudent(Integer teamId, Integer studentId,Integer projectId);
 
     List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 

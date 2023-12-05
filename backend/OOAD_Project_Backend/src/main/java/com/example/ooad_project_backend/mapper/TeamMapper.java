@@ -25,8 +25,8 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Insert("insert into team_student(team_id, student_id, project_id) VALUES (#{teamId}, #{studentId}, #{projectId})")
     void joinTeam(Integer teamId, Integer studentId, Integer projectId);
 
-    @Insert("insert into invite_join_team(team_id, student_id) VALUES (#{teamId}, #{studentId})")
-    void addInviteJoinTeam(Integer teamId, Integer studentId);
+    @Insert("insert into invite_join_team(team_id, student_id,project_id) VALUES (#{teamId}, #{studentId}, #{projectId})")
+    void addInviteJoinTeam(Integer teamId, Integer studentId, Integer projectId);
 
     @Delete("delete from team_student where team_id = #{teamId} and student_id = #{studentId}")
     void leaveTeam(Integer teamId, Integer studentId);
@@ -69,8 +69,8 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select * from team where team_id in (select team_id from team_student where student_id = #{studentId})")
     List<TeamInfo> findTeamInfoByStudentId(Integer studentId);
 
-    @Insert("insert into request_join_team (team_id, student_id) VALUES (#{teamId}, #{studentId})")
-    void requestJoinTeam(Integer teamId, Integer studentId);
+    @Insert("insert into request_join_team (team_id, student_id,project_id) VALUES (#{teamId}, #{studentId}, #{projectId})")
+    void requestJoinTeam(Integer teamId, Integer studentId, Integer projectId);
 
     @Select("select student_id from request_join_team where id = #{requestId}")
     Integer findStudentIdByRequestId(Integer requestId);

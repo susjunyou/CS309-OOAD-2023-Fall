@@ -60,8 +60,8 @@ public class TeamController {
     }
 
     @PostMapping("/requestJoinTeam")
-    public Result requestJoinTeam(Integer studentId, Integer teamId) {
-        return teamInfoService.requestJoinTeam(teamId, studentId) ? Result.success() : Result.error();
+    public Result requestJoinTeam(Integer studentId, Integer teamId, Integer projectId) {
+        return teamInfoService.requestJoinTeam(teamId, studentId, projectId) ? Result.success() : Result.error();
     }
 
     @DeleteMapping("/manageTeamRequest")
@@ -101,8 +101,9 @@ public class TeamController {
     }
 
     @PostMapping("/invite")
-    public Result invite(Integer studentId, Integer teamId) {
-        return teamInfoService.inviteStudent(teamId,studentId) ? Result.success() : Result.error();    }
+    public Result invite(Integer studentId, Integer teamId, Integer projectId) {
+        return teamInfoService.inviteStudent(teamId, studentId, projectId) ? Result.success() : Result.error();
+    }
 
     @DeleteMapping("/manageInvite")
     public Result manageInvite(Integer id, boolean isAccepted) {

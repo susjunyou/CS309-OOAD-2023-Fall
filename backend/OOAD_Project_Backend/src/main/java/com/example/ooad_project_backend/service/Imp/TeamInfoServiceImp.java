@@ -130,14 +130,14 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     }
 
     @Override
-    public boolean requestJoinTeam(Integer teamId, Integer studentId) {
+    public boolean requestJoinTeam(Integer teamId, Integer studentId, Integer projectId) {
         List<Integer> teamIds = teamMapper.findTeamIdByStudentIdInRequest(studentId);
         for (Integer teamId1 : teamIds) {
             if (teamId1.equals(teamId)) {
                 return false;
             }
         }
-        teamMapper.requestJoinTeam(teamId, studentId);
+        teamMapper.requestJoinTeam(teamId, studentId, projectId);
         return true;
     }
 
@@ -186,7 +186,7 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     }
 
     @Override
-    public boolean inviteStudent(Integer teamId, Integer studentId) {
+    public boolean inviteStudent(Integer teamId, Integer studentId, Integer projectId) {
         TeamInfo teamInfo = teamMapper.findTeamInfoByTeamId(teamId);
         List<Integer> teamIds = teamMapper.findTeamIdByStudentIdInInvite(studentId);
         for (Integer teamId1 : teamIds) {
@@ -208,7 +208,7 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
             }
         }
         try {
-            teamMapper.addInviteJoinTeam(teamId, studentId);
+            teamMapper.addInviteJoinTeam(teamId, studentId, projectId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
