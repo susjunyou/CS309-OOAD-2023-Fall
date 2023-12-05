@@ -250,6 +250,7 @@ export default {
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
       isPopupVisible: false, // 控制弹窗显示的布尔值
+      attendances:[],
     };
   },
 
