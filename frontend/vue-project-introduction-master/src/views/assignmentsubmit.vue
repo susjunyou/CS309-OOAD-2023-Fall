@@ -418,8 +418,8 @@ export default {
         console.log(res.data)
          let dd = localStorage.getItem('in_ddl');
         let n_data = new Date()
-        localStorage.setItem('com_as_data',(Number(dd.slice(0,4)) * 200) + (Number(dd.slice(5,7)) * 20) + (Number(dd.slice(8))))
-        localStorage.setItem('com_cru_data',(n_data.getFullYear() * 200) + ((n_data.getMonth() + 1) * 20) + (n_data.getDate()))
+        localStorage.setItem('com_as_data',(Number(dd.slice(0,4)) * 400) + (Number(dd.slice(5,7)) * 20) + (Number(dd.slice(8))))
+        localStorage.setItem('com_cru_data',(n_data.getFullYear() * 400) + ((n_data.getMonth() + 1) * 20) + (n_data.getDate()))
         this.disable_submit = localStorage.getItem('com_as_data') < localStorage.getItem('com_cru_data');
         if (res.data.code === "0") {
           localStorage.setItem('history_length',res.data.data.length)

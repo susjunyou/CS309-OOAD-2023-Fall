@@ -80,27 +80,35 @@
       </el-dialog>
 
 
-      <el-menu
-          class="course-navbar"
-          mode="vertical"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-        <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-        <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
-        <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-        <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-        <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-        <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-        <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-      </el-menu>
       <!--  <div>-->
-      <div>
-      <div v-for="material in materials" :key="material.id" class="material">
-        <h3>{{ material.name }}</h3>
-        <p>{{ material.description }}</p>
-      </div>
-    </div>
+
+
+      <el-row :gutter="20">
+        <el-col :span="3">
+
+          <el-menu
+              class="course-navbar"
+              mode="vertical"
+              background-color="#545c64"
+              text-color="#fff"
+              active-text-color="#ffd04b">
+            <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+            <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+            <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+            <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+            <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+            <el-menu-item index="7" @click="studentClick">members</el-menu-item>
+            <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+          </el-menu>
+        </el-col>
+        <el-col v-for="material in materials" :key="material.id" :span="6" >
+          <el-card  class="assignment-card">
+            <h3>{{ material.name }}</h3>
+            <p>{{ material.description }}</p>
+          </el-card>
+        </el-col>
+      </el-row>
+
       </div>
 
 
@@ -414,5 +422,14 @@ export default {
 .profile-button {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
+}
+.assignment-card {
+  display: flex;
+  flex-direction: column;
+margin-top: 50px;
+  margin-left: 115px;
+}
+.assignment-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
 </style>
