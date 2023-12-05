@@ -145,7 +145,8 @@ create table project_submission
     submission_date       date,
     content               text,
     grade                 integer,
-    grade_description     varchar(255)
+    grade_description     varchar(255),
+    file_id               integer
 );
 
 -- --! create table course_project
@@ -225,7 +226,8 @@ create table assignment_submission
     submission_date          date,
     content                  text,
     grade                    integer,
-    grade_description        varchar(255)
+    grade_description        varchar(255),
+    file_id                  integer
 );
 
 --! create table material
