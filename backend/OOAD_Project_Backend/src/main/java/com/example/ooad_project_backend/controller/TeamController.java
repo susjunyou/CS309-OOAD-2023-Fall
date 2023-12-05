@@ -103,7 +103,7 @@ public class TeamController {
     }
 
 
-    @DeleteMapping("/manageInvite")
+    @GetMapping("/manageInvite")
     public Result manageInvite(Integer id, boolean isAccepted) {
         return teamInfoService.manageInvite(id, isAccepted) ? Result.success() : Result.error();
     }

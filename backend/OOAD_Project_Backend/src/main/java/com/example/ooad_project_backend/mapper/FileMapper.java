@@ -10,11 +10,14 @@ import org.apache.ibatis.annotations.Select;
 public interface FileMapper extends BaseMapper<FileInfo> {
 
 
-    @Insert("insert into file (file_name, file_type, file_data) values (#{fileName}, #{fileType}, #{fileBytes})")
+    @Insert("insert into file (file_name, file_type, file_data) values (#{fileName}, #{fileType}, #{fileData})")
     void insertFile(FileInfo fileInfo);
 
     @Select("select * from file where id = #{id}")
     FileInfo getFile(Integer id);
+
+    @Select("select * from file order by id desc limit 1")
+    FileInfo getLast();
 
 
 }

@@ -9,10 +9,7 @@ import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.Imp.FileServiceImp;
 import com.example.ooad_project_backend.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -46,7 +43,7 @@ public class StudentController {
         return studentInfoService.updateAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
     }
 
-    @GetMapping("/submitAssignment")
+    @PostMapping("/submitAssignment")
     public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, MultipartFile file) {
         // 自动填充提交时间为当前时间，暂未实现
         FileInfo fileInfo = new FileInfo();
@@ -55,7 +52,7 @@ public class StudentController {
                 fileInfo.setFileName(file.getOriginalFilename());
                 fileInfo.setFileType(file.getContentType());
                 fileInfo.setFileData(file.getBytes());
-                fileInfo.setId(fileServiceImp.insertFile(fileInfo).getId());
+                fileInfo = fileServiceImp.insertFile(fileInfo);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -16,8 +16,7 @@ public class FileServiceImp extends ServiceImpl<FileMapper, FileInfo> implements
     @Override
     public FileInfo insertFile(FileInfo fileInfo) {
         fileMapper.insertFile(fileInfo);
-        fileInfo.setId(fileInfo.getId());
-        return fileInfo;
+        return fileMapper.getLast();
     }
 
     @Override
