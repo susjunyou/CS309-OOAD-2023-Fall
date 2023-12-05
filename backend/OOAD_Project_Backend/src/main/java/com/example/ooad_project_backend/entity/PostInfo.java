@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.example.ooad_project_backend.enums.PostType;
 import com.example.ooad_project_backend.enums.UserType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,6 +34,8 @@ public class PostInfo implements Serializable {
     private Integer postAuthor;
 
     private UserType authorType;
+
+    private PostType postType;
 
     private Integer courseId;
 

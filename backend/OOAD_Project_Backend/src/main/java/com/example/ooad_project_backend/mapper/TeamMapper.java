@@ -5,6 +5,7 @@ import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Mapper
@@ -37,18 +38,13 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     void deleteTeamInTeamStudent(Integer projectId);
 
     @Select("select * from team where team_id = #{teamId}")
-    @Results({
-            @Result(property = "teamId", column = "team_id"),
-            @Result(property = "teamName", column = "team_name"),
-            @Result(property = "teamDescription", column = "team_description"),
-            @Result(property = "leader", column = "leader"),
-            @Result(property = "projectId", column = "project_id"),
-            @Result(property = "teamSize", column = "team_size")
-    })
     TeamInfo findTeamInfoByTeamId(Integer teamId);
 
     @Select("select team_id from team_student where student_id = #{studentId} and project_id  = #{projectId}")
     Integer findTeamIdByProjectIdAndStudentId(Integer projectId, Integer studentId);
+
+    @Select("select team_id from team where project_id =#{projectId} and leader =#{leader} ")
+    List<TeamInfo> findTeamIdByProjectIdAndLeader(Integer projectId, Integer leader);
 
     @Select("select student_id from team_student where project_id = #{projectId} and team_id = #{teamId}")
     List<Integer> findStudentIdsByTeamIdAndProjectId(Integer teamId, Integer projectId);
@@ -65,7 +61,7 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select * from request_join_team where team_id = #{teamId}")
     List<JoinTeamInfo> getRequestsStudentIdByTeamId(Integer teamId);
 
-    @Select("select team_id from request_join_team where student_id = #{studentId}")
+    @Select("select team_id from invite_join_team where student_id = #{studentId}")
     List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 
 
@@ -102,4 +98,10 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
 
     @Delete("delete from request_join_team where id = #{requestId}")
     void deleteRequest(Integer requestId);
+
+    @Update("update team set presentation_date = #{presentationDate} where team_id = #{teamId}")
+    void updatePresentationDateByTeamId(Integer teamId, Date presentationDate);
+
+    @Select("select student_id from team_student where project_id = #{projectId}")
+    List<Integer> findAlreadyJoinedTeamStudentIdsByProjectId(Integer projectId);
 }

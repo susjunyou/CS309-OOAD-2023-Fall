@@ -5,6 +5,7 @@ import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface TeamInfoService extends IService<TeamInfo> {
@@ -33,13 +34,16 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     List<JoinTeamInfo> getRequestsJoinTeam(Integer teamId);
 
-    boolean manageTeamRequest(Integer requestId,boolean isAccepted);
+    boolean manageTeamRequest(Integer requestId, boolean isAccepted);
 
-    boolean manageInvite(Integer id,boolean isAccepted);
+    boolean manageInvite(Integer id, boolean isAccepted);
 
     boolean inviteStudent(Integer teamId, Integer studentId);
 
     List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 
+    boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate);
+
+    List<StudentInfo> findStudentNotJoinTeam(Integer projectId,Integer courseId);
 
 }

@@ -1,10 +1,7 @@
 package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
-import com.example.ooad_project_backend.entity.JoinTeamInfo;
-import com.example.ooad_project_backend.entity.StudentInfo;
-import com.example.ooad_project_backend.entity.TeacherInfo;
-import com.example.ooad_project_backend.entity.TeamInfo;
+import com.example.ooad_project_backend.entity.*;
 import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -83,9 +80,6 @@ public class TeamController {
     }
 
 
-
-
-
     @GetMapping("/findTeamInfoByProjectId")
     public Result findTeamInfoByProjectId(Integer projectId) {
         List<TeamInfo> teamInfos = teamInfoService.findAllTeamInfoByProjectId(projectId);
@@ -108,8 +102,7 @@ public class TeamController {
 
     @PostMapping("/invite")
     public Result invite(Integer studentId, Integer teamId) {
-        return teamInfoService.inviteStudent(studentId, teamId) ? Result.success() : Result.error();
-    }
+        return teamInfoService.inviteStudent(teamId,studentId) ? Result.success() : Result.error();    }
 
     @DeleteMapping("/manageInvite")
     public Result manageInvite(Integer id, boolean isAccepted) {
@@ -136,6 +129,15 @@ public class TeamController {
         }
     }
 
+    @GetMapping("/getStudentNotJoinTeam")
+    public Result getStudentNotJoinTeam(Integer projectId, Integer courseId) {
+        List<StudentInfo> studentInfos = teamInfoService.findStudentNotJoinTeam(projectId, courseId);
+        if (studentInfos.size() == 0) {
+            return Result.error("1", "no students");
+        } else {
+            return Result.success(studentInfos);
+        }
+    }
 
 
 }

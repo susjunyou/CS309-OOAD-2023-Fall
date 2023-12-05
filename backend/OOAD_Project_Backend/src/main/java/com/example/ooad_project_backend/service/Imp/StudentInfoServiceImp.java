@@ -88,8 +88,8 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
     }
 
     @Override
-    public boolean updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction) {
-        studentInfoMapper.updateStudentDetails(id, email, phoneNumber, selfIntroduction);
+    public boolean updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction, String technologyStack, String programmingSkill, String intendedTeammate) {
+        studentInfoMapper.updateStudentDetails(id, email, phoneNumber, selfIntroduction, technologyStack, programmingSkill, intendedTeammate);
         return true;
     }
 

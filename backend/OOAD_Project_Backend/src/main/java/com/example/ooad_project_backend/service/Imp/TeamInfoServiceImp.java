@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
+import com.example.ooad_project_backend.mapper.CourseDetailsMapper;
 import com.example.ooad_project_backend.mapper.ProjectInfoMapper;
 import com.example.ooad_project_backend.mapper.StudentInfoMapper;
 import com.example.ooad_project_backend.mapper.TeamMapper;
@@ -11,6 +12,7 @@ import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Autowired
     private StudentInfoMapper studentInfoMapper;
+
+    @Autowired
+    private CourseDetailsMapper courseDetailsMapper;
 
     @Override
     public boolean updateTeamInfo(TeamInfo teamInfo) {
@@ -61,6 +66,10 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Override
     public boolean joinTeam(TeamInfo teamInfo, Integer studentId) {
+        // 判断小组是否已经存在
+        if (teamMapper.findTeamIdByProjectIdAndLeader(teamInfo.getProjectId(), teamInfo.getLeader()) != null) {
+            return false;
+        }
         // 判断是否加入该项目的其他队伍
         if (teamMapper.findTeamIdByProjectIdAndStudentId(teamInfo.getProjectId(), studentId) != null) {
             return false;
@@ -101,6 +110,10 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     @Override
     public boolean leaveTeam(Integer teamId, Integer studentId) {
         teamMapper.leaveTeam(teamId, studentId);
+        List<Integer> studentIds = teamMapper.findStudentIdsByTeamId(teamId);
+        if (studentIds.size() == 0) {
+            deleteTeam(teamId);
+        }
         return true;
     }
 
@@ -130,22 +143,20 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Override
     public List<JoinTeamInfo> getRequestsJoinTeam(Integer teamId) {
-        List<JoinTeamInfo> joinTeamInfos = teamMapper.getRequestsStudentIdByTeamId(teamId);
-//        List<StudentInfo> studentInfos = new ArrayList<>();
+        //        List<StudentInfo> studentInfos = new ArrayList<>();
 //        for (JoinTeamInfo joinTeamInfo : joinTeamInfos) {
 //            studentInfos.add(studentInfoMapper.findStudentInfoById(joinTeamInfo.getStudentId()));
 //        }
-        return joinTeamInfos;
+        return teamMapper.getRequestsStudentIdByTeamId(teamId);
     }
 
     @Override
     public List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId) {
-        List<JoinTeamInfo> joinTeamInfos = teamMapper.getInvitesJoinTeam(studentId);
-//        List<TeamInfo> teamInfos = new ArrayList<>();
+        //        List<TeamInfo> teamInfos = new ArrayList<>();
 //        for (Integer teamId : teamIds) {
 //            teamInfos.add(teamMapper.findTeamInfoByTeamId(teamId));
 //        }
-        return joinTeamInfos;
+        return teamMapper.getInvitesJoinTeam(studentId);
     }
 
     @Override
@@ -177,6 +188,12 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     @Override
     public boolean inviteStudent(Integer teamId, Integer studentId) {
         TeamInfo teamInfo = teamMapper.findTeamInfoByTeamId(teamId);
+        List<Integer> teamIds = teamMapper.findTeamIdByStudentIdInInvite(studentId);
+        for (Integer teamId1 : teamIds) {
+            if (teamId1.equals(teamId)) {
+                return false;
+            }
+        }
         // 判断是否加入该项目的其他队伍
         if (teamMapper.findTeamIdByProjectIdAndStudentId(teamInfo.getProjectId(), studentId) != null) {
             return false;
@@ -197,5 +214,24 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate) {
+        teamMapper.updatePresentationDateByTeamId(teamId, presentationDate);
+        return true;
+    }
+
+    @Override
+    public List<StudentInfo> findStudentNotJoinTeam(Integer projectId, Integer courseId) {
+        List<Integer> alreadyJoinStudentIds = teamMapper.findAlreadyJoinedTeamStudentIdsByProjectId(projectId);
+        List<StudentInfo> allStudentIds = courseDetailsMapper.findAllStudentInfoByCourseId(courseId);
+        List<StudentInfo> studentInfos = new ArrayList<>();
+        for (StudentInfo studentInfo : allStudentIds) {
+            if (!alreadyJoinStudentIds.contains(studentInfo.getId())) {
+                studentInfos.add(studentInfo);
+            }
+        }
+        return studentInfos;
     }
 }
