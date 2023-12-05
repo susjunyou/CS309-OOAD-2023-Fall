@@ -15,38 +15,46 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>      </el-col>
+
+
     </el-row>
 
-    <el-row class="main-content">
-      <el-aside :span="3" class="course-navbar" style="width: 205px">
-
-        <el-menu
-            class="course-navbar"
-            mode="vertical"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b">
-          <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-          <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-          <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-          <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-          <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-          <el-menu-item index="7" @click="studentClick">查看members信息</el-menu-item>
-          <el-menu-item index="8" @click="go('gradebook')">Gradebook</el-menu-item>
-          <el-menu-item index="9" @click="logoutClick">LogOut</el-menu-item>
-        </el-menu>
+      <el-menu
+          class="course-navbar"
+          mode="vertical"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+        <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+        <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
+        <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+        <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+        <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+        <el-menu-item index="7" @click="studentClick">members</el-menu-item>
+        <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+      </el-menu>
 
 
-      </el-aside>
 
-      <el-col :span="17" class="posts-container">
-        <div v-for="post in posts" :key="post.id" class="post">
-          <h3>{{ post.title }} 作者: {{ post.author }}</h3>
-          <p>{{ post.content }}</p>
-          <el-button type="primary" @click="showReplyForm(post)">回复</el-button>
-        </div>
-        <el-button type="primary" @click="showPostForm">发表</el-button>
-      </el-col>
+
+
+
+    <el-button type="primary" class="custom-button" @click="showPostForm"  >发表</el-button>
+      <div class="assignment-container">
+        <!-- ...之前的代码... -->
+        <el-row :gutter="20">
+          <el-col v-for="post in posts" :key="post.id" :span="6" >
+            <el-card  class="assignment-card" @click.native="showReplyForm(post)">
+              <h3>{{ post.title }}</h3>
+              <p>发布者：{{ post.author }}</p>
+            </el-card>
+          </el-col>
+        </el-row>
+        <!-- ...之后的代码... -->
+
+      </div>
+
+
 
       <!--      发布post-->
       <el-dialog
@@ -125,17 +133,7 @@
         </div>
       </div>
 
-      <el-col :span="4" class="calendar-container">
-        <div class="calendar-container">
-          <v-calendar :attributes="attrs"></v-calendar>
-          <div class="course-description">
-            <h3>课程描述</h3>
-            <p>{{ this.courseDescription }}</p>
-          </div>
-        </div>
 
-      </el-col>
-    </el-row>
     <el-dialog title="SA信息" :visible.sync="showSaDialog" width="60%">
       <div v-for="sa in saInfos" :key="sa.id" class="sa-info">
         <h3>{{ sa.name }}</h3>
@@ -229,9 +227,35 @@ export default {
   },
   methods: {
     showReplyForm(post){
-      this.showreplyForm=true;
-      this.replyFormData.title=post.title;
-      this.replyFormData.content=post.content;
+      this.$axios.get('/post/getReplyByPostId',{
+        params: {
+          postId:post.id,
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          localStorage.setItem('replylength'+post.id,res.data.data.length);
+          for(let i=0;i<res.data.data.length;i++){
+            localStorage.setItem('replyContent'+post.id+i, res.data.data[i].replyContent);
+            localStorage.setItem('replyAuthor'+post.id+i, res.data.data[i].replyAuthor);
+            localStorage.setItem('replyDate'+post.id+i, res.data.data[i].replyDate);
+            localStorage.setItem('authorType'+post.id+i, res.data.data[i].authorType);
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      localStorage.setItem('currentpostid',post.id);
+      localStorage.setItem('currentauthor',post.author);
+      localStorage.setItem('currenttitle',post.title);
+      localStorage.setItem('currentcontent',post.content);
+      this.$router.push({path:'/postReply',
+      query:{
+        postid:post.id,
+        title:post.title,
+        content:post.content,
+        author:post.author,
+      }})
+
     },
     submitreplyForm(){
       this.showreplyForm=false;
@@ -278,19 +302,21 @@ export default {
             }
           }).then((res) => {
             if (res.data.code === "0") {
+              this.posts=[];
               localStorage.setItem('coursePostLength'+localStorage.getItem('currentcourse'),res.data.data.length)
-              let i = localStorage.getItem('coursePostLength'+localStorage.getItem('currentcourse'))-1;
-              localStorage.setItem('postid'+localStorage.getItem('currentcourse')+i,res.data.data[i].postId);
-              localStorage.setItem('post'+localStorage.getItem('currentcourse')+i,res.data.data[i].postContent);
-              localStorage.setItem('posttitle'+localStorage.getItem('currentcourse')+i,res.data.data[i].postTitle);
-              localStorage.setItem('postauthor'+localStorage.getItem('currentcourse')+i,res.data.data[i].postAuthor);
-              this.posts.push({
-                course:localStorage.getItem('currentcourse'),
-                id:res.data.data[i].postId,
-                title:res.data.data[i].postTitle,
-                content:res.data.data[i].postContent,
-                author:res.data.data[i].postAuthor,
-              })
+              for(let i = localStorage.getItem('coursePostLength'+localStorage.getItem('currentcourse'))-1;i>=0;i--) {
+                localStorage.setItem('postid' + localStorage.getItem('currentcourse') + i, res.data.data[i].postId);
+                localStorage.setItem('post' + localStorage.getItem('currentcourse') + i, res.data.data[i].postContent);
+                localStorage.setItem('posttitle' + localStorage.getItem('currentcourse') + i, res.data.data[i].postTitle);
+                localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
+                this.posts.push({
+                  course: localStorage.getItem('currentcourse'),
+                  id: res.data.data[i].postId,
+                  title: res.data.data[i].postTitle,
+                  content: res.data.data[i].postContent,
+                  author: res.data.data[i].postAuthor,
+                })
+              }
             }
           }).catch(error => {
             console.error('Error loading course posts:', error);
@@ -314,7 +340,7 @@ export default {
     },
     returnTocourse(){
       this.isPopupVisible = false;
-      this.$router.push('/course');
+      this.$router.push('/post');
     },
     saClick() {
       this.showSaDialog = true;
@@ -334,6 +360,7 @@ export default {
       this.myValue=route.title;
       this.loadLocalStorageData();
       this.loadStudentsAndSA();
+      this.$router.push({ path: '/course' });
     },
     go(route) {
 
@@ -395,7 +422,7 @@ export default {
         });
       }
       this.posts=[];
-      for (let i = 0; i < localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse")); i++) {
+      for (let i = localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse"))-1; i >=0; i--) {
         this.posts.push({
           id: localStorage.getItem('postid' + localStorage.getItem("currentcourse")+i),
           content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
@@ -541,6 +568,29 @@ export default {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.assignment-container {
+  margin: 20px;
+  padding-left: 200px;
+}
+
+.assignment-card {
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+  margin-top: 10px;
+  width: 350px;
+  height: 150px;
+}
+
+.assignment-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+}
+.custom-button {
+  background-color: #3498db; /* 更改背景色 */
+  color: #ffffff; /* 更改文字颜色 */
+  margin-top: 15px;
+  /* 可以添加其他样式，如边框、圆角、阴影等 */
 }
 </style>
 

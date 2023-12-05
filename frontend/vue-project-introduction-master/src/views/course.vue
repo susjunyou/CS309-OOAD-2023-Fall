@@ -81,25 +81,20 @@
     </el-dialog>
 
     <el-row class="main-content">
-      <el-aside :span="3" class="course-navbar" style="width: 205px">
-
-        <el-menu
-            class="course-navbar"
-            mode="vertical"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b">
-          <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-          <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
-          <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-          <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-          <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-          <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-          <el-menu-item index="8" @click="go('gradebook')">Gradebook</el-menu-item>
-        </el-menu>
-
-
-      </el-aside>
+      <el-menu
+          class="course-navbar"
+          mode="vertical"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+        <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+        <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+        <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+        <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+        <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+        <el-menu-item index="7" @click="studentClick">members</el-menu-item>
+        <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+      </el-menu>
 
 
     </el-row>
@@ -430,7 +425,6 @@ export default {
   width: 200px;
   background-color: #f2f2f2;
   height: 100vh; /* 设置高度为视口的100% */
-  overflow-y: auto; /* 如果内容太多可以滚动 */
 }
 
 .posts-container {

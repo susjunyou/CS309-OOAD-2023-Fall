@@ -98,7 +98,7 @@
   <el-col :span="21">
     <div class="table-section">
       <h2 class="table-title">Teacher Information</h2>
-      <el-table :data="teachers" style="width: 100%;" border stripe>
+      <el-table :data="teachers" style="width: 90%;" border stripe>
         <el-table-column prop="name" label="Name"></el-table-column>
         <el-table-column prop="tenure" label="Tenure"></el-table-column>
         <el-table-column prop="email" label="Email"></el-table-column>
@@ -109,7 +109,7 @@
     <!-- 学习助手(SA)信息表格 -->
     <div class="table-section">
       <h2 class="table-title">SA Information</h2>
-      <el-table :data="saInfos" style="width: 100%;" border stripe>
+      <el-table :data="saInfos" style="width: 90%;" border stripe>
         <el-table-column prop="name" label="Name"></el-table-column>
         <el-table-column prop="email" label="Email"></el-table-column>
         <el-table-column prop="major" label="Major"></el-table-column>
@@ -119,7 +119,7 @@
     <!-- 学生信息表格 -->
     <div class="table-section">
       <h2 class="table-title">Student Information</h2>
-      <el-table :data="studentInfos" style="width: 100%;" border stripe>
+      <el-table :data="studentInfos" style="width: 90%;" border stripe>
         <el-table-column prop="name" label="Name"></el-table-column>
         <el-table-column prop="email" label="Email"></el-table-column>
         <el-table-column prop="major" label="Major"></el-table-column>
@@ -436,6 +436,7 @@ export default {
    overflow-y: auto; /* 如果内容太多可以滚动 */
  }
 .table-section {
+  margin-left: 100px;
   margin-bottom: 30px; /* 表格间距 */
 }
 
