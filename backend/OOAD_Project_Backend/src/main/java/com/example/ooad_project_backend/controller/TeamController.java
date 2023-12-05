@@ -102,8 +102,7 @@ public class TeamController {
 
     @PostMapping("/invite")
     public Result invite(Integer studentId, Integer teamId) {
-        return teamInfoService.inviteStudent(studentId, teamId) ? Result.success() : Result.error();
-    }
+        return teamInfoService.inviteStudent(teamId,studentId) ? Result.success() : Result.error();    }
 
     @DeleteMapping("/manageInvite")
     public Result manageInvite(Integer id, boolean isAccepted) {
