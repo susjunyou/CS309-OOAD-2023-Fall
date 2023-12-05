@@ -27,11 +27,22 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
             "where student_id = #{studentId}  and  project_id = #{projectId}")
     List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId);
 
-    @Insert("insert into assignment_submission (student_id, assignment_id, grade) values (#{studentId}, #{assignmentId}, #{grade})")
-    boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
+    @Insert("insert into assignment_submission (student_id, assignment_id, grade, content, grade_description) values (#{studentId}, #{assignmentId}, #{grade}, #{content}, #{grade_description})")
+    boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
 
-    @Update("update assignment_submission set grade = #{grade} where student_id = #{studentId} and assignment_id = #{assignmentId}")
-    boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
+
+    @Insert("insert into project_submission (student_id, project_id, grade,content, grade_description) values (#{studentId}, #{projectId}, #{grade}, #{content}, #{grade_description})")
+    boolean addProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
+
+    //更改grade, content和grade_description
+
+
+    boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
+
+    @Update("update project_submission set grade = #{grade} where student_id = #{studentId} and project_submission_id = #{projectId}")
+    boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
+
+
 
 //    @Select("select * from attendance_submission where student_id = #{studentId}")
 //    @Results({

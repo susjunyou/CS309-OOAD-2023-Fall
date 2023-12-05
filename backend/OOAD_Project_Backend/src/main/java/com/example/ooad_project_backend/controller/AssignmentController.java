@@ -5,10 +5,7 @@ import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
 import com.example.ooad_project_backend.service.AssignmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +14,7 @@ import java.util.List;
 @RequestMapping("/assignment")
 @CrossOrigin
 public class AssignmentController {
-
+//SA老师查看某门课的所有作业
     @Autowired
     private AssignmentInfoService assignmentInfoService;
 
@@ -30,5 +27,8 @@ public class AssignmentController {
             return Result.success(assignmentInfoList);
         }
     }
+
+
+
 }
 

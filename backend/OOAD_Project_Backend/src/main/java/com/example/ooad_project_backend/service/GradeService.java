@@ -14,9 +14,11 @@ public interface GradeService extends IService<GradeInfo> {
 
     List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId);
 
-    boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
+    boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
 
-    boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade);
+    boolean addProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
+
+    boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
 
 //    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
 
@@ -25,4 +27,8 @@ public interface GradeService extends IService<GradeInfo> {
     List<AssignmentInfo> getAssignmentSubmissionHistory(Integer studentId, Integer assignmentId);
 
     List<ProjectInfo> getProjectSubmissionHistory(Integer studentId, Integer projectId);
+
+    boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
+
+
 }

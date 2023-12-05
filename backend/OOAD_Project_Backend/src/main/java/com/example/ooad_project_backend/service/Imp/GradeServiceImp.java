@@ -31,13 +31,23 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     }
 
     @Override
-    public boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
-        return gradeMapper.addAssignmentGrade(studentId, assignmentId, grade);
+    public boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description) {
+        return gradeMapper.addAssignmentGrade(studentId, assignmentId, grade, content, grade_description);
     }
 
     @Override
-    public boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade) {
-        return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade);
+    public boolean addProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description) {
+        return gradeMapper.addProjectGrade(studentId, projectId, grade, content, grade_description);
+    }
+
+    @Override
+    public boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description) {
+        return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade, content, grade_description);
+    }
+
+    @Override
+    public boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description) {
+        return gradeMapper.updateProjectGrade(studentId, projectId, grade, content, grade_description);
     }
 
 //    @Override
@@ -59,5 +69,8 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     public List<ProjectInfo> getProjectSubmissionHistory(Integer studentId, Integer projectId) {
         return gradeMapper.getProjectSubmissionHistory(studentId, projectId);
     }
+
+
+
 
 }
