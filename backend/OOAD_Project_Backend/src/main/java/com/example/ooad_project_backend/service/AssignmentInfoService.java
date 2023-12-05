@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface AssignmentInfoService {
     List<AssignmentInfo> findAssignmentInfoByCourseId(Integer courseId);
+
+    List<AssignmentInfo> findAssignmentInfoByStudentIdAndCourseId(Integer studentId, Integer courseId);
 }

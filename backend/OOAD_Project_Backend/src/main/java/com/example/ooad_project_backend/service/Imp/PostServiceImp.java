@@ -47,4 +47,16 @@ public class PostServiceImp extends ServiceImpl<PostMapper, PostInfo> implements
         postMapper.releaseReply(replyInfo.getPostId(), replyInfo.getReplyAuthor(), replyInfo.getReplyContent(), replyInfo.getReplyTime(), replyInfo.getAuthorType());
         return true;
     }
+
+    @Override
+    public boolean deletePost(Integer postId) {
+        postMapper.deletePost(postId);
+        return true;
+    }
+
+    @Override
+    public boolean deleteReply(Integer replyId) {
+        postMapper.deleteReply(replyId);
+        return true;
+    }
 }

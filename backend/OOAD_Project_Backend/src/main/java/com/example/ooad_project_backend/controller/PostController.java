@@ -54,6 +54,16 @@ public class PostController {
         }
     }
 
+    @DeleteMapping ("/deletePost")
+    public Result deletePost(Integer postId) {
+        boolean flag = postService.deletePost(postId);
+        if (flag) {
+            return Result.success();
+        } else {
+            return Result.error("1", "删除失败");
+        }
+    }
+
     @PostMapping("/releaseReply")
     public Result releaseReply(ReplyInfo replyInfo) {
         boolean flag = postService.releaseReply(replyInfo);
@@ -71,6 +81,16 @@ public class PostController {
             return Result.error("1", "没有找到该帖子的回复");
         }
         return Result.success(replyInfos);
+    }
+
+    @DeleteMapping("/deleteReply")
+    public Result deleteReply(Integer replyId) {
+        boolean flag = postService.deleteReply(replyId);
+        if (flag) {
+            return Result.success();
+        } else {
+            return Result.error("1", "删除失败");
+        }
     }
 
 }

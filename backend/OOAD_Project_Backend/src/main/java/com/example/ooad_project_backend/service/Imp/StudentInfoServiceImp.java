@@ -92,5 +92,24 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
         return true;
     }
 
+    @Override
+    public boolean addSA(Integer studentId, Integer courseId) {
+        studentInfoMapper.addSA(studentId, courseId);
+        studentInfoMapper.trueSA(studentId, courseId);
+        return true;
+    }
+
+    @Override
+    public boolean deleteSA(Integer studentId, Integer courseId) {
+        studentInfoMapper.deleteSA(studentId, courseId);
+        if (studentInfoMapper.findStudentIsSA(studentId).isEmpty())
+            studentInfoMapper.falseSA(studentId, courseId);
+        return true;
+    }
+
+    @Override
+    public String findEmailByStudentId(Integer studentId) {
+        return studentInfoMapper.findEmailByStudentId(studentId);
+    }
 
 }

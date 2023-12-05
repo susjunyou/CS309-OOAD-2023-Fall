@@ -33,4 +33,9 @@ public interface PostMapper extends BaseMapper<PostInfo> {
     @Select("insert into reply(reply_content, reply_author, reply_time, post_id, author_type) VALUES (#{replyContent},#{userId},#{replyTime},#{postId},#{userType})")
     void releaseReply(Integer postId, Integer userId, String replyContent, Date replyTime, UserType userType);
 
+    @Select("delete from post where post_id = #{postId}")
+    void deletePost(Integer postId);
+
+    @Select("delete from reply where reply_id = #{replyId}")
+    void deleteReply(Integer replyId);
 }

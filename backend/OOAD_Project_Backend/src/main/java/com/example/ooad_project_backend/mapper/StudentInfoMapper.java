@@ -5,6 +5,7 @@ import com.example.ooad_project_backend.entity.StudentInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @Mapper
@@ -40,4 +41,21 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
     @Update("update student set email = #{email}, phone_number = #{phoneNumber}, self_introduction = #{selfIntroduction}, technology_stack =#{technologyStack}, programming_skill =#{programmingSkill}, intended_teammate =#{intendedTeammate} where id = #{id}")
     void updateStudentDetails(Integer id, String email, String phoneNumber, String selfIntroduction, String technologyStack, String programmingSkill, String intendedTeammate);
 
+    @Insert("insert into course_sa (student_id, course_id) values (#{studentId}, #{courseId})")
+    void addSA(Integer studentId, Integer courseId);
+
+    @Update("update student set issa = true where id = #{studentId}")
+    void trueSA(Integer studentId, Integer courseId);
+
+    @Delete("delete from course_sa where student_id = #{studentId} and course_id = #{courseId}")
+    void deleteSA(Integer studentId, Integer courseId);
+
+    @Update("update student set issa = false where id = #{studentId}")
+    void falseSA(Integer studentId, Integer courseId);
+
+    @Select("select course_id from course_sa where student_id = #{studentId}")
+    List<Integer> findStudentIsSA(Integer studentId);
+
+    @Select("select email from student where id = #{studentId}")
+    String findEmailByStudentId(Integer studentId);
 }

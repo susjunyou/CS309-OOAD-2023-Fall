@@ -20,4 +20,9 @@ public interface PostService extends IService<PostInfo> {
 
     boolean releaseReply(ReplyInfo replyInfo);
 
+    boolean deletePost(Integer postId);
+
+    boolean deleteReply(Integer replyId);
+
+
 }

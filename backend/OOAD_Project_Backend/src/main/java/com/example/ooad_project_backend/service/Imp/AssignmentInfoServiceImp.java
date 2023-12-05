@@ -17,4 +17,9 @@ public class AssignmentInfoServiceImp implements AssignmentInfoService {
     public List<AssignmentInfo> findAssignmentInfoByCourseId(Integer courseId) {
         return assignmentMapper.findAllAssignmentInfoByCourseId(courseId);
     }
+
+    @Override
+    public List<AssignmentInfo> findAssignmentInfoByStudentIdAndCourseId(Integer studentId, Integer courseId) {
+        return assignmentMapper.findAssignmentInfoByStudentIdAndCourseId(studentId, courseId);
+    }
 }

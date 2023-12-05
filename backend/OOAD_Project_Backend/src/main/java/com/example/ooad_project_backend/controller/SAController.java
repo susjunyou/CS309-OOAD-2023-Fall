@@ -34,7 +34,7 @@ public class SAController {
 
 
     // 这个和 courseController 的 getAllSA 里面的重复了吧
-    //是的QAQ
+    //是的,看到哪个用哪个吧,API太多了，尽量做好分类
     @GetMapping("/getAllSAIdByCourseId")
     public Result getAllSAIdByCourseId(Integer courseId) {
         List<Integer> studentIdList = courseInfoService.findMySAIdByCourseId(courseId);
@@ -44,5 +44,34 @@ public class SAController {
             return Result.error("1", "n");
         }
     }
+
+    @GetMapping("/getSAEmailByStudentId")
+    public Result getSAEmailByStudentId(Integer studentId) {
+        String email = studentInfoService.findEmailByStudentId(studentId);
+        if (email != null) {
+            return Result.success(email);
+        } else {
+            return Result.error("1", "该SA暂未上传邮箱");
+        }
+    }
+
+    @GetMapping("/addSA")
+    public Result addSA(Integer studentId, Integer courseId) {
+        if (studentInfoService.addSA(studentId, courseId)) {
+            return Result.success("添加成功");
+        } else {
+            return Result.error("1", "添加失败");
+        }
+    }
+
+    @GetMapping("/deleteSA")
+    public Result deleteSA(Integer studentId, Integer courseId) {
+        if (studentInfoService.deleteSA(studentId, courseId)) {
+            return Result.success("删除成功");
+        } else {
+            return Result.error("1", "删除失败");
+        }
+    }
+
 }
 
