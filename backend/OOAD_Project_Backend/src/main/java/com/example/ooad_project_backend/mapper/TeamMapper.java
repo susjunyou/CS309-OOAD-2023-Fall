@@ -61,7 +61,7 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select * from request_join_team where team_id = #{teamId}")
     List<JoinTeamInfo> getRequestsStudentIdByTeamId(Integer teamId);
 
-    @Select("select team_id from request_join_team where student_id = #{studentId}")
+    @Select("select team_id from invite_join_team where student_id = #{studentId}")
     List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 
 
