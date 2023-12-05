@@ -98,6 +98,8 @@
 
     <div class="assignment-submission">
       <h1>Assignment Submission</h1>
+      <div class="submission-description">
+      </div>
       <div class="text-submission">
         <textarea v-model="textSubmission" placeholder="Write Submission"></textarea>
       </div>
@@ -422,7 +424,10 @@ export default {
 <style scoped>
 .assignment-submission {
   display: flex;
-  flex-direction: column;
+  position: absolute;
+  left: 200px;
+  width: 60%;
+  //flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
