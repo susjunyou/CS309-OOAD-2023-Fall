@@ -38,18 +38,13 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     void deleteTeamInTeamStudent(Integer projectId);
 
     @Select("select * from team where team_id = #{teamId}")
-    @Results({
-            @Result(property = "teamId", column = "team_id"),
-            @Result(property = "teamName", column = "team_name"),
-            @Result(property = "teamDescription", column = "team_description"),
-            @Result(property = "leader", column = "leader"),
-            @Result(property = "projectId", column = "project_id"),
-            @Result(property = "teamSize", column = "team_size")
-    })
     TeamInfo findTeamInfoByTeamId(Integer teamId);
 
     @Select("select team_id from team_student where student_id = #{studentId} and project_id  = #{projectId}")
     Integer findTeamIdByProjectIdAndStudentId(Integer projectId, Integer studentId);
+
+    @Select("select team_id from team where project_id =#{projectId} and leader =#{leader} ")
+    List<TeamInfo> findTeamIdByProjectIdAndLeader(Integer projectId, Integer leader);
 
     @Select("select student_id from team_student where project_id = #{projectId} and team_id = #{teamId}")
     List<Integer> findStudentIdsByTeamIdAndProjectId(Integer teamId, Integer projectId);
