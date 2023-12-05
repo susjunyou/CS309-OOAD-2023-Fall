@@ -45,7 +45,7 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
 
     boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
 
-    @Update("update project_submission set grade = #{grade} where student_id = #{studentId} and project_submission_id = #{projectId}")
+    @Update("update project_submission set grade = #{grade} where student_id = #{studentId} and project_id = #{projectId}")
     boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
 
 

@@ -112,7 +112,6 @@ public class GradeController {
                 gradeServiceImp.freshPro(studentId, projectSubId);
             }
         }
-        //注意这里的projet_id是project_submission_id!!
         return gradeServiceImp.updateProjectGrade(studentId, projectSubId, grade,content,grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 }
