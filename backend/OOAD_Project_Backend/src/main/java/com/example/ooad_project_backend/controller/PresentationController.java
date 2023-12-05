@@ -31,8 +31,51 @@ public class PresentationController{
         }
     }
 
+    @GetMapping("/findTeamInfoByTeamId")
+    public Result findTeamInfoByTeamId(Integer teamId) {
+        TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
+        if (teamInfo == null) {
+            return Result.error("1", "no such team");
+        } else {
+            return Result.success(teamInfo);
+        }
+    }
+
+
+    @PostMapping("/addPresentation")
+    public Result addPresentation(Integer teamId, Date presentationDate) {
+        TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
+        if (teamInfo == null) {
+            return Result.error("1", "no such team");
+        }
+        if (teamInfo.getPresentationDate()==presentationDate){
+            return Result.error("1", "presentation date already exists");
+        }
+        return teamInfoService.addPresentation(teamId, presentationDate) ? Result.success() : Result.error();
+    }
+
+    @DeleteMapping("/deletePresentation")
+    public Result deletePresentation(Integer teamId) {
+        TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
+        if (teamInfo == null) {
+            return Result.error("1", "no such team");
+        }
+        if (teamInfo.getPresentationDate()==null){
+            return Result.error("1", "presentation date doesn't exist");
+        }
+        return teamInfoService.deletePresentation(teamId) ? Result.success() : Result.error();
+    }
+
+
     @PutMapping("/updatePresentationDateByTeamId")
     public Result updatePresentationDateByTeamId(Integer teamId, Date presentationDate) {
+        TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
+        if (teamInfo == null) {
+            return Result.error("1", "no such team");
+        }
+        if (teamInfo.getPresentationDate()==presentationDate){
+            return Result.error("1", "presentation date is the same");
+        }
         return teamInfoService.updatePresentationDateByTeamId(teamId, presentationDate) ? Result.success() : Result.error();
     }
 

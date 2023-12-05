@@ -46,4 +46,9 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     List<StudentInfo> findStudentNotJoinTeam(Integer projectId,Integer courseId);
 
+    boolean addPresentation(Integer teamId, Date presentationDate);
+
+    boolean deletePresentation(Integer teamId);
+
+
 }
