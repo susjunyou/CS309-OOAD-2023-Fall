@@ -17,6 +17,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
+
       <el-col :span="4">
         <el-button type="text" v-popover:profilePopover class="profile-button">
           <i class="el-icon-user"></i> 个人资料
@@ -38,6 +39,7 @@
         </el-popover>
 
       </el-col>
+
     </el-row>
 
     <el-dialog
@@ -78,6 +80,7 @@
 
       </el-form>
     </el-dialog>
+
     <el-menu
         class="course-navbar"
         mode="vertical"
@@ -89,8 +92,8 @@
       <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-      <el-menu-item index="7" @click="studentClick">members</el-menu-item>
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+      <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
 
     <!--  <div>-->
@@ -125,7 +128,6 @@ export default {
       }
       callback();
     };
-
     const e_phoneNumberValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
       const re = /^[0-9]+/;//(?=.*[0-9])(?=.*[a-zA-Z])
       if (!value) {
@@ -136,9 +138,8 @@ export default {
       }
       callback();
     };
-    return {
 
-      // 初始化组件数据属性
+    return {
       rules: {
 
         e_id: [
@@ -161,27 +162,37 @@ export default {
         e_phoneNumber:"",
         e_selfIntroduction:""
       },
-      // 假设每个DDL是一个对象，包含日期和标题
+      // 初始化组件数据属性
+      history:[],
+      courses: [],
+      posts: [],
+      assignments: [],
+      projects: [],
+      materials: [],
+      myValue: '',
       ddls: [
         // ...其他DDL
       ],
       attrs: [],
       // 初始化组件数据属性
-      courses: [],
-      posts: [],
-      assignments: [],
       major: '',
       id :0,
       email:'',
       name:'',
-      projects: [],
-      materials: [],
-      myValue: '',
+      team: {
+        title: '',
+        description: '',
+        teamSize: 0
+      },
+      maxpeople:0,
+      projectid:0,
+      sid:0,
       saInfos: [],
       studentInfos: [],
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
+      isPopupVisible: false, // 控制弹窗显示的布尔值
     };
   },
 
@@ -190,15 +201,13 @@ export default {
     this.id = localStorage.getItem('id');
     this.name = localStorage.getItem('name');
     this.major = localStorage.getItem('major');
-    await this.loadStudentsAndSA();
-    // this.phoneNumber = localStorage.getItem('phoneNumber');
     this.email = localStorage.getItem('email');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+
     this.myValue=localStorage.getItem("currentcourse")
-    this.myValue=localStorage.getItem("currentcourse");
-    this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
   },
   methods: {
+
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
@@ -245,24 +254,6 @@ export default {
     studentClick() {
       this.$router.push('/members');
     },
-    submitassignment(assignment){
-      localStorage.setItem("currentassignmentid",assignment.id);
-      this.$router.push({ path: '/assignmentsubmit'});
-    },
-    logoutClick() {
-      this.$router.push('/Login');
-      localStorage.clear();
-    },
-    goTo(route) {
-// 假设使用 Vue Router 进行导航
-      localStorage.setItem("currentcourse",route.title);
-      localStorage.setItem("currentcourseid",route.id);
-      this.myValue=route.title;
-      this.loadLocalStorageData();
-      this.loadStudentsAndSA();
-      this.$router.push({ path: '/course' });
-    },
-
     async loadStudentsAndSA(){
       this.saInfos = [];
       this.studentInfos = [];
@@ -307,6 +298,28 @@ export default {
       });
 
     },
+
+    submitassignment(assignment){
+      localStorage.setItem("currentassignmentid",assignment.id);
+      localStorage.setItem("in_ddl",assignment.ddl);//status
+      localStorage.setItem("cru_description",assignment.description);
+      localStorage.setItem("cru_status",assignment.status);
+
+      this.$router.push({ path: '/assignmentsubmit'});
+    },
+    logoutClick() {
+      this.$router.push('/Login');
+      localStorage.clear();
+    },
+    goTo(route) {
+// 假设使用 Vue Router 进行导航
+      localStorage.setItem("currentcourse",route.title);
+      localStorage.setItem("currentcourseid",route.id);
+      this.myValue=route.title;
+      this.loadLocalStorageData();
+      this.loadStudentsAndSA();
+      this.$router.push({ path: '/course' });
+    },
     go(route) {
       this.$router.push(route);
     },
@@ -341,7 +354,7 @@ export default {
       for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
-          status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
+          status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),
           title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
@@ -374,20 +387,6 @@ export default {
 
 
 <style scoped>
-
-
-.sa-info {
-  padding: 10px;
-  border: 1px solid #ddd;
-  margin-top: 20px;
-}
-.student-info {
-  padding: 10px;
-  border: 1px solid #ddd;
-  margin-top: 20px;
-}
-
-
 .post {
   text-align: left; /* 文本靠左对齐 */
   padding-left: 10px; /* 左侧填充，确保文本不会紧贴边框 */
@@ -445,10 +444,82 @@ export default {
   cursor: pointer;
   transition: box-shadow .3s;
   border: 1px solid gainsboro;
+
 }
 
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+}
+
+
+/* ...之后的样式... */
+
+
+.sa-info {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}
+.student-info {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+.ddl-highlight {
+  border: 2px solid red;
+  border-radius: 50%;
+}
+.today-highlight {
+  border: 2px solid blue;
+  border-radius: 50%;
+}
+
+
+/* 为帖子添加样式 */
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
+
+.header-bar {
+  background-color: cornflowerblue;
+  color: white;
+  line-height: 60px;
+  padding: 0 20px;
+}
+
+.main-content {
+  display: flex;
+}
+
+.course-navbar {
+  width: 200px;
+  background-color: #f2f2f2;
+  height: 100vh; /* 设置高度为视口的100% */
+}
+
+.posts-container {
+  margin-right: 10px; /* Adjust the margin as needed */
+  padding: 10px;
+  overflow: auto;
+}
+
+.post {
+  text-align: left;
+  border: 1px solid gainsboro;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.calendar-container {
+  padding: 20px;
+}
+.course-description {
+  margin-top: 20px; /* 与日历的间距 */
+  padding: 10px;
+  border: 1px solid #ccc; /* 描述框的边框 */
+  background-color: #f9f9f9; /* 轻微背景颜色区分 */
 }
 .user-profile {
   text-align: center; /* 居中用户信息 */
@@ -472,6 +543,5 @@ export default {
   /* 其他需要的样式 */
 }
 
-/* ...之后的样式... */
 
 </style>

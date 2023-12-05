@@ -250,7 +250,7 @@ export default {
             localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
               localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].id);
-              localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);
+              localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);/////////////////////////////////////////////////////////////////////////////
               localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
               localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
