@@ -3,7 +3,8 @@ package com.example.ooad_project_backend.enums;
 public enum UserType {
     ADMIN("ADMIN"),
     STUDENT("STUDENT"),
-    TEACHER("TEACHER");
+    TEACHER("TEACHER"),
+    SA("SA");
 
     private final String value;
 
