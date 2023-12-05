@@ -1,13 +1,13 @@
 package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
-import com.example.ooad_project_backend.entity.*;
+import com.example.ooad_project_backend.entity.JoinTeamInfo;
+import com.example.ooad_project_backend.entity.StudentInfo;
+import com.example.ooad_project_backend.entity.TeamInfo;
 import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sql.rowset.Joinable;
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +18,12 @@ public class TeamController {
     @Autowired
     private TeamInfoService teamInfoService;
 
-    @PutMapping("/updateTeamInfo")
+    @GetMapping("/updateTeamInfo")
     public Result updateTeamInfo(TeamInfo teamInfo) {
         return teamInfoService.updateTeamInfo(teamInfo) ? Result.success() : Result.error();
     }
 
-    @PutMapping("/updateTeamLeader")
+    @GetMapping("/updateTeamLeader")
     public Result updateTeamLeader(Integer teamId, Integer studentId) {
         return teamInfoService.updateTeamLeader(teamId, studentId) ? Result.success() : Result.error();
     }
@@ -34,18 +34,18 @@ public class TeamController {
         return teamInfoService.createTeam(teamInfo) ? Result.success() : Result.error();
     }
 
-    @PutMapping("/join")
+    @GetMapping("/join")
     public Result join(Integer studentId, TeamInfo teamInfo) {
         System.out.println(teamInfo.toString());
         return teamInfoService.joinTeam(teamInfo, studentId) ? Result.success() : Result.error();
     }
 
-    @DeleteMapping("/leave")
+    @GetMapping("/leave")
     public Result leave(Integer studentId, Integer teamId) {
         return teamInfoService.leaveTeam(teamId, studentId) ? Result.success() : Result.error();
     }
 
-    @DeleteMapping("/delete")
+    @GetMapping("/delete")
     public Result delete(Integer teamId) {
         return teamInfoService.deleteTeam(teamId) ? Result.success() : Result.error();
     }
@@ -61,12 +61,12 @@ public class TeamController {
     }
 
 
-    @DeleteMapping("/manageTeamRequest")
+    @GetMapping("/manageTeamRequest")
     public Result manageTeamRequest(Integer requestId, boolean isAccepted) {
         return teamInfoService.manageTeamRequest(requestId, isAccepted) ? Result.success() : Result.error();
     }
 
-    @PostMapping("/requestJoinTeam")
+    @GetMapping("/requestJoinTeam")
     public Result requestJoinTeam(Integer studentId, Integer teamId, Integer projectId) {
         return teamInfoService.requestJoinTeam(teamId, studentId, projectId) ? Result.success() : Result.error();
     }
@@ -108,7 +108,7 @@ public class TeamController {
         return teamInfoService.manageInvite(id, isAccepted) ? Result.success() : Result.error();
     }
 
-    @PostMapping("/invite")
+    @GetMapping("/invite")
     public Result invite(Integer studentId, Integer teamId, Integer projectId) {
         return teamInfoService.inviteStudent(teamId, studentId, projectId) ? Result.success() : Result.error();
     }

@@ -4,7 +4,6 @@ package com.example.ooad_project_backend.controller;
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
 import com.example.ooad_project_backend.service.AssignmentInfoService;
-import com.example.ooad_project_backend.service.TeacherInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +18,6 @@ import java.util.List;
 @CrossOrigin
 public class AssignmentController {
 
-    @Autowired
-    private TeacherInfoService teacherInfoService;
     @Autowired
     private AssignmentInfoService assignmentInfoService;
 

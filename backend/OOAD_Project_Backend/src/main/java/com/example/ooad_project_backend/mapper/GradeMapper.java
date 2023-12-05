@@ -5,7 +5,10 @@ import com.example.ooad_project_backend.entity.AssignmentInfo;
 import com.example.ooad_project_backend.entity.AttendanceInfo;
 import com.example.ooad_project_backend.entity.GradeInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 

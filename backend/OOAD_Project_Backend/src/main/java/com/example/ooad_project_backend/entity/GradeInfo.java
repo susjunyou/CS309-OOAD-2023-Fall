@@ -1,7 +1,5 @@
 package com.example.ooad_project_backend.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.example.ooad_project_backend.enums.UserType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

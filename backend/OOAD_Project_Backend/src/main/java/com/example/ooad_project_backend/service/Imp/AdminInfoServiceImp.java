@@ -2,9 +2,9 @@ package com.example.ooad_project_backend.service.Imp;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.ooad_project_backend.entity.AdminInfo;
 import com.example.ooad_project_backend.mapper.AdminInfoMapper;
 import com.example.ooad_project_backend.service.AdminInfoService;
-import com.example.ooad_project_backend.entity.AdminInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,6 @@ package com.example.ooad_project_backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.ooad_project_backend.entity.CourseInfo;
-import com.example.ooad_project_backend.entity.FileInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 
 import java.sql.Date;

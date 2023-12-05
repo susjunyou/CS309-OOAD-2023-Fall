@@ -1,5 +1,6 @@
 package com.example.ooad_project_backend.controller;
 
+import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.AdminInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeacherInfo;
@@ -7,7 +8,6 @@ import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.Imp.AdminInfoServiceImp;
 import com.example.ooad_project_backend.service.Imp.StudentInfoServiceImp;
 import com.example.ooad_project_backend.service.Imp.TeacherInfoServiceImp;
-import com.example.ooad_project_backend.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
