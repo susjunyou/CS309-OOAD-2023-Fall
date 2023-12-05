@@ -259,7 +259,7 @@ Values ('project4', 'project_description4', 20001, 2, 'Started', '2023-09-01', '
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
                     project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project5', 'project_description5', 20003, 2, 'UNStarted', '2023-12-30', '2024-1-30', 3, 90, 30, 'TEACHER');
+values ('project5', 'project_description5', 20003, 2, 'UnStart', '2023-12-30', '2024-1-30', 3, 90, 30, 'TEACHER');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
                     project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
@@ -271,7 +271,7 @@ values ('project7', 'project_description7', 20002, 4, 'Started', '2023-11-15', '
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
                     project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project8', 'project_description8', 20002, 5, 'UNStarted', '2023-12-21', '2024-01-15', 3, 80, 20, 'TEACHER');
+values ('project8', 'project_description8', 20002, 5, 'UnStart', '2023-12-21', '2024-01-15', 3, 80, 20, 'TEACHER');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
                     project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
@@ -588,3 +588,4 @@ values ('post15', 'post_content15', 20003, 'TEACHER', '2023-11-23', 6, 'ANNOUNCE
 --          left join attendance a on a.id = attendance_submission.attendance_id
 -- where student_id = 1
 --   and attendance_id = 1;
+
