@@ -421,10 +421,10 @@ insert into assignment_submission(assignment_id, student_id, submission_date, gr
 VALUES (1, 1, '2023-11-01', 90, 'grade_description', 'ass');
 
 insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
-VALUES (2, 1, '2023-11-12', 80, 'grade_description2', 'bss');
+VALUES (1, 2, '2023-11-12', 80, 'grade_description2', 'bss');
 
 insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
-VALUES (3, 1, '2023-11-21', NULL, NULL, NULL);
+VALUES (1, 3, '2023-11-21', NULL, NULL, NULL);
 
 
 --! Attendance data
