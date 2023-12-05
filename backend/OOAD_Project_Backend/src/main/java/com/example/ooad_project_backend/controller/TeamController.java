@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.sql.rowset.Joinable;
 import java.net.Inet4Address;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -59,14 +60,15 @@ public class TeamController {
         }
     }
 
-    @PostMapping("/requestJoinTeam")
-    public Result requestJoinTeam(Integer studentId, Integer teamId, Integer projectId) {
-        return teamInfoService.requestJoinTeam(teamId, studentId, projectId) ? Result.success() : Result.error();
-    }
 
     @DeleteMapping("/manageTeamRequest")
     public Result manageTeamRequest(Integer requestId, boolean isAccepted) {
         return teamInfoService.manageTeamRequest(requestId, isAccepted) ? Result.success() : Result.error();
+    }
+
+    @PostMapping("/requestJoinTeam")
+    public Result requestJoinTeam(Integer studentId, Integer teamId, Integer projectId) {
+        return teamInfoService.requestJoinTeam(teamId, studentId, projectId) ? Result.success() : Result.error();
     }
 
     @GetMapping("/getRequestsJoinTeam")
@@ -100,23 +102,30 @@ public class TeamController {
         }
     }
 
-    @PostMapping("/invite")
-    public Result invite(Integer studentId, Integer teamId, Integer projectId) {
-        return teamInfoService.inviteStudent(teamId, studentId, projectId) ? Result.success() : Result.error();
-    }
 
     @DeleteMapping("/manageInvite")
     public Result manageInvite(Integer id, boolean isAccepted) {
         return teamInfoService.manageInvite(id, isAccepted) ? Result.success() : Result.error();
     }
 
+    @PostMapping("/invite")
+    public Result invite(Integer studentId, Integer teamId, Integer projectId) {
+        return teamInfoService.inviteStudent(teamId, studentId, projectId) ? Result.success() : Result.error();
+    }
+
     @GetMapping("/getInvites")
-    public Result getInvites(Integer studentId) {
+    public Result getInvites(Integer studentId, Integer projectId) {
         List<JoinTeamInfo> teamInfos = teamInfoService.getInvitesJoinTeam(studentId);
-        if (teamInfos.size() == 0) {
+        List<JoinTeamInfo> myTeamInfo = new ArrayList<>();
+        for (JoinTeamInfo teamInfo : teamInfos) {
+            if (teamInfo.getProjectId().equals(projectId)) {
+                myTeamInfo.add(teamInfo);
+            }
+        }
+        if (myTeamInfo.size() == 0) {
             return Result.error("1", "no invites");
         } else {
-            return Result.success(teamInfos);
+            return Result.success(myTeamInfo);
         }
     }
 
