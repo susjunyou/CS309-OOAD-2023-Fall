@@ -16,5 +16,8 @@ public interface FileMapper extends BaseMapper<FileInfo> {
     @Select("select * from file where id = #{id}")
     FileInfo getFile(Integer id);
 
+    @Select("select * from file order by id desc limit 1")
+    FileInfo getLast();
+
 
 }
