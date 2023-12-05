@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)    // 允许链式访问，例如：myObject.setField1("value1").setField2(42)。
 public class JoinTeamInfo {
 
-    Integer Id;
+    Integer id;
 
     Integer teamId;
 
