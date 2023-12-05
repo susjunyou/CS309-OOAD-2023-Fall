@@ -81,6 +81,7 @@
     </el-dialog>
 
     <el-row class="main-content">
+      <el-col>
       <el-menu
           class="course-navbar"
           mode="vertical"
@@ -88,14 +89,17 @@
           text-color="#fff"
           active-text-color="#ffd04b">
         <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-        <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+        <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
         <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
         <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
         <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
         <el-menu-item index="7" @click="studentClick">members</el-menu-item>
         <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       </el-menu>
-
+      </el-col>
+      <el-col :span="8" class="calendar">
+        <v-calendar :attributes="attrs"></v-calendar>
+      </el-col>
 
     </el-row>
 
@@ -199,7 +203,40 @@ export default {
     await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
+    const today = new Date();
+    this.attrs = this.ddls.map(ddl => {
+      const ddlDate = new Date(ddl.date);
+      let contentClass = '';
 
+      if (ddlDate < today) {
+        contentClass = 'ddl-past'; // 过去的DDL
+      } else if (ddlDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
+        contentClass = 'today-highlight'; // 今天
+      } else {
+        contentClass = 'ddl-future'; // 将来的DDL
+      }
+
+      return {
+        key: ddl.date,
+        dates: ddlDate,
+        highlight: {
+          contentClass: contentClass,
+        },
+        popover: {
+          label: ddl.title,
+        },
+      };
+    });
+    this.attrs.push({
+      key: 'today',
+      dates: today,
+      highlight: {
+        contentClass: 'today-highlight',
+      },
+      popover: {
+        label: '今天',
+      },
+    });
   },
   methods: {
     update(){
@@ -347,6 +384,7 @@ export default {
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
+
         this.ddls.push({
           date: this.assignments[i].ddl,
           title: this.assignments[i].title,
@@ -470,6 +508,26 @@ export default {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
 }
+
+
+.calendar {
+  width: 300px; /* 固定日历的宽度 */
+}
+.ddl-past {
+  border: 2px solid red;
+  border-radius: 50%;
+}
+
+.ddl-future {
+  border: 2px solid green;
+  border-radius: 50%;
+}
+
+.today-highlight {
+  border: 2px solid blue;
+  border-radius: 50%;
+}
+
 </style>
 
 

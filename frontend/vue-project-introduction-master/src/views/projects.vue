@@ -87,7 +87,7 @@
         text-color="#fff"
         active-text-color="#ffd04b">
       <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-      <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+      <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
       <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
@@ -338,6 +338,7 @@ export default {
       this.$router.push(route);
     },
     async loadLocalStorageData() {
+
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
@@ -375,6 +376,8 @@ export default {
         });
       }
       this.projects=[];
+      console.log(localStorage.getItem('currentcourse'))
+      console.log( localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
             this.projects.push({
           id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
@@ -391,6 +394,7 @@ export default {
           title: this.projects[i].title,
         });
       }
+      console.log(this.projects)
 
     },  },
 }

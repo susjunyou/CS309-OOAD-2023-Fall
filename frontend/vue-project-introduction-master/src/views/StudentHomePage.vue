@@ -272,6 +272,7 @@ export default {
         }).then((res) => {
           if (res.data.code === "0") {
             localStorage.setItem('projectsLength'+course.title,res.data.data.length)
+            console.log(localStorage.getItem('projectsLength'+course.title))
             for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
               localStorage.setItem('projectid'+course.title+i,res.data.data[i].id);
               localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
@@ -385,26 +386,42 @@ export default {
     this.email = localStorage.getItem('email');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadAllCoursesinfo();
-    this.attrs = this.ddls.map(ddl => ({
-      key: ddl.date,
-      dates: new Date(ddl.date),
-      highlight: {
-        contentClass: 'ddl-highlight', // 应用于内容的CSS类
-      },
-      popover: {
-        label: ddl.title, // 弹出显示的信息
-      },
-    }));
+
+    const today = new Date();
+    this.attrs = this.ddls.map(ddl => {
+      const ddlDate = new Date(ddl.date);
+      let contentClass = '';
+
+      if (ddlDate < today) {
+        contentClass = 'ddl-past'; // 过去的DDL
+      } else if (ddlDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
+        contentClass = 'today-highlight'; // 今天
+      } else {
+        contentClass = 'ddl-future'; // 将来的DDL
+      }
+
+      return {
+        key: ddl.date,
+        dates: ddlDate,
+        highlight: {
+          contentClass: contentClass,
+        },
+        popover: {
+          label: ddl.title,
+        },
+      };
+    });
     this.attrs.push({
       key: 'today',
+      dates: today,
       highlight: {
-        contentClass: 'today-highlight', // 应用于当前日期的CSS类
+        contentClass: 'today-highlight',
       },
-      dates: new Date(), // 当前日期
       popover: {
-        label: 'Today', // 在这里添加你想要显示的文本
+        label: '今天',
       },
     });
+
   },
 };
 </script>
@@ -481,7 +498,7 @@ el-button{
 .course-card {
   cursor: pointer;
   transition: box-shadow 0.3s;
-  border: 1px solid greenyellow;
+  border: 1px solid #eee;
 
 }
 
@@ -499,6 +516,20 @@ el-button{
 
 .calendar {
   width: 300px; /* 固定日历的宽度 */
+}
+.ddl-past {
+  border: 2px solid red;
+  border-radius: 50%;
+}
+
+.ddl-future {
+  border: 2px solid green;
+  border-radius: 50%;
+}
+
+.today-highlight {
+  border: 2px solid blue;
+  border-radius: 50%;
 }
 
 </style>

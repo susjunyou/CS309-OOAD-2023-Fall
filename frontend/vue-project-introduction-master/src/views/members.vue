@@ -87,7 +87,7 @@
         text-color="#fff"
         active-text-color="#ffd04b">
       <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-      <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+      <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
       <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
@@ -207,6 +207,7 @@ export default {
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
+      teachers: [],
       isPopupVisible: false, // 控制弹窗显示的布尔值
     };
 
@@ -314,6 +315,27 @@ export default {
         console.error('Error loading sainfos:', error);
       });
 
+      await this.$axios.get('/course/getTeacher', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.teachers.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              tenure: res.data.data[i].tenure,
+              department: res.data.data[i].department,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
     },
     logoutClick() {
       this.$router.push('/Login');
