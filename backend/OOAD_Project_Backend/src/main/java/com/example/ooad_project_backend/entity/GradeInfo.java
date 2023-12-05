@@ -14,6 +14,7 @@ import java.sql.Date;
 @Accessors(chain = true)    // 允许链式访问，例如：myObject.setField1("value1").setField2(42)。
 public class GradeInfo implements Serializable {
     @Serial
+
     private static final long serialVersionUID = 1L;
 
     private Integer id;
@@ -36,5 +37,6 @@ public class GradeInfo implements Serializable {
 
     private Date submissionDate;
 
+    private boolean fresh;
 
 }

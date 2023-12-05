@@ -140,13 +140,14 @@ create table project
 create table project_submission
 (
     project_submission_id serial primary key,
-    project_id            integer not null,
-    student_id            integer not null,
+    project_id            integer              not null,
+    student_id            integer              not null,
     submission_date       date,
     content               text,
     grade                 integer,
     grade_description     varchar(255),
-    file_id               integer
+    file_id               integer,
+    fresh                 boolean default true not null
 );
 
 -- --! create table course_project
@@ -221,13 +222,14 @@ create table assignment
 create table assignment_submission
 (
     assignment_submission_id serial primary key,
-    assignment_id            integer not null,
-    student_id               integer not null,
+    assignment_id            integer              not null,
+    student_id               integer              not null,
     submission_date          date,
     content                  text,
     grade                    integer,
     grade_description        varchar(255),
-    file_id                  integer
+    file_id                  integer,
+    fresh                    boolean default true not null
 );
 
 --! create table material

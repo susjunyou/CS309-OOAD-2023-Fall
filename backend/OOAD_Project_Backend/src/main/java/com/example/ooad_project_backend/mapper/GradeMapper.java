@@ -15,6 +15,12 @@ import java.util.List;
 @Mapper
 public interface GradeMapper extends BaseMapper<GradeInfo> {
 
+    @Update("update assignment_submission set fresh = false where student_id = #{studentId} and assignment_id = #{assignmentId}")
+    void freshAss(Integer studentId, Integer assignmentId);
+
+    @Update("update project_submission set fresh = false where student_id = #{studentId} and project_id = #{projectId}")
+    void freshPro(Integer studentId, Integer projectId);
+
     @Select("select * " +
             "from assignment " +
             "         right join assignment_submission on assignment.id = assignment_submission.assignment_id\n" +
@@ -39,7 +45,7 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
 
     boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
 
-    @Update("update project_submission set grade = #{grade} where student_id = #{studentId} and project_submission_id = #{projectId}")
+    @Update("update project_submission set grade = #{grade} where student_id = #{studentId} and project_id = #{projectId}")
     boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
 
 
