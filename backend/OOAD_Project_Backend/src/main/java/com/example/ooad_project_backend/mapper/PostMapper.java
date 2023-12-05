@@ -25,7 +25,7 @@ public interface PostMapper extends BaseMapper<PostInfo> {
     List<PostInfo> findPostByTeacherId(Integer teacherId, Integer courseId);
 
     @Insert("insert into post(post_title, post_content, post_author, author_type, time, course_id, post_type) " +
-            "values (#{postTitle}, #{postContent}, #{userId}, #{userType}, #{date}, #{courseId})")
+            "values (#{postTitle}, #{postContent}, #{userId}, #{userType}, #{date}, #{courseId},#{postType})")
     void releasePost(String postTitle, String postContent, Integer userId, Integer courseId, Date date, UserType userType, PostType postType);
 
     @Select(" select * from reply where post_id = #{postId}")
