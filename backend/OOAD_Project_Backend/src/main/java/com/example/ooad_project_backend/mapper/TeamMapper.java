@@ -93,7 +93,7 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select team_id from invite_join_team where student_id = #{studentId}")
     List<Integer> findTeamIdByStudentIdInInvite(Integer studentId);
 
-    @Select("select team_id from team where project_id = #{projectId}")
+    @Select("select project_id from team where project_id = #{teamId}")
     Integer findProjectIdByTeamId(Integer teamId);
 
     @Delete("delete from request_join_team where id = #{requestId}")
