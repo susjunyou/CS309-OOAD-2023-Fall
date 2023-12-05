@@ -33,7 +33,7 @@ public class PostServiceImp extends ServiceImpl<PostMapper, PostInfo> implements
 
     @Override
     public boolean releasePost(PostInfo postInfo) {
-        postMapper.releasePost(postInfo.getPostTitle(), postInfo.getPostContent(), postInfo.getPostAuthor(), postInfo.getCourseId(), postInfo.getTime(), postInfo.getAuthorType());
+        postMapper.releasePost(postInfo.getPostTitle(), postInfo.getPostContent(), postInfo.getPostAuthor(), postInfo.getCourseId(), postInfo.getTime(), postInfo.getAuthorType(),postInfo.getPostType());
         return true;
     }
 

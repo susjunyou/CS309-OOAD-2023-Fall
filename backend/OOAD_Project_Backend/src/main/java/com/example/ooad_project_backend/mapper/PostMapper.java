@@ -3,6 +3,7 @@ package com.example.ooad_project_backend.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.ooad_project_backend.entity.PostInfo;
 import com.example.ooad_project_backend.entity.ReplyInfo;
+import com.example.ooad_project_backend.enums.PostType;
 import com.example.ooad_project_backend.enums.UserType;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,9 +24,9 @@ public interface PostMapper extends BaseMapper<PostInfo> {
     @Select("select * from post where post_author = #{teacherId} and author_type = 'TEACHER' and course_id = #{courseId}")
     List<PostInfo> findPostByTeacherId(Integer teacherId, Integer courseId);
 
-    @Insert("insert into post(post_title, post_content, post_author, author_type, time, course_id) " +
+    @Insert("insert into post(post_title, post_content, post_author, author_type, time, course_id, post_type) " +
             "values (#{postTitle}, #{postContent}, #{userId}, #{userType}, #{date}, #{courseId})")
-    void releasePost(String postTitle, String postContent, Integer userId, Integer courseId, Date date, UserType userType);
+    void releasePost(String postTitle, String postContent, Integer userId, Integer courseId, Date date, UserType userType, PostType postType);
 
     @Select(" select * from reply where post_id = #{postId}")
     List<ReplyInfo> findReplyByPostId(Integer postId);
