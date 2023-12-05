@@ -43,7 +43,7 @@ public class StudentController {
         return studentInfoService.updateAssignment(studentId, assignmentId, content, submitDate) ? Result.success() : Result.error("1", "提交失败");
     }
 
-    @PostMapping("/submitAssignment")
+    @GetMapping("/submitAssignment")
     public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, MultipartFile file) {
         // 自动填充提交时间为当前时间，暂未实现
         FileInfo fileInfo = new FileInfo();

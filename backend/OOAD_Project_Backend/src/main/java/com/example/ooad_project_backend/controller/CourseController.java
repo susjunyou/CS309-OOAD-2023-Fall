@@ -99,7 +99,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping("/addStudent")
+    @GetMapping("/addStudent")
     public Result addStudent(Integer courseId, Integer studentId) {
         if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(studentId)) {
             return Result.error("-1", "No such course or student");
@@ -111,7 +111,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping("/addSA")
+    @GetMapping("/addSA")
     public Result addSA(Integer courseId, Integer studentId) {
         if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(studentId)) {
             return Result.error("-1", "No such course or student");
@@ -123,7 +123,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping("/addTeacher")
+    @GetMapping("/addTeacher")
     public Result addTeacher(Integer courseId, Integer teacherId) {
         if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(teacherId)) {
             return Result.error("-1", "No such course or teacher");

@@ -52,7 +52,7 @@ public class GradeController {
     }
 
     //除了三个必须的参数，其他的content和grade_description都可以不填
-    @PostMapping("/addAssignmentGrade")
+    @GetMapping("/addAssignmentGrade")
     public Result addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description) {
         List<AssignmentInfo> assignmentInfos = gradeServiceImp.findAssignmentGrade(studentId, assignmentId);
         if (assignmentInfos.size() != 0) {
@@ -61,7 +61,7 @@ public class GradeController {
         return gradeServiceImp.addAssignmentGrade(studentId, assignmentId, grade,content,grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 
-    @PutMapping("/updateAssignmentGrade")
+    @GetMapping("/updateAssignmentGrade")
     public Result updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description) {
         List<AssignmentInfo> assignmentInfos = gradeServiceImp.findAssignmentGrade(studentId, assignmentId);
         if (assignmentInfos.size() == 0) {
@@ -91,7 +91,7 @@ public class GradeController {
         }
     }
 
-    @PostMapping("/addProjectGrade")
+    @GetMapping("/addProjectGrade")
     public Result addProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description) {
         List<ProjectInfo> projectInfos = gradeServiceImp.findProjectGrade(studentId, projectId);
         if (projectInfos.size() != 0) {
@@ -100,7 +100,7 @@ public class GradeController {
         return gradeServiceImp.addProjectGrade(studentId, projectId, grade,content,grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 
-    @PutMapping("/updateProjectGrade")
+    @GetMapping("/updateProjectGrade")
     public Result updateProjectGrade(Integer studentId, Integer projectSubId, Integer grade, String content, String grade_description) {
         List<ProjectInfo> projectInfos = gradeServiceImp.findProjectGrade(studentId, projectSubId);
         if (projectInfos.size() == 0) {

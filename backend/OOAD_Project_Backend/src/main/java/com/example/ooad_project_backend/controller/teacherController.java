@@ -19,7 +19,7 @@ public class teacherController {
     @Autowired
     private TeacherInfoService teacherInfoService;
 
-    @RequestMapping("/getCourseInfo")
+    @GetMapping("/getCourseInfo")
     public Result getCoursesByTeacherId(Integer teacherId) {
         List<CourseInfo> courseInfoList = teacherInfoService.findCourseInfoByTeacherId(teacherId);
         if (courseInfoList == null) {
@@ -36,7 +36,7 @@ public class teacherController {
     }
     //done
 
-    @PutMapping("/update")
+    @GetMapping("/update")
     public Result update(TeacherInfo teacherInfo) {
         System.out.println(teacherInfo.toString());
         teacherInfoService.update(teacherInfo);
@@ -44,7 +44,7 @@ public class teacherController {
     }
     //done!
 
-    @DeleteMapping("/deleteById")
+    @GetMapping("/deleteById")
     public Result deleteById( Integer id) {
         teacherInfoService.deleteById(id);
         return Result.success();

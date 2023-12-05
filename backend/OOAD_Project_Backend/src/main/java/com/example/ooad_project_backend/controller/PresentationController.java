@@ -42,7 +42,7 @@ public class PresentationController{
     }
 
 
-    @PostMapping("/addPresentation")
+    @GetMapping("/addPresentation")
     public Result addPresentation(Integer teamId, Date presentationDate) {
         TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
         if (teamInfo == null) {
@@ -54,7 +54,7 @@ public class PresentationController{
         return teamInfoService.addPresentation(teamId, presentationDate) ? Result.success() : Result.error();
     }
 
-    @DeleteMapping("/deletePresentation")
+    @GetMapping("/deletePresentation")
     public Result deletePresentation(Integer teamId) {
         TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
         if (teamInfo == null) {
@@ -67,7 +67,7 @@ public class PresentationController{
     }
 
 
-    @PutMapping("/updatePresentationDateByTeamId")
+    @GetMapping("/updatePresentationDateByTeamId")
     public Result updatePresentationDateByTeamId(Integer teamId, Date presentationDate) {
         TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
         if (teamInfo == null) {

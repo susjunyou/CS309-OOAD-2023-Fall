@@ -9,10 +9,8 @@ import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.Imp.StudentInfoServiceImp;
 import com.example.ooad_project_backend.service.Imp.TeacherInfoServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/register")
 @CrossOrigin
@@ -27,7 +25,7 @@ public class RegisterController {
     private StudentInfoServiceImp studentInfoServiceImp;
 
     //注册功能的实现
-    @PostMapping("/registerTeacher")
+    @GetMapping("/registerTeacher")
     public Result register(TeacherInfo user) {
         //校验数据有没有填
         if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getUserType())) {
@@ -43,7 +41,7 @@ public class RegisterController {
 
         return Result.success();
     }
-    @PostMapping("/registerStudent")
+    @GetMapping("/registerStudent")
     public Result registerStu(StudentInfo user) {
         //校验数据有没有填
         if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getUserType())) {

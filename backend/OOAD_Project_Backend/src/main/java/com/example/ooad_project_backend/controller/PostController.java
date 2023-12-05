@@ -44,7 +44,7 @@ public class PostController {
         return Result.success(postInfos);
     }
 
-    @PostMapping("/releasePost")
+    @GetMapping("/releasePost")
     public Result releasePost(PostInfo postInfo) {
         boolean flag = postService.releasePost(postInfo);
         if (flag) {
@@ -54,7 +54,7 @@ public class PostController {
         }
     }
 
-    @DeleteMapping ("/deletePost")
+    @GetMapping ("/deletePost")
     public Result deletePost(Integer postId) {
         boolean flag = postService.deletePost(postId);
         if (flag) {
@@ -64,7 +64,7 @@ public class PostController {
         }
     }
 
-    @PostMapping("/releaseReply")
+    @GetMapping("/releaseReply")
     public Result releaseReply(ReplyInfo replyInfo) {
         boolean flag = postService.releaseReply(replyInfo);
         if (flag) {
@@ -83,7 +83,7 @@ public class PostController {
         return Result.success(replyInfos);
     }
 
-    @DeleteMapping("/deleteReply")
+    @GetMapping("/deleteReply")
     public Result deleteReply(Integer replyId) {
         boolean flag = postService.deleteReply(replyId);
         if (flag) {
