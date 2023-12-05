@@ -14,9 +14,11 @@ import java.util.List;
 @RequestMapping("/assignment")
 @CrossOrigin
 public class AssignmentController {
-//SA老师查看某门课的所有作业
+//SA老师查看某门课的所有作业，推荐之后的方法都在这里写，不然好难找T.T
     @Autowired
     private AssignmentInfoService assignmentInfoService;
+
+    //提交作业部分在StudentController里面
 
     @GetMapping("/getAssignmentInfoByCourseId")
     public Result getAssignmentInfoByCourseId(Integer courseId) {

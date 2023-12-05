@@ -234,4 +234,16 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         }
         return studentInfos;
     }
+
+    @Override
+    public boolean addPresentation(Integer teamId, Date presentationDate) {
+        teamMapper.addPresentation(teamId, presentationDate);
+        return true;
+    }
+
+    @Override
+    public boolean deletePresentation(Integer teamId) {
+        teamMapper.deletePresentation(teamId);
+        return true;
+    }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/SA")
 @CrossOrigin
+//在这里有addSA，deleteSA，方法，只能让管理员和老师调用
 public class SAController {
     @Autowired
     private StudentInfoService studentInfoService;
