@@ -191,7 +191,7 @@ export default {
       team: {
         title: '',
         description: '',
-        teamSize: 0
+        teamSize:2
       },
       maxpeople:0,
       projectid:0,

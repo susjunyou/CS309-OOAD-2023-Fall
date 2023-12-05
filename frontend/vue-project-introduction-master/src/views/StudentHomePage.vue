@@ -62,6 +62,18 @@
           <el-input v-model="edit.e_selfIntroduction"/>
         </el-form-item>
 
+        <el-form-item label="technologystack" prop="technologystack">
+          <el-input v-model="technologystack"/>
+        </el-form-item>
+
+        <el-form-item label="programmingskill" prop="programmingskill">
+          <el-input v-model="programmingskill"/>
+        </el-form-item>
+
+        <el-form-item label="intendedteammate" prop="intendedteammate">
+          <el-input v-model="intendedteammate"/>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="commitUpdate()">Submit</el-button>
         </el-form-item>
@@ -87,6 +99,12 @@
         <v-calendar :attributes="attrs"></v-calendar>
       </el-col>
     </el-row>
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>修改成功！</p>
+        <button @click="close">关闭</button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -136,7 +154,10 @@ export default {
         e_id: "",
         e_email:"",
         e_phoneNumber:"",
-        e_selfIntroduction:""
+        e_selfIntroduction:"",
+        technologystack:"",
+        programmingskill:"",
+        intendedteammate:"",
       },
       courses: [],
       ddls: [
@@ -149,17 +170,25 @@ export default {
       attrs: [],
       posts:[],
       assignments:[],
-
+      technologystack:'',
+      programmingskill:'',
+      intendedteammate:'',
+      isPopupVisible:false,
     };
   },
   methods: {
+    close(){
+      this.isPopupVisible = false;
+    },
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
       this.edit.e_email = this.email;
       this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
       this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
-
+      this.edit.technologystack = localStorage.getItem('technologystack');
+      this.edit.programmingskill = localStorage.getItem('programmingskill');
+      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
     },
     commitUpdate(){
       //this.id = this.edit.e_id;
@@ -168,13 +197,19 @@ export default {
       localStorage.setItem('email',this.edit.e_email);
       localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
       localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+      localStorage.setItem('technologystack',this.edit.technologystack);
+      localStorage.setItem('programmingskill',this.edit.programmingskill);
+      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
       this.dialogVisible = false;
       this.$axios.get('/student/updateStudentDetails',{
         params: {
           id:localStorage.getItem('id'),
           email:localStorage.getItem('email'),
           phoneNumber:localStorage.getItem('phoneNumber'),
-          selfIntroduction:localStorage.getItem('selfIntroduction')
+          selfIntroduction:localStorage.getItem('selfIntroduction'),
+          technologyStack:localStorage.getItem('technologystack'),
+          programmingSkill:localStorage.getItem('programmingskill'),
+          intendedTeammate:localStorage.getItem('intendedteammate'),
         }
       }).then(res => {
         console.log('dd');
@@ -185,7 +220,11 @@ export default {
           localStorage.setItem('email',this.edit.e_email);
           localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
           localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+          localStorage.setItem('technologystack',this.edit.technologystack);
+          localStorage.setItem('programmingskill',this.edit.programmingskill);
+          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
           console.log('sss');
+          this.isPopupVisible = true;
         }else {
           console.log("error")
         }
@@ -386,6 +425,9 @@ export default {
     this.major = localStorage.getItem('major');
     // this.phoneNumber = localStorage.getItem('phoneNumber');
     this.email = localStorage.getItem('email');
+    this.programmingskill = localStorage.getItem('programmingskill');
+    this.technologystack = localStorage.getItem('technologystack');
+    this.intendedteammate = localStorage.getItem('intendedteammate');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadAllCoursesinfo();
 
@@ -533,5 +575,22 @@ el-button{
   border: 2px solid blue;
   border-radius: 50%;
 }
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
 </style>

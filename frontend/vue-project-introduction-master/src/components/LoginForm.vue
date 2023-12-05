@@ -104,9 +104,13 @@ export default {
             localStorage.setItem('name',response.data.data.name);
             localStorage.setItem('userType',response.data.data.userType);
             localStorage.setItem('selfIntroduction',response.data.data.selfIntroduction);
+            localStorage.setItem('technologystack',response.data.data.technologyStack);
+            localStorage.setItem('programmingskill',response.data.data.programmingSkill);
+            localStorage.setItem('intendedteammate',response.data.data.intendedTeammate);
             console.log(localStorage.getItem('id'));
             console.log(localStorage.getItem('major'));
             console.log(localStorage.getItem('phoneNumber'));
+
             this.getCourses();
             this.$router.push('/StudentHomePage');
           } else {

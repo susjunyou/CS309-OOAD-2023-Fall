@@ -675,6 +675,8 @@ export default {
 
            this.getTeam();
            this.loaddisplay();
+           this.loadbeinvited();
+           this.loadstudentnotjointeam()
         }
       }).catch(error => {
         console.error('Error loading course assignments:', error);
