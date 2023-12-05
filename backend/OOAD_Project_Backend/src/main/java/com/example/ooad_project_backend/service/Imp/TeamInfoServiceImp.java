@@ -188,6 +188,12 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     @Override
     public boolean inviteStudent(Integer teamId, Integer studentId) {
         TeamInfo teamInfo = teamMapper.findTeamInfoByTeamId(teamId);
+        List<Integer> teamIds = teamMapper.findTeamIdByStudentIdInInvite(studentId);
+        for (Integer teamId1 : teamIds) {
+            if (teamId1.equals(teamId)) {
+                return false;
+            }
+        }
         // 判断是否加入该项目的其他队伍
         if (teamMapper.findTeamIdByProjectIdAndStudentId(teamInfo.getProjectId(), studentId) != null) {
             return false;
