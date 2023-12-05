@@ -51,10 +51,12 @@ public class StudentController {
         // 自动填充提交时间为当前时间，暂未实现
         FileInfo fileInfo = new FileInfo();
         try {
-            fileInfo.setFileName(file.getOriginalFilename());
-            fileInfo.setFileType(file.getContentType());
-            fileInfo.setFileData(file.getBytes());
-            fileInfo.setId(fileServiceImp.insertFile(fileInfo).getId());
+            if (file != null) {
+                fileInfo.setFileName(file.getOriginalFilename());
+                fileInfo.setFileType(file.getContentType());
+                fileInfo.setFileData(file.getBytes());
+                fileInfo.setId(fileServiceImp.insertFile(fileInfo).getId());
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -65,10 +67,12 @@ public class StudentController {
     public Result submitProject(Integer studentId, Integer projectId, String content, Date submitDate, MultipartFile file) {
         FileInfo fileInfo = new FileInfo();
         try {
-            fileInfo.setFileName(file.getOriginalFilename());
-            fileInfo.setFileType(file.getContentType());
-            fileInfo.setFileData(file.getBytes());
-            fileInfo.setId(fileServiceImp.insertFile(fileInfo).getId());
+            if (file != null) {
+                fileInfo.setFileName(file.getOriginalFilename());
+                fileInfo.setFileType(file.getContentType());
+                fileInfo.setFileData(file.getBytes());
+                fileInfo.setId(fileServiceImp.insertFile(fileInfo).getId());
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
