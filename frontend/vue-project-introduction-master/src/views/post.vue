@@ -271,6 +271,7 @@ export default {
       const formattedDate = submitDate.toISOString().split('T')[0]; // 获取 yyyy-MM-dd 格式
       const textContent = this.formData.content;
       const texttitle=this.formData.title;
+
       // const postInfo = {
       //   postTitle: texttitle,
       //   postContent: textContent,
@@ -288,6 +289,7 @@ export default {
           postAuthor:localStorage.getItem('id'),
           authorType:localStorage.getItem('userType'),
           courseId:localStorage.getItem('currentcourseid'),
+          postType: 'QUESTION'
         }
       }).then(resp => {
         console.log(resp.data)
@@ -309,6 +311,8 @@ export default {
                 localStorage.setItem('post' + localStorage.getItem('currentcourse') + i, res.data.data[i].postContent);
                 localStorage.setItem('posttitle' + localStorage.getItem('currentcourse') + i, res.data.data[i].postTitle);
                 localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
+                localStorage.setItem('postType'+localStorage.getItem('currentcourse') + i,res.data.data[i].postType);
+              if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='QUESTION'){
                 this.posts.push({
                   course: localStorage.getItem('currentcourse'),
                   id: res.data.data[i].postId,
@@ -316,6 +320,7 @@ export default {
                   content: res.data.data[i].postContent,
                   author: res.data.data[i].postAuthor,
                 })
+              }
               }
             }
           }).catch(error => {
@@ -423,12 +428,14 @@ export default {
       }
       this.posts=[];
       for (let i = localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse"))-1; i >=0; i--) {
-        this.posts.push({
-          id: localStorage.getItem('postid' + localStorage.getItem("currentcourse")+i),
-          content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('posttitle' + localStorage.getItem("currentcourse")+i),
-          author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
-        });
+        if (localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) === 'QUESTION'){
+          this.posts.push({
+            id: localStorage.getItem('postid' + localStorage.getItem("currentcourse")+i),
+            content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
+            title: localStorage.getItem('posttitle' + localStorage.getItem("currentcourse")+i),
+            author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
+          });
+        }
       }
       this.materials=[];
 

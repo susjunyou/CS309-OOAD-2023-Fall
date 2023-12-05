@@ -96,10 +96,31 @@
         <el-menu-item index="7" @click="studentClick">members</el-menu-item>
         <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       </el-menu>
+        <div>
+          <h1>{{currentCourse}}</h1>
+          <div class="post">
+            <h3>CourseDescription: {{currentCourseDescription}}</h3>
+          </div>
+        </div>
+        <h2>Announcements</h2>
+        <div class="assignment-container">
+          <!-- ...之前的代码... -->
+          <el-row :gutter="20">
+            <el-col v-for="anouncement in anouncements" :key="anouncement.id" :span="6" >
+              <el-card  class="assignment-card" >
+                <h3>{{ anouncement.title }}</h3>
+                <p>发布者：{{ anouncement.author }}</p>
+              </el-card>
+            </el-col>
+          </el-row>
+          <!-- ...之后的代码... -->
+
+        </div>
       </el-col>
       <el-col :span="8" class="calendar">
         <v-calendar :attributes="attrs"></v-calendar>
       </el-col>
+
 
     </el-row>
 
@@ -189,6 +210,9 @@ export default {
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
       isPopupVisible: false, // 控制弹窗显示的布尔值
+      currentCourse:'',
+      currentCourseDescription:'',
+      anouncements:[],
     };
   },
   name: 'CourseNavbar',
@@ -204,10 +228,10 @@ export default {
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
     const today = new Date();
+    this.attrs=[];
     this.attrs = this.ddls.map(ddl => {
       const ddlDate = new Date(ddl.date);
       let contentClass = '';
-
       if (ddlDate < today) {
         contentClass = 'ddl-past'; // 过去的DDL
       } else if (ddlDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
@@ -333,14 +357,50 @@ export default {
       this.$router.push('/Login');
       localStorage.clear();
     },
-    goTo(route) {
+    async goTo(route) {
 // 假设使用 Vue Router 进行导航    goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourseid",route.id);
       localStorage.setItem("currentcourse",route.title);
       this.myValue=route.title;
-      this.loadLocalStorageData();
-      this.loadStudentsAndSA();
+      await this.loadLocalStorageData();
+      await this.loadStudentsAndSA();
+      const today = new Date();
+      this.attrs=[],
+          this.attrs = this.ddls.map(ddl => {
+            const ddlDate = new Date(ddl.date);
+            let contentClass = '';
+
+            if (ddlDate < today) {
+              contentClass = 'ddl-past'; // 过去的DDL
+            } else if (ddlDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
+              contentClass = 'today-highlight'; // 今天
+            } else {
+              contentClass = 'ddl-future'; // 将来的DDL
+            }
+
+            return {
+              key: ddl.date,
+              dates: ddlDate,
+              highlight: {
+                contentClass: contentClass,
+              },
+              popover: {
+                label: ddl.title,
+              },
+            };
+          });
+      this.attrs.push({
+        key: 'today',
+        dates: today,
+        highlight: {
+          contentClass: 'today-highlight',
+        },
+        popover: {
+          label: '今天',
+        },
+      });
+
     },
     go(route) {
       this.$router.push(route);
@@ -348,6 +408,8 @@ export default {
 
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.currentCourse=localStorage.getItem("currentcourse");
+      this.currentCourseDescription=localStorage.getItem('courseDescription'+localStorage.getItem('currentcourseid'));
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
@@ -357,6 +419,35 @@ export default {
           code: localStorage.getItem('coursecode' +i),
         });
       }
+      this.anouncements=[];
+      this.$axios.get('/course/posts', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.posts=[];
+          localStorage.setItem('coursePostLength'+localStorage.getItem('currentcourse'),res.data.data.length)
+          for(let i = localStorage.getItem('coursePostLength'+localStorage.getItem('currentcourse'))-1;i>=0;i--) {
+            localStorage.setItem('postid' + localStorage.getItem('currentcourse') + i, res.data.data[i].postId);
+            localStorage.setItem('post' + localStorage.getItem('currentcourse') + i, res.data.data[i].postContent);
+            localStorage.setItem('posttitle' + localStorage.getItem('currentcourse') + i, res.data.data[i].postTitle);
+            localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
+            localStorage.setItem('postType'+localStorage.getItem('currentcourse') + i,res.data.data[i].postType);
+            if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='ANNOUNCEMENT'){
+              this.anouncements.push({
+                course: localStorage.getItem('currentcourse'),
+                id: res.data.data[i].postId,
+                title: res.data.data[i].postTitle,
+                content: res.data.data[i].postContent,
+                author: res.data.data[i].postAuthor,
+              })
+            }
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading course posts:', error);
+      });
       this.posts=[];
       for (let i = 0; i < localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse")); i++) {
         this.posts.push({
@@ -376,6 +467,7 @@ export default {
         });
       }
       this.assignments=[];
+      this.ddls=[];
       for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
@@ -526,6 +618,32 @@ export default {
 .today-highlight {
   border: 2px solid blue;
   border-radius: 50%;
+}
+.post {
+  text-align: left;
+  border: 1px solid gainsboro;
+  margin-bottom: 10px;
+  padding: 10px;
+  margin-left:400px;
+  margin-right: 200px;
+
+}
+.assignment-container {
+  margin: 20px;
+  padding-left: 200px;
+}
+
+.assignment-card {
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+  margin-top: 10px;
+  width: 280px;
+  height: 150px;
+}
+
+.assignment-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
 
 </style>

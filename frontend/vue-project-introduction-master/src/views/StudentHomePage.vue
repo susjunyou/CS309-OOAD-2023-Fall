@@ -211,14 +211,16 @@ export default {
               localStorage.setItem('post'+course.title+i,res.data.data[i].postContent);
               localStorage.setItem('posttitle'+course.title+i,res.data.data[i].postTitle);
               localStorage.setItem('postauthor'+course.title+i,res.data.data[i].postAuthor);
-              this.posts.push({
-                course:course.title,
-                id:res.data.data[i].postId,
-                title:res.data.data[i].postTitle,
-                content:res.data.data[i].postContent,
-                author:res.data.data[i].postAuthor,
-              })
-            }
+              localStorage.setItem('postType'+course.title+i,res.data.data[i].postType);
+                this.posts.push({
+                  course:course.title,
+                  id:res.data.data[i].postId,
+                  title:res.data.data[i].postTitle,
+                  content:res.data.data[i].postContent,
+                  author:res.data.data[i].postAuthor,
+                })
+              }
+
           }
         }).catch(error => {
           console.error('Error loading course posts:', error);
@@ -316,7 +318,7 @@ export default {
         });
         //加载assignment成绩
         for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
-          await this.$axios.get('/grade/AssignmentGrade', {
+          await this.$axios.get('/grade/getAssignmentGrade', {
             params: {
               studentId: localStorage.getItem('id'),
               assignmentId: localStorage.getItem('assignmentid'+course.title+i)
@@ -334,7 +336,7 @@ export default {
         }
         //加载project成绩
         for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
-          await this.$axios.get('/grade/ProjectGrade', {
+          await this.$axios.get('/grade/getProjectGrade', {
             params: {
               studentId: localStorage.getItem('id'),
               projectId: localStorage.getItem('projectid'+course.title+i)

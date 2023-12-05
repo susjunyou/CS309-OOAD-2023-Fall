@@ -104,7 +104,7 @@
           <h3>内容: {{this.currentcontent}}</h3>
           <el-col :span="17" class="posts-container">
             <div v-for="reply in replys" :key="reply.replyContent" class="post">
-              <h3>{{ reply.authorType }} 作者: {{ reply.replyAuthor }}</h3>
+              <h3>{{ reply.authorType }} 回答者: {{ reply.replyAuthor }}</h3>
               <p>{{ reply.replyContent }}</p>
             </div>
 

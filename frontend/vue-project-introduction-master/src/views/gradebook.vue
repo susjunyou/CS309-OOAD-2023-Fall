@@ -87,7 +87,7 @@
         text-color="#fff"
         active-text-color="#ffd04b">
       <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-      <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
+      <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
       <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
@@ -167,7 +167,6 @@
         </li>
       </ul>
     </div>
-
     </div>
 </template>
 
@@ -373,6 +372,65 @@ export default {
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      //加载attendances
+      await this.$axios.get('/grade/getAttendanceGradeByCourseIdAndStudentId', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
+          studentId: localStorage.getItem('id')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          localStorage.setItem('attendancesLength'+localStorage.getItem('currentcourse'),res.data.data.length)
+          for (let i = 0; i < localStorage.getItem('attendancesLength'+localStorage.getItem('currentcourse')); i++) {
+            localStorage.setItem('attendancedate'+localStorage.getItem('currentcourse')+i,res.data.data[i].attendanceDate);
+            localStorage.setItem('attendanceproportion'+localStorage.getItem('currentcourse')+i,res.data.data[i].proportion);
+            if (res.data.data[i].attended) {
+              localStorage.setItem('attendancegrade'+localStorage.getItem('currentcourse')+i,100);
+            }else {
+              localStorage.setItem('attendancegrade'+localStorage.getItem('currentcourse')+i,0);
+            }
+            localStorage.setItem('attendancemaxScore'+localStorage.getItem('currentcourse')+i,res.data.data[i].maxScore);
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading course attendances:', error);
+      });
+      //加载assignment成绩
+      for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ localStorage.getItem('currentcourse')); i++) {
+        await this.$axios.get('/grade/getAssignmentGrade', {
+          params: {
+            studentId: localStorage.getItem('id'),
+            assignmentId: localStorage.getItem('assignmentid'+localStorage.getItem('currentcourse')+i)
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('assignmentgrade' + localStorage.getItem('currentcourse') + i, res.data.data[0].grade);
+            localStorage.setItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data[0].maxScore);
+            localStorage.setItem('assignmentproportion' + localStorage.getItem('currentcourse') + i, res.data.data[0].proportion);
+            localStorage.setItem('assignmentgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data[0].gradeDescription)
+          }
+        }).catch(error => {
+          console.error('Error loading assignment grade:', error);
+        });
+      }
+      //加载project成绩
+      for (let i = 0; i < localStorage.getItem('projectsLength'+ localStorage.getItem('currentcourse')); i++) {
+        await this.$axios.get('/grade/getProjectGrade', {
+          params: {
+            studentId: localStorage.getItem('id'),
+            projectId: localStorage.getItem('projectid'+localStorage.getItem('currentcourse')+i)
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('projectgrade' + localStorage.getItem('currentcourse') + i, res.data.data[0].grade);
+            localStorage.setItem('projectmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data[0].maxScore);
+            localStorage.setItem('projectproportion' + localStorage.getItem('currentcourse') + i, res.data.data[0].proportion);
+            localStorage.setItem('projectgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data[0].gradeDescription);
+          }
+        }).catch(error => {
+          console.error('Error loading project grade:', error);
+        });
+      }
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
@@ -400,31 +458,35 @@ export default {
       }
       this.assignments=[];
       for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
-        this.assignments.push({
-          id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
-          status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
-          description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
-          ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
-          assignmentsgrade: localStorage.getItem('assignmentgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i),
-          proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
-          gardedescription: localStorage.getItem('assignmentgradeDescription' + localStorage.getItem("currentcourse")+i)
-        });
+        if (localStorage.getItem('assignmentgrade'+localStorage.getItem("currentcourse")+i)!=null){
+          this.assignments.push({
+            id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
+            status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
+            title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+            description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+            ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+            assignmentsgrade: localStorage.getItem('assignmentgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i),
+            proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+            gardedescription: localStorage.getItem('assignmentgradeDescription' + localStorage.getItem("currentcourse")+i)
+          });
+        }
       }
       this.projects=[];
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
-        this.projects.push({
-          id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
-          description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
-          startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-          ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
-          status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
-          maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-          projectsgrade: localStorage.getItem('projectgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('projectmaxScore' + localStorage.getItem("currentcourse") + i),
-          proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
-          gardedescription: localStorage.getItem('projectgradeDescription' + localStorage.getItem("currentcourse")+i)
-        });
+        if(localStorage.getItem('projectgrade'+localStorage.getItem("currentcourse")+i)!=null){
+          this.projects.push({
+            id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
+            title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+            description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+            startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+            ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+            status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+            maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+            projectsgrade: localStorage.getItem('projectgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('projectmaxScore' + localStorage.getItem("currentcourse") + i),
+            proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+            gardedescription: localStorage.getItem('projectgradeDescription' + localStorage.getItem("currentcourse")+i)
+          });
+        }
         this.ddls =[]
         this.ddls.push({
           date: this.projects[i].ddl,

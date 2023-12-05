@@ -92,7 +92,7 @@
       <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-      <el-menu-item index="7" @click="members">Members</el-menu-item>
+      <el-menu-item index="7" @click="studentClick">members</el-menu-item>
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
     </el-menu>
 
@@ -115,14 +115,7 @@
   </div>
 </template>
 <script >
-import members from "@/views/members.vue";
-
 export default {
-  computed: {
-    members() {
-      return members
-    }
-  },
 
   data() {
     const e_idValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
@@ -331,7 +324,6 @@ export default {
       this.$router.push(route);
     },
     async loadLocalStorageData() {
-
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
