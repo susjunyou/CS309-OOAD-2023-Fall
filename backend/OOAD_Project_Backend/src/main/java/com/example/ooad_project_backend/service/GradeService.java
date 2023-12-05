@@ -10,6 +10,10 @@ import java.util.List;
 
 public interface GradeService extends IService<GradeInfo> {
 
+    void freshAss(Integer studentId, Integer assignmentId);
+
+    void freshPro(Integer studentId, Integer projectId);
+
     List<AssignmentInfo> findAssignmentGrade(Integer studentId, Integer AssignmentId);
 
     List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId);

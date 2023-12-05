@@ -10,6 +10,7 @@ import com.example.ooad_project_backend.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,15 +20,40 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     @Autowired
     private GradeMapper gradeMapper;
 
+    @Override
+    public void freshAss(Integer studentId, Integer assignmentId) {
+        gradeMapper.freshAss(studentId, assignmentId);
+    }
+
+    @Override
+    public void freshPro(Integer studentId, Integer projectId) {
+        gradeMapper.freshPro(studentId, projectId);
+    }
+
 
     @Override
     public List<AssignmentInfo> findAssignmentGrade(Integer studentId, Integer AssignmentId) {
-        return gradeMapper.findAssignmentGrade(studentId, AssignmentId);
+        List<AssignmentInfo> assignmentInfos = gradeMapper.findAssignmentGrade(studentId, AssignmentId);
+        List<AssignmentInfo> assignmentInfos1 = new ArrayList<>();
+        for (AssignmentInfo assignmentInfo : assignmentInfos) {
+            if (assignmentInfo.isFresh()) {
+                assignmentInfos1.add(assignmentInfo);
+            }
+        }
+        return assignmentInfos1;
+
     }
 
     @Override
     public List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId) {
-        return gradeMapper.findProjectGrade(studentId, projectId);
+        List<ProjectInfo> projectInfos = gradeMapper.findProjectGrade(studentId, projectId);
+        List<ProjectInfo> projectInfos1 = new ArrayList<>();
+        for (ProjectInfo projectInfo : projectInfos) {
+            if (projectInfo.isFresh()) {
+                projectInfos1.add(projectInfo);
+            }
+        }
+        return projectInfos1;
     }
 
     @Override
