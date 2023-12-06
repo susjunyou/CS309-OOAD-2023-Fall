@@ -48,20 +48,32 @@
 
 
       >
-        <el-form-item label="e_id" prop="e_id">
-          <el-input v-model="edit.e_id"/>
+        <el-form-item label="id" prop="e_id">
+          <el-input v-model="edit.e_id" disabled="disabled"/>
         </el-form-item>
 
-        <el-form-item label="e_email" prop="e_email">
+        <el-form-item label="email" prop="e_email">
           <el-input v-model="edit.e_email"/>
         </el-form-item>
 
-        <el-form-item label="e_phoneNumber" prop="e_phoneNumber">
+        <el-form-item label="phoneNumber" prop="e_phoneNumber">
           <el-input v-model="edit.e_phoneNumber"/>
         </el-form-item>
 
-        <el-form-item label="e_selfIntroduction" prop="e_selfIntroduction">
+        <el-form-item label="selfIntroduction" prop="e_selfIntroduction">
           <el-input v-model="edit.e_selfIntroduction"/>
+        </el-form-item>
+
+        <el-form-item label="technologystack" prop="technologystack">
+          <el-input v-model="edit.technologystack"/>
+        </el-form-item>
+
+        <el-form-item label="programmingskill" prop="programmingskill">
+          <el-input v-model="edit.programmingskill"/>
+        </el-form-item>
+
+        <el-form-item label="intendedteammate" prop="intendedteammate">
+          <el-input v-model="edit.intendedteammate"/>
         </el-form-item>
 
         <el-form-item>
@@ -149,7 +161,10 @@ export default {
         e_id: "",
         e_email:"",
         e_phoneNumber:"",
-        e_selfIntroduction:""
+        e_selfIntroduction:"",
+        technologystack:"",
+        programmingskill:"",
+        intendedteammate:"",
       },
       courses: [],
       ddls: [
@@ -161,6 +176,9 @@ export default {
       major: '',
       attrs: [],
       posts:[],
+      technologystack:"",
+      programmingskill:"",
+      intendedteammate:"",
     };
   },
   methods: {
@@ -171,22 +189,30 @@ export default {
       this.edit.e_email = this.email;
       this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
       this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
-
+      this.edit.technologystack = localStorage.getItem('technologystack');
+      this.edit.programmingskill = localStorage.getItem('programmingskill');
+      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
     },
     commitUpdate(){
-      this.id = this.edit.e_id;
+      //this.id = this.edit.e_id;
       this.email = this.edit.e_email;
       localStorage.setItem('id',this.edit.e_id);
       localStorage.setItem('email',this.edit.e_email);
       localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
       localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+      localStorage.setItem('technologystack',this.edit.technologystack);
+      localStorage.setItem('programmingskill',this.edit.programmingskill);
+      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
       this.dialogVisible = false;
       this.$axios.get('/student/updateStudentDetails',{
         params: {
           id:localStorage.getItem('id'),
           email:localStorage.getItem('email'),
           phoneNumber:localStorage.getItem('phoneNumber'),
-          selfIntroduction:localStorage.getItem('selfIntroduction')
+          selfIntroduction:localStorage.getItem('selfIntroduction'),
+          technologyStack:localStorage.getItem('technologystack'),
+          programmingSkill:localStorage.getItem('programmingskill'),
+          intendedTeammate:localStorage.getItem('intendedteammate'),
         }
       }).then(res => {
         console.log('dd');
@@ -197,7 +223,11 @@ export default {
           localStorage.setItem('email',this.edit.e_email);
           localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
           localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+          localStorage.setItem('technologystack',this.edit.technologystack);
+          localStorage.setItem('programmingskill',this.edit.programmingskill);
+          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
           console.log('sss');
+          this.isPopupVisible = true;
         }else {
           console.log("error")
         }
