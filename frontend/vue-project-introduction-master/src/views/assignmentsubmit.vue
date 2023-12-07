@@ -102,7 +102,6 @@
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-      <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
 
     <div class="assignment-submission">
