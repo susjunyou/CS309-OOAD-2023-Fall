@@ -4,7 +4,7 @@
       <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
       </el-col>
-      <el-col :span="9">
+      <el-col :span="5">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             课程列表<i class="el-icon-arrow-down el-icon--right"></i>
@@ -14,8 +14,30 @@
               {{ course.title }}
             </el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>      </el-col>
+        </el-dropdown>
+      </el-col>
 
+      <el-col :span="4">
+        <el-button type="text" v-popover:profilePopover class="profile-button">
+          <i class="el-icon-user"></i> 个人资料
+        </el-button>
+        <el-popover ref="profilePopover" placement="bottom" width="200" trigger="click">
+          <!-- popover内容 -->
+          <div class="user-profile">
+            <img src="../assets/人脸.png" alt="个人信息" class="avatar">
+            <h3>姓名：{{ this.name }}</h3>
+            <p>学号：{{ this.id }}</p>
+            <p>邮箱：{{ this.email }}</p>
+            <p>专业：{{ this.major }}</p>
+            <el-menu>
+              <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
+              <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
+              <el-menu-item index="3" @click="logoutClick">LogOut</el-menu-item>
+            </el-menu>
+          </div>
+        </el-popover>
+
+      </el-col>
 
     </el-row>
 
@@ -152,6 +174,56 @@
         <p>自我介绍: {{ student.selfIntroduction }}</p>
       </div>
     </el-dialog>
+    <el-dialog
+        :visible.sync="dialogVisible"
+        title="Add A New Record"
+        width="40%"
+
+    >
+      <el-form
+          ref="editForm"
+          :model="edit"
+          :rules="rules"
+          label-width="auto"
+          label-position="right"
+          size="default"
+
+
+      >
+        <el-form-item label="id" prop="e_id">
+          <el-input v-model="edit.e_id" disabled="disabled"/>
+        </el-form-item>
+
+        <el-form-item label="email" prop="e_email">
+          <el-input v-model="edit.e_email"/>
+        </el-form-item>
+
+        <el-form-item label="phoneNumber" prop="e_phoneNumber">
+          <el-input v-model="edit.e_phoneNumber"/>
+        </el-form-item>
+
+        <el-form-item label="selfIntroduction" prop="e_selfIntroduction">
+          <el-input v-model="edit.e_selfIntroduction"/>
+        </el-form-item>
+
+        <el-form-item label="technologystack" prop="technologystack">
+          <el-input v-model="edit.technologystack"/>
+        </el-form-item>
+
+        <el-form-item label="programmingskill" prop="programmingskill">
+          <el-input v-model="edit.programmingskill"/>
+        </el-form-item>
+
+        <el-form-item label="intendedteammate" prop="intendedteammate">
+          <el-input v-model="edit.intendedteammate"/>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="commitUpdate()">Submit</el-button>
+        </el-form-item>
+
+      </el-form>
+    </el-dialog>
 
   </div>
 </template>
@@ -164,7 +236,53 @@
 export default {
 
   data() {
+    const e_idValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
+      const re = /^[0-9]/;
+      if (!value) {
+        return callback(new Error('Please input id'));
+      }
+      if (!re.test(value)) {
+        return callback(new Error('Invalid id, should only contain numbers'));
+      }
+      callback();
+    };
+
+    const e_phoneNumberValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
+      const re = /^[0-9]+/;//(?=.*[0-9])(?=.*[a-zA-Z])
+      if (!value) {
+        return callback(new Error('Please input phoneNumber'));
+      }
+      if (!re.test(value)) {
+        return callback(new Error('Invalid phoneNumber, should only contain numbers'));
+      }
+      callback();
+    };
     return {
+      rules: {
+
+        e_id: [
+          {validator: e_idValidator, trigger: 'blur'},
+          {required: true, message: 'Please input the id', trigger: 'blur'},
+        ],
+        email: [
+          //{validator: emailValidator(), trigger: 'blur'},
+          {required: true, message: 'Please input the id', trigger: 'blur'},
+        ],
+        e_phoneNumber: [
+          {validator: e_phoneNumberValidator, trigger: 'blur'},
+          {required: true, message: 'Please input the id', trigger: 'blur'},
+        ],
+      },
+      dialogVisible: false,
+      edit: {
+        e_id: "",
+        e_email:"",
+        e_phoneNumber:"",
+        e_selfIntroduction:"",
+        technologystack:"",
+        programmingskill:"",
+        intendedteammate:"",
+      },
       // 假设每个DDL是一个对象，包含日期和标题
       ddls: [
         // ...其他DDL
@@ -184,6 +302,7 @@ export default {
       courseDescription:'',
       showForm: false, // 控制表单显示与隐藏
       showreplyForm: false, // ��制发表表单显示与隐藏
+
       formData: {
         title: '',
         content: '' // 表单数据
@@ -194,12 +313,24 @@ export default {
         reply: '',
       },
       isPopupVisible: false,
+      technologystack:"",
+      programmingskill:"",
+      intendedteammate:"",
+      major: '',
+      id :0,
+      email:'',
+      name:'',
     };
+
   },
   name: 'CourseNavbar',
 
 
   async created() {
+    this.id = localStorage.getItem('id');
+    this.email = localStorage.getItem('email');
+    this.name = localStorage.getItem('name');
+    this.major = localStorage.getItem('major');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
@@ -226,6 +357,58 @@ export default {
     });
   },
   methods: {
+    update(){
+      this.dialogVisible=true;
+      this.edit.e_id = this.id;
+      this.edit.e_email = this.email;
+      this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
+      this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
+      this.edit.technologystack = localStorage.getItem('technologystack');
+      this.edit.programmingskill = localStorage.getItem('programmingskill');
+      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
+    },
+    commitUpdate(){
+      //this.id = this.edit.e_id;
+      this.email = this.edit.e_email;
+      localStorage.setItem('id',this.edit.e_id);
+      localStorage.setItem('email',this.edit.e_email);
+      localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
+      localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+      localStorage.setItem('technologystack',this.edit.technologystack);
+      localStorage.setItem('programmingskill',this.edit.programmingskill);
+      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
+      this.dialogVisible = false;
+      this.$axios.get('/student/updateStudentDetails',{
+        params: {
+          id:localStorage.getItem('id'),
+          email:localStorage.getItem('email'),
+          phoneNumber:localStorage.getItem('phoneNumber'),
+          selfIntroduction:localStorage.getItem('selfIntroduction'),
+          technologyStack:localStorage.getItem('technologystack'),
+          programmingSkill:localStorage.getItem('programmingskill'),
+          intendedTeammate:localStorage.getItem('intendedteammate'),
+        }
+      }).then(res => {
+        console.log('dd');
+        if(res.data.code === "0"){
+          this.successMessage = '个人资料修改成功';
+          this.errorMessage = '';
+          localStorage.setItem('id',this.edit.e_id);
+          localStorage.setItem('email',this.edit.e_email);
+          localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
+          localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+          localStorage.setItem('technologystack',this.edit.technologystack);
+          localStorage.setItem('programmingskill',this.edit.programmingskill);
+          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
+          console.log('sss');
+          this.isPopupVisible = true;
+        }else {
+          console.log("error")
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     showReplyForm(post){
       this.$axios.get('/post/getReplyByPostId',{
         params: {
@@ -598,6 +781,27 @@ export default {
   color: #ffffff; /* 更改文字颜色 */
   margin-top: 15px;
   /* 可以添加其他样式，如边框、圆角、阴影等 */
+}
+.profile-button {
+  color: #fff; /* 文本颜色 */
+  /* 其他需要的样式 */
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 </style>
 
