@@ -17,7 +17,11 @@ import personInformation from "@/views/PersonInformation.vue";
 import members from "@/views/members.vue";
 import post from "@/views/post.vue";
 import postReply from "@/views/postReply.vue";
-
+import teacherhomepage from "@/views/teacherhomepage.vue";
+import postofteacher from "@/views/postofteacher.vue"
+import projectsofteacher from "@/views/projectsofteacher.vue"
+import membersofteacher from "@/views/membersofteacher.vue"
+import materialsofteacher from "@/views/materialsofteacher.vue"
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -37,6 +41,11 @@ const routes = [
     {path: '/members', component: members},
     {path: '/post', component: post},
     {path: '/postReply', component: postReply},
+    {path: '/teacherhomepage',component: teacherhomepage},
+    {path: '/postofteacher',component: postofteacher},
+    {path: '/projectsofteacher',component: projectsofteacher},
+    {path: '/membersofteacher', component: membersofteacher},
+    {path: '/materialsofteacher', component: materialsofteacher},
     {path: '/', redirect: '/login'}
 
 ]

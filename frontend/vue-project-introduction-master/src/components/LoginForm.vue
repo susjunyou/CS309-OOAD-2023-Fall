@@ -130,7 +130,19 @@ export default {
           console.log(response)
           if (response.data.code === "0") {
             console.log(response.data.data);
-            this.$router.push('/StudentHomePage');
+            localStorage.setItem('account', _this.form.username);
+            localStorage.setItem('password', _this.form.password);
+            localStorage.setItem('phoneNumber', response.data.data.phoneNumber);
+            localStorage.setItem('id', response.data.data.id);//student id
+            localStorage.setItem('password',response.data.data.password);
+            localStorage.setItem('email',response.data.data.email);
+            localStorage.setItem('name',response.data.data.name);
+            localStorage.setItem('userType',response.data.data.userType);
+            localStorage.setItem('selfIntroduction',response.data.data.selfIntroduction);
+            localStorage.setItem('department',response.data.data.department);
+            localStorage.setItem('tenure',response.data.data.tenure);
+            this.getCoursesofteacher();
+            this.$router.push('/teacherhomepage');
           } else {
             console.log("error")
           }
@@ -164,7 +176,33 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+    },
+    getCoursesofteacher() {
+      this.$axios.get('/teacher/getCourseInfo',{
+        params:{
+          studentId:localStorage.getItem('tid')
+        }
+      })
+          .then((res) => {
+            console.log(res.data);
+            localStorage.setItem('length',res.data.data.length);
+            console.log(localStorage.getItem('length'));
+            for (let i = 0; i < localStorage.getItem('length'); i++) {
+              localStorage.setItem('coursesidt'+i,res.data.data[i].courseId);
+              localStorage.setItem('coursest'+i,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+              localStorage.setItem('coursecodet'+i,res.data.data[i].courseCode);
+              localStorage.setItem('courseDescriptiont'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              localStorage.setItem('getdescriptionbyidt'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+            }
+            console.log(localStorage.getItem('courses0'));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     }
+
   },
   computed: {
     ...mapState("purchase", {
