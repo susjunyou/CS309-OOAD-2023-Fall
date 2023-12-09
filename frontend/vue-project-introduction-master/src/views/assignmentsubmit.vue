@@ -71,12 +71,25 @@
           <el-input v-model="edit.e_selfIntroduction"/>
         </el-form-item>
 
+        <el-form-item label="technologystack" prop="technologystack">
+          <el-input v-model="edit.technologystack"/>
+        </el-form-item>
+
+        <el-form-item label="programmingskill" prop="programmingskill">
+          <el-input v-model="edit.programmingskill"/>
+        </el-form-item>
+
+        <el-form-item label="intendedteammate" prop="intendedteammate">
+          <el-input v-model="edit.intendedteammate"/>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="commitUpdate()">Submit</el-button>
         </el-form-item>
 
       </el-form>
     </el-dialog>
+
     <el-menu
         class="course-navbar"
         mode="vertical"
@@ -89,7 +102,6 @@
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-      <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
 
     <div class="assignment-submission">
@@ -225,7 +237,10 @@ export default {
         e_id: "",
         e_email:"",
         e_phoneNumber:"",
-        e_selfIntroduction:""
+        e_selfIntroduction:"",
+        technologystack:"",
+        programmingskill:"",
+        intendedteammate:"",
       },
       // 假设每个DDL是一个对象，包含日期和标题
       ddls: [
@@ -264,6 +279,9 @@ export default {
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
       major: '',
+      technologystack:'',
+      programmingskill:'',
+      intendedteammate:'',
     };
   },
 
@@ -291,7 +309,9 @@ export default {
       this.edit.e_email = this.email;
       this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
       this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
-
+      this.edit.technologystack = localStorage.getItem('technologystack');
+      this.edit.programmingskill = localStorage.getItem('programmingskill');
+      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
     },
     commitUpdate(){
       //this.id = this.edit.e_id;
@@ -300,13 +320,19 @@ export default {
       localStorage.setItem('email',this.edit.e_email);
       localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
       localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+      localStorage.setItem('technologystack',this.edit.technologystack);
+      localStorage.setItem('programmingskill',this.edit.programmingskill);
+      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
       this.dialogVisible = false;
       this.$axios.get('/student/updateStudentDetails',{
         params: {
           id:localStorage.getItem('id'),
           email:localStorage.getItem('email'),
           phoneNumber:localStorage.getItem('phoneNumber'),
-          selfIntroduction:localStorage.getItem('selfIntroduction')
+          selfIntroduction:localStorage.getItem('selfIntroduction'),
+          technologyStack:localStorage.getItem('technologystack'),
+          programmingSkill:localStorage.getItem('programmingskill'),
+          intendedTeammate:localStorage.getItem('intendedteammate'),
         }
       }).then(res => {
         console.log('dd');
@@ -317,7 +343,11 @@ export default {
           localStorage.setItem('email',this.edit.e_email);
           localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
           localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+          localStorage.setItem('technologystack',this.edit.technologystack);
+          localStorage.setItem('programmingskill',this.edit.programmingskill);
+          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
           console.log('sss');
+          this.isPopupVisible = true;
         }else {
           console.log("error")
         }
@@ -418,8 +448,8 @@ export default {
         console.log(res.data)
          let dd = localStorage.getItem('in_ddl');
         let n_data = new Date()
-        localStorage.setItem('com_as_data',(Number(dd.slice(0,4)) * 400) + (Number(dd.slice(5,7)) * 20) + (Number(dd.slice(8))))
-        localStorage.setItem('com_cru_data',(n_data.getFullYear() * 400) + ((n_data.getMonth() + 1) * 20) + (n_data.getDate()))
+        localStorage.setItem('com_as_data',(Number(dd.slice(0,4)) * 400) + (Number(dd.slice(5,7)) * 40) + (Number(dd.slice(8))))
+        localStorage.setItem('com_cru_data',(n_data.getFullYear() * 400) + ((n_data.getMonth() + 1) * 40) + (n_data.getDate()))
         this.disable_submit = localStorage.getItem('com_as_data') < localStorage.getItem('com_cru_data');
         if (res.data.code === "0") {
           localStorage.setItem('history_length',res.data.data.length)

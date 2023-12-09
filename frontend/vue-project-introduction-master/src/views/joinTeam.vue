@@ -71,13 +71,24 @@
           <el-input v-model="edit.e_selfIntroduction"/>
         </el-form-item>
 
+        <el-form-item label="technologystack" prop="technologystack">
+          <el-input v-model="edit.technologystack"/>
+        </el-form-item>
+
+        <el-form-item label="programmingskill" prop="programmingskill">
+          <el-input v-model="edit.programmingskill"/>
+        </el-form-item>
+
+        <el-form-item label="intendedteammate" prop="intendedteammate">
+          <el-input v-model="edit.intendedteammate"/>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="commitUpdate()">Submit</el-button>
         </el-form-item>
 
       </el-form>
     </el-dialog>
-
 
 
     <el-menu
@@ -273,7 +284,10 @@ export default {
         e_id: "",
         e_email:"",
         e_phoneNumber:"",
-        e_selfIntroduction:""
+        e_selfIntroduction:"",
+        technologystack:'',
+        programmingskill:'',
+        intendedteammate:'',
       },
       // 假设每个DDL是一个对象，包含日期和标题
       ddls: [
@@ -312,6 +326,9 @@ export default {
       isPopupVisible2:false,
       invitlist:[],//邀请他的的那个学生信息
       trueinvitslist:[],//邀请他的的队伍信息
+      technologystack:'',
+      programmingskill:'',
+      intendedteammate:'',
     };
   },
 
@@ -413,7 +430,9 @@ export default {
       this.edit.e_email = this.email;
       this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
       this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
-
+      this.edit.technologystack = localStorage.getItem('technologystack');
+      this.edit.programmingskill = localStorage.getItem('programmingskill');
+      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
     },
     commitUpdate(){
       //this.id = this.edit.e_id;
@@ -422,13 +441,19 @@ export default {
       localStorage.setItem('email',this.edit.e_email);
       localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
       localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+      localStorage.setItem('technologystack',this.edit.technologystack);
+      localStorage.setItem('programmingskill',this.edit.programmingskill);
+      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
       this.dialogVisible = false;
       this.$axios.get('/student/updateStudentDetails',{
         params: {
           id:localStorage.getItem('id'),
           email:localStorage.getItem('email'),
           phoneNumber:localStorage.getItem('phoneNumber'),
-          selfIntroduction:localStorage.getItem('selfIntroduction')
+          selfIntroduction:localStorage.getItem('selfIntroduction'),
+          technologyStack:localStorage.getItem('technologystack'),
+          programmingSkill:localStorage.getItem('programmingskill'),
+          intendedTeammate:localStorage.getItem('intendedteammate'),
         }
       }).then(res => {
         console.log('dd');
@@ -439,7 +464,11 @@ export default {
           localStorage.setItem('email',this.edit.e_email);
           localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
           localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+          localStorage.setItem('technologystack',this.edit.technologystack);
+          localStorage.setItem('programmingskill',this.edit.programmingskill);
+          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
           console.log('sss');
+          this.isPopupVisible = true;
         }else {
           console.log("error")
         }
@@ -675,6 +704,8 @@ export default {
 
            this.getTeam();
            this.loaddisplay();
+           this.loadbeinvited();
+           this.loadstudentnotjointeam()
         }
       }).catch(error => {
         console.error('Error loading course assignments:', error);
