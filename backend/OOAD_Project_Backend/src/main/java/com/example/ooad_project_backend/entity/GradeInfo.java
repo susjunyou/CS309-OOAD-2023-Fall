@@ -33,6 +33,10 @@ public class GradeInfo implements Serializable {
 
     private Integer studentId;
 
+    private String content;
+
+    private Integer fileId;
+
     private String gradeDescription;
 
     private Date submissionDate;

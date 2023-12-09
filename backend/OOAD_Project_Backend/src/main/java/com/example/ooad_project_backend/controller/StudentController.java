@@ -43,7 +43,7 @@ public class StudentController {
         return studentInfoService.updateAssignment(studentId, assignmentId, content, submitDate, technologyStack, programmingSkill, intendedTeammate) ? Result.success() : Result.error("1", "提交失败");
     }
 
-    @GetMapping("/submitAssignment")
+    @PostMapping("/submitAssignment")
     public Result submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, MultipartFile file) {
         // 自动填充提交时间为当前时间，暂未实现
         FileInfo fileInfo = new FileInfo();
@@ -60,7 +60,7 @@ public class StudentController {
         return studentInfoService.submitAssignment(studentId, assignmentId, content, submitDate, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
     }
 
-    @GetMapping("/submitProject")
+    @PostMapping("/submitProject")
     public Result submitProject(Integer studentId, Integer projectId, String content, Date submitDate, MultipartFile file) {
         FileInfo fileInfo = new FileInfo();
         try {
