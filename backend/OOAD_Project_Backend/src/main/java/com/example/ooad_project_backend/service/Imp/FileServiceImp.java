@@ -23,4 +23,5 @@ public class FileServiceImp extends ServiceImpl<FileMapper, FileInfo> implements
     public FileInfo getFile(Integer id) {
         return fileMapper.getFile(id);
     }
+
 }

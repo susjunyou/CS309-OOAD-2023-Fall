@@ -10,11 +10,21 @@ import java.util.List;
 public interface TeacherInfoService extends IService<TeacherInfo> {
     TeacherInfo findTeacherInfoByAccount(String account);
 
+    TeacherInfo findTeacherInfoByEmail(String email);
+
+    TeacherInfo findTeacherInfoByPhoneNumber(String phoneNumber);
+
     List<CourseInfo> findCourseInfoByTeacherId(Integer teacherId);
-    public List<TeacherInfo> findALl();
-    public void update(TeacherInfo teacherInfo);
-    public void deleteById(Integer id);
-    public PageInfo<TeacherInfo> findPage(Integer pageNum, Integer pageSize);
-    public PageInfo<TeacherInfo> findPageSearch(String search, Integer pageNum, Integer pageSize);
-    public void add(TeacherInfo teacherInfo);
+
+     List<TeacherInfo> findALl();
+
+     void update(TeacherInfo teacherInfo);
+
+     void deleteById(Integer id);
+
+     PageInfo<TeacherInfo> findPage(Integer pageNum, Integer pageSize);
+
+     PageInfo<TeacherInfo> findPageSearch(String search, Integer pageNum, Integer pageSize);
+
+     void add(TeacherInfo teacherInfo);
 }

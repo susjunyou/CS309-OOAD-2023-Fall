@@ -35,6 +35,16 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
     }
 
     @Override
+    public StudentInfo findStudentInfoByEmail(String email) {
+        return studentInfoMapper.findStudentInfoByEmail(email);
+    }
+
+    @Override
+    public StudentInfo findStudentInfoByPhoneNumber(String phoneNumber) {
+        return studentInfoMapper.findStudentInfoByPhoneNumber(phoneNumber);
+    }
+
+    @Override
     public List<CourseInfo> findCourseInfoByStudentId(Integer studentId) {
         List<Integer> courseIds = courseStudentMapper.findCourseIdByStudentId(studentId);
         List<CourseInfo> courseInfoList = new ArrayList<>();

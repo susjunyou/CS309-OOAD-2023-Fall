@@ -9,7 +9,10 @@ import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.Imp.StudentInfoServiceImp;
 import com.example.ooad_project_backend.service.Imp.TeacherInfoServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/register")

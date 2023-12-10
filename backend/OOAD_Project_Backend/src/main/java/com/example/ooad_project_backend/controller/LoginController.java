@@ -32,6 +32,12 @@ public class LoginController {
     @GetMapping("/admin")
     public Result adminLogin(String account, String password) {
         AdminInfo adminInfo = adminInfoService.findAdminInfoByAccount(account);
+        if (adminInfo == null) {
+            adminInfo = adminInfoService.findAdminByEmail(account);
+        }
+        if (adminInfo == null) {
+            adminInfo = adminInfoService.findAdminByPhoneNumber(account);
+        }
         if (adminInfo != null && adminInfo.getPassword() != null && adminInfo.getPassword().equals(password)) {
             adminInfo.setUserType(UserType.ADMIN);
             return Result.success(adminInfo);
@@ -43,6 +49,12 @@ public class LoginController {
     @GetMapping("/student")
     public Result studentLogin(String account, String password) {
         StudentInfo studentInfo = studentInfoService.findStudentInfoByAccount(account);
+        if (studentInfo == null) {
+            studentInfo = studentInfoService.findStudentInfoByEmail(account);
+        }
+        if (studentInfo == null) {
+            studentInfo = studentInfoService.findStudentInfoByPhoneNumber(account);
+        }
         if (studentInfo != null && studentInfo.getPassword() != null && studentInfo.getPassword().equals(password)) {
             studentInfo.setUserType(UserType.STUDENT);
             return Result.success(studentInfo);
@@ -54,6 +66,12 @@ public class LoginController {
     @GetMapping("/teacher")
     public Result teacherLogin(String account, String password) {
         TeacherInfo teacherInfo = teacherInfoService.findTeacherInfoByAccount(account);
+        if (teacherInfo == null) {
+            teacherInfo = teacherInfoService.findTeacherInfoByEmail(account);
+        }
+        if (teacherInfo == null) {
+            teacherInfo = teacherInfoService.findTeacherInfoByPhoneNumber(account);
+        }
         if (teacherInfo != null && teacherInfo.getPassword() != null && teacherInfo.getPassword().equals(password)) {
             teacherInfo.setUserType(UserType.TEACHER);
             return Result.success(teacherInfo);

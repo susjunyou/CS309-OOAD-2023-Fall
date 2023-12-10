@@ -6,7 +6,10 @@ import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.*;
 import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

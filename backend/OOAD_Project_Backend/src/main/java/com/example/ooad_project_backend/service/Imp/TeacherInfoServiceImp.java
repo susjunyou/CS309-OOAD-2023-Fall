@@ -35,6 +35,16 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
     }
 
     @Override
+    public TeacherInfo findTeacherInfoByEmail(String email) {
+        return teacherInfoMapper.findTeacherInfoByEmail(email);
+    }
+
+    @Override
+    public TeacherInfo findTeacherInfoByPhoneNumber(String phoneNumber) {
+        return teacherInfoMapper.findTeacherInfoByPhoneNumber(phoneNumber);
+    }
+
+    @Override
     public List<CourseInfo> findCourseInfoByTeacherId(Integer teacherId) {
         List<Integer> courseIds = courseTeacherMapper.findCourseIdByTeacherId(teacherId);
         List<CourseInfo> courseInfoList = new ArrayList<>();
@@ -43,7 +53,6 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
         }
         return courseInfoList;
     }
-
 
 
     public void add(TeacherInfo teacherInfo) {

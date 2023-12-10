@@ -10,6 +10,10 @@ import java.util.List;
 public interface StudentInfoService extends IService<StudentInfo> {
     StudentInfo findStudentInfoByAccount(String account);
 
+    StudentInfo findStudentInfoByEmail(String email);
+
+    StudentInfo findStudentInfoByPhoneNumber(String phoneNumber);
+
     List<CourseInfo> findCourseInfoByStudentId(Integer studentId);
 
     void add(StudentInfo studentInfo);
