@@ -41,7 +41,7 @@ create table student
     technology_stack  varchar(255),
     programming_skill varchar(255),
     Intended_teammate varchar(255),
-    phone_number      varchar(255),
+    phone_number      varchar(255) unique,
     sex               bool,
     major             varchar(255)          not null,
     level             varchar(255)          not null,
@@ -60,7 +60,7 @@ create table teacher
     password          varchar(255) not null,
     email             varchar(255) not null unique,
     self_Introduction text,
-    phone_number      varchar(255),
+    phone_number      varchar(255) unique ,
     sex               bool,
     department        varchar(255) not null,
     tenure            varchar(255) not null
@@ -74,8 +74,8 @@ create table admin
     name         varchar(255) not null,
     account      varchar(255) not null unique,
     password     varchar(255) not null,
-    email        varchar(255) not null,
-    phone_number varchar(255),
+    email        varchar(255) not null unique ,
+    phone_number varchar(255) unique ,
     sex          bool
 );
 
@@ -440,4 +440,3 @@ create table file
 --
 -- alter table team
 --     add foreign key (leader) references student (id);
-
