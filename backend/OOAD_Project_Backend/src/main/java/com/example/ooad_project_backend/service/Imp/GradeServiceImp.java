@@ -75,13 +75,13 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     }
 
     @Override
-    public boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String grade_description) {
-        return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade, grade_description);
+    public boolean updateAssignmentGrade(Integer studentId, Integer assignmentSubmissionId, Integer grade, String grade_description) {
+        return gradeMapper.updateAssignmentGrade(studentId, assignmentSubmissionId, grade, grade_description);
     }
 
     @Override
-    public boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String grade_description) {
-        return gradeMapper.updateProjectGrade(studentId, projectId, grade, grade_description);
+    public boolean updateProjectGrade(Integer studentId, Integer projectSubmissionId, Integer grade, String grade_description) {
+        return gradeMapper.updateProjectGrade(studentId, projectSubmissionId, grade, grade_description);
     }
 
 

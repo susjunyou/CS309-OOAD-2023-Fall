@@ -42,11 +42,11 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
 
     //更改grade, content和grade_description
 
-    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and assignment_id = #{assignment}")
-    boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String gradeDescription);
+    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and assignment__submission_id = #{assignmentSubmissionId}")
+    boolean updateAssignmentGrade(Integer studentId, Integer assignmentSubmissionId, Integer grade, String gradeDescription);
 
-    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and project_id = #{projectId}")
-    boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String gradeDescription);
+    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and project__submission_id = #{projectSubmissionId}")
+    boolean updateProjectGrade(Integer studentId, Integer projectSubmissionId, Integer grade, String gradeDescription);
 
 
 

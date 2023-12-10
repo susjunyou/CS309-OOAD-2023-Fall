@@ -55,7 +55,7 @@ public class GradeController {
     }
 
     @GetMapping("/updateAssignmentGrade")
-    public Result updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String grade_description) {
+    public Result updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String grade_description,Integer assignmentSubmissionId) {
         List<AssignmentInfo> assignmentInfos = gradeService.findAssignmentGrade(studentId, assignmentId);
         if (assignmentInfos.size() == 0) {
             return Result.error("1", "No such assignment");
@@ -66,7 +66,7 @@ public class GradeController {
                 gradeService.freshAss(studentId, assignmentId);
             }
         }
-        return gradeService.updateAssignmentGrade(studentId, assignmentId, grade, grade_description) ? Result.success() : Result.error("1", "提交失败");
+        return gradeService.updateAssignmentGrade(studentId, assignmentSubmissionId, grade, grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 
 
@@ -92,7 +92,7 @@ public class GradeController {
     }
 
     @GetMapping("/updateProjectGrade")
-    public Result updateProjectGrade(Integer studentId, Integer projectSubId, Integer grade, String grade_description) {
+    public Result updateProjectGrade(Integer studentId, Integer projectSubId, Integer grade, String grade_description,Integer projectSubmissionId) {
         List<ProjectInfo> projectInfos = gradeService.findProjectGrade(studentId, projectSubId);
         if (projectInfos.size() == 0) {
             return Result.error("1", "No such project");
@@ -103,7 +103,7 @@ public class GradeController {
                 gradeService.freshPro(studentId, projectSubId);
             }
         }
-        return gradeService.updateProjectGrade(studentId, projectSubId, grade, grade_description) ? Result.success() : Result.error("1", "提交失败");
+        return gradeService.updateProjectGrade(studentId, projectSubmissionId, grade, grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 
 
