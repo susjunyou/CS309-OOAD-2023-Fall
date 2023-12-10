@@ -61,7 +61,7 @@ public class StudentController {
     }
 
     @PostMapping("/submitProject")
-    public Result submitProject(Integer studentId, Integer projectId, String content, Date submitDate, MultipartFile file) {
+    public Result submitProject(Integer teamId, Integer projectId, String content, Date submitDate, MultipartFile file) {
         FileInfo fileInfo = new FileInfo();
         try {
             if (file != null) {
@@ -73,7 +73,7 @@ public class StudentController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return studentInfoService.submitProject(studentId, projectId, content, submitDate, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
+        return studentInfoService.submitProject(teamId, projectId, content, submitDate, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/getStudent")

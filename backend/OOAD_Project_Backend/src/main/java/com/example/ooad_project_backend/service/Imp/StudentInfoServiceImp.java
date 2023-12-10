@@ -9,6 +9,7 @@ import com.example.ooad_project_backend.exception.CustomException;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
 import com.example.ooad_project_backend.mapper.CourseStudentMapper;
 import com.example.ooad_project_backend.mapper.StudentInfoMapper;
+import com.example.ooad_project_backend.mapper.TeamMapper;
 import com.example.ooad_project_backend.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
 
     @Autowired
     private CourseInfoMapper courseInfoMapper;
+
+
+    @Autowired
+    private TeamMapper teamMapper;
 
     @Override
     public StudentInfo findStudentInfoByAccount(String account) {
@@ -80,8 +85,11 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
     }
 
     @Override
-    public boolean submitProject(Integer studentId, Integer projectId, String content, Date submitDate, Integer fileId) {
-        studentInfoMapper.submitProject(studentId, projectId, content, submitDate, fileId);
+    public boolean submitProject(Integer teamId, Integer projectId, String content, Date submitDate, Integer fileId) {
+        List<Integer> studentIds = teamMapper.findStudentIdsByTeamId(teamId);
+        for (Integer studentId : studentIds) {
+            studentInfoMapper.submitProject(studentId, projectId, content, submitDate, fileId);
+        }
         return true;
     }
 
