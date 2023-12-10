@@ -210,7 +210,7 @@ export default {
     this.tenure = localStorage.getItem('tenure');
     this.department = localStorage.getItem('department');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    await this.loadStudentsAndSA();
+    // await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
 
@@ -324,7 +324,7 @@ export default {
       localStorage.setItem("currentcourseid",route.id);
       localStorage.setItem("currentcourse",route.title);
       this.myValue=route.title;
-      this.$router.push('/course');
+      this.$router.push('/courseofteacher');
       this.loadLocalStorageData();
     },
     go(route) {

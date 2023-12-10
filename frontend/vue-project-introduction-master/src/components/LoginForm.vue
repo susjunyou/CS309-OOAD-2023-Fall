@@ -62,7 +62,7 @@ export default {
   methods: {
     loginClick() {
       let _this = this;
-      _this.isLoginClick = true;
+      // _this.isLoginClick = true;
       console.log(_this.form.userType);
       if (_this.form.userType ==='admin') {
         _this.$axios.get('/login/admin', {
@@ -79,6 +79,8 @@ export default {
             this.$router.push('/StudentHomePage');
             return false
           } else {
+            this.isLoginClick = true;
+
             console.log("error")
             return true
           }
@@ -114,6 +116,7 @@ export default {
             this.getCourses();
             this.$router.push('/StudentHomePage');
           } else {
+            this.isLoginClick = true;
             console.log("error")
           }
 
@@ -144,6 +147,7 @@ export default {
             this.getCoursesofteacher();
             this.$router.push('/teacherhomepage');
           } else {
+            this.isLoginClick = true;
             console.log("error")
           }
         })
@@ -180,7 +184,7 @@ export default {
     getCoursesofteacher() {
       this.$axios.get('/teacher/getCourseInfo',{
         params:{
-          studentId:localStorage.getItem('tid')
+          teacherId:localStorage.getItem('id')
         }
       })
           .then((res) => {

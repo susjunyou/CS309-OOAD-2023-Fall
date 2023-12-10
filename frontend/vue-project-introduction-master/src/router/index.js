@@ -22,6 +22,10 @@ import postofteacher from "@/views/postofteacher.vue"
 import projectsofteacher from "@/views/projectsofteacher.vue"
 import membersofteacher from "@/views/membersofteacher.vue"
 import materialsofteacher from "@/views/materialsofteacher.vue"
+import courseofteacher from "@/views/courseofteacher.vue";
+import assignmentsofteacher from "@/views/assignmentsofteacher.vue";
+import pizuoye from "@/views/pizuoye.vue";
+import judgeassignment from "@/views/judgeassignment.vue";
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -46,6 +50,11 @@ const routes = [
     {path: '/projectsofteacher',component: projectsofteacher},
     {path: '/membersofteacher', component: membersofteacher},
     {path: '/materialsofteacher', component: materialsofteacher},
+    {path: '/courseofteacher', component: courseofteacher},
+    {path: '/assignmentsofteacher', component: assignmentsofteacher},
+    {path: '/pizuoye', component: pizuoye},
+    {path: '/judgeassignment', component: judgeassignment},
+
     {path: '/', redirect: '/login'}
 
 ]
