@@ -136,6 +136,7 @@ export default {
       localStorage.setItem("currentstudentid", a.studentid);
       localStorage.setItem("currentassignmentsubmissionid", a.id);
       localStorage.setItem("currentcontent", a.content);
+      localStorage.setItem("currentfileid", a.fileid);
       this.$router.push({ path: '/judgeassignment'});
     },
     async loadungradedAssignments() {

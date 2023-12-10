@@ -3,21 +3,10 @@
     <!-- 你的其他内容 -->
     <shitshan>
 
+      <div>
 
-        <div class="assignment-container">
-          <!-- ...之前的代码... -->
-          <el-row :gutter="20">
-            <el-col v-for="project in projects" :key="project.id" :span="6" >
-              <el-card  class="assignment-card" @click.native="join(project)">
-                <h3>{{ project.title }}</h3>
-                <p>截止日期：{{ project.ddl }}</p>
-              </el-card>
-            </el-col>
-          </el-row>
-          <!-- ...之后的代码... -->
-
-        </div>
-    </shitshan>
+      </div>
+    </shitshan>>
     <!-- 你的其他内容 -->
   </div>
 </template>
@@ -41,11 +30,6 @@ export default {
     shitshan
   },
   methods: {
-    join(route) {
-      localStorage.setItem("currentprojectid",route.id)
-      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
-      this.$router.push('joinTeam');
-    },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
@@ -119,19 +103,5 @@ export default {
 </script>
 
 <style scoped>
-.assignment-container {
-  margin: 20px;
-  padding-left: 200px;
-  width: 100%;
-}
 
-.assignment-card {
-  cursor: pointer;
-  transition: box-shadow .3s;
-  border: 1px solid gainsboro;
-}
-
-.assignment-card:hover {
-  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
-}
 </style>

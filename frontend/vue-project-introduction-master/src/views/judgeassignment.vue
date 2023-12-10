@@ -15,11 +15,10 @@
               <p v-else class="placeholder">没有文本内容</p>
             </div>
           </div>
-          <!-- 文件展示区域 -->
           <div class="file-submission">
             <h3>学生文件提交</h3>
             <!-- 如果有文件URL，则显示下载链接，否则显示占位符 -->
-            <a v-if="selectedAssignment.fileUrl" :href="selectedAssignment.fileUrl" target="_blank">下载文件</a>
+            <a v-if="file.downloadUrl" :href="file.downloadUrl" :download="file.fileName">{{ file.fileName }}</a>
             <p v-else class="placeholder">没有文件提交</p>
           </div>
         </div>
@@ -59,23 +58,60 @@ export default {
       assignments: [],
       projects: [],
       ddls: [],
-      selectedAssignment: {
-        textContent: '',
-        fileUrl: ''
-      },
+      file:'',
       comment: '',
       grade: null,
       content: '',
+      fileDownloadUrl: '',
+
     };
   },
   async created(){
     this.loadLocalStorageData();
     this.content = localStorage.getItem("currentcontent");
+    await this.getFileData();
+
   },
   components: {
     shitshan
   },
   methods: {
+    async getFileData() {
+      try {
+        const response = await this.$axios.get('/course/file', {
+          params: {
+            id: localStorage.getItem("currentfileid"),
+          }
+        });
+        if (response.data.code === "0") {
+          this.file = response.data.data;
+          this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
+          this.file.downloadUrl = this.fileDownloadUrl;
+        }
+      } catch (error) {
+        console.error('Error loading files:', error);
+      }
+    },
+    createDownloadUrl(base64, fileName, mimeType) {
+      const blob = this.base64ToBlob(base64, mimeType);
+      const downloadUrl = URL.createObjectURL(blob);
+      return downloadUrl;
+    },
+    base64ToBlob(base64, mimeType) {
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      return new Blob([byteArray], {type: mimeType});
+    },
+    // createDownloadUrl() {
+    //   // 创建Blob对象，假设filedata是字符串或能被Blob构造函数接受的格式
+    //   const blob = new Blob([this.file.filedata], { type: this.file.filetype });
+    //   // 创建一个指向该Blob的URL
+    //   this.file.downloadUrl = URL.createObjectURL(blob);
+    // },
     // submitGrade(){
     //   this.$axios.get('/grade/addAssignmentGrade', {
     //     params: {
