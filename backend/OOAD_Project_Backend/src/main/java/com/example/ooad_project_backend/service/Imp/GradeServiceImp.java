@@ -5,7 +5,9 @@ import com.example.ooad_project_backend.entity.AssignmentInfo;
 import com.example.ooad_project_backend.entity.AttendanceInfo;
 import com.example.ooad_project_backend.entity.GradeInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
+import com.example.ooad_project_backend.mapper.AssignmentMapper;
 import com.example.ooad_project_backend.mapper.GradeMapper;
+import com.example.ooad_project_backend.mapper.ProjectInfoMapper;
 import com.example.ooad_project_backend.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
 
     @Autowired
     private GradeMapper gradeMapper;
+
+    @Autowired
+    private AssignmentMapper assignmentMapper;
+
+    @Autowired
+    private ProjectInfoMapper projectInfoMapper;
 
     @Override
     public void freshAss(Integer studentId, Integer assignmentId) {
@@ -67,19 +75,15 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     }
 
     @Override
-    public boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description) {
-        return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade, content, grade_description);
+    public boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String grade_description) {
+        return gradeMapper.updateAssignmentGrade(studentId, assignmentId, grade, grade_description);
     }
 
     @Override
-    public boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description) {
-        return gradeMapper.updateProjectGrade(studentId, projectId, grade, content, grade_description);
+    public boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String grade_description) {
+        return gradeMapper.updateProjectGrade(studentId, projectId, grade, grade_description);
     }
 
-//    @Override
-//    public List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId) {
-//        return gradeMapper.findAttendanceGradeByStudentId(studentId);
-//    }
 
     @Override
     public List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId) {
@@ -96,5 +100,29 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
         return gradeMapper.getProjectSubmissionHistory(studentId, projectId);
     }
 
+
+    @Override
+    public boolean uploadAssignmentGradeCSV(Integer assignmentId, Integer studentId, Integer grade) {
+        AssignmentInfo assignmentInfo = assignmentMapper.findAssignmentInfoByAssignmentId(assignmentId);
+        if (assignmentInfo == null) return false;
+        gradeMapper.addAssignmentGrade(studentId, assignmentId, grade, "null", "null");
+        return true;
+    }
+
+    @Override
+    public boolean uploadProjectGradeCSV(Integer projectId, Integer studentId, Integer grade) {
+        ProjectInfo projectInfo = projectInfoMapper.findProjectInfoByProjectId(projectId);
+        if (projectInfo == null) return false;
+        gradeMapper.addProjectGrade(studentId, projectId, grade, "null", "null");
+        return true;
+    }
+
+    @Override
+    public boolean uploadAttendanceGradeCSV(Integer attendanceId, Integer studentId, Integer grade) {
+        AttendanceInfo attendanceInfo = gradeMapper.findAttendanceInfoByAttendanceId(attendanceId);
+        if (attendanceInfo == null) return false;
+        gradeMapper.addAttendanceGrade(studentId, attendanceId, grade > 0);
+        return true;
+    }
 
 }

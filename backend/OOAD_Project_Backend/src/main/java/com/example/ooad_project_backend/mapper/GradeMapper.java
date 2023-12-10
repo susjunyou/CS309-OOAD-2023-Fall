@@ -42,30 +42,14 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
 
     //更改grade, content和grade_description
 
+    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and assignment_id = #{assignment}")
+    boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String gradeDescription);
 
-    boolean updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
-
-    @Update("update project_submission set grade = #{grade} where student_id = #{studentId} and project_id = #{projectId}")
-    boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
+    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and project_id = #{projectId}")
+    boolean updateProjectGrade(Integer studentId, Integer projectId, Integer grade, String gradeDescription);
 
 
 
-//    @Select("select * from attendance_submission where student_id = #{studentId}")
-//    @Results({
-//            @Result(property = "student_id", column = "student_id"),
-//            @Result(property = "attendance_id", column = "attendance_id"),
-//            @Result(property = "is_attended", column = "is_attended"),
-//            @Result(property = "attendance_submission_id", column = "attendance_submission_id")
-//    })
-//    List<AttendanceInfo> findAttendanceGradeByStudentId(Integer studentId);
-
-//    @Results({
-//            @Result(property = "student_id", column = "student_id"),
-//            @Result(property = "attendance_id", column = "attendance_id"),
-//            @Result(property = "is_attended", column = "is_attended"),
-//            @Result(property = "attendance_submission_id", column = "attendance_submission_id"),
-//            @Result(property = "course_id", column = "course_id")
-//    })
 
     @Select("select * " +
             "from assignment_submission " +
@@ -83,4 +67,11 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
 
     @Select("select * from attendance_submission left join attendance a on a.id = attendance_submission.attendance_id where student_id = #{studentId} and a.course_id = #{courseId}")
     List<AttendanceInfo> findAttendanceGradeByCourseIdAndStudentId(Integer courseId, Integer studentId);
+
+    @Select("select * from attendance where id = #{attendanceId}")
+    AttendanceInfo findAttendanceInfoByAttendanceId(Integer attendanceId);
+
+    @Insert("insert into attendance_submission (attendance_id, student_id, is_attended) values (#{attendanceId}, #{studentId}, #{isPresent})")
+    void addAttendanceGrade(Integer attendanceId, Integer studentId, Boolean isPresent);
+
 }
