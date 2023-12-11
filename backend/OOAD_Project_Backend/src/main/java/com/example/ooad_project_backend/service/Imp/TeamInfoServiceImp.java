@@ -236,8 +236,8 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     }
 
     @Override
-    public boolean addPresentation(Integer teamId, Date presentationDate) {
-        teamMapper.addPresentation(teamId, presentationDate);
+    public boolean addPresentation(Integer teamId, Date presentationDate,Integer teacherId) {
+        teamMapper.addPresentation(teamId, presentationDate,teacherId);
         return true;
     }
 

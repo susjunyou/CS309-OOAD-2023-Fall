@@ -46,7 +46,7 @@ public class PresentationController{
 
 
     @GetMapping("/addPresentation")
-    public Result addPresentation(Integer teamId, Date presentationDate) {
+    public Result addPresentation(Integer teamId, Date presentationDate,Integer teacherId) {
         TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
         if (teamInfo == null) {
             return Result.error("1", "no such team");
@@ -54,7 +54,7 @@ public class PresentationController{
         if (teamInfo.getPresentationDate()==presentationDate){
             return Result.error("1", "presentation date already exists");
         }
-        return teamInfoService.addPresentation(teamId, presentationDate) ? Result.success() : Result.error();
+        return teamInfoService.addPresentation(teamId, presentationDate,teacherId) ? Result.success() : Result.error();
     }
 
     @GetMapping("/deletePresentation")
