@@ -88,4 +88,34 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     public List<TeacherInfo> findAllTeacherInfoByCourseId(Integer courseId) {
         return courseTeacherMapper.findTeacherIdByCourseId(courseId);
     }
+
+    @Override
+    public void deleteStudent(Integer courseId, Integer studentId) {
+        courseDetailsMapper.deleteStudent(courseId, studentId);
+    }
+
+    @Override
+    public void deleteSA(Integer courseId, Integer studentId) {
+        courseDetailsMapper.deleteSA(courseId, studentId);
+    }
+
+    @Override
+    public void deleteTeacher(Integer courseId, Integer teacherId) {
+        courseDetailsMapper.deleteTeacher(courseId, teacherId);
+    }
+
+    @Override
+    public void deleteCourse(Integer courseId) {
+        courseDetailsMapper.deleteCourse(courseId);
+    }
+
+    @Override
+    public void releaseCourse(String courseCode,String courseName,String courseDescription) {
+        courseDetailsMapper.releaseCourse(courseCode,courseName,courseDescription);
+    }
+
+    @Override
+    public void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription) {
+        courseDetailsMapper.updateCourse(courseId,courseCode,courseName,courseDescription);
+    }
 }

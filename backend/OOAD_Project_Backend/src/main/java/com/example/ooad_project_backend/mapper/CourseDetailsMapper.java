@@ -1,9 +1,7 @@
 package com.example.ooad_project_backend.mapper;
 
 import com.example.ooad_project_backend.entity.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -42,6 +40,24 @@ public interface CourseDetailsMapper {
 
     @Select("select course_sa_id from course_sa where course_id = #{courseId}")
     List<Integer> findMySAIdByCourseId(Integer courseId);
+
+    @Delete("delete from course_student where course_id = #{courseId} and student_id = #{studentId}")
+    void deleteStudent(Integer courseId, Integer studentId);
+
+    @Delete("delete from course_sa where course_id = #{courseId} and student_id = #{studentId}")
+    void deleteSA(Integer courseId, Integer studentId);
+
+    @Delete("delete from course_teacher where course_id = #{courseId} and teacher_id = #{teacherId}")
+    void deleteTeacher(Integer courseId, Integer teacherId);
+
+    @Delete("delete from course where course_id = #{courseId}")
+    void deleteCourse(Integer courseId);
+
+    @Insert("insert into course (course_code, course_name, course_description) values ( #{courseCode}, #{courseName}, #{courseDescription})")
+    void releaseCourse(String courseCode,String courseName,String courseDescription);
+
+    @Update("update course set course_code = #{courseCode}, course_name = #{courseName}, course_description = #{courseDescription} where course_id = #{courseId}")
+    void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription);
 }
 
 

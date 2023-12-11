@@ -102,44 +102,5 @@ public class CourseController {
         }
     }
 
-    @GetMapping("/addStudent")
-    public Result addStudent(Integer courseId, Integer studentId) {
-        if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(studentId)) {
-            return Result.error("-1", "No such course or student");
-        }
-        else
-        {
-            courseInfoService.addStudent(courseId, studentId);
-            return Result.success();
-        }
     }
 
-    @GetMapping("/addSA")
-    public Result addSA(Integer courseId, Integer studentId) {
-        if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(studentId)) {
-            return Result.error("-1", "No such course or student");
-        }
-        else
-        {
-            courseInfoService.addSA(courseId, studentId);
-            return Result.success();
-        }
-    }
-
-    @GetMapping("/addTeacher")
-    public Result addTeacher(Integer courseId, Integer teacherId) {
-        if (ObjectUtil.isEmpty(courseId) || ObjectUtil.isEmpty(teacherId)) {
-            return Result.error("-1", "No such course or teacher");
-        }
-        else
-        {
-            courseInfoService.addTeacher(courseId, teacherId);
-            return Result.success();
-        }
-    }
-
-
-
-
-
-}
