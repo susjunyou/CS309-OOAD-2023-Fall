@@ -32,7 +32,7 @@ drop table if exists file cascade;
 
 create table student
 (
-    id                integer primary key,
+    id                serial primary key,
     name              varchar(255)          not null,
     account           varchar(255)          not null unique,
     password          varchar(255)          not null,
@@ -54,13 +54,13 @@ create table student
 
 create table teacher
 (
-    id                integer primary key,
+    id                serial primary key,
     name              varchar(255) not null,
     account           varchar(255) not null unique,
     password          varchar(255) not null,
     email             varchar(255) not null unique,
     self_Introduction text,
-    phone_number      varchar(255) unique ,
+    phone_number      varchar(255) unique,
     sex               bool,
     department        varchar(255) not null,
     tenure            varchar(255) not null
@@ -70,12 +70,12 @@ create table teacher
 
 create table admin
 (
-    id           integer primary key,
+    id           serial primary key,
     name         varchar(255) not null,
     account      varchar(255) not null unique,
     password     varchar(255) not null,
-    email        varchar(255) not null unique ,
-    phone_number varchar(255) unique ,
+    email        varchar(255) not null unique,
+    phone_number varchar(255) unique,
     sex          bool
 );
 
