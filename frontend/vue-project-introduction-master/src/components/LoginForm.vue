@@ -163,10 +163,10 @@ export default {
         }
       })
           .then((res) => {
-            console.log(res.data);
             localStorage.setItem('length',res.data.data.length);
             console.log(localStorage.getItem('length'));
             for (let i = 0; i < localStorage.getItem('length'); i++) {
+              console.log(res.data.data[i]);
               localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
               localStorage.setItem('courses'+i,res.data.data[i].courseName);
               localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
@@ -192,13 +192,19 @@ export default {
             localStorage.setItem('length',res.data.data.length);
             console.log(localStorage.getItem('length'));
             for (let i = 0; i < localStorage.getItem('length'); i++) {
-              localStorage.setItem('coursesidt'+i,res.data.data[i].courseId);
-              localStorage.setItem('coursest'+i,res.data.data[i].courseName);
+              console.log(res.data.data[i]);
+              console.log(res.data.data[i].courseId);
+              console.log(res.data.data[i].courseName);
+              console.log(res.data.data[i].courseCode);
+              console.log(res.data.data[i].courseDescription);
+
+              localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
+              localStorage.setItem('courses'+i,res.data.data[i].courseName);
               localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
               localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
-              localStorage.setItem('coursecodet'+i,res.data.data[i].courseCode);
-              localStorage.setItem('courseDescriptiont'+res.data.data[i].courseId,res.data.data[i].courseDescription);
-              localStorage.setItem('getdescriptionbyidt'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
+              localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
             }
             console.log(localStorage.getItem('courses0'));
           })

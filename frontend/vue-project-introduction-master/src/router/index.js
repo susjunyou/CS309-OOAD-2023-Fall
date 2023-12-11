@@ -28,6 +28,8 @@ import pizuoye from "@/views/pizuoye.vue";
 import judgeassignment from "@/views/judgeassignment.vue";
 import piproject from "@/views/piproject.vue";
 import judgeproject from "@/views/judgeproject.vue";
+import teamsofteacher from "@/views/teamsofteacher.vue";
+import modifyinformation from "@/views/modifyinformation.vue";
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -58,6 +60,8 @@ const routes = [
     {path: '/judgeassignment', component: judgeassignment},
     {path: '/piproject', component: piproject},
     {path: '/judgeproject', component: judgeproject},
+    {path: '/teamsofteacher', component: teamsofteacher},
+    {path: '/modifyinformation', component:modifyinformation},
     {path: '/', redirect: '/login'}
 
 ]
