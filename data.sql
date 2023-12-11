@@ -38,60 +38,60 @@ from team_student;
 
 --! admin data
 insert into admin (name, account, password, email, phone_number, sex)
-values ( 'admin', '30001', '123456', '30001@qq.com', '18140000001', true);
+values ('admin', '30001', '123456', '30001@qq.com', '18140000001', true);
 
-insert into admin ( name, account, password, email, phone_number, sex)
-values ( 'admin2', '30002', '123456', '30002@qq.com', '18140000002', true);
+insert into admin (name, account, password, email, phone_number, sex)
+values ('admin2', '30002', '123456', '30002@qq.com', '18140000002', true);
 
 insert into admin (name, account, password, email, phone_number, sex)
 values ('admin3', '30003', '123456', '30003@qq.com', '18140000003', true);
 
 
 --! student data
-insert into student ( name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
+insert into student (name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
                      department, technology_stack, programming_skill, intended_teammate)
-values ( 'student1', '10001', '123456', '10001@qq.com', 'self_Introduction', '18130000001', true, 'cs', '1', true,
+values ('student1', '10001', '123456', '10001@qq.com', 'self_Introduction', '18130000001', true, 'cs', '1', true,
         'COMPUTER_SCIENCE', 'vue', 'C++', 'Li Hua');
 
 insert into student (name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
                      department, technology_stack, programming_skill, intended_teammate)
-values ( 'student2', '10002', '123456', '10002@qq.com', 'self_Introduction', '18130000002', true, 'cs', '1', false,
+values ('student2', '10002', '123456', '10002@qq.com', 'self_Introduction', '18130000002', true, 'cs', '1', false,
         'COMPUTER_SCIENCE', 'sprint boot', 'java', 'zhang san');
 
-insert into student ( name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
+insert into student (name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
                      department, technology_stack, programming_skill, intended_teammate)
-values ( 'student3', '10003', '123456', '10003@qq.com', 'self_Introduction', '18130000003', true, 'cs', '1', true,
+values ('student3', '10003', '123456', '10003@qq.com', 'self_Introduction', '18130000003', true, 'cs', '1', true,
         'COMPUTER_SCIENCE', 'evaluation algorithm', 'python', 'Li Ming');
 
-insert into student ( name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
+insert into student (name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
                      department, technology_stack, programming_skill, intended_teammate)
-values ( 'student4', '10004', '123456', '10004@qq.com', 'self_Introduction', '18130000004', false, 'ece', '2', false,
+values ('student4', '10004', '123456', '10004@qq.com', 'self_Introduction', '18130000004', false, 'ece', '2', false,
         'ELECTRICAL_ENGINEERING', 'embedded systems', 'C', 'Wang Xiao');
 
-insert into student ( name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
+insert into student (name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
                      department, technology_stack, programming_skill, intended_teammate)
-values ( 'student5', '10005', '123456', '10005@qq.com', 'self_Introduction', '18130000005', true, 'mech', '3', true,
+values ('student5', '10005', '123456', '10005@qq.com', 'self_Introduction', '18130000005', true, 'mech', '3', true,
         'MECHANICAL_ENGINEERING', 'CAD design', 'Python', 'Zhang Wu');
 
-insert into student ( name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
+insert into student (name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA,
                      department, technology_stack, programming_skill, intended_teammate)
 values ('student6', '10006', '123456', '10006@qq.com', 'self_Introduction', '18130000006', false, 'ee', '2', true,
         'ELECTRICAL_ENGINEERING', 'signal processing', 'Java', 'Chen Mei');
 
 
 --! teacher data
-insert into teacher ( name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ( 'teacher1', '20001', '123456', '20001@qq.com', 'self_Introduction', '18120000001', true,
+insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
+values ('teacher1', '20001', '123456', '20001@qq.com', 'self_Introduction', '18120000001', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
-insert into teacher ( name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ( 'teacher2', '20002', '123456', '20002@qq.com', 'self_Introduction', '18120000002', true,
+insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
+values ('teacher2', '20002', '123456', '20002@qq.com', 'self_Introduction', '18120000002', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
-insert into teacher ( name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ( 'teacher3', '20003', '123456', '20003@qq.com', 'self_Introduction', '18120000003', true,
+insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
+values ('teacher3', '20003', '123456', '20003@qq.com', 'self_Introduction', '18120000003', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
@@ -219,25 +219,25 @@ values (6, 5);
 --! course_teacher data
 
 insert into course_teacher(course_id, teacher_id)
-values (1, 20001);
+values (1, 1);
 insert into course_teacher(course_id, teacher_id)
-values (1, 20002);
+values (1, 2);
 insert into course_teacher(course_id, teacher_id)
-values (2, 20001);
+values (2, 1);
 insert into course_teacher(course_id, teacher_id)
-values (2, 20003);
+values (2, 3);
 insert into course_teacher(course_id, teacher_id)
-values (3, 20001);
+values (3, 1);
 insert into course_teacher(course_id, teacher_id)
-values (3, 20002);
+values (3, 2);
 insert into course_teacher(course_id, teacher_id)
-values (4, 20002);
+values (4, 2);
 insert into course_teacher(course_id, teacher_id)
-values (4, 20003);
+values (4, 3);
 insert into course_teacher(course_id, teacher_id)
-values (5, 20002);
+values (5, 2);
 insert into course_teacher(course_id, teacher_id)
-values (6, 20003);
+values (6, 3);
 
 --! project data
 
