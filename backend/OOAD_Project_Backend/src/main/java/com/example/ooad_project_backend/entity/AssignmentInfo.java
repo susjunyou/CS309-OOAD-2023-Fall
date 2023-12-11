@@ -18,8 +18,6 @@ public class AssignmentInfo extends GradeInfo {
 
     private String assignmentDescription;
 
-//    private Date assignmentStartDate;
-
     private Date assignmentDeadline;
 
     private StatusType assignmentStatus;
