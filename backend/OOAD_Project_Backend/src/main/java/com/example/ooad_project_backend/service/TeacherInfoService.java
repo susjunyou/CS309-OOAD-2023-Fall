@@ -26,5 +26,5 @@ public interface TeacherInfoService extends IService<TeacherInfo> {
 
      PageInfo<TeacherInfo> findPageSearch(String search, Integer pageNum, Integer pageSize);
 
-     void add(TeacherInfo teacherInfo);
+     boolean add(TeacherInfo teacherInfo);
 }

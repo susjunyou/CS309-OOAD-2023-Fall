@@ -26,8 +26,8 @@ public interface TeacherInfoMapper extends BaseMapper<TeacherInfo> {
     @Select("select * from teacher")
     List<TeacherInfo> getAll();
 
-    @Insert("INSERT INTO teacher (id,account, name, password, sex, tenure, phone_number, self_introduction, department, email) " +
-            "VALUES (#{id},#{account}, #{name}, #{password}, #{sex}, #{tenure}, #{phoneNumber}, #{selfIntroduction}, #{department}, #{email})")
+    @Insert("INSERT INTO teacher (account, name, password, sex, tenure, phone_number, self_introduction, department, email) " +
+            "VALUES (#{account}, #{name}, #{password}, #{sex}, #{tenure}, #{phoneNumber}, #{selfIntroduction}, #{department}, #{email})")
     void insertTeacherInfo(TeacherInfo teacherInfo);
 
 
