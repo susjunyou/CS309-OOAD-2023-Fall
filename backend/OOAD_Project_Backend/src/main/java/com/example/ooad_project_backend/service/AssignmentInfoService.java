@@ -14,4 +14,11 @@ public interface AssignmentInfoService {
 
     boolean addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
                           Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId);
+
+    boolean updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
+                             Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId);
+
+    boolean deleteAssignment(Integer assignmentId);
+
+
 }

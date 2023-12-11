@@ -24,6 +24,7 @@ public class AssignmentController {
 
     //提交作业部分在StudentController里面
 
+
     @GetMapping("/getAssignmentInfoByCourseId")
     public Result getAssignmentInfoByCourseId(Integer courseId) {
         List<AssignmentInfo> assignmentInfoList = assignmentInfoService.findAssignmentInfoByCourseId(courseId);
@@ -45,6 +46,29 @@ public class AssignmentController {
             return Result.error("1", "添加失败");
         }
     }
+
+    @GetMapping("/updateAssignmentByAssignmentId")
+    public Result updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
+                                   Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId) {
+        boolean flag = assignmentInfoService.updateAssignment(assignmentId, assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
+                maxScore, proportion, releaser, releaserType, courseId);
+        if (flag) {
+            return Result.success();
+        } else {
+            return Result.error("1", "更新失败");
+        }
+    }
+
+    @DeleteMapping("/deleteAssignmentByAssignmentId")
+    public Result deleteAssignment(Integer assignmentId) {
+        boolean flag = assignmentInfoService.deleteAssignment(assignmentId);
+        if (flag) {
+            return Result.success();
+        } else {
+            return Result.error("1", "删除失败");
+        }
+    }
+
 
 
     //这里返回的是assignment_student表里面的信息，包括了作业的信息和学生的信息
