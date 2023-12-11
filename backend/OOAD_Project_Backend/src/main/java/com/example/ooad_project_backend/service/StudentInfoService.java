@@ -16,7 +16,7 @@ public interface StudentInfoService extends IService<StudentInfo> {
 
     List<CourseInfo> findCourseInfoByStudentId(Integer studentId);
 
-    void add(StudentInfo studentInfo);
+    boolean add(StudentInfo studentInfo);
 
     boolean submitAssignment(Integer studentId, Integer assignmentId, String content, Date submitDate, Integer fileId);
 

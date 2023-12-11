@@ -2,10 +2,8 @@ package com.example.ooad_project_backend.service.Imp;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.ooad_project_backend.common.ResultCode;
 import com.example.ooad_project_backend.entity.CourseInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
-import com.example.ooad_project_backend.exception.CustomException;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
 import com.example.ooad_project_backend.mapper.CourseStudentMapper;
 import com.example.ooad_project_backend.mapper.StudentInfoMapper;
@@ -59,16 +57,29 @@ public class StudentInfoServiceImp extends ServiceImpl<StudentInfoMapper, Studen
         return courseInfoList;
     }
 
-    public void add(StudentInfo studentInfo) {
+    public boolean add(StudentInfo studentInfo) {
         // 1. 检测数据库中有没有同名的学生，如果有，需要提示前台用户重新输入
         StudentInfo info = studentInfoMapper.findByName(studentInfo.getName());
         if (ObjectUtil.isNotEmpty(info)) {
-            throw new CustomException(ResultCode.USER_EXIST_ERROR);
+            return false;
+        }
+        info = studentInfoMapper.findStudentInfoByEmail(studentInfo.getEmail());
+        if (ObjectUtil.isNotEmpty(info)) {
+            return false;
+        }
+        info = studentInfoMapper.findStudentInfoByPhoneNumber(studentInfo.getPhoneNumber());
+        if (ObjectUtil.isNotEmpty(info)) {
+            return false;
+        }
+        info = studentInfoMapper.findStudentInfoByName(studentInfo.getAccount());
+        if (ObjectUtil.isNotEmpty(info)) {
+            return false;
         }
         if (ObjectUtil.isEmpty(studentInfo.getPassword())) {
             studentInfo.setPassword("123456");
         }
         studentInfoMapper.insertStudent(studentInfo);
+        return true;
     }
 
     @Override

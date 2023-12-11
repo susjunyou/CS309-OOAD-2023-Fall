@@ -26,8 +26,8 @@ public interface StudentInfoMapper extends BaseMapper<StudentInfo> {
     @Select("select * from student where name = #{name}")
     StudentInfo findByName(@Param("name") String name);
 
-    @Insert("INSERT INTO student (id, name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA, department, technology_stack, programming_skill, intended_teammate) " +
-            "VALUES (#{id}, #{name}, #{account}, #{password}, #{email}, #{selfIntroduction}, #{phoneNumber}, #{sex}, #{major}, #{level}, false, #{department},#{technologyStack},#{programmingSkill},#{intendedTeammate})")
+    @Insert("INSERT INTO student (name, account, password, email, self_Introduction, phone_number, sex, major, level, isSA, department, technology_stack, programming_skill, intended_teammate) " +
+            "VALUES ( #{name}, #{account}, #{password}, #{email}, #{selfIntroduction}, #{phoneNumber}, #{sex}, #{major}, #{level}, false, #{department},#{technologyStack},#{programmingSkill},#{intendedTeammate})")
     void insertStudent(StudentInfo studentInfo);
 
 

@@ -44,7 +44,7 @@ export default {
     join(route) {
       localStorage.setItem("currentprojectid",route.id)
       localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
-      this.$router.push('joinTeam');
+      this.$router.push('piproject');
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例

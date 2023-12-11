@@ -25,12 +25,8 @@ public class GradeController {
     //findAssignmentGrade在impl里面已经实现了判断true的功能，所以这里不用再判断了
     @GetMapping("/getAssignmentGrade")
     public Result getAssignmentGrade(Integer studentId, Integer assignmentId) {
-        List<AssignmentInfo> assignmentInfos = gradeService.findAssignmentGrade(studentId, assignmentId);
-        if (assignmentInfos.size() == 0) {
-            return Result.error("1", "No such assignment");
-        } else {
-            return Result.success(assignmentInfos);
-        }
+        AssignmentInfo assignmentInfo = gradeService.findAssignmentGrade(studentId, assignmentId);
+        return assignmentInfo == null ? Result.error("1", "No such assignment or the student has not submitted the assignment!") : Result.success(assignmentInfo);
     }
 
 
@@ -47,25 +43,21 @@ public class GradeController {
     //除了三个必须的参数，其他的content和grade_description都可以不填
     @GetMapping("/addAssignmentGrade")
     public Result addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description) {
-        List<AssignmentInfo> assignmentInfos = gradeService.findAssignmentGrade(studentId, assignmentId);
-        if (assignmentInfos.size() != 0) {
-            return Result.error("1", "已经打过分");
-        }
         return gradeService.addAssignmentGrade(studentId, assignmentId, grade, content, grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/updateAssignmentGrade")
-    public Result updateAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String grade_description,Integer assignmentSubmissionId) {
-        List<AssignmentInfo> assignmentInfos = gradeService.findAssignmentGrade(studentId, assignmentId);
-        if (assignmentInfos.size() == 0) {
-            return Result.error("1", "No such assignment");
-        }
-        for (AssignmentInfo assignmentInfo : assignmentInfos) {
-            if (assignmentInfo.isFresh()) {
-                //在数据库里把is_fresh设为false
-                gradeService.freshAss(studentId, assignmentId);
-            }
-        }
+    public Result updateAssignmentGrade(Integer studentId, Integer grade, String grade_description, Integer assignmentSubmissionId) {
+//        List<AssignmentInfo> assignmentInfos = gradeService.findAssignmentGrade(studentId, assignmentId);
+//        if (assignmentInfos.size() == 0) {
+//            return Result.error("1", "No such assignment");
+//        }
+//        for (AssignmentInfo assignmentInfo : assignmentInfos) {
+//            if (assignmentInfo.isFresh()) {
+//                //在数据库里把is_fresh设为false
+//                gradeService.freshAss(studentId, assignmentId);
+//            }
+//        }
         return gradeService.updateAssignmentGrade(studentId, assignmentSubmissionId, grade, grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 
@@ -73,36 +65,27 @@ public class GradeController {
     //findProjectGrade在impl里面已经实现了判断true的功能，所以这里不用再判断了
     @GetMapping("/getProjectGrade")
     public Result getProjectGrade(Integer studentId, Integer projectId) {
-        List<ProjectInfo> projectInfos = gradeService.findProjectGrade(studentId, projectId);
-
-        if (projectInfos.size() == 0) {
-            return Result.error("1", "No such project");
-        } else {
-            return Result.success(projectInfos);
-        }
+        ProjectInfo projectInfo = gradeService.findProjectGrade(studentId, projectId);
+        return projectInfo != null ? Result.success(projectInfo) : Result.error("1", "No such project");
     }
 
     @GetMapping("/addProjectGrade")
     public Result addProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description) {
-        List<ProjectInfo> projectInfos = gradeService.findProjectGrade(studentId, projectId);
-        if (projectInfos.size() != 0) {
-            return Result.error("1", "已经打过分");
-        }
         return gradeService.addProjectGrade(studentId, projectId, grade, content, grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/updateProjectGrade")
-    public Result updateProjectGrade(Integer studentId, Integer projectSubId, Integer grade, String grade_description,Integer projectSubmissionId) {
-        List<ProjectInfo> projectInfos = gradeService.findProjectGrade(studentId, projectSubId);
-        if (projectInfos.size() == 0) {
-            return Result.error("1", "No such project");
-        }
-        for (ProjectInfo projectInfo : projectInfos) {
-            if (projectInfo.isFresh()) {
-                //在数据库里把is_fresh设为false
-                gradeService.freshPro(studentId, projectSubId);
-            }
-        }
+    public Result updateProjectGrade(Integer studentId, Integer grade, String grade_description, Integer projectSubmissionId) {
+//        List<ProjectInfo> projectInfos = gradeService.findProjectGrade(studentId, projectSubId);
+//        if (projectInfos.size() == 0) {
+//            return Result.error("1", "No such project");
+//        }
+//        for (ProjectInfo projectInfo : projectInfos) {
+//            if (projectInfo.isFresh()) {
+//                //在数据库里把is_fresh设为false
+//                gradeService.freshPro(studentId, projectSubId);
+//            }
+//        }
         return gradeService.updateProjectGrade(studentId, projectSubmissionId, grade, grade_description) ? Result.success() : Result.error("1", "提交失败");
     }
 

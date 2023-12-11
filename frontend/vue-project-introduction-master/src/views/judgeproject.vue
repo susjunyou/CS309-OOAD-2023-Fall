@@ -8,7 +8,7 @@
         <div class="assignment-display">
           <!-- 文本展示区域 -->
           <div class="text-submission">
-            <h3>学生文本提交</h3>
+            <h3>小组文本提交</h3>
             <div class="text-content">
               <!-- 这里用v-html来展示HTML内容，也可以用{{ }}来展示纯文本 -->
               <p v-if="this.content!=null">{{ this.content }}</p>
@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="file-submission">
-            <h3>学生文件提交</h3>
+            <h3>小组文件提交</h3>
             <!-- 如果有文件URL，则显示下载链接，否则显示占位符 -->
             <a v-if="file.downloadUrl" :href="file.downloadUrl" :download="file.fileName">{{ file.fileName }}</a>
             <p v-else class="placeholder">没有文件提交</p>
@@ -27,9 +27,9 @@
         <div class="grading-form">
           <el-form @submit.prevent="submitGrade">
             <div class="grading-form-title">
-            <el-form-item label="评分">
-              <el-input-number v-model="grade" :min="0" :max="100"></el-input-number>
-            </el-form-item>
+              <el-form-item label="评分">
+                <el-input-number v-model="grade" :min="0" :max="100"></el-input-number>
+              </el-form-item>
             </div>
             <el-form-item label="评注" >
               <el-input
@@ -66,15 +66,18 @@ export default {
       ddls: [],
       file:'',
       comment: '',
-      grade: 0,
+      grade: null,
       content: '',
       fileDownloadUrl: '',
-      isPopupVisible:false,
+      isPopupVisible: false,
+      teammembers: [],
     };
   },
   async created(){
     this.loadLocalStorageData();
     this.content = localStorage.getItem("currentcontent");
+    this.teammembers = localStorage.getItem("currentteammembers");
+    console.log(this.teammembers);
     await this.getFileData();
 
   },
@@ -83,52 +86,55 @@ export default {
   },
   methods: {
    async submitGrade(){
-      console.log(this.grade);
-      console.log(this.comment);
-      console.log(localStorage.getItem("currentassignmentsubmissionid"));
-      console.log(localStorage.getItem("currentassignmentid"));
-      console.log(localStorage.getItem("currentstudentid"));
-      try {
-        const response = await this.$axios.get('/grade/updateAssignmentGrade', {
-          params: {
-            studentId: localStorage.getItem("currentstudentid"),
-            assignmentId: localStorage.getItem("currentassignmentid"),
-            grade: this.grade,
-            grade_description: this.comment,
-            assignmentSubmissionId: localStorage.getItem("currentassignmentsubmissionid"),
-          }
-        });
-        console.log(response.data);
-        if (response.data.code === "0") {
-          this.isPopupVisible = true;
+      const res1 = await this.$axios.get('/team/findTeamMembers', {
+        params: {
+          teamId: localStorage.getItem("currentteamid"),
         }
-      } catch (error) {
-        console.error('Error loading files:', error);
-      }
-    },
+      });
+      if (res1.data.code === "0") {
+        for(let i = 0; i < res1.data.data.length; i++){
+          try { const response =  this.$axios.get('/grade/updateProjectGrade', {
+            params: {
+              studentId: res1.data.data[i].id,
+              grade: this.grade,
+              grade_description: this.comment,
+              projectSubmissionId: localStorage.getItem("currentprojectsubmissionid"),
+            }
+          });if (response.data.code === "0") {
+                    console.log("success");
+          }
 
+          } catch (error) {
+            console.error('Error loading files:', error);
+          }
+        }
+        this.isPopupVisible = true;
+      }
+
+
+    },
     returnToprotects(){
       this.isPopupVisible = false;
-      this.$router.push('/assignmentsofteacher');
+      this.$router.push('/projectsofteacher');
     },
     async getFileData() {
       console.log(localStorage.getItem("currentfileid"));
       if(localStorage.getItem("currentfileid")!=null&&localStorage.getItem("currentfileid")!="null"){
-      try {
-        const response = await this.$axios.get('/course/file', {
-          params: {
-            id: localStorage.getItem("currentfileid"),
+        try {
+          const response = await this.$axios.get('/course/file', {
+            params: {
+              id: localStorage.getItem("currentfileid"),
+            }
+          });
+          if (response.data.code === "0") {
+            this.file = response.data.data;
+            this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
+            this.file.downloadUrl = this.fileDownloadUrl;
           }
-        });
-        if (response.data.code === "0") {
-          this.file = response.data.data;
-          this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
-          this.file.downloadUrl = this.fileDownloadUrl;
+        } catch (error) {
+          console.error('Error loading files:', error);
         }
-      } catch (error) {
-        console.error('Error loading files:', error);
       }
-    }
     },
     createDownloadUrl(base64, fileName, mimeType) {
       const blob = this.base64ToBlob(base64, mimeType);
@@ -291,7 +297,7 @@ export default {
   margin-bottom: 20px; /* 添加或调整间距 */
 }
 /* 调整文本和文件展示区域的内边距 */
- .file-submission {
+.file-submission {
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ebebeb;

@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/register")
 @CrossOrigin
 public class RegisterController {
-    @Autowired
-    private StudentInfoServiceImp studentInfoService;
 
     @Autowired
     private TeacherInfoServiceImp teacherInfoServiceImp;
@@ -34,30 +32,31 @@ public class RegisterController {
         if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getUserType())) {
             return Result.error("-1", "Please Input All The Information !");
         }
-        if (user.getUserType()== UserType.TEACHER) {
+        if (user.getUserType() == UserType.TEACHER) {
             //教师注册
             TeacherInfo teacherInfo = new TeacherInfo();
             BeanUtil.copyProperties(user, teacherInfo);
-            teacherInfoServiceImp.add(teacherInfo);
+            return teacherInfoServiceImp.add(teacherInfo)? Result.success() : Result.error("-1", "account/ email /phoneNumber already exist");
             //Account拷贝到teacher_info
         }
 
-        return Result.success();
+        return Result.error();
     }
+
     @GetMapping("/registerStudent")
     public Result registerStu(StudentInfo user) {
         //校验数据有没有填
         if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getUserType())) {
             return Result.error("-1", "Please Input All The Information !");
         }
-        if (user.getUserType()== UserType.STUDENT) {
+        if (user.getUserType() == UserType.STUDENT) {
             //学生注册
             StudentInfo studentInfo = new StudentInfo();
             BeanUtil.copyProperties(user, studentInfo);
-            studentInfoServiceImp.add(studentInfo);
+            return studentInfoServiceImp.add(studentInfo) ? Result.success() : Result.error("-1", "account/ email /phoneNumber already exist");
             //Account拷贝到teacher_info
         }
 
-        return Result.success();
+        return Result.error("-1", "error");
     }
 }

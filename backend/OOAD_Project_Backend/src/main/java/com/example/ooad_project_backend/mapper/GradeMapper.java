@@ -15,11 +15,11 @@ import java.util.List;
 @Mapper
 public interface GradeMapper extends BaseMapper<GradeInfo> {
 
-    @Update("update assignment_submission set fresh = false where student_id = #{studentId} and assignment_id = #{assignmentId}")
-    void freshAss(Integer studentId, Integer assignmentId);
-
-    @Update("update project_submission set fresh = false where student_id = #{studentId} and project_id = #{projectId}")
-    void freshPro(Integer studentId, Integer projectId);
+//    @Update("update assignment_submission set fresh = false where student_id = #{studentId} and assignment_id = #{assignmentId}")
+//    void freshAss(Integer studentId, Integer assignmentId);
+//
+//    @Update("update project_submission set fresh = false where student_id = #{studentId} and project_id = #{projectId}")
+//    void freshPro(Integer studentId, Integer projectId);
 
     @Select("select * " +
             "from assignment " +
@@ -42,10 +42,10 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
 
     //更改grade, content和grade_description
 
-    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and assignment__submission_id = #{assignmentSubmissionId}")
+    @Update("update assignment_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and assignment_submission_id = #{assignmentSubmissionId}")
     boolean updateAssignmentGrade(Integer studentId, Integer assignmentSubmissionId, Integer grade, String gradeDescription);
 
-    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and project__submission_id = #{projectSubmissionId}")
+    @Update("update project_submission set grade = #{grade}, grade_description =#{gradeDescription}  where student_id = #{studentId} and project_submission_id = #{projectSubmissionId}")
     boolean updateProjectGrade(Integer studentId, Integer projectSubmissionId, Integer grade, String gradeDescription);
 
 

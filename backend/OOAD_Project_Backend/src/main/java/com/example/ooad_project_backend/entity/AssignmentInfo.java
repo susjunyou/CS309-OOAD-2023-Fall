@@ -12,6 +12,8 @@ import java.sql.Date;
 @Accessors(chain = true)    // 允许链式访问，例如：myObject.setField1("value1").setField2(42)。
 public class AssignmentInfo extends GradeInfo {
 
+    private  Integer assignmentSubmissionId;
+
     private String assignmentTitle;
 
     private String assignmentDescription;

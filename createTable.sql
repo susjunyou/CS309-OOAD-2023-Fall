@@ -32,7 +32,7 @@ drop table if exists file cascade;
 
 create table student
 (
-    id                integer primary key,
+    id                serial primary key,
     name              varchar(255)          not null,
     account           varchar(255)          not null unique,
     password          varchar(255)          not null,
@@ -43,10 +43,10 @@ create table student
     Intended_teammate varchar(255),
     phone_number      varchar(255) unique,
     sex               bool,
-    major             varchar(255)          not null,
+    major             varchar(255),
     level             varchar(255)          not null,
     isSA              boolean default false not null,
-    department        varchar(255)          not null
+    department        varchar(255)
 );
 
 
@@ -54,23 +54,23 @@ create table student
 
 create table teacher
 (
-    id                integer primary key,
-    name              varchar(255) not null,
-    account           varchar(255) not null unique,
-    password          varchar(255) not null,
-    email             varchar(255) not null unique,
+    id                serial primary key,
+    name              varchar(255)       not null,
+    account           varchar(255)       not null unique,
+    password          varchar(255)       not null,
+    email             varchar(255)       not null unique,
     self_Introduction text,
     phone_number      varchar(255) unique,
-    sex               bool,
-    department        varchar(255) not null,
-    tenure            varchar(255) not null
+    sex               bool default false not null,
+    department        varchar(255)       not null,
+    tenure            varchar(255)
 );
 
 --! create table admin
 
 create table admin
 (
-    id           integer primary key,
+    id           serial primary key,
     name         varchar(255) not null,
     account      varchar(255) not null unique,
     password     varchar(255) not null,
@@ -209,10 +209,10 @@ create table assignment
     assignment_title       varchar(255)     not null,
     assignment_description varchar(255),
     assignment_deadline    date             not null,
-    assignment_status      varchar(255),
+    assignment_status      varchar(255)     not null,
     max_score              integer          not null,
     proportion             double precision not null,
-    releaser               varchar(255)     not null,
+    releaser               integer          not null,
     releaser_type          varchar(255)     not null,
     course_id              integer          not null
 );
