@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface GradeService extends IService<GradeInfo> {
 
-    void freshAss(Integer studentId, Integer assignmentId);
+//    void freshAss(Integer studentId, Integer assignmentId);
+//
+//    void freshPro(Integer studentId, Integer projectId);
 
-    void freshPro(Integer studentId, Integer projectId);
+    AssignmentInfo findAssignmentGrade(Integer studentId, Integer AssignmentId);
 
-    List<AssignmentInfo> findAssignmentGrade(Integer studentId, Integer AssignmentId);
-
-    List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId);
+    ProjectInfo findProjectGrade(Integer studentId, Integer projectId);
 
     boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
 

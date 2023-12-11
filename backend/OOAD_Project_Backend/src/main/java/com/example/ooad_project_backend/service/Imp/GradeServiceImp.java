@@ -12,7 +12,6 @@ import com.example.ooad_project_backend.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,24 +27,29 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     @Autowired
     private ProjectInfoMapper projectInfoMapper;
 
-    @Override
-    public void freshAss(Integer studentId, Integer assignmentId) {
-        gradeMapper.freshAss(studentId, assignmentId);
-    }
+//    @Override
+//    public void freshAss(Integer studentId, Integer assignmentId) {
+//        gradeMapper.freshAss(studentId, assignmentId);
+//    }
+//
+//    @Override
+//    public void freshPro(Integer studentId, Integer projectId) {
+//        gradeMapper.freshPro(studentId, projectId);
+//    }
+
 
     @Override
-    public void freshPro(Integer studentId, Integer projectId) {
-        gradeMapper.freshPro(studentId, projectId);
-    }
-
-
-    @Override
-    public List<AssignmentInfo> findAssignmentGrade(Integer studentId, Integer AssignmentId) {
+    public AssignmentInfo findAssignmentGrade(Integer studentId, Integer AssignmentId) {
         List<AssignmentInfo> assignmentInfos = gradeMapper.findAssignmentGrade(studentId, AssignmentId);
-        List<AssignmentInfo> assignmentInfos1 = new ArrayList<>();
+        AssignmentInfo assignmentInfos1;
+        if (assignmentInfos.size() == 0) {
+            return null;
+        } else {
+            assignmentInfos1 = assignmentInfos.get(0);
+        }
         for (AssignmentInfo assignmentInfo : assignmentInfos) {
-            if (assignmentInfo.isFresh()) {
-                assignmentInfos1.add(assignmentInfo);
+            if (assignmentInfo.getGrade() > assignmentInfos1.getGrade()) {
+                assignmentInfos1 = assignmentInfo;
             }
         }
         return assignmentInfos1;
@@ -53,12 +57,17 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
     }
 
     @Override
-    public List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId) {
+    public ProjectInfo findProjectGrade(Integer studentId, Integer projectId) {
         List<ProjectInfo> projectInfos = gradeMapper.findProjectGrade(studentId, projectId);
-        List<ProjectInfo> projectInfos1 = new ArrayList<>();
+        ProjectInfo projectInfos1;
+        if (projectInfos.size() == 0) {
+            return null;
+        } else {
+            projectInfos1 = projectInfos.get(0);
+        }
         for (ProjectInfo projectInfo : projectInfos) {
-            if (projectInfo.isFresh()) {
-                projectInfos1.add(projectInfo);
+            if (projectInfo.getGrade() > projectInfos1.getGrade()) {
+                projectInfos1 = projectInfo;
             }
         }
         return projectInfos1;

@@ -41,6 +41,6 @@ public class GradeInfo implements Serializable {
 
     private Date submissionDate;
 
-    private boolean fresh;
+//    private boolean fresh;
 
 }
