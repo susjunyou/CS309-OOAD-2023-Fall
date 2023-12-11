@@ -3,13 +3,13 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
+import com.example.ooad_project_backend.entity.UserInfo;
+import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.AssignmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 //@SuppressWarnings("ALL")
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/assignment")
 @CrossOrigin
 public class AssignmentController {
-//SA老师查看某门课的所有作业，推荐之后的方法都在这里写，不然好难找T.T
+    //SA老师增删改查某门课的所有作业，推荐之后的方法都在这里写，不然好难找T.T
 //如果找不到某个方法大概率写在GradeController里面了
     @Autowired
     private AssignmentInfoService assignmentInfoService;
@@ -34,6 +34,18 @@ public class AssignmentController {
         }
     }
 
+    @PostMapping("/addAssignment")
+    public Result addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
+                                Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId) {
+        boolean flag = assignmentInfoService.addAssignment(assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
+                maxScore, proportion, releaser, releaserType, courseId);
+        if (flag) {
+            return Result.success();
+        } else {
+            return Result.error("1", "添加失败");
+        }
+    }
+
 
     //这里返回的是assignment_student表里面的信息，包括了作业的信息和学生的信息
     @GetMapping("/getAssignmentInfoByStudentIdAndCourseId")
@@ -45,7 +57,6 @@ public class AssignmentController {
             return Result.success(assignmentInfoList);
         }
     }
-
 
 
 

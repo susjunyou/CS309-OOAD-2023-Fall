@@ -42,5 +42,13 @@ public class GradeInfo implements Serializable {
     private Date submissionDate;
 
     private boolean fresh;
+    public UserType getReleaserType() {
+        return releaserType;
+    }
+
+    public void setReleaserType(UserType releaserType) {
+        this.releaserType = releaserType;
+    }
+
 
 }
