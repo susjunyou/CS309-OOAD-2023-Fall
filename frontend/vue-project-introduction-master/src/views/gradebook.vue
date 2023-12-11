@@ -434,10 +434,10 @@ export default {
           }
         }).then((res) => {
           if (res.data.code === "0") {
-            localStorage.setItem('assignmentgrade' + localStorage.getItem('currentcourse') + i, res.data.data[0].grade);
-            localStorage.setItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data[0].maxScore);
-            localStorage.setItem('assignmentproportion' + localStorage.getItem('currentcourse') + i, res.data.data[0].proportion);
-            localStorage.setItem('assignmentgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data[0].gradeDescription)
+            localStorage.setItem('assignmentgrade' + localStorage.getItem('currentcourse') + i, res.data.data.grade);
+            localStorage.setItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data.maxScore);
+            localStorage.setItem('assignmentproportion' + localStorage.getItem('currentcourse') + i, res.data.data.proportion);
+            localStorage.setItem('assignmentgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data.gradeDescription)
           }
         }).catch(error => {
           console.error('Error loading assignment grade:', error);
@@ -452,10 +452,10 @@ export default {
           }
         }).then((res) => {
           if (res.data.code === "0") {
-            localStorage.setItem('projectgrade' + localStorage.getItem('currentcourse') + i, res.data.data[0].grade);
-            localStorage.setItem('projectmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data[0].maxScore);
-            localStorage.setItem('projectproportion' + localStorage.getItem('currentcourse') + i, res.data.data[0].proportion);
-            localStorage.setItem('projectgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data[0].gradeDescription);
+            localStorage.setItem('projectgrade' + localStorage.getItem('currentcourse') + i, res.data.data.grade);
+            localStorage.setItem('projectmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data.maxScore);
+            localStorage.setItem('projectproportion' + localStorage.getItem('currentcourse') + i, res.data.data.proportion);
+            localStorage.setItem('projectgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data.gradeDescription);
           }
         }).catch(error => {
           console.error('Error loading project grade:', error);
