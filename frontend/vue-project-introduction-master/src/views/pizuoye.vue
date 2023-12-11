@@ -199,7 +199,7 @@ export default {
               submissionTitle:res.data.data[i].submissionTitle,
               submissionDate:res.data.data[i].submissionDate,
               grade:res.data.data[i].grade==null?'未批阅':res.data.data[i].grade,
-              id:res.data.data[i].id,
+              id:res.data.data[i].assignmentSubmissionId,
               content:res.data.data[i].content,
               fileid:res.data.data[i].fileId,
             })
