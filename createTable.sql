@@ -46,7 +46,7 @@ create table student
     major             varchar(255)          not null,
     level             varchar(255)          not null,
     isSA              boolean default false not null,
-    department        varchar(255)          not null
+    department        varchar(255)          
 );
 
 
@@ -55,15 +55,15 @@ create table student
 create table teacher
 (
     id                serial primary key,
-    name              varchar(255) not null,
-    account           varchar(255) not null unique,
-    password          varchar(255) not null,
-    email             varchar(255) not null unique,
+    name              varchar(255)       not null,
+    account           varchar(255)       not null unique,
+    password          varchar(255)       not null,
+    email             varchar(255)       not null unique,
     self_Introduction text,
     phone_number      varchar(255) unique,
-    sex               bool,
-    department        varchar(255) not null,
-    tenure            varchar(255) not null
+    sex               bool default false not null,
+    department        varchar(255)       not null,
+    tenure            varchar(255)
 );
 
 --! create table admin
