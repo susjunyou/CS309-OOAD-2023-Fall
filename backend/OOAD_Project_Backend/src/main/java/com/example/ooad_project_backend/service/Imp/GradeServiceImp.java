@@ -46,9 +46,10 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
             return null;
         } else {
             assignmentInfos1 = assignmentInfos.get(0);
+            if (assignmentInfos1.getGrade() == null) return null;
         }
         for (AssignmentInfo assignmentInfo : assignmentInfos) {
-            if (assignmentInfo.getGrade() > assignmentInfos1.getGrade()) {
+            if (assignmentInfo.getGrade() != null && assignmentInfo.getGrade() > assignmentInfos1.getGrade()) {
                 assignmentInfos1 = assignmentInfo;
             }
         }
@@ -64,9 +65,10 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
             return null;
         } else {
             projectInfos1 = projectInfos.get(0);
+            if (projectInfos1.getGrade() == null) return null;
         }
         for (ProjectInfo projectInfo : projectInfos) {
-            if (projectInfo.getGrade() > projectInfos1.getGrade()) {
+            if (projectInfo.getGrade() != null && projectInfo.getGrade() > projectInfos1.getGrade()) {
                 projectInfos1 = projectInfo;
             }
         }
