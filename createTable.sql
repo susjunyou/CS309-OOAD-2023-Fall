@@ -43,10 +43,10 @@ create table student
     Intended_teammate varchar(255),
     phone_number      varchar(255) unique,
     sex               bool,
-    major             varchar(255)          not null,
+    major             varchar(255),
     level             varchar(255)          not null,
     isSA              boolean default false not null,
-    department        varchar(255)          
+    department        varchar(255)
 );
 
 
