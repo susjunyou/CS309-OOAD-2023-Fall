@@ -70,8 +70,8 @@ public class PresentationController{
     }
 
 
-    @GetMapping("/updatePresentationDateByTeamId")
-    public Result updatePresentationDateByTeamId(Integer teamId, Date presentationDate) {
+    @GetMapping("/updatePresentation")
+    public Result updatePresentationDateByTeamId(Integer teamId, Date presentationDate,Integer teacherId) {
         TeamInfo teamInfo = teamInfoService.findTeamInfoByTeamId(teamId);
         if (teamInfo == null) {
             return Result.error("1", "no such team");
@@ -79,7 +79,7 @@ public class PresentationController{
         if (teamInfo.getPresentationDate()==presentationDate){
             return Result.error("1", "presentation date is the same");
         }
-        return teamInfoService.updatePresentationDateByTeamId(teamId, presentationDate) ? Result.success() : Result.error();
+        return teamInfoService.updatePresentationDateByTeamId(teamId, presentationDate,teacherId) ? Result.success() : Result.error();
     }
 
 

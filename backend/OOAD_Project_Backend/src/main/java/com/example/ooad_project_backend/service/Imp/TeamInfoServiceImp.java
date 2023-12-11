@@ -217,8 +217,8 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     }
 
     @Override
-    public boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate) {
-        teamMapper.updatePresentationDateByTeamId(teamId, presentationDate);
+    public boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate,Integer teacherId) {
+        teamMapper.updatePresentationDateByTeamId(teamId, presentationDate,teacherId);
         return true;
     }
 
