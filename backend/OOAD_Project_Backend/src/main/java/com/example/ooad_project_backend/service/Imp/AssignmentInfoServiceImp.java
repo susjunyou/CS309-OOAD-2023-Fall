@@ -28,7 +28,7 @@ public class AssignmentInfoServiceImp implements AssignmentInfoService {
 
     @Override
     public boolean updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
-                                    Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId) {
+                                    Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId) {
         return assignmentMapper.updateAssignment(assignmentId, assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
                 maxScore, proportion, releaser, releaserType, courseId);
     }
@@ -36,7 +36,7 @@ public class AssignmentInfoServiceImp implements AssignmentInfoService {
 
     @Override
     public boolean addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
-                                 Integer maxScore, Double proportion, String  releaser, UserType releaserType, Integer courseId) {
+                                 Integer maxScore, Double proportion, Integer  releaser, UserType releaserType, Integer courseId) {
         return assignmentMapper.addAssignment(assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
                 maxScore, proportion, releaser, releaserType, courseId);
     }

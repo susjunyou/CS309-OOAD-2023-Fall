@@ -36,7 +36,7 @@ public class AssignmentController {
 
     @PostMapping("/addAssignment")
     public Result addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
-                                Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId) {
+                                Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId) {
         boolean flag = assignmentInfoService.addAssignment(assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
                 maxScore, proportion, releaser, releaserType, courseId);
         if (flag) {
@@ -48,7 +48,7 @@ public class AssignmentController {
 
     @GetMapping("/updateAssignmentByAssignmentId")
     public Result updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
-                                   Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId) {
+                                   Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId) {
         boolean flag = assignmentInfoService.updateAssignment(assignmentId, assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
                 maxScore, proportion, releaser, releaserType, courseId);
         if (flag) {

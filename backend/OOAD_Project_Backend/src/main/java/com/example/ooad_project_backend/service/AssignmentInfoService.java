@@ -12,10 +12,10 @@ public interface AssignmentInfoService {
     List<AssignmentInfo> findAssignmentInfoByStudentIdAndCourseId(Integer studentId, Integer courseId);
 
     boolean addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
-                          Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId);
+                          Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId);
 
     boolean updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
-                             Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId);
+                             Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId);
 
     boolean deleteAssignment(Integer assignmentId);
 
