@@ -2,12 +2,8 @@ package com.example.ooad_project_backend.controller;
 
 
 import com.example.ooad_project_backend.common.Result;
-import com.example.ooad_project_backend.entity.AssignmentInfo;
-import com.example.ooad_project_backend.entity.UserInfo;
 import com.example.ooad_project_backend.enums.UserType;
-import com.example.ooad_project_backend.service.AssignmentInfoService;
 import com.example.ooad_project_backend.service.ProjectInfoService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

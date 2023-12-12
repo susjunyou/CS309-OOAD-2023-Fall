@@ -1,7 +1,6 @@
 package com.example.ooad_project_backend.service.Imp;
 
 import com.example.ooad_project_backend.entity.AssignmentInfo;
-import com.example.ooad_project_backend.entity.UserInfo;
 import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.mapper.AssignmentMapper;
 import com.example.ooad_project_backend.service.AssignmentInfoService;

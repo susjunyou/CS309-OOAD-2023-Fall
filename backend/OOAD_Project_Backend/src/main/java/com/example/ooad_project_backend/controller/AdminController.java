@@ -3,16 +3,12 @@ package com.example.ooad_project_backend.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.example.ooad_project_backend.common.Result;
-import com.example.ooad_project_backend.entity.AssignmentInfo;
-import com.example.ooad_project_backend.entity.UserInfo;
-import com.example.ooad_project_backend.enums.UserType;
-import com.example.ooad_project_backend.service.AssignmentInfoService;
 import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 //@SuppressWarnings("ALL")
 @RestController

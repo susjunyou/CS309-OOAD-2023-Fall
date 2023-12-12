@@ -22,6 +22,10 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
             " VALUES (#{teamName}, #{leader}, #{teamDescription}, #{teamSize}, #{projectId})")
     void createTeam(TeamInfo teamInfo);
 
+
+    @Update("update team set leader = #{studentId} where team_id = #{teamId}")
+    void setLeader(Integer teamId, Integer studentId);
+
     @Insert("insert into team_student(team_id, student_id, project_id) VALUES (#{teamId}, #{studentId}, #{projectId})")
     void joinTeam(Integer teamId, Integer studentId, Integer projectId);
 
@@ -100,13 +104,13 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     void deleteRequest(Integer requestId);
 
     @Update("update team set presentation_date = #{presentationDate},teacher_id = #{teacherId} where team_id = #{teamId}")
-    void updatePresentationDateByTeamId(Integer teamId, Date presentationDate,Integer teacherId);
+    void updatePresentationDateByTeamId(Integer teamId, Date presentationDate, Integer teacherId);
 
     @Select("select student_id from team_student where project_id = #{projectId}")
     List<Integer> findAlreadyJoinedTeamStudentIdsByProjectId(Integer projectId);
 
     @Update("update team set presentation_date = #{presentationDate},teacher_id = #{teacherId} where team_id = #{teamId}")
-    void addPresentation(Integer teamId, Date presentationDate,Integer teacherId);
+    void addPresentation(Integer teamId, Date presentationDate, Integer teacherId);
 
     @Update("update team set presentation_date = null where team_id = #{teamId}")
     void deletePresentation(Integer teamId);

@@ -6,7 +6,6 @@ import com.example.ooad_project_backend.entity.AttendanceInfo;
 import com.example.ooad_project_backend.entity.GradeInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
 
-
 import java.util.List;
 
 public interface GradeService extends IService<GradeInfo> {

@@ -45,6 +45,10 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Override
     public boolean createTeam(TeamInfo teamInfo) {
+        if (teamInfo.getLeader() == null) {
+            teamMapper.createTeam(teamInfo);
+            return true;
+        }
         Integer maxTeamSize = projectInfoMapper.findMaxPeopleInTeamById(teamInfo.getProjectId());
         // 判断队伍人数是否超过最大人数
         if (maxTeamSize < teamInfo.getTeamSize()) {
@@ -55,7 +59,7 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         if (teamId != null) {
             return false;
         }
-        if (teamInfo.getLeader() == null || teamInfo.getTeamSize() == null || teamInfo.getProjectId() == null || teamInfo.getTeamName() == null) {
+        if (teamInfo.getTeamSize() == null || teamInfo.getProjectId() == null || teamInfo.getTeamName() == null) {
             return false;
         }
         teamMapper.createTeam(teamInfo);
@@ -66,10 +70,12 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Override
     public boolean joinTeam(TeamInfo teamInfo, Integer studentId) {
-//        // 判断小组是否已经存在
-//        if (teamMapper.findTeamIdByProjectIdAndLeader(teamInfo.getProjectId(), teamInfo.getLeader()) != null) {
-//            return false;
-//        }
+        // 判断队伍是否为空
+        if (teamMapper.findTeamInfoByTeamId(teamInfo.getTeamId()).getLeader() == null) {
+            teamMapper.setLeader(teamInfo.getTeamId(), studentId);
+            teamMapper.joinTeam(teamInfo.getTeamId(), studentId, teamInfo.getProjectId());
+            return true;
+        }
         // 判断是否加入该项目的其他队伍
         if (teamMapper.findTeamIdByProjectIdAndStudentId(teamInfo.getProjectId(), studentId) != null) {
             return false;
@@ -217,8 +223,8 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     }
 
     @Override
-    public boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate,Integer teacherId) {
-        teamMapper.updatePresentationDateByTeamId(teamId, presentationDate,teacherId);
+    public boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate, Integer teacherId) {
+        teamMapper.updatePresentationDateByTeamId(teamId, presentationDate, teacherId);
         return true;
     }
 
@@ -236,8 +242,8 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     }
 
     @Override
-    public boolean addPresentation(Integer teamId, Date presentationDate,Integer teacherId) {
-        teamMapper.addPresentation(teamId, presentationDate,teacherId);
+    public boolean addPresentation(Integer teamId, Date presentationDate, Integer teacherId) {
+        teamMapper.addPresentation(teamId, presentationDate, teacherId);
         return true;
     }
 

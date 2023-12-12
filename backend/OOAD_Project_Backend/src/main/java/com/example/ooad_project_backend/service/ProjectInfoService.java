@@ -1,8 +1,6 @@
 package com.example.ooad_project_backend.service;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.ooad_project_backend.entity.PostInfo;
+
 import com.example.ooad_project_backend.entity.ProjectInfo;
-import com.example.ooad_project_backend.entity.ReplyInfo;
 import com.example.ooad_project_backend.enums.UserType;
 
 import java.sql.Date;

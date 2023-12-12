@@ -1,7 +1,6 @@
 package com.example.ooad_project_backend.controller;
 
 
-import cn.hutool.core.util.ObjectUtil;
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.*;
 import com.example.ooad_project_backend.service.CourseInfoService;

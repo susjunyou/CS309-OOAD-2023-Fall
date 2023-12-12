@@ -2,12 +2,10 @@ package com.example.ooad_project_backend.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.ooad_project_backend.entity.AssignmentInfo;
 import com.example.ooad_project_backend.entity.ProjectInfo;
 import com.example.ooad_project_backend.enums.UserType;
 import org.apache.ibatis.annotations.*;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
