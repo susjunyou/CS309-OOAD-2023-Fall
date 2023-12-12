@@ -131,6 +131,7 @@
           </table>
         </li>
       </ul>
+      <hr class="separator">
       <h1>作业成绩</h1>
       <ul>
         <li>
@@ -178,8 +179,12 @@
           </table>
         </li>
       </ul>
+      <div id="main123" style="width: 100%; height:400px"></div>
+      <h1>底部</h1>
     </div>
-    </div>
+
+
+  </div>
 </template>
 
 <script >
@@ -268,9 +273,11 @@ export default {
       technologystack:'',
       programmingskill:'',
       intendedteammate:'',
+      attendancegrade:'',
+      assignmentgrade:'',
+      projectgrade:'',
     };
   },
-
 
   async created() {
     this.id = localStorage.getItem('id');
@@ -279,9 +286,45 @@ export default {
     this.email = localStorage.getItem('email');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadStudentsAndSA();
+    await this.getClass();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));  },
   methods: {
+    getClass(){
+      var echarts=require('echarts');
+      var myChart = echarts.init(document.getElementById('main123'));
+      var option={
+        color:['red','yellow','blue','black'],
+        title:{
+          text:'成绩',
+          x:'center',
+        },
+        legend:{
+          orient:"vertical",
+          bottom:"bottom",
+          data:['attendance','assignment','project'],
+        },
+        tooltip:{},
+        series:[{
+          type:'pie',
+          data:[{
+            value:this.attendancegrade,
+            name:"attendance",
+          },{
+            value:this.assignmentgrade,
+            name:"assignment",
+          },{
+            value:this.projectgrade,
+            name:"project",
+          },
+          ],
+          label:{
+            fontSize:"16"
+          },
+        }],
+      };
+      myChart.setOption(option);
+    },
     logoutClick() {
       this.$router.push('/Login');
       localStorage.clear();
@@ -434,10 +477,10 @@ export default {
           }
         }).then((res) => {
           if (res.data.code === "0") {
-            localStorage.setItem('assignmentgrade' + localStorage.getItem('currentcourse') + i, res.data.data[0].grade);
-            localStorage.setItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data[0].maxScore);
-            localStorage.setItem('assignmentproportion' + localStorage.getItem('currentcourse') + i, res.data.data[0].proportion);
-            localStorage.setItem('assignmentgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data[0].gradeDescription)
+            localStorage.setItem('assignmentgrade' + localStorage.getItem('currentcourse') + i, res.data.data.grade);
+            localStorage.setItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data.maxScore);
+            localStorage.setItem('assignmentproportion' + localStorage.getItem('currentcourse') + i, res.data.data.proportion);
+            localStorage.setItem('assignmentgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data.gradeDescription)
           }
         }).catch(error => {
           console.error('Error loading assignment grade:', error);
@@ -452,10 +495,10 @@ export default {
           }
         }).then((res) => {
           if (res.data.code === "0") {
-            localStorage.setItem('projectgrade' + localStorage.getItem('currentcourse') + i, res.data.data[0].grade);
-            localStorage.setItem('projectmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data[0].maxScore);
-            localStorage.setItem('projectproportion' + localStorage.getItem('currentcourse') + i, res.data.data[0].proportion);
-            localStorage.setItem('projectgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data[0].gradeDescription);
+            localStorage.setItem('projectgrade' + localStorage.getItem('currentcourse') + i, res.data.data.grade);
+            localStorage.setItem('projectmaxScore' + localStorage.getItem('currentcourse') + i, res.data.data.maxScore);
+            localStorage.setItem('projectproportion' + localStorage.getItem('currentcourse') + i, res.data.data.proportion);
+            localStorage.setItem('projectgradeDescription' + localStorage.getItem('currentcourse') + i, res.data.data.gradeDescription);
           }
         }).catch(error => {
           console.error('Error loading project grade:', error);
@@ -487,6 +530,7 @@ export default {
         });
       }
       this.assignments=[];
+      this.assignmentgrade=0;
       for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
         if (localStorage.getItem('assignmentgrade'+localStorage.getItem("currentcourse")+i)!=null){
           this.assignments.push({
@@ -499,9 +543,11 @@ export default {
             proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
             gardedescription: localStorage.getItem('assignmentgradeDescription' + localStorage.getItem("currentcourse")+i)
           });
+          this.assignmentgrade= Number(localStorage.getItem('assignmentgrade'+localStorage.getItem('currentcourse')+i));
         }
       }
       this.projects=[];
+      this.projectgrade=0;
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
         if(localStorage.getItem('projectgrade'+localStorage.getItem("currentcourse")+i)!=null){
           this.projects.push({
@@ -516,6 +562,7 @@ export default {
             proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
             gardedescription: localStorage.getItem('projectgradeDescription' + localStorage.getItem("currentcourse")+i)
           });
+          this.projectgrade+=Number(localStorage.getItem('projectgrade'+localStorage.getItem("currentcourse")+i));
         }
         this.ddls =[]
         this.ddls.push({
@@ -523,13 +570,15 @@ export default {
           title: this.projects[i].title,
         });
       }
-
+      this.attendances=[];
+      this.attendancegrade=0;
       for (let i = 0; i < localStorage.getItem('attendancesLength'+localStorage.getItem("currentcourse")); i++) {
         this.attendances.push({
           date: localStorage.getItem('attendancedate' + localStorage.getItem("currentcourse")+i),
           attendancesgrade: localStorage.getItem('attendancegrade' + localStorage.getItem("currentcourse")+i)+'/'+localStorage.getItem('attendancemaxScore' + localStorage.getItem("currentcourse") + i),
           proportion:localStorage.getItem('attendanceproportion' + localStorage.getItem("currentcourse")+i)
-        });
+        })
+        this.attendancegrade+=Number(localStorage.getItem('attendancegrade' + localStorage.getItem("currentcourse")+i));
       }
 
       console.log("course name="+this.myValue)

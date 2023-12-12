@@ -95,20 +95,7 @@
     <el-row class="main-content">
       <el-aside :span="3" class="course-navbar" style="width: 205px">
 
-        <el-menu
-            class="course-navbar"
-            mode="vertical"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b">
-          <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-          <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-          <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-          <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-          <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-          <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-          <el-menu-item index="8" @click="go('gradebook')">Gradebook</el-menu-item>
-        </el-menu>
+
 
 
       </el-aside>
@@ -134,6 +121,12 @@
         <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
       </div>
     </el-row>
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>修改成功！</p>
+        <button @click="close">关闭</button>
+      </div>
+    </div>
 
 
   </div>
@@ -235,6 +228,11 @@ export default {
   },
 
   methods: {
+    close(){
+      this.isPopupVisible = false;
+      this.$router.push('/StudentHomePage')
+
+    },
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
@@ -366,6 +364,7 @@ export default {
           this.newPassword = '';
           this.confirmPassword = '';
           localStorage.setItem('password',value);
+          this.isPopupVisible=true;
         }else {
           console.log("error")
         }
@@ -619,7 +618,8 @@ export default {
 
 .change-password-form {
   max-width: 500px;
-  margin: auto;
+  margin-top:200px;
+  margin-left:550px;
   padding: 20px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
   background-color: white;
@@ -628,6 +628,25 @@ export default {
 .profile-button {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 </style>
 

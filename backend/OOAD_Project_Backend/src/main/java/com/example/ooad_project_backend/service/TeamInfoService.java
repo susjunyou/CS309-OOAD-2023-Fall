@@ -42,11 +42,11 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 
-    boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate);
+    boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate,Integer teacherId);
 
     List<StudentInfo> findStudentNotJoinTeam(Integer projectId,Integer courseId);
 
-    boolean addPresentation(Integer teamId, Date presentationDate);
+    boolean addPresentation(Integer teamId, Date presentationDate,Integer teacherId);
 
     boolean deletePresentation(Integer teamId);
 

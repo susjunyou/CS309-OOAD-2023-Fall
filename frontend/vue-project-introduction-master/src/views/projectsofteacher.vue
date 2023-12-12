@@ -4,19 +4,19 @@
     <shitshan>
 
 
-        <div class="assignment-container">
-          <!-- ...之前的代码... -->
-          <el-row :gutter="20">
-            <el-col v-for="project in projects" :key="project.id" :span="6" >
-              <el-card  class="assignment-card" @click.native="join(project)">
-                <h3>{{ project.title }}</h3>
-                <p>截止日期：{{ project.ddl }}</p>
-              </el-card>
-            </el-col>
-          </el-row>
-          <!-- ...之后的代码... -->
+      <div class="assignment-container">
+        <!-- ...之前的代码... -->
+        <el-row :gutter="20">
+          <el-col v-for="project in projects" :key="project.id" :span="6" >
+            <el-card  class="assignment-card" @click.native="join(project)">
+              <h3>{{ project.title }}</h3>
+              <p>截止日期：{{ project.ddl }}</p>
+            </el-card>
+          </el-col>
+        </el-row>
+        <!-- ...之后的代码... -->
 
-        </div>
+      </div>
     </shitshan>
     <!-- 你的其他内容 -->
   </div>
