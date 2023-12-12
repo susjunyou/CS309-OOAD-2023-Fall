@@ -40,6 +40,11 @@ public class GradeController {
         }
     }
 
+    @GetMapping("/getAttendanceGrade")
+    public Result getAttendanceGrade(Integer studentId,Integer attendanceId) {
+        return gradeService.findAttendanceGrade(studentId, attendanceId) == null? Result.error("1", "No such attendance or the student has not submitted the attendance!") : Result.success(gradeService.findAttendanceGrade(studentId, attendanceId));
+    }
+
     //除了三个必须的参数，其他的content和grade_description都可以不填
     @GetMapping("/addAssignmentGrade")
     public Result addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description) {

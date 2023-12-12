@@ -74,4 +74,11 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
     @Insert("insert into attendance_submission (attendance_id, student_id, is_attended) values (#{attendanceId}, #{studentId}, #{isPresent})")
     void addAttendanceGrade(Integer attendanceId, Integer studentId, Boolean isPresent);
 
+    @Select("select * " +
+            "from attendance " +
+            "         right join attendance_submission a on attendance.id = a.attendance_id " +
+            "where attendance.id = 1 " +
+            "  and a.student_id = 1")
+    AttendanceInfo findAttendanceGrade(Integer studentId, Integer attendanceId);
+
 }

@@ -38,4 +38,6 @@ public interface GradeService extends IService<GradeInfo> {
 
     boolean uploadAttendanceGradeCSV(Integer attendanceId, Integer studentId, Integer grade);
 
+    AttendanceInfo findAttendanceGrade(Integer studentId, Integer attendanceId);
+
 }

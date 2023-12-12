@@ -136,4 +136,9 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
         return true;
     }
 
+    @Override
+    public AttendanceInfo findAttendanceGrade(Integer studentId, Integer attendanceId) {
+        return gradeMapper.findAttendanceGrade(studentId, attendanceId);
+    }
+
 }
