@@ -100,6 +100,7 @@
         <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
         <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
         <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+        <el-menu-item index="8" @click="go('teams')">Teams</el-menu-item>
         <el-menu-item index="7" @click="studentClick">members</el-menu-item>
         <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       </el-menu>
@@ -216,6 +217,7 @@ export default {
 
   },
   methods: {
+
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;

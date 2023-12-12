@@ -1,5 +1,9 @@
 <template >
   <div>
+    <div class="titletext">
+      <p>Project helper register</p>
+    </div>
+    <div class="abcd">
   <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="demo-ruleForm">
     <el-form-item label="姓名" prop="name">
       <el-input v-model="form.name"></el-input>
@@ -55,9 +59,12 @@
     <el-form-item>
       <el-button type="primary" @click.prevent="submitForm()">注册</el-button>
       <el-button @click="resetForm('form')">重置</el-button>
+      <el-button @click="retunn()">返回</el-button>
+
     </el-form-item>
 
   </el-form>
+    </div>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
         <p>注册成功！</p>
@@ -139,6 +146,9 @@ export default {
   },
 
   methods: {
+    retunn(){
+      this.$router.push('/login');
+    },
     returnToprotects(){
       this.isPopupVisible = false;
       this.$router.push('/login');
@@ -255,5 +265,35 @@ this.isPopupVisible = true;
 .sumbitt:hover {
   background: linear-gradient(45deg, #2193b0, #6dd5ed);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+}
+.titletext {
+  font-size: 20px;
+  background-image: url("../assets/schoolHUI.png");
+  background-size: 18% 100%;
+  background-repeat: no-repeat;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 4px;
+  list-style-type: none;
+
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: yellow;
+  text-align: center;
+  background-color: #2bb7b3;
+}
+.abcd {
+  margin-top: 300px; /* 在头部栏和这个div之间添加间隔 */
+
+  border: 1px solid #dcdfe6; /* 添加边框 */
+  border-radius: 8px; /* 圆角边框 */
+  padding: 100px; /* 内部内容和边框之间的间隔 */
+  max-width: 600px; /* 最大宽度限制 */
+  margin: 20px auto; /* 水平居中并添加顶部间隔 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+  background-color: white; /* 背景色 */
 }
 </style>
