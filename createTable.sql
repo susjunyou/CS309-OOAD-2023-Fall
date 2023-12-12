@@ -124,7 +124,7 @@ create table project
     id                  serial primary key,
     project_title       varchar(255)     not null,
     project_description varchar(255)     not null,
-    releaser            varchar(255)     not null,
+    releaser            integer          not null,
     releaser_type       varchar(255)     not null,
     course_id           integer          not null,
     project_status      varchar(255)     not null,
@@ -165,7 +165,7 @@ create table team
 (
     team_id           serial primary key,
     team_name         varchar(255) not null,
-    leader            integer      not null,
+    leader            integer,
     teacher_id        integer,
     presentation_date date,
     team_description  varchar(255),
@@ -212,7 +212,7 @@ create table assignment
     assignment_status      varchar(255)     not null,
     max_score              integer          not null,
     proportion             double precision not null,
-    releaser               varchar(255)     not null,
+    releaser               integer          not null,
     releaser_type          varchar(255)     not null,
     course_id              integer          not null
 );
