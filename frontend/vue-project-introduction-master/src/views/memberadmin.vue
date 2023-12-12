@@ -1,63 +1,70 @@
 <template>
   <div>
     <!-- 你的其他内容 -->
-    <shitshan>
+    <shitshanadmin>
 
-      <div class="assign" style="width: 88%">
-        <div class="assignment-container">
-          <!-- ...之前的代码... -->
-          <el-row :gutter="20">
-            <el-col v-for="assignment in assignments" :key="assignment.id" :span="8" >
-              <el-card @click.native="submitassignment(assignment)" class="assignment-card">
-                <h3>{{ assignment.title }}</h3>
-                <p>截止日期：{{ assignment.ddl }}</p>
-              </el-card>
-            </el-col>
-          </el-row>
-          <!-- ...之后的代码... -->
+      <div class="coursecontainer">
+        <el-col :span="21">
+          <div class="table-section">
+            <h2 class="table-title">Teacher Information</h2>
+            <el-table :data="teachers" style="width: 90%;" border stripe>
+              <el-table-column prop="name" label="Name"></el-table-column>
+              <el-table-column prop="tenure" label="Tenure"></el-table-column>
+              <el-table-column prop="email" label="Email"></el-table-column>
+              <el-table-column prop="department" label="Department"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button type="danger" size="mini" @click="deleteTeacher(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
 
-        </div>
-        <div class="publish-button-container">
-          <el-button class="sumbitt" @click="publishAssignment">发布作业</el-button>
+          <!-- 学习助手(SA)信息表格 -->
+          <div class="table-section">
+            <h2 class="table-title">SA Information</h2>
+            <el-table :data="saInfos" style="width: 90%;" border stripe>
+              <el-table-column prop="name" label="Name"></el-table-column>
+              <el-table-column prop="email" label="Email"></el-table-column>
+              <el-table-column prop="major" label="Major"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button type="danger" size="mini" @click="deleteSA(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+
+          <!-- 学生信息表格 -->
+          <div class="table-section">
+            <h2 class="table-title">Student Information</h2>
+            <el-table :data="studentInfos" style="width: 90%;" border stripe>
+              <el-table-column prop="name" label="Name"></el-table-column>
+              <el-table-column prop="email" label="Email"></el-table-column>
+              <el-table-column prop="major" label="Major"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button type="danger" size="mini" @click="deleteStudent(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-col>
+
+
+        <div v-if="isPopupVisible" class="popup">
+          <div class="popup-content">
+            <p>{{ this.wenzi }}成功！</p>
+            <button @click="returnToprotects" class="sumbitt">关闭</button>
+          </div>
         </div>
       </div>
-    </shitshan>
+    </shitshanadmin>
     <!-- 你的其他内容 -->
-    <el-dialog title="发布作业" :visible.sync="dialogVisible">
-      <el-form :model="assignmentForm">
-        <el-form-item label="作业标题">
-          <el-input v-model="assignmentForm.title"></el-input>
-        </el-form-item>
-        <el-form-item label="作业描述">
-          <el-input type="textarea" v-model="assignmentForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="截止日期">
-          <el-date-picker v-model="assignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="最高分数">
-          <el-input-number v-model="assignmentForm.maxScore"></el-input-number>
-        </el-form-item>
-        <el-form-item label="占比">
-          <el-input-number v-model="assignmentForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
-        </el-form-item>
-        <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
-        <el-input type="hidden" v-model="assignmentForm.courseId"></el-input>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click.prevent="addAssignment">确定</el-button>
-      </div>
-    </el-dialog>
-    <div v-if="isPopupVisible" class="popup">
-      <div class="popup-content">
-        <p>发布成功！</p>
-        <button @click="returnToprotects" class="sumbitt">关闭</button>
-      </div>
-    </div>
   </div>
 </template>
 <script setup>
-import shitshan from "@/components/shitshan.vue";
+import shitshanadmin from "@/components/shitshanadmin.vue";
 export default {
   data() {
     return {
@@ -67,30 +74,186 @@ export default {
       assignments: [],
       projects: [],
       ddls: [],
-      dialogVisible: false,
-      assignmentForm: {
-        title: '',
-        description: '',
-        deadline: '',
-        status: '',
-        maxScore: '',
-        proportion: '',
-        releaser: '',
-        releaserType: '',
-        courseId: '',
-      },
-      isPopupVisible: false,
+      wenzi: '',
+      saInfos: [],
+      studentInfos: [],
+      showSaDialog: false, // 控制SA信息对话框的显示
+      showStudentDialog: false, // 控制学生信息对话框的显示
+      courseDescription:'',
+      teachers: [],
+      isPopupVisible: false, // 控制弹窗显示的布尔值
     };
   },
   async created(){
-    this.loadLocalStorageData();
+    // await this.loadAllCoursesinfo,
+    await this.getallcourses();
+    await this.loadLocalStorageData();
+    await this.loadAllCoursesinfo(),
+        await this.loadLocalStorageData();
+    await this.loadStudentsAndSA();
+
+
   },
   components: {
-    shitshan
+    shitshanadmin
   },
   methods: {
-    publishAssignment(){
-      this.dialogVisible = true;
+
+   async deleteTeacher(teacher) {
+      await this.$axios.get('/admin/deleteTeacher', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
+          teacherId: teacher.id,
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.wenzi = "删除";
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+    },
+   async deleteSA(sa) {
+     await this.$axios.get('/admin/deleteSA', {
+       params: {
+         courseId: localStorage.getItem('currentcourseid'),
+         studentId: sa.id,
+       }
+     }).then((res) => {
+       if (res.data.code === "0") {
+         this.wenzi = "删除";
+         this.isPopupVisible = true;
+       }
+     }).catch(error => {
+       console.error('Error loading sainfos:', error);
+     });
+
+    },
+    async deleteStudent(student) {
+      await this.$axios.get('/admin/deleteStudent', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
+          studentId: student.id,
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.wenzi = "删除";
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+    },
+
+    async loadStudentsAndSA(){
+      this.saInfos = [];
+      this.studentInfos = [];
+      await this.$axios.get('/course/getAllSA', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.saInfos.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      //加载学生信息
+      await this.$axios.get('/course/getAllStudents', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.studentInfos.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+
+      await this.$axios.get('/course/getTeacher', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.teachers.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              tenure: res.data.data[i].tenure,
+              department: res.data.data[i].department,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+    },
+
+    async getallcourses() {
+      const res=await  this.$axios.get('/course/getAllCourses',{
+      })
+      console.log(res);
+      localStorage.setItem('length',res.data.code==0?res.data.data.length:0);
+      console.log(localStorage.getItem('length'));
+
+      for (let i = 0; i < localStorage.getItem('length'); i++) {
+
+        localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
+        localStorage.setItem('courses'+i,res.data.data[i].courseName);
+        localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+        localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+        localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
+        localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+        localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+      }
+
+    },
+    async returnToprotects(){
+await this.loadStudentsAndSA();
+      this.isPopupVisible = false;
+    },
+    async deleteCourse(course) {
+      await this.$axios.get('/admin/deleteCourse', {
+        params: {
+          courseId: course.id
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+
+          this.wenzi = "删除";
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading course materials:', error);
+      });
+      console.log("删除课程", course.title);
+    },
+    editCourse(course) {
+      // 这里添加修改课程信息的逻辑
+      console.log("修改课程信息", course.title);
     },
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
@@ -254,49 +417,13 @@ export default {
       }
     },
 
-    async returnToprotects(){
-      await this.loadLocalStorageData()
-      await this.loadAllCoursesinfo()
-      await this.loadLocalStorageData()
-      this.dialogVisible = false;
-      this.isPopupVisible = false;
-    },
-    submitassignment(assignment){
-      localStorage.setItem("currentassignmentid",assignment.id);
-      localStorage.setItem("in_ddl",assignment.ddl);//status
-      localStorage.setItem("cru_description",assignment.description);
-      localStorage.setItem("cru_status",assignment.status);
-
-      this.$router.push({ path: '/pizuoye'});
-    },
-   async addAssignment(){
-     let date = new Date(this.assignmentForm.deadline);
-     let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
-     await this.$axios.get('/assignment/addAssignment', {
-       params: {
-         assignmentTitle: this.assignmentForm.title,
-         assignmentDescription: this.assignmentForm.description,
-         assignmentDeadline: formattedDate,
-         assignmentStatus: 'Started',
-         maxScore: this.assignmentForm.maxScore,
-         proportion: this.assignmentForm.proportion,
-         releaser: localStorage.getItem('id'),
-         releaserType: 'TEACHER',
-         courseId: localStorage.getItem('currentcourseid'),
-       }
-     }).then((res) => {
-       console.log(res);
-       if (res.data.code === "0") {
-         this.dialogVisible = false;
-         this.isPopupVisible = true;
-       }
-     }).catch(error => {
-       console.error('Error loading sainfos:', error);
-     });
-    },
-    disabledDate(time) {
-      const today = new Date(new Date().setHours(0, 0, 0, 0)); // 今天日期设置为午夜开始
-      return time.getTime() < today.getTime(); // 禁止选择今天之前的日期
+    goTo(route) {
+// 假设使用 Vue Router 进行导航    goTo(route) {
+// 假设使用 Vue Router 进行导航
+      localStorage.setItem("currentcourseid",route.id);
+      localStorage.setItem("currentcourse",route.title);
+      this.$router.push('/courseofadmin');
+      this.loadLocalStorageData();
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
@@ -332,7 +459,7 @@ export default {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
@@ -372,30 +499,16 @@ export default {
 
 <style scoped>
 .coursecontainer{
+  width: 100%;
   margin-top: 50px;
   margin-left: 50px;
 }
-.assignment-container{
-  margin-top: 50px;
-  margin-left: 0px;
-  margin-right: 70px;
-}
-.assignment-card{
+.course-card{
+
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-bottom: 20px;
-
-  background-color: #f5f5f5;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px 0
 }
-.publish-button-container {
-  margin-top: 20px;
-  text-align: center;
-  margin-left: 100px;
-}
-
 .sumbitt {
   padding: 10px 20px;
   margin-top: 20px;
@@ -416,22 +529,14 @@ export default {
   background: linear-gradient(45deg, #2193b0, #6dd5ed);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
 }
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.table-section {
+  margin-left: 100px;
+  margin-bottom: 30px; /* 表格间距 */
 }
 
-.popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+.table-title {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px; /* 标题和表格之间的间距 */
 }
 </style>

@@ -76,8 +76,15 @@ export default {
           console.log(response)
           if (response.data.code === "0") {
             console.log(response.data.data);
-            this.$router.push('/StudentHomePage');
-            return false
+            localStorage.setItem('phoneNumber', response.data.data.phoneNumber);
+            localStorage.setItem('id', response.data.data.id);//student id
+            localStorage.setItem('password',response.data.data.password);
+            localStorage.setItem('email',response.data.data.email);
+            localStorage.setItem('name',response.data.data.name);
+            localStorage.setItem('account', _this.form.username);
+
+            this.getallcourses();
+            this.$router.push('/adminhomepage');
           } else {
             this.isLoginClick = true;
 
@@ -156,6 +163,34 @@ export default {
     registerClick() {
       this.$router.push('/register')
     },
+
+
+
+    getallcourses() {
+      this.$axios.get('/course/getAllCourses',{
+
+      })
+          .then((res) => {
+            localStorage.setItem('length',res.data.data.length);
+            console.log(localStorage.getItem('length'));
+            console.log(res.data.data);
+            for (let i = 0; i < localStorage.getItem('length'); i++) {
+
+              localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
+              localStorage.setItem('courses'+i,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+              localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
+              localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+            }
+            console.log(localStorage.getItem('courses0'));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        },
+
     getCourses() {
       this.$axios.get('/student/getCourseInfo',{
         params:{
@@ -165,6 +200,7 @@ export default {
           .then((res) => {
             localStorage.setItem('length',res.data.data.length);
             console.log(localStorage.getItem('length'));
+            console.log(res.data.data);
             for (let i = 0; i < localStorage.getItem('length'); i++) {
               console.log(res.data.data[i]);
               localStorage.setItem('coursesid'+i,res.data.data[i].courseId);

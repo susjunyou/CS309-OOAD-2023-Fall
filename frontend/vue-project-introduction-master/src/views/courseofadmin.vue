@@ -1,63 +1,19 @@
 <template>
   <div>
     <!-- 你的其他内容 -->
-    <shitshan>
+    <shitshanadmin>
 
-      <div class="assign" style="width: 88%">
-        <div class="assignment-container">
-          <!-- ...之前的代码... -->
-          <el-row :gutter="20">
-            <el-col v-for="assignment in assignments" :key="assignment.id" :span="8" >
-              <el-card @click.native="submitassignment(assignment)" class="assignment-card">
-                <h3>{{ assignment.title }}</h3>
-                <p>截止日期：{{ assignment.ddl }}</p>
-              </el-card>
-            </el-col>
-          </el-row>
-          <!-- ...之后的代码... -->
+      <div class="coursecontainer">
 
-        </div>
-        <div class="publish-button-container">
-          <el-button class="sumbitt" @click="publishAssignment">发布作业</el-button>
-        </div>
+
+
       </div>
-    </shitshan>
+    </shitshanadmin>
     <!-- 你的其他内容 -->
-    <el-dialog title="发布作业" :visible.sync="dialogVisible">
-      <el-form :model="assignmentForm">
-        <el-form-item label="作业标题">
-          <el-input v-model="assignmentForm.title"></el-input>
-        </el-form-item>
-        <el-form-item label="作业描述">
-          <el-input type="textarea" v-model="assignmentForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="截止日期">
-          <el-date-picker v-model="assignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="最高分数">
-          <el-input-number v-model="assignmentForm.maxScore"></el-input-number>
-        </el-form-item>
-        <el-form-item label="占比">
-          <el-input-number v-model="assignmentForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
-        </el-form-item>
-        <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
-        <el-input type="hidden" v-model="assignmentForm.courseId"></el-input>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click.prevent="addAssignment">确定</el-button>
-      </div>
-    </el-dialog>
-    <div v-if="isPopupVisible" class="popup">
-      <div class="popup-content">
-        <p>发布成功！</p>
-        <button @click="returnToprotects" class="sumbitt">关闭</button>
-      </div>
-    </div>
   </div>
 </template>
 <script setup>
-import shitshan from "@/components/shitshan.vue";
+import shitshanadmin from "@/components/shitshanadmin.vue";
 export default {
   data() {
     return {
@@ -67,30 +23,49 @@ export default {
       assignments: [],
       projects: [],
       ddls: [],
-      dialogVisible: false,
-      assignmentForm: {
-        title: '',
-        description: '',
-        deadline: '',
-        status: '',
-        maxScore: '',
-        proportion: '',
-        releaser: '',
-        releaserType: '',
-        courseId: '',
-      },
-      isPopupVisible: false,
     };
   },
   async created(){
-    this.loadLocalStorageData();
+    // await this.loadAllCoursesinfo,
+    await this.loadLocalStorageData();
+    await this.loadAllCoursesinfo();
+
   },
   components: {
-    shitshan
+    shitshanadmin
   },
   methods: {
-    publishAssignment(){
-      this.dialogVisible = true;
+    getallcourses() {
+      this.$axios.get('/course/getAllCourses',{
+
+      })
+          .then((res) => {
+            localStorage.setItem('length',res.data.data.length);
+            console.log(localStorage.getItem('length'));
+            console.log(res.data.data);
+            for (let i = 0; i < localStorage.getItem('length'); i++) {
+
+              localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
+              localStorage.setItem('courses'+i,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+              localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
+              localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+            }
+            console.log(localStorage.getItem('courses0'));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    },
+    deleteCourse(course) {
+      // 这里添加删除课程的逻辑
+      console.log("删除课程", course.title);
+    },
+    editCourse(course) {
+      // 这里添加修改课程信息的逻辑
+      console.log("修改课程信息", course.title);
     },
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
@@ -192,111 +167,17 @@ export default {
         }).catch(error => {
           console.error('Error loading course projects:', error);
         });
-        // //加载attendances
-        // await this.$axios.get('/grade/getAttendanceGradeByCourseIdAndStudentId', {
-        //   params: {
-        //     courseId: course.id,
-        //     studentId: localStorage.getItem('id')
-        //   }
-        // }).then((res) => {
-        //   if (res.data.code === "0") {
-        //     localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
-        //     for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
-        //       localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
-        //       localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
-        //       if (res.data.data[i].attended) {
-        //         localStorage.setItem('attendancegrade'+course.title+i,100);
-        //       }else {
-        //         localStorage.setItem('attendancegrade'+course.title+i,0);
-        //       }
-        //       localStorage.setItem('attendancemaxScore'+course.title+i,res.data.data[i].maxScore);
-        //     }
-        //   }
-        // }).catch(error => {
-        //   console.error('Error loading course attendances:', error);
-        // });
-        //加载assignment成绩
-        // for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
-        //   await this.$axios.get('/grade/getAssignmentGrade', {
-        //     params: {
-        //       studentId: localStorage.getItem('id'),
-        //       assignmentId: localStorage.getItem('assignmentid'+course.title+i)
-        //     }
-        //   }).then((res) => {
-        //     if (res.data.code === "0") {
-        //       localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
-        //       localStorage.setItem('assignmentmaxScore' + course.title + i, res.data.data[0].maxScore);
-        //       localStorage.setItem('assignmentproportion' + course.title + i, res.data.data[0].proportion);
-        //       localStorage.setItem('assignmentgradeDescription' + course.title + i, res.data.data[0].gradeDescription)
-        //     }
-        //   }).catch(error => {
-        //     console.error('Error loading assignment grade:', error);
-        //   });
-        // }
-        // //加载project成绩
-        // for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
-        //   await this.$axios.get('/grade/getProjectGrade', {
-        //     params: {
-        //       studentId: localStorage.getItem('id'),
-        //       projectId: localStorage.getItem('projectid'+course.title+i)
-        //     }
-        //   }).then((res) => {
-        //     if (res.data.code === "0") {
-        //       localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
-        //       localStorage.setItem('projectmaxScore' + course.title + i, res.data.data[0].maxScore);
-        //       localStorage.setItem('projectproportion' + course.title + i, res.data.data[0].proportion);
-        //       localStorage.setItem('projectgradeDescription' + course.title + i, res.data.data[0].gradeDescription);
-        //     }
-        //   }).catch(error => {
-        //     console.error('Error loading project grade:', error);
-        //   });
-        // }
+
       }
     },
 
-    async returnToprotects(){
-      await this.loadLocalStorageData()
-      await this.loadAllCoursesinfo()
-      await this.loadLocalStorageData()
-      this.dialogVisible = false;
-      this.isPopupVisible = false;
-    },
-    submitassignment(assignment){
-      localStorage.setItem("currentassignmentid",assignment.id);
-      localStorage.setItem("in_ddl",assignment.ddl);//status
-      localStorage.setItem("cru_description",assignment.description);
-      localStorage.setItem("cru_status",assignment.status);
-
-      this.$router.push({ path: '/pizuoye'});
-    },
-   async addAssignment(){
-     let date = new Date(this.assignmentForm.deadline);
-     let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
-     await this.$axios.get('/assignment/addAssignment', {
-       params: {
-         assignmentTitle: this.assignmentForm.title,
-         assignmentDescription: this.assignmentForm.description,
-         assignmentDeadline: formattedDate,
-         assignmentStatus: 'Started',
-         maxScore: this.assignmentForm.maxScore,
-         proportion: this.assignmentForm.proportion,
-         releaser: localStorage.getItem('id'),
-         releaserType: 'TEACHER',
-         courseId: localStorage.getItem('currentcourseid'),
-       }
-     }).then((res) => {
-       console.log(res);
-       if (res.data.code === "0") {
-         this.dialogVisible = false;
-         this.isPopupVisible = true;
-       }
-     }).catch(error => {
-       console.error('Error loading sainfos:', error);
-     });
-    },
-    disabledDate(time) {
-      const today = new Date(new Date().setHours(0, 0, 0, 0)); // 今天日期设置为午夜开始
-      return time.getTime() < today.getTime(); // 禁止选择今天之前的日期
+    goTo(route) {
+// 假设使用 Vue Router 进行导航    goTo(route) {
+// 假设使用 Vue Router 进行导航
+      localStorage.setItem("currentcourseid",route.id);
+      localStorage.setItem("currentcourse",route.title);
+      this.$router.push('/courseofadmin');
+      this.loadLocalStorageData();
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
@@ -332,7 +213,7 @@ export default {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
@@ -375,63 +256,10 @@ export default {
   margin-top: 50px;
   margin-left: 50px;
 }
-.assignment-container{
-  margin-top: 50px;
-  margin-left: 0px;
-  margin-right: 70px;
-}
-.assignment-card{
+.course-card{
+
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-bottom: 20px;
-
-  background-color: #f5f5f5;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px 0
-}
-.publish-button-container {
-  margin-top: 20px;
-  text-align: center;
-  margin-left: 100px;
-}
-
-.sumbitt {
-  padding: 10px 20px;
-  margin-top: 20px;
-  padding: 10px 20px;
-  margin-right: 20px;
-  background: linear-gradient(45deg, #6dd5ed, #2193b0);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  text-transform: uppercase;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-.sumbitt:hover {
-  background: linear-gradient(45deg, #2193b0, #6dd5ed);
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-}
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 </style>
