@@ -66,10 +66,10 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Override
     public boolean joinTeam(TeamInfo teamInfo, Integer studentId) {
-        // 判断小组是否已经存在
-        if (teamMapper.findTeamIdByProjectIdAndLeader(teamInfo.getProjectId(), teamInfo.getLeader()) != null) {
-            return false;
-        }
+//        // 判断小组是否已经存在
+//        if (teamMapper.findTeamIdByProjectIdAndLeader(teamInfo.getProjectId(), teamInfo.getLeader()) != null) {
+//            return false;
+//        }
         // 判断是否加入该项目的其他队伍
         if (teamMapper.findTeamIdByProjectIdAndStudentId(teamInfo.getProjectId(), studentId) != null) {
             return false;
