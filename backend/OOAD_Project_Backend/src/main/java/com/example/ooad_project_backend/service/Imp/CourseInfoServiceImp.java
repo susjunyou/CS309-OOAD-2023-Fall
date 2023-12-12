@@ -118,4 +118,9 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     public void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription) {
         courseDetailsMapper.updateCourse(courseId,courseCode,courseName,courseDescription);
     }
+
+    @Override
+    public List<CourseInfo> findAllCourseInfo() {
+        return courseDetailsMapper.findAllCourseInfo();
+    }
 }

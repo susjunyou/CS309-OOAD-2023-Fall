@@ -101,5 +101,14 @@ public class CourseController {
         }
     }
 
+    @GetMapping("/getAllCourses")
+    public Result getAllCourses() {
+        List<CourseInfo> courseInfos = courseInfoService.findAllCourseInfo();
+        if (courseInfos.size() == 0) {
+            return Result.error("1", "Maybe No course");
+        } else {
+            return Result.success(courseInfos);
+        }
     }
+}
 

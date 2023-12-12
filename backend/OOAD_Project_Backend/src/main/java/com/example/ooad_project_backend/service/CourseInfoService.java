@@ -44,4 +44,6 @@ public interface CourseInfoService extends IService<CourseInfo> {
     void releaseCourse(String courseCode,String courseName,String courseDescription);
 
     void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription);
+
+    List<CourseInfo> findAllCourseInfo();
 }

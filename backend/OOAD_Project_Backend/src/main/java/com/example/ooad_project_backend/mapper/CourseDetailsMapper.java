@@ -58,6 +58,9 @@ public interface CourseDetailsMapper {
 
     @Update("update course set course_code = #{courseCode}, course_name = #{courseName}, course_description = #{courseDescription} where course_id = #{courseId}")
     void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription);
+
+    @Select("select * from course")
+    List<CourseInfo> findAllCourseInfo();
 }
 
 
