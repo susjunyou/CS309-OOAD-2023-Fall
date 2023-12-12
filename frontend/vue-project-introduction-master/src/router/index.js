@@ -28,6 +28,9 @@ import pizuoye from "@/views/pizuoye.vue";
 import judgeassignment from "@/views/judgeassignment.vue";
 import piproject from "@/views/piproject.vue";
 import judgeproject from "@/views/judgeproject.vue";
+import teamsofteacher from "@/views/teamsofteacher.vue";
+import modifyinformation from "@/views/modifyinformation.vue";
+import assignteam from "@/views/assignteam.vue";
 import gradebookofteacher from "@/views/gradebookofteacher.vue";
 const routes = [
     {path: '/login', component: Login},
@@ -59,6 +62,9 @@ const routes = [
     {path: '/judgeassignment', component: judgeassignment},
     {path: '/piproject', component: piproject},
     {path: '/judgeproject', component: judgeproject},
+    {path: '/teamsofteacher', component: teamsofteacher},
+    {path: '/modifyinformation', component:modifyinformation},
+    {path: '/assignteam', component: assignteam},
     {path:'/gradebookofteacher',component: gradebookofteacher},
     {path: '/', redirect: '/login'}
 

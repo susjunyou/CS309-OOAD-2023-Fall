@@ -116,9 +116,10 @@
           <el-table-column prop="teammembers" label="团队成员">
             <template slot-scope="scope">
               <ul>
-                <li v-for="member in scope.row.teammembers" :key="member.id">
+                <li v-for="member in scope.row.teammembers || []" :key="member.id">
                   {{ member.name }}
                 </li>
+
               </ul>
             </template>
           </el-table-column>
@@ -179,11 +180,11 @@
       <div style="width: 55%; padding-left: 10px;">
 
         <h2>所有可加入的队伍</h2>
-        <div class="team-grid">
+        <div class="team-grid" style="overflow-y:auto; ">
           <div class="team-card" v-for="team in teams" :key="team.id">
             <h3>{{ team.name }}</h3>
             <p>{{ team.description }}</p>
-            <p>当前人数: {{ team.teammembers.length }} / 最多人数: {{ team.teamsize }}</p>
+            <p>当前人数: {{ team.teammembers ? team.teammembers.length : 0 }} / 最多人数: {{ team.teamsize }}</p>
             <!-- 显示成员列表 -->
             <ul>
               <li v-for="(member, index) in team.teammembers" :key="member.id">
@@ -733,6 +734,7 @@ export default {
       });
     },
     requestTeam(team){
+      if(team.teammembers!=null){
       this.$axios.get('/team/requestJoinTeam', {
         params: {
           studentId: Number(localStorage.getItem("id")),
@@ -749,6 +751,28 @@ export default {
       }).catch(error => {
         console.error('Error loading course assignments:', error);
       });
+    }else{
+        this.$axios.get('/team/join', {
+          params: {
+            studentId: Number(localStorage.getItem("id")),
+            teamId: Number(team.id),
+            projectId: Number(localStorage.getItem("currentprojectid")),
+            teamSize: team.teamSize,
+          },
+        }).then((res1) => {
+          console.log(res1.data.code);
+          if (res1.data.code === "0") {
+            this.wenzi="加入";
+            this.isPopupVisible = true;
+
+          }
+        }).catch(error => {
+          console.error('Error loading course assignments:', error);
+        });
+
+
+    }
+
     },
     returnToprotects(){
       this.isPopupVisible = false;
@@ -913,6 +937,7 @@ export default {
                 teamId: team.teamId
               }
             });
+            console.log(res1.data);
             if (res1.data.code === "0" && Array.isArray(res1.data.data)) {
               const isMember = res1.data.data.some(member => member.id === Number(localStorage.getItem('id')));
               if (isMember) {
@@ -942,8 +967,21 @@ export default {
                 teammembers: res1.data.data,
                 currentmembercount: res1.data.data ? res1.data.data.length : 0,
               });
+            }else {
+              this.teams.push({
+                id: team.teamId,
+                name: team.teamName,
+                description: team.teamDescription,
+                leader: team.leader,
+                projectid: team.projectId,
+                teamsize: team.teamSize,
+                studentid:null,
+                teammembers: null,
+                currentmembercount:  0,
+              });
             }
           }
+          console.log(this.teams);
         }
       } catch (error) {
         console.error('Error loading team info or members:', error);
