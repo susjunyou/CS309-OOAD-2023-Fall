@@ -18,11 +18,11 @@
               </tr>
               </thead>
               <tbody>
-<!--              <tr v-for="attendance in attendances" :key="attendance.data">-->
-<!--                <td>{{ attendance.date }}</td>-->
-<!--                <td>{{ attendance.attendancesgrade }}</td>-->
-<!--                <td>{{ attendance.proportion }}</td>-->
-<!--              </tr>-->
+              <tr v-for="attendancegrade in attendancegrades" :key="attendancegrade.grade">
+                <td>{{ attendancegrade.name }}</td>
+                <td>{{ attendancegrade.grade }}</td>
+                <td>{{ attendancegrade.proportion }}</td>
+              </tr>
               </tbody>
             </table>
           </li>
@@ -47,6 +47,10 @@ export default {
       ddls: [],
       currentattendanceid:'',
       currentattendanceData:'',
+      studentInfos:[],
+      attendancegrades:[],
+      numyi:'',
+      numwei:'',
     };
   },
   async created(){
@@ -86,7 +90,7 @@ export default {
         series:[{
           name:'人数',
           type:'bar',
-          data:[10,20],
+          data:[this.numyi,this.numwei],
           label:{
             show: true,
             position:'outside',
@@ -157,11 +161,63 @@ export default {
           title: this.projects[i].title,
         });
       }
-      console.log(this.projects[0])
-      console.log(this.projects[1])
-      console.log("course name="+this.myValue)
-      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+      // console.log(this.projects[0])
+      // console.log(this.projects[1])
+      // console.log("course name="+this.myValue)
+      // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      // console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+      this.studentInfos=[];
+      await this.$axios.get('/course/getAllStudents', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.studentInfos.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      this.attendancegrades=[];
+      this.numyi=0;
+      this.numwei=0;
+      console.log(this.studentInfos.length)
+      for (let i = 0; i < this.studentInfos.length;i++){
+        await this.$axios.get('/grade/getAttendanceGrade',{
+          params:{
+            studentId:this.studentInfos[i].id,
+            attendanceId:localStorage.getItem('currentattendanceid')
+          }
+        }).then((res)=>{
+          if(res.data.code==="0"){
+            if(res.data.data.attended){
+              this.attendancegrades.push({
+                name:this.studentInfos[i].name,
+                grade:100+'/'+res.data.data.maxScore,
+                proportion:res.data.data.proportion,
+              })
+              this.numyi+=1;
+            }else {
+              this.attendancegrades.push({
+                name:this.studentInfos[i].name,
+                grade:0+'/'+res.data.data.maxScore,
+                proportion:res.data.data.proportion,
+              })
+              this.numwei+=1;
+            }
+          }
+        }).catch(error=>{
+          console.log(error)
+        })
+      }
 
     },
 
