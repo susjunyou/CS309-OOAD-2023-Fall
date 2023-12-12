@@ -8,10 +8,10 @@
         <div class="assignment-container">
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
-            <el-col v-for="attendance in attendances" :key="attendance.attendance" :span="6" >
-              <el-card  class="assignment-card" @click.native="join(project)">
-                <h3>{{ attendance.attendance }}</h3>
-                <p>截止日期：{{ attendance.attendanceDate }}</p>
+            <el-col v-for="attendance in attendances" :key="attendance.attendanceid" :span="6" >
+              <el-card  class="assignment-card" @click.native="gotoattendance(attendance)">
+                <h3>{{ attendance.attendanceid }}</h3>
+                <p>日期：{{ attendance.attendanceDate }}</p>
               </el-card>
             </el-col>
           </el-row>
@@ -24,7 +24,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="assignment in assignments" :key="assignment.id" :span="6" >
-              <el-card @click.native="submitassignment(assignment)" class="assignment-card">
+              <el-card @click.native="gotoassignment(assignment)" class="assignment-card">
                 <h3>{{ assignment.title }}</h3>
                 <p>截止日期：{{ assignment.ddl }}</p>
               </el-card>
@@ -38,7 +38,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="project in projects" :key="project.id" :span="6" >
-              <el-card  class="assignment-card" @click.native="join(project)">
+              <el-card  class="assignment-card" @click.native="gotoproject(project)">
                 <h3>{{ project.title }}</h3>
                 <p>截止日期：{{ project.ddl }}</p>
               </el-card>
@@ -75,6 +75,23 @@ export default {
     this.loadLocalStorageData();
   },
   methods: {
+    gotoattendance(attendance){
+        this.$router.push({path:'/attendancegradebookofteacher'});
+        localStorage.setItem('currentattendanceid',attendance.attendanceid);
+        localStorage.setItem('currentattendanceDate',attendance.attendanceDate);
+    },
+    gotoassignment(assignment){
+      this.$router.push({path:'/assignmentgradebookofteacher'});
+      localStorage.setItem('currentassignmentid',assignment.id);
+      localStorage.setItem('currentassignmenttitle',assignment.title);
+      localStorage.setItem('currentassignmentddl',assignment.ddl);
+    },
+    gotoproject(project){
+      this.$router.push({path:'/projectgradebookofteacher'});
+      localStorage.setItem('currentprojectid',project.id);
+      localStorage.setItem('currentprojecttitle',project.title);
+      localStorage.setItem('currentprojectddl',project.ddl);
+    },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses = [];
@@ -109,7 +126,7 @@ export default {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse") + i),
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse") + i),
-          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse") + i),
+          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse") + i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse") + i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse") + i),
         });
@@ -146,7 +163,7 @@ export default {
             localStorage.setItem('attendanceid'+localStorage.getItem('currentcourse')+i,res.data.data[i].id);
             localStorage.setItem('attendanceDate'+localStorage.getItem('currentcourse')+i,res.data.data[i].attendanceDate);
             this.attendances.push({
-              attendance:localStorage.getItem('attendanceid'+localStorage.getItem('currentcourse')+i),
+              attendanceid:localStorage.getItem('attendanceid'+localStorage.getItem('currentcourse')+i),
               attendanceDate:localStorage.getItem('attendanceDate'+localStorage.getItem('currentcourse')+i),
             })
           }
@@ -158,7 +175,6 @@ export default {
       console.log("course name=" + this.myValue)
       console.log("assleng=" + localStorage.getItem('courseAssignmentLength' + localStorage.getItem("currentcourse")))
       console.log("projectleng=" + localStorage.getItem('projectsLength' + localStorage.getItem("currentcourse")))
-
     },
   }
 }
