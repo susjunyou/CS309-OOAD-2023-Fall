@@ -357,6 +357,8 @@ export default {
     join(route) {
       localStorage.setItem("currentprojectid",route.id)
       localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
+      // localStorage.setItem('cru_project_ddl',this.projects.get(route.id).ddl)
+      // localStorage.setItem('cru_project_status',this.projects.get(route.id).status)
       this.$router.push('joinTeam');
     },
     async loadAllCoursesinfo() {

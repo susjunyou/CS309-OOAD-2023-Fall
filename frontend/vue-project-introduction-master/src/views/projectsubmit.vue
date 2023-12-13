@@ -38,7 +38,6 @@
         </el-popover>
 
       </el-col>
-
     </el-row>
     <el-dialog
         :visible.sync="dialogVisible"
@@ -91,8 +90,6 @@
       </el-form>
     </el-dialog>
 
-
-
     <el-menu
         class="course-navbar"
         mode="vertical"
@@ -100,27 +97,78 @@
         text-color="#fff"
         active-text-color="#ffd04b">
       <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-      <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
+      <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
       <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
       <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
       <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-      <el-menu-item index="7" @click="logoutClick">LogOut</el-menu-item>
     </el-menu>
 
     <div class="assignment-submission">
-      <h1>Assignment Submission</h1>
-      <div class="submission-description">
+      <h1>Project Submission</h1>
+      <div class="assignment-container">
+        <el-row :gutter="20">
+
+          <el-col span="8">
+            <el-card class="assignment-card">
+              <h3>分数</h3>
+              <p>{{finial_grade}}</p>
+            </el-card>
+          </el-col>
+
+          <el-col span="8">
+            <el-card class="assignment-card">
+              <h3>Due</h3>
+              <p>截止日期：{{in_ddl}}</p>
+            </el-card>
+          </el-col>
+
+          <el-col span="8">
+            <el-card class="assignment-card">
+              <h3>状态</h3>
+              <p>{{status}}</p>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
+      <div>
+        <h2>Project Description</h2>
+        <p>{{description}}</p>
+      </div>
+
+      <div class="attendance-list">
+        <hr class="separator">
+        <h1>提交记录</h1>
+        <ul>
+          <li>
+            <table>
+              <thead>
+              <tr>
+                <th>提交时间</th>
+                <th>分数</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="project in history" :key="project.ddl">
+                <td>{{ project.submissionDate }}</td>
+                <td>{{ project.grade }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </div>
+
+
       <div class="text-submission">
         <textarea v-model="textSubmission" placeholder="Write Submission"></textarea>
       </div>
       <div class="file-upload">
-        <input type="file"  />
+        <input type="file"   @change="onFileSelected"/>
         <!--        @change="handleFileUpload"-->
       </div>
       <div class="button-container">
-        <button class="submit" @click.prevent="submitProject">Submit</button>
+        <el-button class="submit" @click.prevent="submitAssignment" :disabled="this.disable_submit">Submit</el-button>
         <button class="cancel" @click="cancel">Cancel</button>
       </div>
 
@@ -130,12 +178,20 @@
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
         <p>提交成功！</p>
-        <button @click="returnToprojects">关闭</button>
+        <button @click="returnToassignments">关闭</button>
       </div>
     </div>
+
+
   </div>
+
+
+
+
 </template>
 <script >
+
+//import assignments from "@/views/assignments.vue";
 
 export default {
 
@@ -161,7 +217,6 @@ export default {
       callback();
     };
     return {
-      // 初始化组件数据属性
       rules: {
 
         e_id: [
@@ -197,9 +252,16 @@ export default {
       posts: [],
       assignments: [],
       projects: [],
+      isPopupVisible: false, // 控制弹窗显示的布尔值
       materials: [],
       myValue: '',
-      major: '',
+      textSubmission: '', // 绑定文本提交的数据
+      file: null, // 用于存储文件上传的数据
+      in_ddl:'',
+      history:[],
+      description:'',
+      status:'',
+      finial_grade:'',
       id :0,
       email:'',
       name:'',
@@ -216,29 +278,43 @@ export default {
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
-      isPopupVisible: false, // 控制弹窗显示的布尔值
-      textSubmission: '', // 绑定文本提交的数据
-      file: null, // 用于存储文件上传的数据
-      technologystack:"",
-      programmingskill:"",
-      intendedteammate:"",
+      major: '',
+      technologystack:'',
+      programmingskill:'',
+      intendedteammate:'',
+      disable_submit:'',
+
     };
   },
 
 
   async created() {
+    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    var cru_id = Number(localStorage.getItem('currentprojectid'));
+    var cru_project = null;
+    for (let i = 0; i < this.projects.length; i++) {
+      if (Number(this.projects[i].id) === cru_id){
+        cru_project = this.projects[i];
+      }
+    }
+
+    this.in_ddl=cru_project.ddl;
+    this.description=cru_project.description;
+    this.status=cru_project.status;
+    await this.getAssignmentSubmissionHistory();
     this.id = localStorage.getItem('id');
     this.name = localStorage.getItem('name');
     this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
-    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    this.myValue=localStorage.getItem("currentcourse")
+
+
     await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
-
   },
-
   methods: {
+
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
@@ -341,28 +417,80 @@ export default {
       });
 
     },
-
-
-
-    async  submitProject() {
+    async submitAssignment() {
       // 创建一个新的日期对象
       const submitDate = new Date();
       const formattedDate = submitDate.toISOString().split('T')[0]; // 获取 yyyy-MM-dd 格式
-      await this.$axios.get('/student/submitProject', {
+console.log(formattedDate);
+      // 创建 FormData 对象并追加字段
+      let formData = new FormData();
+      formData.append('teamId', localStorage.getItem("myteamid"));
+      formData.append('projectId', localStorage.getItem("currentprojectid"));
+      formData.append('content', this.textSubmission);
+      formData.append('submitDate', formattedDate);
+      if (this.file) {
+        formData.append('file', this.file);
+      }
+
+      try {
+        const res = await this.$axios.post('/student/submitProject', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        console.log("Response code: " + res.data.code);
+        if (res.data.code === "0") {
+          this.isPopupVisible = true;
+        }
+      } catch (error) {
+        console.error('Error submitting project:', error);
+      }
+    },
+
+    async  getAssignmentSubmissionHistory() {
+
+      await this.$axios.get('/submission/getProjectSubmissionHistory', {
         params: {
           studentId: Number(localStorage.getItem("id")),
-          projectId: localStorage.getItem("currentprojectid"),
-          content: this.textSubmission,
-          submitDate: formattedDate,
+          projectId: Number(localStorage.getItem("currentprojectid")),
         }
       }).then((res) => {
         console.log("code====================================="+res.data.code)
+        console.log(res.data)
+        let dd = this.in_ddl;
+        let n_data = new Date()
+        localStorage.setItem('com_as_data',(Number(dd.slice(0,4)) * 400) + (Number(dd.slice(5,7)) * 20) + (Number(dd.slice(8))))
+        localStorage.setItem('com_cru_data',(n_data.getFullYear() * 400) + ((n_data.getMonth() + 1) * 20) + (n_data.getDate()))
+        this.disable_submit = localStorage.getItem('com_as_data') < localStorage.getItem('com_cru_data');
         if (res.data.code === "0") {
-          this.isPopupVisible = true;
+          localStorage.setItem('history_length',res.data.data.length)
+          for (let i = 0; i < localStorage.getItem('history_length'); i++) {
+            let k = null;
+            if (res.data.data[i].grade === null){
+              k = '未评分';
+            } else {
+              k = res.data.data[i].grade;
+            }
+            if (k!= null && k > this.finial_grade){
+              this.finial_grade = k;
+            }
+            console.log(res.data.data[i].submissionDate)
+            this.history.push({
+              submissionDate:res.data.data[i].submissionDate,
+              grade:k,
+              //assignmentStatus:res.data.data[i].assignmentStatus,
+            })
+          }
         }
       }).catch(error => {
         console.error('Error loading course posts:', error);
       });
+    },
+
+    onFileSelected(event) {
+      // event.target.files 包含了用户选中的文件列表
+      this.file = event.target.files[0]; // 保存第一个选中的文件
     },
     logoutClick() {
       this.$router.push('/Login');
@@ -375,16 +503,16 @@ export default {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourse",route.title);
       localStorage.setItem("currentcourseid",route.id);
-      this.myValue=route.title;
       this.loadLocalStorageData();
       this.loadStudentsAndSA();
+      this.myValue=route.title;
       this.$router.push({ path: '/course' });
     },
     go(route) {
 
       this.$router.push(route);
     },
-    returnToprojects(){
+    returnToassignments(){
       this.isPopupVisible = false;
       this.$router.push('/projects');
     },
@@ -446,6 +574,8 @@ export default {
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
     },
+
+
   },
 }
 </script>
@@ -454,12 +584,9 @@ export default {
 <style scoped>
 .assignment-submission {
   display: flex;
-  position: absolute;
-  left: 200px;
-  width: 60%;
-  //flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: initial;
   min-height: 100vh;
   background-color: #f7f7f7;
   padding: 20px;
@@ -562,6 +689,90 @@ h1 {
   height: 100vh; /* 设置导航栏高度与视口高度相同 */
   padding-top: 20px; /* 在顶部添加一些内边距 */
 }
+
+.assignment-container {
+  margin: 20px;
+  padding-left: 20px;
+}
+.assignment-card {
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+  height: 150px;
+  width: 200px;
+  background-color: #00d897;
+
+}
+
+.assignment-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+}
+
+.history{
+  margin: 20px;
+  position: absolute;
+  padding-left: 900px;
+  padding-top: 300px;
+}
+.history-card{
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+  height: 150px;
+  width: 300px;
+  background-color: #00d804;
+
+}
+
+
+.attendance-list li {
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+  margin-bottom: 0.5em;
+  padding: 0.5em;
+}
+.attendance-list {
+  margin: 20px; /* 设置外边距 */
+  padding: 20px; /* 设置内边距 */
+  border: 1px solid #ccc; /* 设置边框 */
+  border-radius: 8px; /* 设置边框圆角 */
+  font-family: Arial, sans-serif; /* 设置字体 */
+}
+
+.attendance-list h1 {
+  font-size: 1.5em; /* 调整标题字体大小 */
+  margin-bottom: 1em; /* 调整标题底部间距 */
+}
+
+.attendance-list table {
+  width: 100%; /* 表格宽度占满容器 */
+  border-collapse: collapse; /* 边框合并 */
+  margin-bottom: 1em; /* 调整表格底部间距 */
+}
+
+.attendance-list th, .attendance-list td {
+  border: 1px solid #ccc; /* 设置单元格边框 */
+  padding: 8px; /* 设置单元格内边距 */
+  text-align: left; /* 文本左对齐 */
+}
+
+.attendance-list th {
+  background-color: #f2f2f2; /* 表头背景色 */
+}
+
+.attendance-list tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行背景色 */
+}
+.main-container {
+  position: relative;
+}
+
+.attendance-list {
+  position: absolute;
+  width: 30%;
+  left: 1100px; /* 右移 50px，根据需要调整 */
+}
+
 .user-profile {
   text-align: center; /* 居中用户信息 */
 }
@@ -583,4 +794,5 @@ h1 {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
 }
+
 </style>

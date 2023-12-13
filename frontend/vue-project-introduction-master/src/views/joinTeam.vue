@@ -116,10 +116,9 @@
           <el-table-column prop="teammembers" label="团队成员">
             <template slot-scope="scope">
               <ul>
-                <li v-for="member in scope.row.teammembers || []" :key="member.id">
+                <li v-for="member in scope.row.teammembers" :key="member.id">
                   {{ member.name }}
                 </li>
-
               </ul>
             </template>
           </el-table-column>
@@ -135,21 +134,21 @@
         <h2>申请人信息</h2>
         <div style="height: 300px; overflow-y: auto; border: 1px solid #ccc;">
 
-          <el-table :data="students" style="width: 100%">
-            <!-- 其他列定义 -->
-            <el-table-column prop="id" label="学号"></el-table-column>
-            <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="email" label="邮箱"></el-table-column>
-            <el-table-column prop="major" label="专业"></el-table-column>
-            <!-- 操作列 -->
-            <el-table-column label="操作" width="180">
-              <template v-slot="scope">
-                <el-button type="success" size="small" @click="agreeApplication(scope.row.requestid)">同意</el-button>
-                <el-button type="danger" size="small" @click="rejectApplication(scope.row.requestid)">拒绝</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
+        <el-table :data="students" style="width: 100%">
+          <!-- 其他列定义 -->
+          <el-table-column prop="id" label="学号"></el-table-column>
+          <el-table-column prop="name" label="姓名"></el-table-column>
+          <el-table-column prop="email" label="邮箱"></el-table-column>
+          <el-table-column prop="major" label="专业"></el-table-column>
+          <!-- 操作列 -->
+          <el-table-column label="操作" width="180">
+            <template v-slot="scope">
+              <el-button type="success" size="small" @click="agreeApplication(scope.row.requestid)">同意</el-button>
+              <el-button type="danger" size="small" @click="rejectApplication(scope.row.requestid)">拒绝</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+          </div>
         <div style="width: 100%; padding: 20px 10px;">
           <h2>邀请栏</h2>
           <div style="height: 300px; overflow-y: auto; border: 1px solid #ccc;">
@@ -164,9 +163,9 @@
                   <el-button type="success" size="small" @click="invite(scope.row)" :disabled="scope.row.invited">
                     邀请
                   </el-button>
-                  <!--                  <span v-if="scope.row.invited" style="color: red; margin-left: 10px;">-->
-                  <!--                       无法重复邀请-->
-                  <!--                  </span>-->
+<!--                  <span v-if="scope.row.invited" style="color: red; margin-left: 10px;">-->
+<!--                       无法重复邀请-->
+<!--                  </span>-->
                 </template>
               </el-table-column>
             </el-table>
@@ -179,26 +178,26 @@
     <div v-else style="display: flex;">
       <div style="width: 55%; padding-left: 10px;">
 
-        <h2>所有可加入的队伍</h2>
-        <div class="team-grid" style="overflow-y:auto; ">
-          <div class="team-card" v-for="team in teams" :key="team.id">
-            <h3>{{ team.name }}</h3>
-            <p>{{ team.description }}</p>
-            <p>当前人数: {{ team.teammembers ? team.teammembers.length : 0 }} / 最多人数: {{ team.teamsize }}</p>
-            <!-- 显示成员列表 -->
-            <ul>
-              <li v-for="(member, index) in team.teammembers" :key="member.id">
-                成员{{ index + 1 }}     姓名: {{ member.name }}     id：{{member.id}}
-              </li>
-            </ul>
+      <h2>所有可加入的队伍</h2>
+    <div class="team-grid">
+      <div class="team-card" v-for="team in teams" :key="team.id">
+        <h3>{{ team.name }}</h3>
+        <p>{{ team.description }}</p>
+        <p>当前人数: {{ team.teammembers.length }} / 最多人数: {{ team.teamsize }}</p>
+        <!-- 显示成员列表 -->
+        <ul>
+          <li v-for="(member, index) in team.teammembers" :key="member.id">
+            成员{{ index + 1 }}     姓名: {{ member.name }}     id：{{member.id}}
+          </li>
+        </ul>
 
-            <button class="sumbitt" @click="requestTeam(team)">申请加入队伍</button>
-          </div>
-        </div>
+        <button class="sumbitt" @click="requestTeam(team)">申请加入队伍</button>
+      </div>
+    </div>
       </div>
       <div style="width: 45%; padding-left: 10px;">
         <div style="height: 150px; border: 1px solid #ccc;">
-          <button class="sumbitt" @click="go('createTeam')">创建队伍</button>
+      <button class="sumbitt" @click="go('createTeam')">创建队伍</button>
         </div>
         <div style="height: 650px; overflow-y: auto; border: 1px solid #ccc;">
           <h2>我的被邀请记录</h2>
@@ -221,7 +220,7 @@
             </el-table-column>
           </el-table>
         </div>
-      </div>
+        </div>
     </div>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
@@ -371,9 +370,9 @@ export default {
         // console.log('ddasdawdadwdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdaw');
         if(res.data.code === "0"){
           this.isPopupVisible2=true;
-          student.invited=true;
+         student.invited=true;
         }else {
-          student.invited=true;
+        student.invited=true;
           console.log("error")
         }
       }).catch(error => {
@@ -392,12 +391,12 @@ export default {
         console.log('dd');
         if(res.data.code === "0"){
           this.isJoinedTeam=true;
-          this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+           this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
           this.loadStudentsAndSA();
           this.loadstudentnotjointeam();
-          this.getTeam();
+         this.getTeam();
           this.loaddisplay();
-          this.loadbeinvited();
+           this.loadbeinvited();
         }else {
           console.log("error")
         }
@@ -582,10 +581,10 @@ export default {
       });
 
     },
-    async loaddisplay(){
+   async loaddisplay(){
       this.requeststudent = [];
       this.students = [];
-      console.log("myteamid==============="+localStorage.getItem("myteamid"));
+     console.log("myteamid==============="+localStorage.getItem("myteamid"));
       this.$axios.get('/team/getRequestsJoinTeam', {
         params: {
           teamId: Number(localStorage.getItem("myteamid")),
@@ -648,7 +647,7 @@ export default {
                   teamId: invites[i].teamId,
                 }
               });
-              console.log(res1.data.data);
+                console.log(res1.data.data);
               if (res1.data.code === "0") {
                 try {
                   const res2 = await this.$axios.get('/team/findTeamMembers', {
@@ -688,25 +687,25 @@ export default {
       }
       console.log(this.trueinvitslist);
     },
-    async agreeApplication(requestid) {
+  async agreeApplication(requestid) {
       // 同意申请的逻辑
-      console.log(requestid);
+     console.log(requestid);
 
-      this.$axios.get('/team/manageTeamRequest', {
+     this.$axios.get('/team/manageTeamRequest', {
         params: {
           requestId: Number(requestid),
           isAccepted: true,
-        },
+            },
       }).then((res) => {
         console.log(res.data.code);
         if (res.data.code === "0") {
-          this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-          this.loadStudentsAndSA();
+           this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+           this.loadStudentsAndSA();
 
-          this.getTeam();
-          this.loaddisplay();
-          this.loadbeinvited();
-          this.loadstudentnotjointeam()
+           this.getTeam();
+           this.loaddisplay();
+           this.loadbeinvited();
+           this.loadstudentnotjointeam()
         }
       }).catch(error => {
         console.error('Error loading course assignments:', error);
@@ -722,11 +721,11 @@ export default {
       }).then((res) => {
         console.log(res.data.code);
         if (res.data.code === "0") {
-          this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-          this.loadStudentsAndSA();
+           this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+           this.loadStudentsAndSA();
 
-          this.getTeam();
-          this.loaddisplay();
+           this.getTeam();
+           this.loaddisplay();
 
         }
       }).catch(error => {
@@ -734,7 +733,6 @@ export default {
       });
     },
     requestTeam(team){
-      if(team.teammembers!=null){
       this.$axios.get('/team/requestJoinTeam', {
         params: {
           studentId: Number(localStorage.getItem("id")),
@@ -751,28 +749,6 @@ export default {
       }).catch(error => {
         console.error('Error loading course assignments:', error);
       });
-    }else{
-        this.$axios.get('/team/join', {
-          params: {
-            studentId: Number(localStorage.getItem("id")),
-            teamId: Number(team.id),
-            projectId: Number(localStorage.getItem("currentprojectid")),
-            teamSize: team.teamSize,
-          },
-        }).then((res1) => {
-          console.log(res1.data.code);
-          if (res1.data.code === "0") {
-            this.wenzi="加入";
-            this.isPopupVisible = true;
-
-          }
-        }).catch(error => {
-          console.error('Error loading course assignments:', error);
-        });
-
-
-    }
-
     },
     returnToprotects(){
       this.isPopupVisible = false;
@@ -813,7 +789,7 @@ export default {
       }).catch(error => {
         console.error('Error loading course assignments:', error);
       });
-      // console.log("Joining team with ID:", teamId);
+    // console.log("Joining team with ID:", teamId);
     },
     submitproject() {
       // localStorage.setItem("currentprojectid",route.id)
@@ -937,7 +913,6 @@ export default {
                 teamId: team.teamId
               }
             });
-            console.log(res1.data);
             if (res1.data.code === "0" && Array.isArray(res1.data.data)) {
               const isMember = res1.data.data.some(member => member.id === Number(localStorage.getItem('id')));
               if (isMember) {
@@ -967,28 +942,15 @@ export default {
                 teammembers: res1.data.data,
                 currentmembercount: res1.data.data ? res1.data.data.length : 0,
               });
-            }else {
-              this.teams.push({
-                id: team.teamId,
-                name: team.teamName,
-                description: team.teamDescription,
-                leader: team.leader,
-                projectid: team.projectId,
-                teamsize: team.teamSize,
-                studentid:null,
-                teammembers: null,
-                currentmembercount:  0,
-              });
             }
           }
-          console.log(this.teams);
         }
       } catch (error) {
         console.error('Error loading team info or members:', error);
       }
     }
 
-  },
+},
 }
 </script>
 
@@ -1089,16 +1051,15 @@ export default {
   transition: all 0.3s ease;
   cursor: pointer;
 }
-.sumbitt:hover {
-   background: linear-gradient(45deg, #2193b0, #6dd5ed);
-   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
- }
 .button-container {
   display: flex;
   justify-content: flex-start; /* 按钮向左对齐 */
   padding-left: 150px; /* 或者增加一些内边距来向右推 */
 }
-
+.sumbitt:hover {
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+}
 
 .sumbitt:active {
   transform: translateY(2px);
