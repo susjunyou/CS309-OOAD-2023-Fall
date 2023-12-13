@@ -3,12 +3,16 @@ package com.example.ooad_project_backend.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.example.ooad_project_backend.common.Result;
+import com.example.ooad_project_backend.entity.StudentInfo;
+import com.example.ooad_project_backend.entity.TeacherInfo;
 import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 //@SuppressWarnings("ALL")
 @RestController
@@ -108,5 +112,46 @@ public class AdminController {
             return Result.success();
         }
     }
+
+    @GetMapping("/getStudentNotInCourse")
+    public Result getStudentNotInCourse(Integer courseId) {
+        if (ObjectUtil.isEmpty(courseId)) {
+            return Result.error("-1", "No such course");
+        } else {
+            List<StudentInfo> studentInfoList = courseInfoService.findStudentInfoNotInCourseByCourseId(courseId);
+            if (studentInfoList.size() == 0) {
+                return Result.error("-1", "No such student");
+            }
+            return Result.success(studentInfoList);
+        }
+    }
+
+    @GetMapping("/getSANotInCourse")
+    public Result getSANotInCourse(Integer courseId) {
+        if (ObjectUtil.isEmpty(courseId)) {
+            return Result.error("-1", "No such course");
+        } else {
+            List<StudentInfo> studentInfoList = courseInfoService.findSAInfoNotInCourseByCourseId(courseId);
+            if (studentInfoList.size() == 0) {
+                return Result.error("-1", "No such student");
+            }
+            return Result.success(studentInfoList);
+        }
+    }
+
+    @GetMapping("/getTeacherNotInCourse")
+    public Result getTeacherNotInCourse(Integer courseId) {
+        if (ObjectUtil.isEmpty(courseId)) {
+            return Result.error("-1", "No such course");
+        } else {
+            List<TeacherInfo> teacherInfoList = courseInfoService.findTeacherInfoNotInCourseByCourseId(courseId);
+            if (teacherInfoList.size() == 0) {
+                return Result.error("-1", "No such teacher");
+            }
+            return Result.success(teacherInfoList);
+        }
+    }
+
+
 }
 

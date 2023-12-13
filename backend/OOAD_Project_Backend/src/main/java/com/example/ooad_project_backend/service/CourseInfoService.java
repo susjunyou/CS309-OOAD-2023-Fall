@@ -41,9 +41,15 @@ public interface CourseInfoService extends IService<CourseInfo> {
 
     void deleteCourse(Integer courseId);
 
-    void releaseCourse(String courseCode,String courseName,String courseDescription);
+    void releaseCourse(String courseCode, String courseName, String courseDescription);
 
-    void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription);
+    void updateCourse(Integer courseId, String courseCode, String courseName, String courseDescription);
 
     List<CourseInfo> findAllCourseInfo();
+
+    List<StudentInfo> findStudentInfoNotInCourseByCourseId(Integer courseId);
+
+    List<TeacherInfo> findTeacherInfoNotInCourseByCourseId(Integer courseId);
+
+    List<StudentInfo> findSAInfoNotInCourseByCourseId(Integer courseId);
 }

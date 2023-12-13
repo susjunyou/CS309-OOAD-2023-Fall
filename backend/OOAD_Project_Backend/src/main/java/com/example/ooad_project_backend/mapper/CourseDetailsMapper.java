@@ -61,6 +61,18 @@ public interface CourseDetailsMapper {
 
     @Select("select * from course")
     List<CourseInfo> findAllCourseInfo();
+
+    @Select("select * " +
+            "from student " +
+            "         left join (select * from course_student where course_id = #{courseId}) cs on student.id = cs.student_id " +
+            "where cs.student_id is null")
+    List<StudentInfo> findStudentInfoNotInCourseByCourseId(Integer courseId);
+
+    @Select("select * " +
+            "from teacher " +
+            "         left join (select * from course_teacher where course_id = #{courseId}) ct on teacher.id = ct.teacher_id " +
+            "where ct.teacher_id is null")
+    List<TeacherInfo> findTeacherInfoNotInCourseByCourseId(Integer courseId);
 }
 
 

@@ -10,7 +10,9 @@ import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseInfo> implements CourseInfoService {
@@ -110,17 +112,35 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     }
 
     @Override
-    public void releaseCourse(String courseCode,String courseName,String courseDescription) {
-        courseDetailsMapper.releaseCourse(courseCode,courseName,courseDescription);
+    public void releaseCourse(String courseCode, String courseName, String courseDescription) {
+        courseDetailsMapper.releaseCourse(courseCode, courseName, courseDescription);
     }
 
     @Override
-    public void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription) {
-        courseDetailsMapper.updateCourse(courseId,courseCode,courseName,courseDescription);
+    public void updateCourse(Integer courseId, String courseCode, String courseName, String courseDescription) {
+        courseDetailsMapper.updateCourse(courseId, courseCode, courseName, courseDescription);
     }
 
     @Override
     public List<CourseInfo> findAllCourseInfo() {
         return courseDetailsMapper.findAllCourseInfo();
+    }
+
+    @Override
+    public List<StudentInfo> findStudentInfoNotInCourseByCourseId(Integer courseId) {
+        return courseDetailsMapper.findStudentInfoNotInCourseByCourseId(courseId);
+    }
+
+    @Override
+    public List<TeacherInfo> findTeacherInfoNotInCourseByCourseId(Integer courseId) {
+        return courseDetailsMapper.findTeacherInfoNotInCourseByCourseId(courseId);
+    }
+
+    @Override
+    public List<StudentInfo> findSAInfoNotInCourseByCourseId(Integer courseId) {
+        List<StudentInfo> studentInfoList = courseDetailsMapper.findStudentInfoNotInCourseByCourseId(courseId);
+        List<StudentInfo> SAInfoList = courseDetailsMapper.findAllSAInfoByCourseId(courseId);
+        studentInfoList.removeIf(studentInfo -> SAInfoList.stream().anyMatch(saInfo -> saInfo.getId().equals(studentInfo.getId())));
+        return studentInfoList;
     }
 }
