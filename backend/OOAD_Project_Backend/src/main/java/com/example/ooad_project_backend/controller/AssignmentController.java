@@ -3,6 +3,7 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
+import com.example.ooad_project_backend.enums.StatusType;
 import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.AssignmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class AssignmentController {
     }
 
     @PostMapping("/addAssignment")
-    public Result addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
+    public Result addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
                                 Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId) {
         boolean flag = assignmentInfoService.addAssignment(assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
                 maxScore, proportion, releaser, releaserType, courseId);
@@ -47,7 +48,7 @@ public class AssignmentController {
     }
 
     @GetMapping("/updateAssignmentByAssignmentId")
-    public Result updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, String assignmentStatus,
+    public Result updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
                                    Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId) {
         boolean flag = assignmentInfoService.updateAssignment(assignmentId, assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
                 maxScore, proportion, releaser, releaserType, courseId);
