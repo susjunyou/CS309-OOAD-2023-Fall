@@ -387,8 +387,10 @@ export default {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: i + 1,
+          id: localStorage.getItem('coursesid' + i),
           title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
         });
       }
       this.posts=[];
@@ -418,6 +420,10 @@ export default {
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
+        this.ddls.push({
+          date: this.assignments[i].ddl,
+          title: this.assignments[i].title,
+        });
       }
       this.projects=[];
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
@@ -430,11 +436,13 @@ export default {
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
-        // this.ddls.push({
-        //   date: this.projects[i].ddl,
-        //   title: this.projects[i].title,
-        // });
+        this.ddls.push({
+          date: this.projects[i].ddl,
+          title: this.projects[i].title,
+        });
       }
+      console.log(this.projects[0])
+      console.log(this.projects[1])
       console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))

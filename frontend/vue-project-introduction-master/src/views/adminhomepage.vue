@@ -159,6 +159,7 @@ export default {
     },
     editCourse(course) {
       // 打开编辑对话框并填充表单数据
+      localStorage.setItem('currentcourseid',course.id);
       this.editForm.courseCode = course.code;
       this.editForm.courseName = course.title;
       this.editForm.courseDescription = course.description;
