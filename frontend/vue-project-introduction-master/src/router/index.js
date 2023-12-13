@@ -32,6 +32,9 @@ import teamsofteacher from "@/views/teamsofteacher.vue";
 import modifyinformation from "@/views/modifyinformation.vue";
 import assignteam from "@/views/assignteam.vue";
 import gradebookofteacher from "@/views/gradebookofteacher.vue";
+import adminhomepage from "@/views/adminhomepage.vue";
+import courseofadmin from "@/views/courseofadmin.vue";
+import memberadmin from "@/views/memberadmin.vue";
 import attendancegradebookofteacher from "@/views/attendancegradebookofteacher.vue";
 import assignmentgradebookofteacher from "@/views/assignmentgradebookofteacher.vue";
 import projectgradebookofteacher from "@/views/projectgradebookofteacher.vue";
@@ -69,6 +72,9 @@ const routes = [
     {path: '/modifyinformation', component:modifyinformation},
     {path: '/assignteam', component: assignteam},
     {path:'/gradebookofteacher',component: gradebookofteacher},
+    {path: '/adminhomepage', component: adminhomepage},
+    {path: '/courseofadmin', component:courseofadmin},
+    {path:'/memberadmin',component: memberadmin},
     {path: '/attendancegradebookofteacher',component:attendancegradebookofteacher},
     {path: '/assignmentgradebookofteacher',component: assignmentgradebookofteacher},
     {path: '/projectgradebookofteacher',component: projectgradebookofteacher},
