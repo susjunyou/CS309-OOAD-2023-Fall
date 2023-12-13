@@ -52,4 +52,7 @@ public interface CourseInfoService extends IService<CourseInfo> {
     List<TeacherInfo> findTeacherInfoNotInCourseByCourseId(Integer courseId);
 
     List<StudentInfo> findSAInfoNotInCourseByCourseId(Integer courseId);
+
+    List<CourseInfo> findMySACoursesByStudentId(Integer studentId);
+
 }

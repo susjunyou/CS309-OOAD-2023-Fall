@@ -143,4 +143,10 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
         studentInfoList.removeIf(studentInfo -> SAInfoList.stream().anyMatch(saInfo -> saInfo.getId().equals(studentInfo.getId())));
         return studentInfoList;
     }
+
+    @Override
+    public List<CourseInfo> findMySACoursesByStudentId(Integer studentId) {
+        List<Integer> courseIdList = courseDetailsMapper.findMySACourseIdByStudentId(studentId);
+        return courseDetailsMapper.findCourseInfoByCourseIdList(courseIdList);
+    }
 }

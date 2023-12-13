@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.controller;
 
 
 import com.example.ooad_project_backend.common.Result;
+import com.example.ooad_project_backend.entity.CourseInfo;
 import com.example.ooad_project_backend.service.CourseInfoService;
 import com.example.ooad_project_backend.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,16 @@ public class SAController {
         List<Integer> courseIdList = courseInfoService.findMySACourseIdByStudentId(studentId);
         if (courseIdList != null) {
             return Result.success(courseIdList);
+        } else {
+            return Result.error("1", "n");
+        }
+    }
+
+    @GetMapping("/getMySACourses")
+    public Result getMySACourses(Integer studentId) {
+        List<CourseInfo> courseInfoList = courseInfoService.findMySACoursesByStudentId(studentId);
+        if (courseInfoList != null) {
+            return Result.success(courseInfoList);
         } else {
             return Result.error("1", "n");
         }
