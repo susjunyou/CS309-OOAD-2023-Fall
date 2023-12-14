@@ -38,6 +38,24 @@ import memberadmin from "@/views/memberadmin.vue";
 import attendancegradebookofteacher from "@/views/attendancegradebookofteacher.vue";
 import assignmentgradebookofteacher from "@/views/assignmentgradebookofteacher.vue";
 import projectgradebookofteacher from "@/views/projectgradebookofteacher.vue";
+import sacourse from "@/views/sacourse.vue";
+import assignmentssa from'@/views/assignmentssa.vue'
+import assignteamsa from'@/views/assignteamsa.vue'
+import attendancegradebooksa from '@/views/attendancegradebooksa.vue'
+import projectssa from '@/views/projectssa.vue'
+import gradebooksa from '@/views/gradebooksa.vue'
+import judgeassignmentsa from'@/views/judgeassignmentsa.vue'
+import judgeprojectsa from'@/views/judgeprojectsa.vue'
+import materialssa from '@/views/materialssa.vue'
+import memberssa from '@/views/memberssa.vue'
+import modifyinformationsa from '@/views/modifyinformationsa.vue'
+import piprojectsa from '@/views/piprojectsa.vue'
+import pizuoyesa from '@/views/pizuoyesa.vue'
+import postsa from '@/views/postsa.vue'
+import projectgradebooksa from '@/views/projectgradebooksa.vue'
+import teamssa from '@/views/teamssa.vue'
+
+
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -78,6 +96,22 @@ const routes = [
     {path: '/attendancegradebookofteacher',component:attendancegradebookofteacher},
     {path: '/assignmentgradebookofteacher',component: assignmentgradebookofteacher},
     {path: '/projectgradebookofteacher',component: projectgradebookofteacher},
+    {path: '/sacourse',component: sacourse},
+    {path: '/assignmentssa',component: assignmentssa},
+    {path: '/assignteamsa',component: assignteamsa},
+    {path: '/attendancegradebooksa',component: attendancegradebooksa},
+    {path: '/projectssa',component: projectssa},
+    {path: '/gradebooksa',component: gradebooksa},
+    {path: '/judgeassignmentsa',component: judgeassignmentsa},
+    {path: '/judgeprojectsa',component: judgeprojectsa},
+    {path: '/materialssa',component: materialssa},
+    {path: '/memberssa',component: memberssa},
+    {path: '/modifyinformationsa',component: modifyinformationsa},
+    {path: '/piprojectsa',component: piprojectsa},
+    {path: '/pizuoyesa',component: pizuoyesa},
+    {path: '/postsa',component: postsa},
+    {path: '/projectgradebooksa',component: projectgradebooksa},
+    {path: '/teamssa',component: teamssa},
     {path: '/', redirect: '/login'}
 
 ]
