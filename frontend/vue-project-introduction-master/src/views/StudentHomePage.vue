@@ -85,7 +85,7 @@
       <!-- 课程卡片列表 -->
       <el-col :span="18" class="course-list">
         <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" :span="8">
+          <el-col v-for="course in courses" :key="course.id" :span="8" style="margin-bottom: 20px">
             <el-card class="course-card" @click.native="goTo(course)">
               <h3>{{ course.code }}</h3>
               <h3>{{ course.title }}</h3>

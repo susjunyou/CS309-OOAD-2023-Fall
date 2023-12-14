@@ -247,6 +247,7 @@ export default {
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
     const today = new Date();
     this.attrs=[];
+    console.log(localStorage.getItem("currentcourse"));
     this.attrs = this.ddls.map(ddl => {
       const ddlDate = new Date(ddl.date);
       let contentClass = '';
@@ -528,12 +529,7 @@ export default {
           title: this.projects[i].title,
         });
       }
-      console.log(this.projects[0])
-      console.log(this.projects[1])
-      console.log("course name="+this.myValue)
-      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
-
+    console.log(this.ddls)
     },
 
   },

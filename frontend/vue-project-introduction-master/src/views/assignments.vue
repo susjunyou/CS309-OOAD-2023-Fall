@@ -519,7 +519,7 @@ export default {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: i + 1,
+          id: localStorage.getItem('courseid' + i),
           title: localStorage.getItem('courses' + i),
         });
       }
