@@ -76,8 +76,8 @@ public interface CourseDetailsMapper {
 
     //通过List<CourseId>找到所有的CourseInfo
 
-    @Select("select * from course where course_id in (#{courseIdList})")
-    List<CourseInfo> findCourseInfoByCourseIdList(List<Integer> courseIdList);
+    @Select("select * from course where course_id = #{courseId}")
+    CourseInfo findCourseInfoByCourseId(Integer courseId);
 }
 
 

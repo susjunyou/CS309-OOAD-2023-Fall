@@ -10,6 +10,7 @@ import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -147,6 +148,10 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     @Override
     public List<CourseInfo> findMySACoursesByStudentId(Integer studentId) {
         List<Integer> courseIdList = courseDetailsMapper.findMySACourseIdByStudentId(studentId);
-        return courseDetailsMapper.findCourseInfoByCourseIdList(courseIdList);
+        List<CourseInfo> courseInfoList = new ArrayList<>();
+        for (Integer courseId : courseIdList) {
+            courseInfoList.add(courseDetailsMapper.findCourseInfoByCourseId(courseId));
+        }
+        return courseInfoList;
     }
 }

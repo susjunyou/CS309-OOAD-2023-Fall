@@ -18,6 +18,7 @@ public interface GradeService extends IService<GradeInfo> {
 
     ProjectInfo findProjectGrade(Integer studentId, Integer projectId);
 
+
     boolean addAssignmentGrade(Integer studentId, Integer assignmentId, Integer grade, String content, String grade_description);
 
     boolean addProjectGrade(Integer studentId, Integer projectId, Integer grade, String content, String grade_description);
