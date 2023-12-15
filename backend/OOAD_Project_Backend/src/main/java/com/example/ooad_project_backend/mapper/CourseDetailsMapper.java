@@ -54,10 +54,10 @@ public interface CourseDetailsMapper {
     void deleteCourse(Integer courseId);
 
     @Insert("insert into course (course_code, course_name, course_description) values ( #{courseCode}, #{courseName}, #{courseDescription})")
-    void releaseCourse(String courseCode,String courseName,String courseDescription);
+    void releaseCourse(String courseCode, String courseName, String courseDescription);
 
     @Update("update course set course_code = #{courseCode}, course_name = #{courseName}, course_description = #{courseDescription} where course_id = #{courseId}")
-    void updateCourse(Integer courseId,String courseCode,String courseName,String courseDescription);
+    void updateCourse(Integer courseId, String courseCode, String courseName, String courseDescription);
 
     @Select("select * from course")
     List<CourseInfo> findAllCourseInfo();
@@ -73,6 +73,15 @@ public interface CourseDetailsMapper {
             "         left join (select * from course_teacher where course_id = #{courseId}) ct on teacher.id = ct.teacher_id " +
             "where ct.teacher_id is null")
     List<TeacherInfo> findTeacherInfoNotInCourseByCourseId(Integer courseId);
+
+    @Delete("delete from course_teacher where course_id = #{courseId}")
+    void deleteCourseTeacher(Integer courseId);
+
+    @Delete("delete from course_student where course_id = #{courseId}")
+    void deleteCourseStudent(Integer courseId);
+
+    @Delete("delete from course_sa where course_id = #{courseId}")
+    void deleteCourseSA(Integer courseId);
 }
 
 
