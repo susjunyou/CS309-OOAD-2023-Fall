@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseInfo> implements CourseInfoService {
@@ -26,6 +24,9 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
 
     @Autowired
     private CourseTeacherMapper courseTeacherMapper;
+
+    @Autowired
+    private CourseInfoMapper courseInfoMapper;
 
     @Override
     public List<ProjectInfo> findProjectInfoByCourseId(Integer courseId) {
@@ -110,6 +111,9 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     @Override
     public void deleteCourse(Integer courseId) {
         courseDetailsMapper.deleteCourse(courseId);
+        courseDetailsMapper.deleteCourseStudent(courseId);
+        courseDetailsMapper.deleteCourseTeacher(courseId);
+        courseDetailsMapper.deleteCourseSA(courseId);
     }
 
     @Override
@@ -150,7 +154,7 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
         List<Integer> courseIdList = courseDetailsMapper.findMySACourseIdByStudentId(studentId);
         List<CourseInfo> courseInfoList = new ArrayList<>();
         for (Integer courseId : courseIdList) {
-            courseInfoList.add(courseDetailsMapper.findCourseInfoByCourseId(courseId));
+            courseInfoList.add(courseInfoMapper.findCourseInfoByCourseId(courseId));
         }
         return courseInfoList;
     }
