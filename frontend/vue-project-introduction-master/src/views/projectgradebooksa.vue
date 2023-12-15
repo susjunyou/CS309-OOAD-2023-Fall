@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 你的其他内容 -->
-    <shitshan>
+    <shitshansa>
       <div class="attendance-list">
         <hr class="separator">
         <h1>项目成绩</h1>
@@ -32,12 +32,12 @@
         <div id="main123" style="width: 100%; height:400px"></div>
         <h1>底部</h1>
       </div>
-    </shitshan>
+    </shitshansa>
     <!-- 你的其他内容 -->
   </div>
 </template>
 <script setup>
-import shitshan from "@/components/shitshan.vue";
+import shitshansa from "@/components/shitshansa.vue";
 export default {
   data() {
     return {
@@ -67,7 +67,7 @@ export default {
     await this.getClass();
   },
   components: {
-    shitshan
+    shitshansa
   },
   methods: {
     // getClass(){
@@ -115,10 +115,10 @@ export default {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: localStorage.getItem('coursesid' + i),
-          title: localStorage.getItem('courses' + i),
-          description: localStorage.getItem('courseDescription' + i),
-          code: localStorage.getItem('coursecode' +i),
+          id: localStorage.getItem('coursesidsa' + i),
+          title: localStorage.getItem('coursessa' + i),
+          description: localStorage.getItem('courseDescriptionsa' + localStorage.getItem('coursesidsa' + i)),
+          code: localStorage.getItem('coursecodesa' +i),
         });
       }
       this.posts=[];

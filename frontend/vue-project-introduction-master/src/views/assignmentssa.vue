@@ -1,75 +1,64 @@
 <template>
   <div>
     <!-- 你的其他内容 -->
-    <shitshanadmin>
+    <shitshansa>
 
-      <div class="coursecontainer">
+      <div class="assign" style="width: 88%">
+        <div class="assignment-container">
+          <!-- ...之前的代码... -->
+          <el-row :gutter="20">
+            <el-col v-for="assignment in assignments" :key="assignment.id" :span="8" >
+              <el-card @click.native="submitassignment(assignment)" class="assignment-card">
+                <h3>{{ assignment.title }}</h3>
+                <p>截止日期：{{ assignment.ddl }}</p>
+              </el-card>
+            </el-col>
+          </el-row>
+          <!-- ...之后的代码... -->
 
-        <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" :span="11" min-width="350px">
-            <el-card class="course-card" >
-              <h3>{{ course.code }}</h3>
-              <h3>{{ course.title }}</h3>
-              <el-button type="danger" size="small" @click.prevent="deleteCourse(course)">删除课程</el-button>
-              <el-button type="primary" size="small" @click.prevent="editCourse(course)">修改信息</el-button>
-              <el-button type="primary" size="small" @click.prevent="gotoCourse(course)">查看信息</el-button>
-
-            </el-card>
-          </el-col>
-        </el-row>
-        <div v-if="isPopupVisible" class="popup">
-          <div class="popup-content">
-            <p>{{ this.wenzi }}成功！</p>
-            <button @click="returnToprotects" class="sumbitt">关闭</button>
-          </div>
         </div>
         <div class="publish-button-container">
-          <el-button class="sumbitt" @click="abcd">添加课程</el-button>
+          <el-button class="sumbitt" @click="publishAssignment">发布作业</el-button>
         </div>
       </div>
-    </shitshanadmin>
+
+    </shitshansa>
     <!-- 你的其他内容 -->
-    <el-dialog :visible.sync="editDialogVisible" title="修改课程信息">
-      <el-form :model="editForm">
-        <el-form-item label="课程代码">
-          <el-input v-model="editForm.courseCode"></el-input>
+    <el-dialog title="发布作业" :visible.sync="dialogVisible">
+      <el-form :model="assignmentForm">
+        <el-form-item label="作业标题">
+          <el-input v-model="assignmentForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="课程名称">
-          <el-input v-model="editForm.courseName"></el-input>
+        <el-form-item label="作业描述">
+          <el-input type="textarea" v-model="assignmentForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="课程描述">
-          <el-input type="textarea" v-model="editForm.courseDescription"></el-input>
+        <el-form-item label="截止日期">
+          <el-date-picker v-model="assignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
         </el-form-item>
+        <el-form-item label="最高分数">
+          <el-input-number v-model="assignmentForm.maxScore"></el-input-number>
+        </el-form-item>
+        <el-form-item label="占比">
+          <el-input-number v-model="assignmentForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
+        </el-form-item>
+        <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
+        <el-input type="hidden" v-model="assignmentForm.courseId"></el-input>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="updateCourseInfo">更新</el-button>
-      </span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click.prevent="addAssignment">确定</el-button>
+      </div>
     </el-dialog>
-
-
-    <el-dialog :visible.sync="editdialogVisible2" title="增加课程">
-      <el-form :model="editForm2">
-        <el-form-item label="课程代码">
-          <el-input v-model="editForm2.courseCode"></el-input>
-        </el-form-item>
-        <el-form-item label="课程名称">
-          <el-input v-model="editForm2.courseName"></el-input>
-        </el-form-item>
-        <el-form-item label="课程描述">
-          <el-input type="textarea" v-model="editForm2.courseDescription"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editdialogVisible2 = false">取消</el-button>
-        <el-button type="primary" @click.prevent="updateCourseInfo2">确定</el-button>
-      </span>
-    </el-dialog>
-
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>发布成功！</p>
+        <button @click="returnToprotects" class="sumbitt">关闭</button>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
-import shitshanadmin from "@/components/shitshanadmin.vue";
+import shitshansa from "@/components/shitshansa.vue";
 export default {
   data() {
     return {
@@ -79,127 +68,31 @@ export default {
       assignments: [],
       projects: [],
       ddls: [],
-      wenzi: '',
+      dialogVisible: false,
+      assignmentForm: {
+        title: '',
+        description: '',
+        deadline: '',
+        status: '',
+        maxScore: '',
+        proportion: '',
+        releaser: '',
+        releaserType: '',
+        courseId: '',
+      },
       isPopupVisible: false,
-      editDialogVisible: false, // 控制编辑对话框的显示
-      editForm: { // 存储编辑中的课程信息
-        courseCode: '',
-        courseName: '',
-        courseDescription: ''
-      },
-      editdialogVisible2: false,
-      editForm2: { // 存储编辑中的课程信息
-        courseCode: '',
-        courseName: '',
-        courseDescription: ''
-      },
     };
   },
   async created(){
-    // await this.loadAllCoursesinfo,
-    await this.getallcourses();
     await this.loadLocalStorageData();
-    await this.loadAllCoursesinfo(),
-    await this.loadLocalStorageData();
-
+    console.log(this.assignments)
   },
   components: {
-    shitshanadmin
+    shitshansa
   },
   methods: {
-
-   async getallcourses() {
-    const res=await  this.$axios.get('/course/getAllCourses',{
-      })
-     console.log(res);
-            localStorage.setItem('length',res.data.code==0?res.data.data.length:0);
-            console.log(localStorage.getItem('length'));
-
-            for (let i = 0; i < localStorage.getItem('length'); i++) {
-
-              localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
-              localStorage.setItem('courses'+i,res.data.data[i].courseName);
-              localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
-              localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
-              localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
-              localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
-              localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
-            }
-
-    },
-    gotoCourse(course){
-     localStorage.setItem('currentcourseid',course.id);
-     this.$router.push( '/memberadmin' );
-    },
-   async returnToprotects(){
-
-     await this.getallcourses();
-     await this.loadAllCoursesinfo();
-     await this.loadLocalStorageData();
-     this.isPopupVisible = false;
-    },
-    abcd(){
-      this.editdialogVisible2 = true;
-    },
-    async deleteCourse(course) {
-      await this.$axios.get('/admin/deleteCourse', {
-        params: {
-          courseId: course.id
-        }
-      }).then((res) => {
-        if (res.data.code === "0") {
-
-          this.wenzi = "删除";
-          this.isPopupVisible = true;
-        }
-      }).catch(error => {
-        console.error('Error loading course materials:', error);
-      });
-      console.log("删除课程", course.title);
-    },
-    editCourse(course) {
-      // 打开编辑对话框并填充表单数据
-      localStorage.setItem('currentcourseid',course.id);
-      this.editForm.courseCode = course.code;
-      this.editForm.courseName = course.title;
-      this.editForm.courseDescription = course.description;
-      this.editDialogVisible = true;
-    },
-
-    async updateCourseInfo2() {
-
-      const res=await  this.$axios.get('/admin/releaseCourse', {
-        params: {
-          courseCode: this.editForm2.courseCode,
-          courseName: this.editForm2.courseName,
-          courseDescription: this.editForm2.courseDescription
-        }
-      })
-      if (res.data.code === "0") {
-        this.wenzi = "创建";
-        this.editdialogVisible2 = false; // 关闭对话框
-        this.isPopupVisible = true;
-      }
-    },
-
-    async updateCourseInfo() {
-      // 在这里添加更新课程信息的逻辑
-      const res=await  this.$axios.get('/admin/updateCourse', {
-        params: {
-          courseId: localStorage.getItem('currentcourseid'),
-          courseCode: this.editForm.courseCode,
-          courseName: this.editForm.courseName,
-          courseDescription: this.editForm.courseDescription
-        }
-      })
-      if (res.data.code === "0") {
-        this.wenzi = "修改";
-        this.editDialogVisible = false; // 关闭对话框
-        this.isPopupVisible = true;
-      }
-
-
-      // 可以在这里发送请求到服务器以更新课程信息
+    publishAssignment(){
+      this.dialogVisible = true;
     },
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
@@ -363,25 +256,67 @@ export default {
       }
     },
 
-    goTo(route) {
-// 假设使用 Vue Router 进行导航    goTo(route) {
-// 假设使用 Vue Router 进行导航
-      localStorage.setItem("currentcourseid",route.id);
-      localStorage.setItem("currentcourse",route.title);
-      this.$router.push('/courseofadmin');
-      this.loadLocalStorageData();
+    async returnToprotects(){
+      await this.loadLocalStorageData()
+      await this.loadAllCoursesinfo()
+      await this.loadLocalStorageData()
+      this.dialogVisible = false;
+      this.isPopupVisible = false;
+    },
+    submitassignment(assignment){
+      localStorage.setItem("currentassignmentid",assignment.id);
+      localStorage.setItem("in_ddl",assignment.ddl);//status
+      localStorage.setItem("cru_description",assignment.description);
+      localStorage.setItem("cru_status",assignment.status);
+
+      this.$router.push({ path: '/pizuoyesa'});
+    },
+    async addAssignment(){
+      let date = new Date(this.assignmentForm.deadline);
+      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      await this.$axios.get('/assignment/addAssignment', {
+        params: {
+          assignmentTitle: this.assignmentForm.title,
+          assignmentDescription: this.assignmentForm.description,
+          assignmentDeadline: formattedDate,
+          assignmentStatus: 'Started',
+          maxScore: this.assignmentForm.maxScore,
+          proportion: this.assignmentForm.proportion,
+          releaser: localStorage.getItem('id'),
+          releaserType: 'TEACHER',
+          courseId: localStorage.getItem('currentcourseid'),
+        }
+      }).then((res) => {
+        console.log(res);
+        if (res.data.code === "0") {
+          this.dialogVisible = false;
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+    },
+    disabledDate(time) {
+      const today = new Date(new Date().setHours(0, 0, 0, 0)); // 今天日期设置为午夜开始
+      return time.getTime() < today.getTime(); // 禁止选择今天之前的日期
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
-      for (let i = 0; i < localStorage.getItem('length'); i++) {
+      console.log(localStorage.getItem('lengthsa'));
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+        console.log(localStorage.getItem('coursesidsa' + i));
+        console.log(localStorage.getItem('coursessa' + i));
+        console.log(localStorage.getItem('courseDescriptionsa' + localStorage.getItem('coursesidsa' + i)));
+        console.log(localStorage.getItem('coursecodesa' + i));
         this.courses.push({
-          id: localStorage.getItem('coursesid' + i),
-          title: localStorage.getItem('courses' + i),
-          description: localStorage.getItem('courseDescription' + i),
-          code: localStorage.getItem('coursecode' +i),
+          id: localStorage.getItem('coursesidsa' + i),
+          title: localStorage.getItem('coursessa' + i),
+          description: localStorage.getItem('courseDescriptionsa' + localStorage.getItem('coursesidsa' + i)),
+          code: localStorage.getItem('coursecodesa' +i),
         });
       }
+      console.log(this.courses);
       this.posts=[];
       for (let i = 0; i < localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse")); i++) {
         this.posts.push({
@@ -401,14 +336,16 @@ export default {
         });
       }
       this.assignments=[];
+      console.log(localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
           status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
+        console.log(this.assignments[i]);
         this.ddls.push({
           date: this.assignments[i].ddl,
           title: this.assignments[i].title,
@@ -439,22 +376,37 @@ export default {
     },
 
   }
+
 }
 
 </script>
 
 <style scoped>
 .coursecontainer{
-  width: 100%;
   margin-top: 50px;
   margin-left: 50px;
 }
-.course-card{
-
+.assignment-container{
+  margin-top: 50px;
+  margin-left: 0px;
+  margin-right: 70px;
+}
+.assignment-card{
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
+  margin-bottom: 20px;
+
+  background-color: #f5f5f5;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px 0
 }
+.publish-button-container {
+  margin-top: 20px;
+  text-align: center;
+  margin-left: 100px;
+}
+
 .sumbitt {
   padding: 10px 20px;
   margin-top: 20px;
@@ -475,5 +427,22 @@ export default {
   background: linear-gradient(45deg, #2193b0, #6dd5ed);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
 }
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
 </style>

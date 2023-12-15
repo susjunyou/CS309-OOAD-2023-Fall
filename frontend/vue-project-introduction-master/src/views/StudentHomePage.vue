@@ -8,7 +8,7 @@
       </el-col>
       <el-col :span="10">
         <el-button type="text" v-popover:profilePopover class="profile-button">
-          <i class="el-icon-user"></i> 个人资料
+          <i class="el-icon-user" ></i> 个人资料
         </el-button>
         <el-popover ref="profilePopover" placement="bottom" width="200" trigger="click">
           <!-- popover内容 -->
@@ -21,7 +21,7 @@
             <el-menu>
               <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
               <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
-              <el-menu-item index="3" @click="logoutClick">LogOut</el-menu-item>
+              <el-menu-item index="3" @click="logoutClick" >LogOut</el-menu-item>
             </el-menu>
           </div>
         </el-popover>
@@ -85,8 +85,14 @@
       <!-- 课程卡片列表 -->
       <el-col :span="18" class="course-list">
         <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" :span="8">
+          <el-col v-for="course in courses" :key="course.id" :span="8" class="course-item">
             <el-card class="course-card" @click.native="goTo(course)">
+              <h3>{{ course.code }}</h3>
+              <h3>{{ course.title }}</h3>
+            </el-card>
+          </el-col>
+          <el-col v-for="course in coursessa" :key="course.id" :span="8" class="course-item">
+            <el-card class="course-card sa-course-card" @click.native="goTo3(course)">
               <h3>{{ course.code }}</h3>
               <h3>{{ course.title }}</h3>
             </el-card>
@@ -160,6 +166,7 @@ export default {
         intendedteammate:"",
       },
       courses: [],
+      coursessa:[],
       ddls: [
         // ...其他DDL
       ],
@@ -174,6 +181,7 @@ export default {
       programmingskill:'',
       intendedteammate:'',
       isPopupVisible:false,
+      postssa:[],
     };
   },
   methods: {
@@ -394,6 +402,194 @@ export default {
       }
     },
 
+    async loadAllsaCoursesinfo() {
+      for (let course of this.coursessa) {
+        //加载posts
+        await this.$axios.get('/course/posts', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('coursePostLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+              localStorage.setItem('postid'+course.title+i,res.data.data[i].postId);
+              localStorage.setItem('post'+course.title+i,res.data.data[i].postContent);
+              localStorage.setItem('posttitle'+course.title+i,res.data.data[i].postTitle);
+              localStorage.setItem('postauthor'+course.title+i,res.data.data[i].postAuthor);
+              localStorage.setItem('postType'+course.title+i,res.data.data[i].postType);
+              this.postssa.push({
+                course:course.title,
+                id:res.data.data[i].postId,
+                title:res.data.data[i].postTitle,
+                content:res.data.data[i].postContent,
+                author:res.data.data[i].postAuthor,
+              })
+            }
+
+          }
+        }).catch(error => {
+          console.error('Error loading course posts:', error);
+        });
+        //加载材料
+        await this.$axios.get('/course/materials', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('courseMaterialLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseMaterialLength'+course.title); i++) {
+              localStorage.setItem('materialid'+course.title+i,res.data.data[i].materialId);
+              localStorage.setItem('materialname' + course.title + i, res.data.data[i].materialName);
+              localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].materialDescription);
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course materials:', error);
+        });
+        //加载assignments
+        await this.$axios.get('/course/assignments', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
+              localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].id);
+              localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);/////////////////////////////////////////////////////////////////////////////
+              localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
+              localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
+              localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
+              // this.ddls.push({
+              //   date : res.data.data[i].assignmentDeadline,
+              //   title : course.title+"   "+res.data.data[i].assignmentTitle,
+              // })
+
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course assignments:', error);
+        });
+        //加载projects
+        await this.$axios.get('/course/projects', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('projectsLength'+course.title,res.data.data.length)
+            console.log(localStorage.getItem('projectsLength'+course.title))
+            for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
+              localStorage.setItem('projectid'+course.title+i,res.data.data[i].id);
+              localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
+              localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
+              localStorage.setItem('projectstartdate'+course.title+i,res.data.data[i].projectStartDate);
+              localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
+              localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
+              localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
+              // this.ddls.push({
+              //   date : res.data.data[i].projectDeadline,
+              //   title : course.title+"   "+res.data.data[i].projectTitle,
+              // })
+
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course projects:', error);
+        });
+        //加载attendances
+        await this.$axios.get('/grade/getAttendanceGradeByCourseIdAndStudentId', {
+          params: {
+            courseId: course.id,
+            studentId: localStorage.getItem('id')
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
+              localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
+              localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
+              if (res.data.data[i].attended) {
+                localStorage.setItem('attendancegrade'+course.title+i,100);
+              }else {
+                localStorage.setItem('attendancegrade'+course.title+i,0);
+              }
+              localStorage.setItem('attendancemaxScore'+course.title+i,res.data.data[i].maxScore);
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course attendances:', error);
+        });
+        //加载assignment成绩
+        for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
+          await this.$axios.get('/grade/getAssignmentGrade', {
+            params: {
+              studentId: localStorage.getItem('id'),
+              assignmentId: localStorage.getItem('assignmentid'+course.title+i)
+            }
+          }).then((res) => {
+            if (res.data.code === "0") {
+              localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
+              localStorage.setItem('assignmentmaxScore' + course.title + i, res.data.data[0].maxScore);
+              localStorage.setItem('assignmentproportion' + course.title + i, res.data.data[0].proportion);
+              localStorage.setItem('assignmentgradeDescription' + course.title + i, res.data.data[0].gradeDescription)
+            }
+          }).catch(error => {
+            console.error('Error loading assignment grade:', error);
+          });
+        }
+        //加载project成绩
+        for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
+          await this.$axios.get('/grade/getProjectGrade', {
+            params: {
+              studentId: localStorage.getItem('id'),
+              projectId: localStorage.getItem('projectid'+course.title+i)
+            }
+          }).then((res) => {
+            if (res.data.code === "0") {
+              localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
+              localStorage.setItem('projectmaxScore' + course.title + i, res.data.data[0].maxScore);
+              localStorage.setItem('projectproportion' + course.title + i, res.data.data[0].proportion);
+              localStorage.setItem('projectgradeDescription' + course.title + i, res.data.data[0].gradeDescription);
+            }
+          }).catch(error => {
+            console.error('Error loading project grade:', error);
+          });
+        }
+      }
+    },
+    async getSacourse(){
+
+      const res= await this.$axios.get('/SA/getMySACourses',{
+        params:{
+          studentId:localStorage.getItem('id')
+        }
+      })
+      console.log(res.data.data);
+      if (res.data.code === "0") {
+
+        localStorage.setItem('lengthsa',res.data.data.length);
+        console.log(localStorage.getItem('lengthsa'));
+        for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+          localStorage.setItem('coursesidsa'+i,res.data.data[i].courseId);
+          localStorage.setItem('coursessa'+i,res.data.data[i].courseName);
+          localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+          localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+          localStorage.setItem('coursecodesa'+i,res.data.data[i].courseCode);
+          localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+          localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+        }
+        console.log(localStorage.getItem('courses0'));
+
+      }else {
+        localStorage.setItem('lengthsa',0);
+      }
+
+
+
+    },
 
     goTo(route) {
 // 假设使用 Vue Router 进行导航
@@ -401,7 +597,13 @@ export default {
       localStorage.setItem("currentcourseid",route.id);
       this.$router.push({ path: '/course' });
     },
-    logoutClick() {
+    goTo3(route){
+      localStorage.setItem("currentcourse",route.title);
+      localStorage.setItem("currentcourseid",route.id);
+      this.$router.push({ path: '/sacourse' });
+    },
+   async logoutClick() {
+     await this.getSacourse();
       this.$router.push('/Login');
       localStorage.clear();
     },
@@ -417,6 +619,18 @@ export default {
         });
       }
     },
+    async loadLocalStorageDataforsa() {
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+this.coursessa=[];
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+        this.coursessa.push({
+          id: localStorage.getItem('coursesidsa' + i),
+          title: localStorage.getItem('coursessa' + i),
+          description: localStorage.getItem('courseDescriptionsa' + i),
+          code: localStorage.getItem('coursecodesa' +i),
+        });
+      }
+    },
 
   },
   async created() {
@@ -429,7 +643,10 @@ export default {
     this.technologystack = localStorage.getItem('technologystack');
     this.intendedteammate = localStorage.getItem('intendedteammate');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    await this.loadLocalStorageDataforsa()
     await this.loadAllCoursesinfo();
+    await this.loadAllsaCoursesinfo();
+    await this.loadLocalStorageDataforsa();
 
     const today = new Date();
     this.attrs = this.ddls.map(ddl => {
@@ -593,4 +810,24 @@ el-button{
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
+/* 增加课程卡片之间的间隔 */
+/* 增加卡片间的垂直间距 */
+.el-col {
+  margin-top: 20px; /* 增加顶部间隔 */
+  margin-bottom: 20px; /* 增加底部间隔 */
+}
+
+/* 优化 SA 课程卡片的样式 */
+.sa-course-card {
+  background-color: #ffeb3b; /* 明亮的黄色背景 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 轻微的阴影效果 */
+}
+
+/* 如果需要，也可以为普通课程卡片添加默认阴影 */
+.course-card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+/* 其他样式保持不变 */
+
+
 </style>

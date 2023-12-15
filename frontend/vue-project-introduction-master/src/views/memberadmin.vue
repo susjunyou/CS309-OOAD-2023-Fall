@@ -4,7 +4,8 @@
     <shitshanadmin>
 
       <div class="coursecontainer">
-        <el-col :span="21">
+        <el-row>
+        <el-col :span="24">
           <div class="table-section">
             <h2 class="table-title">Teacher Information</h2>
             <el-table :data="teachers" style="width: 90%;" border stripe>
@@ -50,7 +51,63 @@
             </el-table>
           </div>
         </el-col>
+        </el-row>
+        <el-row >
+        <el-button class="sumbitt" type="primary" @click="showTeacherDialog = true">添加老师</el-button>
 
+        <!-- 添加学生按钮 -->
+        <el-button class="sumbitt" type="primary" @click="showStudentDialog = true">添加学生</el-button>
+
+        <!-- 添加学习助手按钮 -->
+        <el-button class="sumbitt" type="primary" @click="showSADialog = true">添加SA</el-button>
+        </el-row>
+        <!-- 老师信息弹窗 -->
+        <el-dialog title="添加老师" :visible.sync="showTeacherDialog">
+          <el-table :data="teachersnotin" border stripe>
+            <el-table-column prop="id" label="ID"></el-table-column>
+            <el-table-column prop="name" label="Name"></el-table-column>
+            <el-table-column prop="email" label="Email"></el-table-column>
+            <el-table-column prop="department" label="Department"></el-table-column>
+            <el-table-column prop="tenure" label="Tenure"></el-table-column>
+            <el-table-column label="操作">
+              <template v-slot="{row}">
+                <el-button type="primary" size="small" @click="addTeacher(row)">添加</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-dialog>
+
+        <!-- 学生信息弹窗 -->
+        <el-dialog title="添加学生" :visible.sync="showStudentDialog">
+          <el-table :data="studentsnotin" border stripe>
+            <el-table-column prop="id" label="ID"></el-table-column>
+            <el-table-column prop="name" label="Name"></el-table-column>
+            <el-table-column prop="level" label="Level"></el-table-column>
+            <el-table-column prop="major" label="Major"></el-table-column>
+            <el-table-column prop="email" label="Email"></el-table-column>
+            <el-table-column label="操作">
+              <template v-slot="{row}">
+                <el-button type="primary" size="small" @click="addStudent(row)">添加</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-dialog>
+
+        <!-- SA信息弹窗 -->
+        <el-dialog title="添加SA" :visible.sync="showSADialog">
+          <el-table :data="sanotin" border stripe>
+            <el-table-column prop="id" label="ID"></el-table-column>
+            <el-table-column prop="name" label="Name"></el-table-column>
+            <el-table-column prop="level" label="Level"></el-table-column>
+            <el-table-column prop="major" label="Major"></el-table-column>
+            <el-table-column prop="email" label="Email"></el-table-column>
+            <el-table-column label="操作">
+              <template v-slot="{row}">
+                <el-button type="primary" size="small" @click="addSA(row)">添加</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-dialog>
 
         <div v-if="isPopupVisible" class="popup">
           <div class="popup-content">
@@ -77,10 +134,14 @@ export default {
       wenzi: '',
       saInfos: [],
       studentInfos: [],
-      showSaDialog: false, // 控制SA信息对话框的显示
-      showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
       teachers: [],
+      studentsnotin: [],
+      sanotin: [],
+      teachersnotin: [],
+      showTeacherDialog: false,
+      showStudentDialog: false,
+      showSADialog: false,
       isPopupVisible: false, // 控制弹窗显示的布尔值
     };
   },
@@ -91,6 +152,7 @@ export default {
     await this.loadAllCoursesinfo(),
         await this.loadLocalStorageData();
     await this.loadStudentsAndSA();
+    await this.loadnotin();
 
 
   },
@@ -98,8 +160,111 @@ export default {
     shitshanadmin
   },
   methods: {
+   async loadnotin() {
+     this.studentsnotin = [];
+     this.sanotin=[];
+     this.teachersnotin=[];
+     await this.$axios.get('/admin/getStudentNotInCourse', {
+       params: {
+         courseId: localStorage.getItem('currentcourseid'),
+       }
+     }).then((res) => {
+       if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.studentsnotin.push(res.data.data[i]);
+          }
+       }
+     }).catch(error => {
+       console.error('Error loading sainfos:', error);
+     });
 
-   async deleteTeacher(teacher) {
+     await this.$axios.get('/admin/getTeacherNotInCourse', {
+       params: {
+         courseId: localStorage.getItem('currentcourseid'),
+       }
+     }).then((res) => {
+       if (res.data.code === "0") {
+         for (let i = 0; i < res.data.data.length; i++) {
+           this.teachersnotin.push(res.data.data[i]);
+         }
+       }
+     }).catch(error => {
+       console.error('Error loading sainfos:', error);
+     });
+
+     await this.$axios.get('/admin/getSANotInCourse', {
+       params: {
+         courseId: localStorage.getItem('currentcourseid'),
+       }
+     }).then((res) => {
+       if (res.data.code === "0") {
+         for (let i = 0; i < res.data.data.length; i++) {
+           this.sanotin.push(res.data.data[i]);
+         }
+       }
+     }).catch(error => {
+       console.error('Error loading sainfos:', error);
+     });
+      },
+
+
+
+     async addTeacher(row) {
+        // 在这里处理添加老师的逻辑
+       await this.$axios.get('/admin/addTeacher', {
+         params: {
+           courseId: localStorage.getItem('currentcourseid'),
+           teacherId: row.id,
+         }
+       }).then((res) => {
+         if (res.data.code === "0") {
+           this.showTeacherDialog = false;
+           this.wenzi = "增加";
+           this.isPopupVisible = true;
+         }
+       }).catch(error => {
+         console.error('Error loading sainfos:', error);
+       });
+      },
+    async addStudent(row) {
+        // 在这里处理添加学生的逻辑
+      await this.$axios.get('/admin/addStudent', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
+          studentId: row.id,
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.showStudentDialog = false;
+          this.wenzi = "增加";
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      },
+    async addSA(row) {
+        // 在这里处理添加SA的逻辑
+      await this.$axios.get('/admin/addSA', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
+          studentId: row.id,
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.showSADialog = false;
+          this.wenzi = "增加";
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      },
+      // ...其他方法...
+
+
+
+    async deleteTeacher(teacher) {
       await this.$axios.get('/admin/deleteTeacher', {
         params: {
           courseId: localStorage.getItem('currentcourseid'),
@@ -149,6 +314,7 @@ export default {
     async loadStudentsAndSA(){
       this.saInfos = [];
       this.studentInfos = [];
+      this.teachers = [];
       await this.$axios.get('/course/getAllSA', {
         params: {
           courseId: localStorage.getItem('currentcourseid')
@@ -232,6 +398,7 @@ export default {
 
     },
     async returnToprotects(){
+     await this.loadnotin();
 await this.loadStudentsAndSA();
       this.isPopupVisible = false;
     },

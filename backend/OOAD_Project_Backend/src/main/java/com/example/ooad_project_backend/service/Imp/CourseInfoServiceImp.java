@@ -10,7 +10,10 @@ import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseInfo> implements CourseInfoService {
@@ -107,9 +110,6 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     @Override
     public void deleteCourse(Integer courseId) {
         courseDetailsMapper.deleteCourse(courseId);
-        courseDetailsMapper.deleteCourseSA(courseId);
-        courseDetailsMapper.deleteCourseTeacher(courseId);
-        courseDetailsMapper.deleteCourseStudent(courseId);
     }
 
     @Override
@@ -143,5 +143,15 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
         List<StudentInfo> SAInfoList = courseDetailsMapper.findAllSAInfoByCourseId(courseId);
         studentInfoList.removeIf(studentInfo -> SAInfoList.stream().anyMatch(saInfo -> saInfo.getId().equals(studentInfo.getId())));
         return studentInfoList;
+    }
+
+    @Override
+    public List<CourseInfo> findMySACoursesByStudentId(Integer studentId) {
+        List<Integer> courseIdList = courseDetailsMapper.findMySACourseIdByStudentId(studentId);
+        List<CourseInfo> courseInfoList = new ArrayList<>();
+        for (Integer courseId : courseIdList) {
+            courseInfoList.add(courseDetailsMapper.findCourseInfoByCourseId(courseId));
+        }
+        return courseInfoList;
     }
 }
