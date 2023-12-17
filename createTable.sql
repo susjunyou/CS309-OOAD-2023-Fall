@@ -249,10 +249,11 @@ create table assignment_submission
 
 create table material
 (
-    material_id          serial primary key,
-    material_name        varchar(255) not null,
-    material_description varchar(255) not null,
-    course_id            integer      not null
+    id          serial primary key,
+    name        varchar(255) not null,
+    description varchar(255) not null,
+    course_id            integer      not null,
+    file_id              integer
 );
 
 
