@@ -471,45 +471,45 @@ values (3, 3, true);
 --! material data
 
 -- Course 1
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material1_course1', 'material_description1_course1', 1);
 
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material2_course1', 'material_description2_course1', 1);
 
 -- Course 2
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material1_course2', 'material_description1_course2', 2);
 
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material2_course2', 'material_description2_course2', 2);
 
 -- Course 3
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material1_course3', 'material_description1_course3', 3);
 
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material2_course3', 'material_description2_course3', 3);
 
 -- Course 4
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material1_course4', 'material_description1_course4', 4);
 
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material2_course4', 'material_description2_course4', 4);
 
 -- Course 5
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material1_course5', 'material_description1_course5', 5);
 
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material2_course5', 'material_description2_course5', 5);
 
 -- Course 6
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material1_course6', 'material_description1_course6', 6);
 
-insert into material(material_name, material_description, course_id)
+insert into material(name, description, course_id)
 values ('material2_course6', 'material_description2_course6', 6);
 
 
@@ -566,8 +566,6 @@ values ('post14', 'post_content14', 5, 'STUDENT', '2023-11-12', 6, 'QUESTION');
 insert into post(post_title, post_content, post_author, author_type, time, course_id, post_type)
 values ('post15', 'post_content15', 20003, 'TEACHER', '2023-11-23', 6, 'ANNOUNCEMENT');
 
-
-
 -- select *
 -- from assignment_submission
 --          left join assignment a on a.id = assignment_submission.assignment_id
@@ -587,3 +585,19 @@ values ('post15', 'post_content15', 20003, 'TEACHER', '2023-11-23', 6, 'ANNOUNCE
 -- where student_id = 1
 --   and attendance_id = 1;
 
+-- select *
+-- from attendance
+--          right join attendance_submission a on attendance.id = a.attendance_id
+-- where attendance.id = 1
+--   and a.student_id = 1;
+
+
+-- select *
+-- from student
+--          left join (select * from course_student where course_id = 1) cs on student.id = cs.student_id
+-- where cs.student_id is null;
+-- --
+-- select *
+-- from teacher
+--          left join (select * from course_teacher where course_id = 1) cs on teacher.id = cs.teacher_id
+-- where cs.teacher_id is null;
