@@ -4,6 +4,7 @@ import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
+import com.example.ooad_project_backend.entity.TeamPeerRevisionInfo;
 import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -150,6 +151,21 @@ public class TeamController {
         } else {
             return Result.success(studentInfos);
         }
+    }
+
+    @GetMapping("/getOtherTeamGrade")
+    public Result getOtherTeamGrade(Integer teamId, Integer projectId) {
+        List<TeamPeerRevisionInfo> teamPeerRevisionInfos = teamInfoService.findTeamPeerRevision(teamId, projectId);
+        if (teamPeerRevisionInfos.size() == 0) {
+            return Result.error("1", "no team");
+        } else {
+            return Result.success(teamPeerRevisionInfos);
+        }
+    }
+
+    @GetMapping("/updateTeamPeerRevision")
+    public Result updateTeamPeerRevision(TeamPeerRevisionInfo teamPeerRevisionInfo) {
+        return teamInfoService.updateTeamPeerRevision(teamPeerRevisionInfo)? Result.success() : Result.error();
     }
 
 
