@@ -22,4 +22,6 @@ public class AssignmentInfo extends GradeInfo {
 
     private StatusType assignmentStatus;
 
+    private Integer fileId;
+
 }

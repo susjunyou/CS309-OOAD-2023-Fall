@@ -28,4 +28,6 @@ public class ProjectInfo extends GradeInfo {
 
     private int maxPeopleInTeam;
 
+    private Integer fileId;
+
 }
