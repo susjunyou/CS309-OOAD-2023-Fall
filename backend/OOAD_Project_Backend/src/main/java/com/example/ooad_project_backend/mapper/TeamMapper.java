@@ -12,14 +12,14 @@ import java.util.List;
 public interface TeamMapper extends BaseMapper<TeamInfo> {
 
 
-    @Update("update team set team_name = #{teamName}, leader = #{leader}, team_description = #{teamDescription}, team_size = #{teamSize} where team_id = #{teamId}")
+    @Update("update team set team_name = #{teamName}, leader = #{leader}, team_description = #{teamDescription}, team_size = #{teamSize},#recruitment_information ={recruitmentInformation} where team_id = #{teamId}")
     void updateTeamInfo(TeamInfo teamInfo);
 
     @Update("update team set leader = #{studentId} where team_id = #{teamId}")
     void updateTeamLeader(Integer teamId, Integer studentId);
 
-    @Insert("insert into team(team_name, leader, team_description, team_size, project_id)" +
-            " VALUES (#{teamName}, #{leader}, #{teamDescription}, #{teamSize}, #{projectId})")
+    @Insert("insert into team(team_name, leader, team_description, team_size, project_id,recruitment_information)" +
+            " VALUES (#{teamName}, #{leader}, #{teamDescription}, #{teamSize}, #{projectId},#{recruitmentInformation})")
     void createTeam(TeamInfo teamInfo);
 
 
