@@ -469,48 +469,42 @@ insert into attendance_submission(student_id, attendance_id, is_attended)
 values (3, 3, true);
 
 --! material data
-
+--添加file_id
 -- Course 1
-insert into material(name, description, course_id)
-values ('material1_course1', 'material_description1_course1', 1);
-
-insert into material(name, description, course_id)
-values ('material2_course1', 'material_description2_course1', 1);
+insert into material(name, description, course_id, file_id)
+values
+    ('material1_course1', 'material_description1_course1', 1, 1),
+    ('material2_course1', 'material_description2_course1', 1, 2);
 
 -- Course 2
-insert into material(name, description, course_id)
-values ('material1_course2', 'material_description1_course2', 2);
-
-insert into material(name, description, course_id)
-values ('material2_course2', 'material_description2_course2', 2);
+insert into material(name, description, course_id, file_id)
+values
+    ('material1_course2', 'material_description1_course2', 2, 1),
+    ('material2_course2', 'material_description2_course2', 2, 2);
 
 -- Course 3
-insert into material(name, description, course_id)
-values ('material1_course3', 'material_description1_course3', 3);
-
-insert into material(name, description, course_id)
-values ('material2_course3', 'material_description2_course3', 3);
+insert into material(name, description, course_id, file_id)
+values
+    ('material1_course3', 'material_description1_course3', 3, 1),
+    ('material2_course3', 'material_description2_course3', 3, 2);
 
 -- Course 4
-insert into material(name, description, course_id)
-values ('material1_course4', 'material_description1_course4', 4);
-
-insert into material(name, description, course_id)
-values ('material2_course4', 'material_description2_course4', 4);
+insert into material(name, description, course_id, file_id)
+values
+    ('material1_course4', 'material_description1_course4', 4, 1),
+    ('material2_course4', 'material_description2_course4', 4, 2);
 
 -- Course 5
-insert into material(name, description, course_id)
-values ('material1_course5', 'material_description1_course5', 5);
-
-insert into material(name, description, course_id)
-values ('material2_course5', 'material_description2_course5', 5);
+insert into material(name, description, course_id, file_id)
+values
+    ('material1_course5', 'material_description1_course5', 5, 1),
+    ('material2_course5', 'material_description2_course5', 5, 2);
 
 -- Course 6
-insert into material(name, description, course_id)
-values ('material1_course6', 'material_description1_course6', 6);
-
-insert into material(name, description, course_id)
-values ('material2_course6', 'material_description2_course6', 6);
+insert into material(name, description, course_id, file_id)
+values
+    ('material1_course6', 'material_description1_course6', 6, 1),
+    ('material2_course6', 'material_description2_course6', 6, 2);
 
 
 --! post data
