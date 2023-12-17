@@ -182,6 +182,7 @@ create table team_peer_revision
     team1                 integer not null, --! 评价的小组
     team2                 integer not null, --! 被评价的小组
     grade                 integer not null,
+    comment               varchar(255),
     project_id            integer not null
 );
 
