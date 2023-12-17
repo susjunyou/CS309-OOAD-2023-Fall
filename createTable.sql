@@ -26,6 +26,7 @@ drop table if exists team_student cascade;
 drop table if exists request_join_team cascade;
 drop table if exists invite_join_team cascade;
 drop table if exists file cascade;
+drop table if exists team_peer_revision cascade;
 
 
 --! create table student
@@ -132,7 +133,8 @@ create table project
     project_deadline    date             not null,
     max_people_in_team  integer          not null,
     max_score           integer          not null,
-    proportion          double precision not null
+    proportion          double precision not null,
+    file_id             integer
 );
 
 --! create table project_submission
@@ -227,7 +229,8 @@ create table assignment
     proportion             double precision not null,
     releaser               integer          not null,
     releaser_type          varchar(255)     not null,
-    course_id              integer          not null
+    course_id              integer          not null,
+    file_id                integer
 );
 
 --! create table assignment_submission
@@ -252,8 +255,8 @@ create table material
     id          serial primary key,
     name        varchar(255) not null,
     description varchar(255) not null,
-    course_id            integer      not null,
-    file_id              integer
+    course_id   integer      not null,
+    file_id     integer
 );
 
 
