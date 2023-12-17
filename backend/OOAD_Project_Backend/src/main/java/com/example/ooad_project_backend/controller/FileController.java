@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.sql.Date;
+import java.io.*;
 
 @RestController
 @RequestMapping("/course")
@@ -25,8 +24,20 @@ public class FileController {
         return file == null ? Result.error() : Result.success(file);
     }
 
+
+    @GetMapping("/fileContent")
+    public Result getFileContent(Integer id) throws IOException {
+        FileInfo file = fileService.getFile(id);
+        byte[] fileData = file.getFileData();
+        File tmp = new File("");
+        OutputStream outputStream = new FileOutputStream(tmp);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+        bufferedOutputStream.write(fileData);
+        return Result.success(bufferedOutputStream);
+    }
+
     @GetMapping("/addMaterial")
-    public Result addMaterial(Integer courseId, String name,String description, MultipartFile file) {
+    public Result addMaterial(Integer courseId, String name, String description, MultipartFile file) {
         FileInfo fileInfo = new FileInfo();
         try {
             if (file != null) {
@@ -38,7 +49,7 @@ public class FileController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return fileService.addMaterial(courseId, name,description, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
+        return fileService.addMaterial(courseId, name, description, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
     }
 
     //这里的id是material的id
@@ -49,7 +60,7 @@ public class FileController {
 
     //传入新文件
     @GetMapping("/updateMaterial")
-    public Result updateMaterial(Integer courseId, Integer id, String name,String description, MultipartFile file) {
+    public Result updateMaterial(Integer courseId, Integer id, String name, String description, MultipartFile file) {
         FileInfo fileInfo = new FileInfo();
         try {
             if (file != null) {
@@ -61,10 +72,8 @@ public class FileController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return fileService.updateMaterial(courseId, id, name,description, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
+        return fileService.updateMaterial(courseId, id, name, description, fileInfo.getId()) ? Result.success() : Result.error("1", "提交失败");
     }
-
-
 
 
 }
