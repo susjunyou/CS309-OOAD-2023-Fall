@@ -163,14 +163,26 @@ create table project_submission
 
 create table team
 (
-    team_id           serial primary key,
-    team_name         varchar(255) not null,
-    leader            integer,
-    teacher_id        integer,
-    presentation_date date,
-    team_description  varchar(255),
-    team_size         integer      not null,
-    project_id        integer      not null
+    team_id                 serial primary key,
+    team_name               varchar(255) not null,
+    leader                  integer,
+    teacher_id              integer,
+    presentation_date       date,
+    team_description        varchar(255),
+    recruitment_information varchar(255),
+    team_size               integer      not null,
+    project_id              integer      not null
+);
+
+--! create team_peer_revision
+
+create table team_peer_revision
+(
+    team_peer_revision_id serial primary key,
+    team1                 integer not null, --! 评价的小组
+    team2                 integer not null, --! 被评价的小组
+    grade                 integer not null,
+    project_id            integer not null
 );
 
 --! create table team_project
