@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/course")
@@ -26,14 +27,11 @@ public class FileController {
 
 
     @GetMapping("/fileContent")
-    public Result getFileContent(Integer id) throws IOException {
+    public Result getFileContent(Integer id){
         FileInfo file = fileService.getFile(id);
         byte[] fileData = file.getFileData();
-        File tmp = new File("");
-        OutputStream outputStream = new FileOutputStream(tmp);
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-        bufferedOutputStream.write(fileData);
-        return Result.success(bufferedOutputStream);
+        String result = new String(fileData, StandardCharsets.UTF_8);
+        return Result.success(result);
     }
 
     @GetMapping("/addMaterial")
