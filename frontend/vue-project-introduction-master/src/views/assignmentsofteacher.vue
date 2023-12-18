@@ -143,6 +143,7 @@ export default {
       isPopupVisible: false,
       file:'',
       file2:'',
+      fileDownloadUrl: '',
     };
   },
   async created(){
@@ -251,6 +252,9 @@ export default {
               })
 
             }
+          }else{
+            localStorage.setItem('courseAssignmentLength'+course.title,0)
+
           }
         }).catch(error => {
           console.error('Error loading course assignments:', error);
@@ -280,6 +284,10 @@ export default {
               })
 
             }
+          }else {
+            localStorage.setItem('projectsLength'+course.title,0)
+
+            console.log("error")
           }
         }).catch(error => {
           console.error('Error loading course projects:', error);
