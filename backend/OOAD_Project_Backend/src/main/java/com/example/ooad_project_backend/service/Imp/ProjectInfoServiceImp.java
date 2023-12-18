@@ -18,7 +18,7 @@ public class ProjectInfoServiceImp implements ProjectInfoService {
 
     @Override
     public boolean addProject(String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                              Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam, Integer fileId) {
+                              Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam, Integer fileId) {
         return projectMapper.addProject(projectTitle, projectDescription, projectDeadline, projectStatus,
                 maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam, fileId);
     }
@@ -34,7 +34,7 @@ public class ProjectInfoServiceImp implements ProjectInfoService {
 
     @Override
     public boolean updateProject(Integer projectId, String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                                 Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam, Integer fileId) {
+                                 Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam, Integer fileId) {
 //        return projectMapper.updateProject(projectId, projectTitle, projectDescription, projectDeadline, projectStatus,
 //                maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam);
         Integer oldFileId = projectMapper.getProjectByProjectId(projectId).getFileId();
