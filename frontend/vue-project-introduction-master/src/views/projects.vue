@@ -120,6 +120,7 @@
             <el-card  class="assignment-card" @click.native="join(project)">
               <h3>{{ project.title }}</h3>
               <p>截止日期：{{ project.ddl }}</p>
+              <el-button type="text" @click.stop="descrip(project)">查看project信息</el-button>
             </el-card>
           </el-col>
         </el-row>
@@ -127,6 +128,12 @@
 
       </div>
       <!-- ... 其他代码 ... -->
+    </div>
+    <div v-if="isPopupVisible2" class="popup">
+      <div class="popup-content">
+        <p>{{ this.message }}</p>
+        <button @click="returnToprotects" class="sumbitt">关闭</button>
+      </div>
     </div>
     </div>
 </template>
@@ -215,6 +222,8 @@ export default {
       technologystack:"",
       programmingskill:"",
       intendedteammate:"",
+      isPopupVisible2: false,
+      message: '',
     };
   },
 
@@ -234,6 +243,13 @@ export default {
   },
 
   methods: {
+    descrip(project){
+      this.message=project.description,
+      this.isPopupVisible2=true;
+    },
+    returnToprotects(){
+      this.isPopupVisible2=false;
+    },
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;

@@ -291,39 +291,39 @@ export default {
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));  },
   methods: {
     getClass(){
-      var echarts=require('echarts');
-      var myChart = echarts.init(document.getElementById('main123'));
-      var option={
-        color:['red','yellow','blue','black'],
-        title:{
-          text:'成绩',
-          x:'center',
-        },
-        legend:{
-          orient:"vertical",
-          bottom:"bottom",
-          data:['attendance','assignment','project'],
-        },
-        tooltip:{},
-        series:[{
-          type:'pie',
-          data:[{
-            value:this.attendancegrade,
-            name:"attendance",
-          },{
-            value:this.assignmentgrade,
-            name:"assignment",
-          },{
-            value:this.projectgrade,
-            name:"project",
-          },
-          ],
-          label:{
-            fontSize:"16"
-          },
-        }],
-      };
-      myChart.setOption(option);
+      // var echarts=require('echarts');
+      // var myChart = echarts.init(document.getElementById('main123'));
+      // var option={
+      //   color:['red','yellow','blue','black'],
+      //   title:{
+      //     text:'成绩',
+      //     x:'center',
+      //   },
+      //   legend:{
+      //     orient:"vertical",
+      //     bottom:"bottom",
+      //     data:['attendance','assignment','project'],
+      //   },
+      //   tooltip:{},
+      //   series:[{
+      //     type:'pie',
+      //     data:[{
+      //       value:this.attendancegrade,
+      //       name:"attendance",
+      //     },{
+      //       value:this.assignmentgrade,
+      //       name:"assignment",
+      //     },{
+      //       value:this.projectgrade,
+      //       name:"project",
+      //     },
+      //     ],
+      //     label:{
+      //       fontSize:"16"
+      //     },
+      //   }],
+      // };
+      // myChart.setOption(option);
     },
     logoutClick() {
       this.$router.push('/Login');
@@ -507,7 +507,7 @@ export default {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: i + 1,
+          id: localStorage.getItem('courseid'+i),
           title: localStorage.getItem('courses' + i),
         });
       }

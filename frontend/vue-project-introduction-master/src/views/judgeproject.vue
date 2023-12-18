@@ -58,6 +58,7 @@ import shitshan from "@/components/shitshan.vue";
 export default {
   data() {
     return {
+
       courses: [],
       posts: [],
       materials: [],
