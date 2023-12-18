@@ -109,8 +109,12 @@
 
     <div v-if="hasJoinedTeam" style="display: flex;">
       <div style="width: 55%; padding-left: 10px;">
+
+
         <h2 style=" padding-right: 200px; ">我的队伍信息</h2>
-        <el-table :data="myTeam" style="width: 70%; padding-left: 10px; " border stripe>
+        <div style="height: 200px; overflow-y: auto; ">
+
+        <el-table :data="myTeam" style="width: 100%; padding-left: 10px; " border stripe >
           <el-table-column prop="name" label="队伍名称"></el-table-column>
           <el-table-column prop="description" label="队伍描述"></el-table-column>
           <el-table-column prop="teammembers" label="团队成员">
@@ -128,11 +132,56 @@
           <button class="sumbitt" @click="() => leaveTeam()">离开小队</button>
           <button class="sumbitt" @click="() => submitproject()">提交project</button>
         </div>
+        </div>
+        <div style="width: 100%; padding: 20px 10px;">
+          <h3>未评价小组</h3>
+          <div style="height: 200px; overflow-y: auto; border: 1px solid #ccc;">
+            <el-table :data="unratedteams" style="width: 100%; padding-left: 10px; " border stripe >
+              <el-table-column prop="name" label="队伍名称"></el-table-column>
+              <el-table-column prop="description" label="队伍描述"></el-table-column>
+              <el-table-column prop="teammembers" label="团队成员">
+                <template slot-scope="scope">
+                  <ul>
+                    <li v-for="member in scope.row.teammembers" :key="member.id">
+                      {{ member.name }}
+                    </li>
+                  </ul>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="180">
+                <template v-slot="scope">
+                  <!-- 只有当用户是领导时，显示评价按钮 -->
+                  <el-button v-if="isleader" type="success" size="small" @click="evaluateTeam(scope.row.id)">
+                    评价
+                  </el-button>
+                </template>
+              </el-table-column>
+              <!-- 添加更多列来显示团队信息 -->
+            </el-table>
+          </div>
+          <h3>已评价小组</h3>
+          <div style="height: 200px; overflow-y: auto; border: 1px solid #ccc;">
+            <el-table :data="ratedteams" style="width: 100%; padding-left: 10px; " border stripe >
+              <el-table-column prop="name" label="队伍名称"></el-table-column>
+              <el-table-column prop="description" label="队伍描述"></el-table-column>
+              <el-table-column prop="teammembers" label="团队成员">
+                <template slot-scope="scope">
+                  <ul>
+                    <li v-for="member in scope.row.teammembers" :key="member.id">
+                      {{ member.name }}
+                    </li>
+                  </ul>
+                </template>
+              </el-table-column>
+              <!-- 添加更多列来显示团队信息 -->
+            </el-table>
+          </div>
+        </div>
 
       </div>
       <div style="width: 45%; padding-left: 10px;">
         <h2>申请人信息</h2>
-        <div style="height: 300px; overflow-y: auto; border: 1px solid #ccc;">
+        <div style="height: 327px; overflow-y: auto; border: 1px solid #ccc;">
 
         <el-table :data="students" style="width: 100%">
           <!-- 其他列定义 -->
@@ -151,7 +200,7 @@
           </div>
         <div style="width: 100%; padding: 20px 10px;">
           <h2>邀请栏</h2>
-          <div style="height: 300px; overflow-y: auto; border: 1px solid #ccc;">
+          <div style="height: 327px; overflow-y: auto; border: 1px solid #ccc;">
             <el-table :data="studentsnotjointeam" style="width: 100%">
               <el-table-column prop="id" label="学号"></el-table-column>
               <el-table-column prop="name" label="姓名"></el-table-column>
@@ -234,6 +283,28 @@
         <button @click="returntocurrent" class="sumbitt">关闭</button>
       </div>
     </div>
+    <div v-if="isPopupVisible3" class="popup">
+      <div class="popup-content">
+        <p>打分成功！</p>
+        <button @click="returntocurrent23" class="sumbitt">关闭</button>
+      </div>
+    </div>
+    <el-dialog title="修改作业" :visible.sync="dialogVisible2">
+      <el-form :model="editAssignmentForm">
+        <el-form-item label="评价">
+          <el-input  type="textarea" v-model="editAssignmentForm.comment" :rows="20"></el-input>
+        </el-form-item>
+        <el-form-item label="打分">
+          <el-input-number v-model="editAssignmentForm.grade"></el-input-number>
+        </el-form-item>
+
+        <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible2 = false">取消</el-button>
+        <el-button type="primary" @click.stop="commitEdit">确定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -315,6 +386,7 @@ export default {
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
+      isleader:false,
       wenzi:'',
       // applier:[],
       requeststudent:[],
@@ -324,11 +396,20 @@ export default {
       currentcourseid:0,
       currentprojectid:0,
       isPopupVisible2:false,
+      isPopupVisible3:false,
       invitlist:[],//邀请他的的那个学生信息
       trueinvitslist:[],//邀请他的的队伍信息
       technologystack:'',
       programmingskill:'',
       intendedteammate:'',
+      ratedteams:[],
+      unratedteams:[],
+      dialogVisible2:false,
+      editAssignmentForm: {
+        comment: '',
+        grade: '',
+      },
+
     };
   },
 
@@ -348,12 +429,108 @@ export default {
     await this.getTeam();
     await this.loaddisplay();
     await this.loadbeinvited();
+    await this.getunratedteams();
+    await this.getratedteams();
+    console.log(this.isleader)
     this.myValue=localStorage.getItem("currentcourse")
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
     console.log(this.requeststudent);
   },
   methods: {
+  async  commitEdit(){
+    const res=await  this.$axios.get('/team/updateTeamPeerRevision',{
+      params: {
+        team1:localStorage.getItem("myteamid"),
+        team2:localStorage.getItem("ratingteamid"),
+        grade:this.editAssignmentForm.grade,
+        comment:this.editAssignmentForm.comment,
+        projectId:localStorage.getItem('currentprojectid'),
+      }
+
+    })
+    if(res.data.code === "0"){
+
+      this.dialogVisible2=false;
+      this.isPopupVisible3=true;
+    }
+    },
+  async  evaluateTeam(id){
+    localStorage.setItem("ratingteamid",id);
+this.dialogVisible2=true;
+    },
+   async getratedteams(){
+     this.ratedteams=[];
+    const res=await  this.$axios.get('/team/getAlreadyPeerGradeTeam',{
+        params: {
+          teamId: Number(localStorage.getItem("myteamid")),
+          projectId:localStorage.getItem('currentprojectid'),
+        }
+      })
+     console.log(res.data);
+     if(res.data.code === "0"){
+       for (let i = 0; i < res.data.data.length; i++) {
+         const team = res.data.data[i];
+         const res1 = await this.$axios.get('/team/findTeamMembers', {
+           params: {
+             teamId: team.teamId
+           }
+         });
+         if (res1.data.code === "0") {
+           this.ratedteams.push({
+             id: team.teamId,
+             name: team.teamName,
+             description: team.teamDescription,
+             leader: team.leader,
+             projectid: team.projectId,
+             teamsize: team.teamSize,
+             teammembers: res1.data.data,
+             currentmembercount: res1.data.data ? res1.data.data.length : 0,
+           });
+         }
+       }
+     }
+     console.log(this.ratedteams);
+    },
+    async getunratedteams(){
+     this.unratedteams=[];
+     console.log(localStorage.getItem("myteamid"));
+     console.log(localStorage.getItem('currentprojectid'));
+      const res=await  this.$axios.get('/team/getNotYetPeerGradeTeam',{
+        params: {
+          teamId: Number(localStorage.getItem("myteamid")),
+          projectId:localStorage.getItem('currentprojectid'),
+        }
+      })
+      console.log(res.data);
+
+      if(res.data.code === "0"){
+        for (let i = 0; i < res.data.data.length; i++) {
+          const team = res.data.data[i];
+          const res1 = await this.$axios.get('/team/findTeamMembers', {
+            params: {
+              teamId: team.teamId
+            }
+          });
+          if (res1.data.code === "0") {
+            this.unratedteams.push({
+              id: team.teamId,
+              name: team.teamName,
+              description: team.teamDescription,
+              leader: team.leader,
+              projectid: team.projectId,
+              teamsize: team.teamSize,
+              teammembers: res1.data.data,
+              currentmembercount: res1.data.data ? res1.data.data.length : 0,
+            });
+          }
+        }
+      }
+      console.log(this.unratedteams);
+    },
+
+
+
     invite(student){
       // if(student.invited==true){
       //   return
@@ -370,7 +547,6 @@ export default {
         // console.log('ddasdawdadwdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdaw');
         if(res.data.code === "0"){
           this.isPopupVisible2=true;
-         student.invited=true;
         }else {
         student.invited=true;
           console.log("error")
@@ -423,6 +599,12 @@ export default {
     },
     returntocurrent(){
       this.isPopupVisible2=false;
+    },
+   async returntocurrent23(){
+
+    await this.getunratedteams()
+     await this.getratedteams()
+      this.isPopupVisible3=false;
     },
     update(){
       this.dialogVisible=true;
@@ -927,6 +1109,11 @@ export default {
                   currentmembercount: res1.data.data ? res1.data.data.length : 0,
                 });
                 this.hasJoinedTeam = true;
+                console.log(isMember);
+                console.log(team.leader);
+                if(team.leader==localStorage.getItem('id')){
+                  this.isleader=true;
+                }
                 console.log(this.myTeam);
                 localStorage.setItem("myteamid", team.teamId);
               }

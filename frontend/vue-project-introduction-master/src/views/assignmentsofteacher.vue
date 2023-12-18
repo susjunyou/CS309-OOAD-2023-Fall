@@ -84,7 +84,7 @@
         <el-input type="hidden" v-model="editAssignmentForm.courseId"></el-input>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="dialogVisible2 = false">取消</el-button>
         <el-button type="primary" @click.stop="commitEdit">确定</el-button>
       </div>
     </el-dialog>

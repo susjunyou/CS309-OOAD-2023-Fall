@@ -7,8 +7,9 @@
         <!-- 左侧部分 -->
         <div class="left-panel">
           <!-- 已提交学生信息 -->
-          <div class="submitted-students">
+          <div class="submitted-students" >
             <h3>所有小组信息</h3>
+            <div style="overflow-y: auto">
             <el-table
                 :data="teams"
                 border
@@ -66,6 +67,7 @@
 
               <!-- Other columns as needed -->
             </el-table>
+            </div>
             <el-button type="success" size="small" @click="update4()" class="sumbitt">添加小组</el-button>
             <el-button type="success" size="small" @click="dialogVisible3 = true" class="sumbitt">批量添加小组</el-button>
 
