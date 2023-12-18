@@ -25,4 +25,10 @@ public interface TeamPeerRevisionMapper extends BaseMapper<TeamPeerRevisionInfo>
     @Select("select * from team_peer_revision where team1 = #{team1} and team2 = #{team2} and project_id = #{projectId}")
     TeamPeerRevisionInfo findTeamRevisionByTeam1AndTeam2(Integer team1, Integer team2, Integer projectId);
 
+
+    @Select("select team2 from team_peer_revision where team1 = #{teamId} and project_id = #{projectId}")
+    List<Integer> findAlreadyPeerGradeTeam(Integer teamId, Integer projectId);
+
+
+
 }

@@ -165,8 +165,27 @@ public class TeamController {
 
     @GetMapping("/updateTeamPeerRevision")
     public Result updateTeamPeerRevision(TeamPeerRevisionInfo teamPeerRevisionInfo) {
-        return teamInfoService.updateTeamPeerRevision(teamPeerRevisionInfo)? Result.success() : Result.error();
+        return teamInfoService.updateTeamPeerRevision(teamPeerRevisionInfo) ? Result.success() : Result.error();
     }
 
+    @GetMapping("/getAlreadyPeerGradeTeam")
+    public Result getAlreadyPeerGradeTeam(Integer teamId, Integer projectId) {
+        List<TeamInfo> teamInfos = teamInfoService.findAlreadyPeerGradeTeam(teamId, projectId);
+        if (teamInfos.size() == 0) {
+            return Result.error("1", "no teams");
+        } else {
+            return Result.success(teamInfos);
+        }
+    }
+
+    @GetMapping("/getNotYetPeerGradeTeam")
+    public Result getNotYetPeerGradeTeam(Integer teamId, Integer projectId) {
+        List<TeamInfo> teamInfos = teamInfoService.findNotYetPeerGradeTeam(teamId, projectId);
+        if (teamInfos.size() == 0) {
+            return Result.error("1", "no teams");
+        } else {
+            return Result.success(teamInfos);
+        }
+    }
 
 }

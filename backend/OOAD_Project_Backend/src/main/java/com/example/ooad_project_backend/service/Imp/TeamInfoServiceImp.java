@@ -271,5 +271,24 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         }
     }
 
+    @Override
+    public List<TeamInfo> findAlreadyPeerGradeTeam(Integer teamId, Integer projectId) {
+        List<Integer> teamIds = teamPeerRevisionMapper.findAlreadyPeerGradeTeam(teamId, projectId);
+        List<TeamInfo> teamInfos = new ArrayList<>();
+        for (Integer teamId1 : teamIds) {
+            teamInfos.add(teamMapper.findTeamInfoByTeamId(teamId1));
+        }
+        return teamInfos;
+    }
+
+    @Override
+    public List<TeamInfo> findNotYetPeerGradeTeam(Integer teamId, Integer projectId) {
+        List<Integer> teamIds = teamPeerRevisionMapper.findAlreadyPeerGradeTeam(teamId, projectId);
+        List<TeamInfo> teamInfos = teamMapper.findTeamInfoByProjectId(projectId);
+        teamInfos.removeIf(teamInfo -> teamIds.contains(teamInfo.getTeamId()));
+        teamInfos.removeIf(teamInfo -> teamInfo.getTeamId().equals(teamId));
+        return teamInfos;
+    }
+
 
 }

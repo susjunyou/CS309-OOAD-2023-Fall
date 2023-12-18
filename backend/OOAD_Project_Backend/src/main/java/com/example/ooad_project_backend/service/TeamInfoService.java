@@ -54,4 +54,8 @@ public interface TeamInfoService extends IService<TeamInfo> {
     List<TeamPeerRevisionInfo> findTeamPeerRevision(Integer teamId, Integer projectId);
 
     boolean updateTeamPeerRevision(TeamPeerRevisionInfo teamPeerRevisionInfo);
+
+    List<TeamInfo> findAlreadyPeerGradeTeam(Integer teamId, Integer projectId);
+
+    List<TeamInfo> findNotYetPeerGradeTeam(Integer teamId, Integer projectId);
 }
