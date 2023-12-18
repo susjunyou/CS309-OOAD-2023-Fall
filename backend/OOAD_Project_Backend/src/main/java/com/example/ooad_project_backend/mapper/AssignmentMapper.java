@@ -23,10 +23,10 @@ public interface AssignmentMapper extends BaseMapper<AssignmentInfo> {
     List<AssignmentInfo> findAssignmentInfoByStudentIdAndCourseId(Integer studentId, Integer courseId);
 
     @Delete("delete from file where id = #{fileId}")
-    boolean deleteFileById(Integer fileId);
+    void deleteFileById(Integer fileId);
 
     @Insert("insert into assignment (assignment_title, assignment_description, assignment_deadline, assignment_status, max_score, proportion, releaser, releaser_type, course_id,file_id)" +
-            " values (#{assignmentTitle}, #{assignmentDescription}, #{assignmentDeadline}, #{assignmentStatus}, #{maxScore}, #{proportion}, #{releaser}, #{releaserType}, #{courseId}), #{fileId} ")
+            " values (#{assignmentTitle}, #{assignmentDescription}, #{assignmentDeadline}, #{assignmentStatus}, #{maxScore}, #{proportion}, #{releaser}, #{releaserType}, #{courseId}, #{fileId}) ")
     boolean addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
                           Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId,Integer fileId);
 
