@@ -8,4 +8,11 @@ public interface FileService extends IService<FileInfo> {
     FileInfo insertFile(FileInfo fileInfo);
 
     FileInfo getFile(Integer id);
+
+    boolean addMaterial(Integer courseId, String name,String description, Integer fileId);
+
+    boolean deleteMaterial(Integer courseId, Integer id);
+
+    boolean updateMaterial(Integer courseId, Integer id, String name,String description, Integer fileId);
+
 }

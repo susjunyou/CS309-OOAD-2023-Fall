@@ -24,4 +24,30 @@ public class FileServiceImp extends ServiceImpl<FileMapper, FileInfo> implements
         return fileMapper.getFile(id);
     }
 
+    @Override
+    public boolean addMaterial(Integer courseId, String name, String description, Integer fileId) {
+        return fileMapper.addMaterial(courseId, name, description, fileId);
+    }
+
+    @Override
+    public boolean deleteMaterial(Integer courseId, Integer id) {
+        //先删除文件
+        FileInfo fileInfo = fileMapper.getFile(id);
+        fileMapper.deleteById(id);
+        return fileMapper.deleteMaterial(courseId, id);
+    }
+
+
+    //这里的id是material的id
+    @Override
+    public boolean updateMaterial(Integer courseId, Integer id, String name,String description, Integer fileId) {
+        Integer fileId1=fileMapper.getFileIdByMaterialId(id);
+        //删除原来的file
+        fileMapper.deleteById(fileId1);
+        //更新material
+        return fileMapper.updateMaterial(courseId, id, name, description, fileId);
+
+
+    }
+
 }

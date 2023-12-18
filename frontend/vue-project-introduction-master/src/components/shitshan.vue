@@ -95,7 +95,7 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-        <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+        <el-menu-item index="1" @click="this.$router.push('/teacherhomepage')">Home</el-menu-item>
         <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
         <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
         <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
@@ -377,7 +377,7 @@ export default {
       this.showSaDialog = true;
     },
     studentClick() {
-      this.$router.push('/members');
+      this.$router.push('/membersofteacher');
     },
     async loadStudentsAndSA(){
       this.saInfos = [];

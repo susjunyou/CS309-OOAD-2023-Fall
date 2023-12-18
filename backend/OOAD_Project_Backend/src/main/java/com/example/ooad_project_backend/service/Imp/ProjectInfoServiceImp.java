@@ -18,21 +18,31 @@ public class ProjectInfoServiceImp implements ProjectInfoService {
 
     @Override
     public boolean addProject(String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                              Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam) {
+                              Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam, Integer fileId) {
         return projectMapper.addProject(projectTitle, projectDescription, projectDeadline, projectStatus,
-                maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam);
+                maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam, fileId);
     }
 
     @Override
     public boolean deleteProject(Integer projectId) {
+        Integer fileId = projectMapper.getProjectByProjectId(projectId).getFileId();
+        if (fileId != null) {
+            projectMapper.deleteFileById(fileId);
+        }
         return projectMapper.deleteProject(projectId);
     }
 
     @Override
     public boolean updateProject(Integer projectId, String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                                 Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam) {
+                                 Integer maxScore, Double proportion, String releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam, Integer fileId) {
+//        return projectMapper.updateProject(projectId, projectTitle, projectDescription, projectDeadline, projectStatus,
+//                maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam);
+        Integer oldFileId = projectMapper.getProjectByProjectId(projectId).getFileId();
+        if (oldFileId != null) {
+            projectMapper.deleteFileById(oldFileId);
+        }
         return projectMapper.updateProject(projectId, projectTitle, projectDescription, projectDeadline, projectStatus,
-                maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam);
+                maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam, fileId);
     }
 
     @Override

@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
-import com.example.ooad_project_backend.mapper.CourseDetailsMapper;
-import com.example.ooad_project_backend.mapper.ProjectInfoMapper;
-import com.example.ooad_project_backend.mapper.StudentInfoMapper;
-import com.example.ooad_project_backend.mapper.TeamMapper;
+import com.example.ooad_project_backend.entity.TeamPeerRevisionInfo;
+import com.example.ooad_project_backend.mapper.*;
 import com.example.ooad_project_backend.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +28,9 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Autowired
     private CourseDetailsMapper courseDetailsMapper;
+
+    @Autowired
+    private TeamPeerRevisionMapper teamPeerRevisionMapper;
 
     @Override
     public boolean updateTeamInfo(TeamInfo teamInfo) {
@@ -252,4 +253,23 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
         teamMapper.deletePresentation(teamId);
         return true;
     }
+
+    @Override
+    public List<TeamPeerRevisionInfo> findTeamPeerRevision(Integer teamId, Integer projectId) {
+        return teamPeerRevisionMapper.findOtherTeamGrade(teamId, projectId);
+    }
+
+    @Override
+    public boolean updateTeamPeerRevision(TeamPeerRevisionInfo teamPeerRevisionInfo) {
+        TeamPeerRevisionInfo teamPeerRevisionInfo1 = teamPeerRevisionMapper.findTeamRevisionByTeam1AndTeam2(teamPeerRevisionInfo.getTeam1(), teamPeerRevisionInfo.getTeam2(), teamPeerRevisionInfo.getProjectId());
+        if (teamPeerRevisionInfo1 != null) {
+            teamPeerRevisionMapper.updateTeamPeerRevision(teamPeerRevisionInfo);
+            return true;
+        } else {
+            teamPeerRevisionMapper.insertTeamPeerRevision(teamPeerRevisionInfo);
+            return true;
+        }
+    }
+
+
 }

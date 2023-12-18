@@ -31,6 +31,8 @@ public class TeamInfo implements Serializable {
 
     private List<Integer> teamMembers;
 
+    private String recruitmentInformation;
+
     private Integer teacherId;
 
     private Date presentationDate;

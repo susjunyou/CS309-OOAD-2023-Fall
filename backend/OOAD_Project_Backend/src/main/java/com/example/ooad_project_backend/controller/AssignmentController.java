@@ -3,12 +3,16 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.AssignmentInfo;
+import com.example.ooad_project_backend.entity.FileInfo;
 import com.example.ooad_project_backend.enums.StatusType;
 import com.example.ooad_project_backend.enums.UserType;
 import com.example.ooad_project_backend.service.AssignmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;
+import com.example.ooad_project_backend.service.FileService;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
@@ -21,6 +25,9 @@ public class AssignmentController {
 //如果找不到某个方法大概率写在GradeController里面了
     @Autowired
     private AssignmentInfoService assignmentInfoService;
+
+    @Autowired
+    private FileService fileService;
 
     //提交作业部分在StudentController里面
 
@@ -37,9 +44,20 @@ public class AssignmentController {
 
     @PostMapping("/addAssignment")
     public Result addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
-                                Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId) {
+                                Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, MultipartFile file) {
+        FileInfo fileInfo = new FileInfo();
+        try {
+            if (file != null) {
+                fileInfo.setFileName(file.getOriginalFilename());
+                fileInfo.setFileType(file.getContentType());
+                fileInfo.setFileData(file.getBytes());
+                fileInfo = fileService.insertFile(fileInfo);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         boolean flag = assignmentInfoService.addAssignment(assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
-                maxScore, proportion, releaser, releaserType, courseId);
+                maxScore, proportion, releaser, releaserType, courseId, fileInfo.getId());
         if (flag) {
             return Result.success();
         } else {
@@ -49,9 +67,28 @@ public class AssignmentController {
 
     @GetMapping("/updateAssignmentByAssignmentId")
     public Result updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
-                                   Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId) {
+                                   Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, MultipartFile file) {
+//        boolean flag = assignmentInfoService.updateAssignment(assignmentId, assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
+//                maxScore, proportion, releaser, releaserType, courseId);
+//        if (flag) {
+//            return Result.success();
+//        } else {
+//            return Result.error("1", "更新失败");
+//        }
+
+        FileInfo fileInfo = new FileInfo();
+        try {
+            if (file != null) {
+                fileInfo.setFileName(file.getOriginalFilename());
+                fileInfo.setFileType(file.getContentType());
+                fileInfo.setFileData(file.getBytes());
+                fileInfo = fileService.insertFile(fileInfo);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         boolean flag = assignmentInfoService.updateAssignment(assignmentId, assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,
-                maxScore, proportion, releaser, releaserType, courseId);
+                maxScore, proportion, releaser, releaserType, courseId, fileInfo.getId());
         if (flag) {
             return Result.success();
         } else {
@@ -70,7 +107,6 @@ public class AssignmentController {
     }
 
 
-
     //这里返回的是assignment_student表里面的信息，包括了作业的信息和学生的信息
     @GetMapping("/getAssignmentInfoByStudentIdAndCourseId")
     public Result getAssignmentInfoByStudentIdAndCourseId(Integer studentId, Integer courseId) {
@@ -81,7 +117,6 @@ public class AssignmentController {
             return Result.success(assignmentInfoList);
         }
     }
-
 
 
 }

@@ -4,18 +4,18 @@
       <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
       </el-col>
-<!--      <el-col :span="5">-->
-<!--        <el-dropdown trigger="click">-->
-<!--          <span class="el-dropdown-link">-->
-<!--            课程列表<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--          </span>-->
-<!--          <el-dropdown-menu slot="dropdown">-->
-<!--            <el-dropdown-item v-for="course in courses" :key="course.id" @click.native="goTo(course)">-->
-<!--              {{ course.title }}-->
-<!--            </el-dropdown-item>-->
-<!--          </el-dropdown-menu>-->
-<!--        </el-dropdown>-->
-<!--      </el-col>-->
+      <el-col :span="5">
+        <el-dropdown trigger="click">
+          <span class="el-dropdown-link">
+            课程列表<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="course in courses" :key="course.id" @click.native="goTo(course)">
+              {{ course.title }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
 
 
       <el-col :span="4">
@@ -27,10 +27,12 @@
           <div class="user-profile">
             <img src="../assets/人脸.png" alt="个人信息" class="avatar">
             <h3>姓名：{{ this.name }}</h3>
-            <p>id：{{ this.id }}</p>
+            <p>学号：{{ this.id }}</p>
             <p>邮箱：{{ this.email }}</p>
-
+            <p>专业：{{ this.major }}</p>
             <el-menu>
+              <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
+              <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
               <el-menu-item index="3" @click="logoutClick">LogOut</el-menu-item>
             </el-menu>
           </div>
@@ -39,13 +41,63 @@
       </el-col>
 
     </el-row>
+    <el-dialog
+        :visible.sync="dialogVisible"
+        title="Add A New Record"
+        width="40%"
+
+    >
+      <el-form
+          ref="editForm"
+          :model="edit"
+          :rules="rules"
+          label-width="auto"
+          label-position="right"
+          size="default"
+
+
+      >
+        <el-form-item label="id" prop="e_id">
+          <el-input v-model="edit.e_id" disabled="disabled"/>
+        </el-form-item>
+
+        <el-form-item label="email" prop="e_email">
+          <el-input v-model="edit.e_email"/>
+        </el-form-item>
+
+        <el-form-item label="phoneNumber" prop="e_phoneNumber">
+          <el-input v-model="edit.e_phoneNumber"/>
+        </el-form-item>
+
+        <el-form-item label="selfIntroduction" prop="e_selfIntroduction">
+          <el-input v-model="edit.e_selfIntroduction"/>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="commitUpdate()">Submit</el-button>
+        </el-form-item>
+
+      </el-form>
+    </el-dialog>
 
     <el-row class="main-content">
+      <el-menu
+          class="course-navbar"
+          mode="vertical"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+        <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+        <el-menu-item index="2" @click="go('sacourse')">Post</el-menu-item>
+        <el-menu-item index="3" @click="go('materialssa')">Materials</el-menu-item>
+        <el-menu-item index="4" @click="go('assignmentssa')">Assignments</el-menu-item>
+        <el-menu-item index="5" @click="go('projectssa')">Projects</el-menu-item>
+        <el-menu-item index="8" @click="go('teamssa')">Teams</el-menu-item>
+        <el-menu-item index="7" @click="studentClick">members</el-menu-item>
+        <el-menu-item index="6" @click="go('gradebooksa')">Gradebook</el-menu-item>
+      </el-menu>
 
-      <slot>
-
-      </slot>
-
+      <slot></slot>
     </el-row>
 
 
@@ -102,6 +154,7 @@ export default {
         e_id: "",
         e_email:"",
         e_phoneNumber:"",
+        e_selfIntroduction:""
       },
       // 假设每个DDL是一个对象，包含日期和标题
       ddls: [
@@ -115,6 +168,7 @@ export default {
       projects: [],
       materials: [],
       myValue: '',
+      major: '',
       id :0,
       email:'',
       name:'',
@@ -127,7 +181,6 @@ export default {
       projectid:0,
       sid:0,
       saInfos: [],
-
       studentInfos: [],
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
@@ -135,21 +188,128 @@ export default {
       isPopupVisible: false, // 控制弹窗显示的布尔值
     };
   },
+  name: 'CourseNavbar',
 
 
   async created() {
     this.id = localStorage.getItem('id');
     this.name = localStorage.getItem('name');
+    this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
-
-    //
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    // // await this.loadStudentsAndSA();
-    // this.myValue=localStorage.getItem("currentcourse");
-    // this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
+    await this.loadStudentsAndSA();
+    this.myValue=localStorage.getItem("currentcourse");
+    this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
 
   },
   methods: {
+    update(){
+      this.dialogVisible=true;
+      this.edit.e_id = this.id;
+      this.edit.e_email = this.email;
+      this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
+      this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
+
+    },
+    commitUpdate(){
+      //this.id = this.edit.e_id;
+      this.email = this.edit.e_email;
+      localStorage.setItem('id',this.edit.e_id);
+      localStorage.setItem('email',this.edit.e_email);
+      localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
+      localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+      this.dialogVisible = false;
+      this.$axios.get('/student/updateStudentDetails',{
+        params: {
+          id:localStorage.getItem('id'),
+          email:localStorage.getItem('email'),
+          phoneNumber:localStorage.getItem('phoneNumber'),
+          selfIntroduction:localStorage.getItem('selfIntroduction')
+        }
+      }).then(res => {
+        console.log('dd');
+        if(res.data.code === "0"){
+          this.successMessage = '个人资料修改成功';
+          this.errorMessage = '';
+          localStorage.setItem('id',this.edit.e_id);
+          localStorage.setItem('email',this.edit.e_email);
+          localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
+          localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
+          console.log('sss');
+        }else {
+          console.log("error")
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    saClick() {
+      this.showSaDialog = true;
+    },
+    studentClick() {
+      this.$router.push('/memberssa');
+    },
+    async loadStudentsAndSA(){
+      this.saInfos = [];
+      this.studentInfos = [];
+      await this.$axios.get('/course/getAllSA', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.saInfos.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+      //加载学生信息
+      await this.$axios.get('/course/getAllStudents', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid')
+        }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.studentInfos.push({
+              email: res.data.data[i].email,
+              name: res.data.data[i].name,
+              id: res.data.data[i].id,
+              major: res.data.data[i].major,
+              selfIntroduction: res.data.data[i].selfIntroduction,
+            })
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
+
+    },
+    logoutClick() {
+      this.$router.push('/Login');
+      localStorage.clear();
+    },
+    goTo(route) {
+// 假设使用 Vue Router 进行导航    goTo(route) {
+// 假设使用 Vue Router 进行导航
+      localStorage.setItem("currentcourseid",route.id);
+      localStorage.setItem("currentcourse",route.title);
+      this.myValue=route.title;
+      this.loadLocalStorageData();
+      this.loadStudentsAndSA();
+    },
+    go(route) {
+      this.$router.push(route);
+    },
+
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
@@ -215,12 +375,6 @@ export default {
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
-    },
-
-
-    logoutClick() {
-      this.$router.push('/Login');
-      localStorage.clear();
     },
 
   },

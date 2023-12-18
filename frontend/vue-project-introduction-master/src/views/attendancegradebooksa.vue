@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 你的其他内容 -->
-    <shitshan>
+    <shitshansa>
       <div class="attendance-list">
         <hr class="separator">
-        <h1>项目成绩</h1>
-        <h1>{{this.currentprojecttitle}}</h1>
-        <h2>{{this.currentprojectddl}}</h2>
+        <h1>出勤记录</h1>
+        <h1>{{this.currentattendanceid}}</h1>
+        <h2>{{this.currentattendanceData}}</h2>
         <ul>
           <li>
             <table>
@@ -15,15 +15,13 @@
                 <th>名字</th>
                 <th>分数</th>
                 <th>比例</th>
-                <th>备注</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="projectgrade in projectgrades" :key="projectgrade.grade">
-                <td>{{ projectgrade.name }}</td>
-                <td>{{ projectgrade.grade }}</td>
-                <td>{{ projectgrade.proportion }}</td>
-                <td>{{ projectgrade.gradeDescription}}</td>
+              <tr v-for="attendancegrade in attendancegrades" :key="attendancegrade.grade">
+                <td>{{ attendancegrade.name }}</td>
+                <td>{{ attendancegrade.grade }}</td>
+                <td>{{ attendancegrade.proportion }}</td>
               </tr>
               </tbody>
             </table>
@@ -32,12 +30,12 @@
         <div id="main123" style="width: 100%; height:400px"></div>
         <h1>底部</h1>
       </div>
-    </shitshan>
+    </shitshansa>
     <!-- 你的其他内容 -->
   </div>
 </template>
 <script setup>
-import shitshan from "@/components/shitshan.vue";
+import shitshansa from "@/components/shitshansa.vue";
 export default {
   data() {
     return {
@@ -47,27 +45,22 @@ export default {
       assignments: [],
       projects: [],
       ddls: [],
-      currentprojectid: '',
-      currentprojecttitle: '',
-      currentprojectddl: '',
+      currentattendanceid:'',
+      currentattendanceData:'',
       studentInfos:[],
-      projectgrades:[],
-      num60:'',
-      num70:'',
-      num80:'',
-      num90:'',
-      num100:'',
+      attendancegrades:[],
+      numyi:'',
+      numwei:'',
     };
   },
   async created(){
-    this.currentprojectid=localStorage.getItem('currentprojectid');
-    this.currentprojecttitle=localStorage.getItem('currentprojecttitle');
-    this.currentprojectddl=localStorage.getItem('currentprojectddl');
+    this.currentattendanceid =localStorage.getItem('currentattendanceid');
+    this.currentattendanceData=localStorage.getItem('currentattendanceDate');
     await this.loadLocalStorageData();
-    await this.getClass();
+    // await this.getClass();
   },
   components: {
-    shitshan
+    shitshansa
   },
   methods: {
     // getClass(){
@@ -86,7 +79,7 @@ export default {
     //     },
     //     tooltip:{},
     //     xAxis:{
-    //       data:['<60','60~69','70~79','80~89','>=90'],
+    //       data:['已签','未签'],
     //       axisTick:{
     //         alignWithLabel:true,
     //         show:true,
@@ -97,7 +90,7 @@ export default {
     //     series:[{
     //       name:'人数',
     //       type:'bar',
-    //       data:[this.num60,this.num70,this.num80,this.num90,this.num100],
+    //       data:[this.numyi,this.numwei],
     //       label:{
     //         show: true,
     //         position:'outside',
@@ -115,10 +108,10 @@ export default {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: localStorage.getItem('coursesid' + i),
-          title: localStorage.getItem('courses' + i),
-          description: localStorage.getItem('courseDescription' + i),
-          code: localStorage.getItem('coursecode' +i),
+          id: localStorage.getItem('coursesidsa' + i),
+          title: localStorage.getItem('coursessa' + i),
+          description: localStorage.getItem('courseDescriptionsa' +localStorage.getItem('coursesidsa' + i)),
+          code: localStorage.getItem('coursecodesa' +i),
         });
       }
       this.posts=[];
@@ -193,42 +186,39 @@ export default {
       }).catch(error => {
         console.error('Error loading sainfos:', error);
       });
-      this.projectgrades=[];
-      this.num60=0;
-      this.num70=0;
-      this.num80=0;
-      this.num90=0;
-      this.num100=0;
-      for(let i = 0; i < this.studentInfos.length; i++) {
-        await this.$axios.get('/grade/getProjectGrade',{
+      this.attendancegrades=[];
+      this.numyi=0;
+      this.numwei=0;
+      console.log(this.studentInfos.length)
+      for (let i = 0; i < this.studentInfos.length;i++){
+        await this.$axios.get('/grade/getAttendanceGrade',{
           params:{
             studentId:this.studentInfos[i].id,
-            projectId:localStorage.getItem('currentprojectid'),
+            attendanceId:localStorage.getItem('currentattendanceid')
           }
         }).then((res)=>{
           if(res.data.code==="0"){
-            this.projectgrades.push({
-              name:this.studentInfos[i].name,
-              grade:res.data.data.grade+'/'+res.data.data.maxScore,
-              gradeDescription:res.data.data.gradeDescription,
-              proportion:res.data.data.proportion,
-            })
-            if(res.data.data.grade<60){
-              this.num60+=1;
-            }else if(res.data.data.grade>=60 && res.data.data.grade<70){
-              this.num70+=1;
-            }else if(res.data.data.grade>=70 && res.data.data.grade<80){
-              this.num80+=1;
-            }else if(res.data.data.grade>=80 && res.data.data.grade<90){
-              this.num90+=1;
-            }else if(res.data.data.grade>=90){
-              this.num100+=1;
+            if(res.data.data.attended){
+              this.attendancegrades.push({
+                name:this.studentInfos[i].name,
+                grade:100+'/'+res.data.data.maxScore,
+                proportion:res.data.data.proportion,
+              })
+              this.numyi+=1;
+            }else {
+              this.attendancegrades.push({
+                name:this.studentInfos[i].name,
+                grade:0+'/'+res.data.data.maxScore,
+                proportion:res.data.data.proportion,
+              })
+              this.numwei+=1;
             }
           }
-        }).catch(err=>{
-          console.error(err)
+        }).catch(error=>{
+          console.log(error)
         })
       }
+
     },
 
   }

@@ -121,6 +121,7 @@ export default {
             console.log(localStorage.getItem('phoneNumber'));
 
             this.getCourses();
+            this.getSacourse();
             this.$router.push('/StudentHomePage');
           } else {
             this.isLoginClick = true;
@@ -217,6 +218,38 @@ export default {
             console.log(err);
           });
     },
+
+   async getSacourse(){
+
+      const res= await this.$axios.get('/SA/getMySACourses',{
+          params:{
+            studentId:localStorage.getItem('id')
+          }
+        })
+     console.log(res.data.data);
+              if (res.data.code === "0") {
+
+                localStorage.setItem('lengthsa',res.data.data.length);
+                console.log(localStorage.getItem('lengthsa'));
+                for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+                  localStorage.setItem('coursesidsa'+i,res.data.data[i].courseId);
+                  localStorage.setItem('coursessa'+i,res.data.data[i].courseName);
+                  localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+                  localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+                  localStorage.setItem('coursecodesa'+i,res.data.data[i].courseCode);
+                  localStorage.setItem('courseDescriptionsa'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+                  localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+                }
+                console.log(localStorage.getItem('courses0'));
+
+              }else {
+                localStorage.setItem('lengthsa',0);
+              }
+
+
+
+    },
+
     getCoursesofteacher() {
       this.$axios.get('/teacher/getCourseInfo',{
         params:{

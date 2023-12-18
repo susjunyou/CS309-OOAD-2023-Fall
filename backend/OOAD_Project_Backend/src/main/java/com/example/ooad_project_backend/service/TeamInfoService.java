@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.ooad_project_backend.entity.JoinTeamInfo;
 import com.example.ooad_project_backend.entity.StudentInfo;
 import com.example.ooad_project_backend.entity.TeamInfo;
+import com.example.ooad_project_backend.entity.TeamPeerRevisionInfo;
 
 import java.sql.Date;
 import java.util.List;
@@ -30,7 +31,7 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     List<TeamInfo> findAllTeamInfoByStudentId(Integer studentId);
 
-    boolean requestJoinTeam(Integer teamId, Integer studentId,Integer projectId);
+    boolean requestJoinTeam(Integer teamId, Integer studentId, Integer projectId);
 
     List<JoinTeamInfo> getRequestsJoinTeam(Integer teamId);
 
@@ -38,17 +39,19 @@ public interface TeamInfoService extends IService<TeamInfo> {
 
     boolean manageInvite(Integer id, boolean isAccepted);
 
-    boolean inviteStudent(Integer teamId, Integer studentId,Integer projectId);
+    boolean inviteStudent(Integer teamId, Integer studentId, Integer projectId);
 
     List<JoinTeamInfo> getInvitesJoinTeam(Integer studentId);
 
-    boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate,Integer teacherId);
+    boolean updatePresentationDateByTeamId(Integer teamId, Date presentationDate, Integer teacherId);
 
-    List<StudentInfo> findStudentNotJoinTeam(Integer projectId,Integer courseId);
+    List<StudentInfo> findStudentNotJoinTeam(Integer projectId, Integer courseId);
 
-    boolean addPresentation(Integer teamId, Date presentationDate,Integer teacherId);
+    boolean addPresentation(Integer teamId, Date presentationDate, Integer teacherId);
 
     boolean deletePresentation(Integer teamId);
 
+    List<TeamPeerRevisionInfo> findTeamPeerRevision(Integer teamId, Integer projectId);
 
+    boolean updateTeamPeerRevision(TeamPeerRevisionInfo teamPeerRevisionInfo);
 }

@@ -16,11 +16,15 @@ public class MaterialInfo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "material_id", type = IdType.AUTO)
-    private long materialId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private long id;
 
-    private String materialName;
+    private String name;
 
-    private String materialDescription;
+    private String description;
+
+    private Integer courseId;
+
+    private Integer fileId;
 
 }
