@@ -111,6 +111,14 @@
         <button @click="close">关闭</button>
       </div>
     </div>
+
+
+    <div v-if="isPopupVisible2" class="popup">
+      <div class="popup-content">
+        <p>请先登录您的账号！</p>
+        <button @click="yes">返回登录</button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -181,6 +189,7 @@ export default {
       programmingskill:'',
       intendedteammate:'',
       isPopupVisible:false,
+      isPopupVisible2:false,
       postssa:[],
     };
   },
@@ -251,6 +260,7 @@ export default {
             courseId: course.id
           }
         }).then((res) => {
+          console.log("post"+course.title+res.data.data)
           if (res.data.code === "0") {
             localStorage.setItem('coursePostLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
@@ -278,12 +288,15 @@ export default {
             courseId: course.id
           }
         }).then((res) => {
+          console.log("materials"+course.title+res.data.data)
+          console.log(res.data)
           if (res.data.code === "0") {
             localStorage.setItem('courseMaterialLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('courseMaterialLength'+course.title); i++) {
-              localStorage.setItem('materialid'+course.title+i,res.data.data[i].materialId);
-              localStorage.setItem('materialname' + course.title + i, res.data.data[i].materialName);
-              localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].materialDescription);
+              localStorage.setItem('materialid'+course.title+i,res.data.data[i].id);
+              localStorage.setItem('materialname' + course.title + i, res.data.data[i].name);
+              localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].description);
+              localStorage.setItem('materialfileid'+course.title+i,res.data.data[i].fileId);
             }
           }
         }).catch(error => {
@@ -295,6 +308,8 @@ export default {
             courseId: course.id
           }
         }).then((res) => {
+          console.log("assignments"+course.title+res.data.data)
+
           if (res.data.code === "0") {
             localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
@@ -320,6 +335,8 @@ export default {
           }
         }).then((res) => {
           if (res.data.code === "0") {
+            console.log("project"+course.title+res.data.data)
+
             localStorage.setItem('projectsLength'+course.title,res.data.data.length)
             console.log(localStorage.getItem('projectsLength'+course.title))
             for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
@@ -347,6 +364,8 @@ export default {
             studentId: localStorage.getItem('id')
           }
         }).then((res) => {
+          console.log("grade"+course.title+res.data.data)
+
           if (res.data.code === "0") {
             localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
             for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
@@ -371,6 +390,8 @@ export default {
               assignmentId: localStorage.getItem('assignmentid'+course.title+i)
             }
           }).then((res) => {
+            console.log("grade2"+course.title+res.data.data)
+
             if (res.data.code === "0") {
               localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
               localStorage.setItem('assignmentmaxScore' + course.title + i, res.data.data[0].maxScore);
@@ -389,6 +410,8 @@ export default {
               projectId: localStorage.getItem('projectid'+course.title+i)
             }
           }).then((res) => {
+            console.log("grade3"+course.title+res.data.data)
+
             if (res.data.code === "0") {
               localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
               localStorage.setItem('projectmaxScore' + course.title + i, res.data.data[0].maxScore);
@@ -400,6 +423,47 @@ export default {
           });
         }
       }
+    },
+    async return(){
+      if(localStorage.getItem('id')==null||localStorage.getItem('id')==""||localStorage.getItem('id')==undefined||localStorage.getItem('id')=="null"||localStorage.getItem('id')=="undefined"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"){
+        this.isPopupVisible2=true;
+      }
+    },
+
+    yes(){
+      this.$router.push({
+        path: '/login'
+      })
+    },
+   async getCourses() {
+      // this.courses=[];
+    const res= await this.$axios.get('/student/getCourseInfo',{
+        params:{
+          studentId:localStorage.getItem('id')
+        }
+      })
+          if(res.data.code==0){
+            localStorage.setItem('length',res.data.data.length);
+            console.log(localStorage.getItem('length'));
+
+            for (let i = 0; i < localStorage.getItem('length'); i++) {
+              console.log(res.data.data[i]);
+              localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
+              localStorage.setItem('courses'+i,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+              localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
+              localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              // this.courses.push({
+              //   id: res.data.data[i].courseId,
+              //   title: res.data.data[i].courseName,
+              //   description: res.data.data[i].courseDescription,
+              //   code: res.data.data[i].courseCode,
+              // })
+            }
+            console.log(localStorage.getItem('courses0'));
+          }
     },
 
     async loadAllsaCoursesinfo() {
@@ -443,6 +507,7 @@ export default {
               localStorage.setItem('materialid'+course.title+i,res.data.data[i].materialId);
               localStorage.setItem('materialname' + course.title + i, res.data.data[i].materialName);
               localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].materialDescription);
+              localStorage.setItem('materialfileid'+course.title+i,res.data.data[i].fileId);
             }
           }
         }).catch(error => {
@@ -604,11 +669,13 @@ export default {
     },
    async logoutClick() {
      await this.getSacourse();
+     localStorage.clear();
       this.$router.push('/Login');
-      localStorage.clear();
+
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.courses=[];
 
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
@@ -634,6 +701,7 @@ this.coursessa=[];
 
   },
   async created() {
+    await this.return(),
     this.id = localStorage.getItem('id');
     this.name = localStorage.getItem('name');
     this.major = localStorage.getItem('major');
@@ -642,11 +710,15 @@ this.coursessa=[];
     this.programmingskill = localStorage.getItem('programmingskill');
     this.technologystack = localStorage.getItem('technologystack');
     this.intendedteammate = localStorage.getItem('intendedteammate');
+    await this.getSacourse();
+    await this.getCourses();
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadLocalStorageDataforsa()
     await this.loadAllCoursesinfo();
     await this.loadAllsaCoursesinfo();
+    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadLocalStorageDataforsa();
+
 
     const today = new Date();
     this.attrs = this.ddls.map(ddl => {

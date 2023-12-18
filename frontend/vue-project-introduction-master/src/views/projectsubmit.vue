@@ -165,7 +165,6 @@
       </div>
       <div class="file-upload">
         <input type="file"   @change="onFileSelected"/>
-        <!--        @change="handleFileUpload"-->
       </div>
       <div class="button-container">
         <el-button class="submit" @click.prevent="submitAssignment" :disabled="this.disable_submit">Submit</el-button>
@@ -439,7 +438,6 @@ console.log(formattedDate);
           }
         });
 
-        console.log("Response code: " + res.data.code);
         if (res.data.code === "0") {
           this.isPopupVisible = true;
         }

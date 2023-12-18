@@ -48,7 +48,12 @@
 
     </el-row>
 
-
+    <div v-if="isPopupVisible2" class="popup">
+      <div class="popup-content">
+        <p>请先登录您的账号！</p>
+        <button @click="yes">返回登录</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -133,12 +138,15 @@ export default {
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
       isPopupVisible: false, // 控制弹窗显示的布尔值
+      isPopupVisible2: false,
     };
   },
 
 
   async created() {
-    this.id = localStorage.getItem('id');
+    await this.return(),
+
+        this.id = localStorage.getItem('id');
     this.name = localStorage.getItem('name');
     this.email = localStorage.getItem('email');
 
@@ -150,6 +158,17 @@ export default {
 
   },
   methods: {
+    async return(){
+      if(localStorage.getItem('id')==null||localStorage.getItem('id')==""||localStorage.getItem('id')==undefined||localStorage.getItem('id')=="null"||localStorage.getItem('id')=="undefined"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"){
+        this.isPopupVisible2=true;
+      }
+    },
+
+    yes(){
+      this.$router.push({
+        path: '/login'
+      })
+    },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
