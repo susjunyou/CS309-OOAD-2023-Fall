@@ -22,14 +22,17 @@ public interface AssignmentMapper extends BaseMapper<AssignmentInfo> {
     @Select("select * from assignment_submission where student_id = #{studentId} and assignment_id = #{courseId}")
     List<AssignmentInfo> findAssignmentInfoByStudentIdAndCourseId(Integer studentId, Integer courseId);
 
-    @Insert("insert into assignment (assignment_title, assignment_description, assignment_deadline, assignment_status, max_score, proportion, releaser, releaser_type, course_id)" +
-            " values (#{assignmentTitle}, #{assignmentDescription}, #{assignmentDeadline}, #{assignmentStatus}, #{maxScore}, #{proportion}, #{releaser}, #{releaserType}, #{courseId})")
-    boolean addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
-                          Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId);
+    @Delete("delete from file where id = #{fileId}")
+    boolean deleteFileById(Integer fileId);
 
-    @Update("update assignment set assignment_title = #{assignmentTitle}, assignment_description = #{assignmentDescription}, assignment_deadline = #{assignmentDeadline}, assignment_status = #{assignmentStatus}, max_score = #{maxScore}, proportion = #{proportion}, releaser = #{releaser}, releaser_type = #{releaserType}, course_id = #{courseId} where id = #{assignmentId}")
+    @Insert("insert into assignment (assignment_title, assignment_description, assignment_deadline, assignment_status, max_score, proportion, releaser, releaser_type, course_id,file_id)" +
+            " values (#{assignmentTitle}, #{assignmentDescription}, #{assignmentDeadline}, #{assignmentStatus}, #{maxScore}, #{proportion}, #{releaser}, #{releaserType}, #{courseId}), #{fileId} ")
+    boolean addAssignment(String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
+                          Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId,Integer fileId);
+
+    @Update("update assignment set assignment_title = #{assignmentTitle}, assignment_description = #{assignmentDescription}, assignment_deadline = #{assignmentDeadline}, assignment_status = #{assignmentStatus}, max_score = #{maxScore}, proportion = #{proportion}, releaser = #{releaser}, releaser_type = #{releaserType}, course_id = #{courseId}, file_id =#{fileId} where id = #{assignmentId}")
     boolean updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
-                             Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId);
+                             Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId,Integer fileId);
 
 
     @Delete("delete from assignment where id = #{assignmentId}")

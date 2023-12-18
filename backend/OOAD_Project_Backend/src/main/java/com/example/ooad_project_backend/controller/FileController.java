@@ -56,6 +56,7 @@ public class FileController {
         return fileService.deleteMaterial(courseId, id) ? Result.success() : Result.error("1", "删除失败");
     }
 
+
     //传入新文件
     @GetMapping("/updateMaterial")
     public Result updateMaterial(Integer courseId, Integer id, String name, String description, MultipartFile file) {
