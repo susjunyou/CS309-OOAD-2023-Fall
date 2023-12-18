@@ -138,6 +138,11 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
 
     @Override
     public boolean requestJoinTeam(Integer teamId, Integer studentId, Integer projectId) {
+        if (teamMapper.findTeamInfoByTeamId(teamId).getLeader() == null) {
+            teamMapper.setLeader(teamId, studentId);
+            teamMapper.joinTeam(teamId, studentId, projectId);
+            return true;
+        }
         List<Integer> teamIds = teamMapper.findTeamIdByStudentIdInRequest(studentId);
         for (Integer teamId1 : teamIds) {
             if (teamId1.equals(teamId)) {
