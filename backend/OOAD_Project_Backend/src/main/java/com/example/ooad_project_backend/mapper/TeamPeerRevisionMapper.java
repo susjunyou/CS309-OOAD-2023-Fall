@@ -16,10 +16,10 @@ public interface TeamPeerRevisionMapper extends BaseMapper<TeamPeerRevisionInfo>
     @Select("select * from team_peer_revision where team1 = #{teamId} and project_id = #{projectId}")
     List<TeamPeerRevisionInfo> findOtherTeamGrade(Integer teamId, Integer projectId);
 
-    @Insert("insert into team_peer_revision (team1, team2, project_id, grade1, comment) values (#{team1}, #{team2}, #{projectId}, #{grade1}, #{comment})")
+    @Insert("insert into team_peer_revision (team1, team2, project_id, grade, comment) values (#{team1}, #{team2}, #{projectId}, #{grade}, #{comment})")
     void insertTeamPeerRevision(TeamPeerRevisionInfo teamPeerRevisionInfo);
 
-    @Update("update team_peer_revision set grade1 = #{grade1}, comment = #{comment} where team1 = #{teamId} and project_id = #{projectId}")
+    @Update("update team_peer_revision set grade = #{grade}, comment = #{comment} where team1 = #{teamId} and project_id = #{projectId}")
     void updateTeamPeerRevision(TeamPeerRevisionInfo teamPeerRevisionInfo);
 
     @Select("select * from team_peer_revision where team1 = #{team1} and team2 = #{team2} and project_id = #{projectId}")
