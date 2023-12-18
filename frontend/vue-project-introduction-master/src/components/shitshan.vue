@@ -211,12 +211,119 @@ export default {
     this.tenure = localStorage.getItem('tenure');
     this.department = localStorage.getItem('department');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    await this.loadAllCoursesinfo();
+    await this.loadLocalStorageData();
     // await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
+
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
 
   },
   methods: {
+    async loadAllCoursesinfo() {
+      for (let course of this.courses) {
+        //加载posts
+        await this.$axios.get('/course/posts', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('coursePostLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+              localStorage.setItem('postid'+course.title+i,res.data.data[i].postId);
+              localStorage.setItem('post'+course.title+i,res.data.data[i].postContent);
+              localStorage.setItem('posttitle'+course.title+i,res.data.data[i].postTitle);
+              localStorage.setItem('postauthor'+course.title+i,res.data.data[i].postAuthor);
+              localStorage.setItem('postType'+course.title+i,res.data.data[i].postType);
+              this.posts.push({
+                course:course.title,
+                id:res.data.data[i].postId,
+                title:res.data.data[i].postTitle,
+                content:res.data.data[i].postContent,
+                author:res.data.data[i].postAuthor,
+              })
+            }
+
+          }
+        }).catch(error => {
+          console.error('Error loading course posts:', error);
+        });
+        //加载材料
+        await this.$axios.get('/course/materials', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('courseMaterialLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseMaterialLength'+course.title); i++) {
+              localStorage.setItem('materialid'+course.title+i,res.data.data[i].materialId);
+              localStorage.setItem('materialname' + course.title + i, res.data.data[i].materialName);
+              localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].materialDescription);
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course materials:', error);
+        });
+        //加载assignments
+        await this.$axios.get('/course/assignments', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          console.log(res.data.code)
+          console.log(course.id)
+          if (res.data.code === "0") {
+            console.log(res.data.data)
+            localStorage.setItem('courseAssignmentLength'+course.title,(res.data.data==null||res.data.data=='null')?0:res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
+              localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].id);
+              localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);/////////////////////////////////////////////////////////////////////////////
+              localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
+              localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
+              localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
+              this.ddls.push({
+                date : res.data.data[i].assignmentDeadline,
+                title : course.title+"   "+res.data.data[i].assignmentTitle,
+              })
+
+            }
+          }else     localStorage.setItem('courseAssignmentLength'+course.title,0)
+
+        }).catch(error => {
+          console.error('Error loading course assignments:', error);
+        });
+        //加载projects
+        await this.$axios.get('/course/projects', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('projectsLength'+course.title,res.data.data.length)
+            console.log(localStorage.getItem('projectsLength'+course.title))
+            for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
+              localStorage.setItem('projectid'+course.title+i,res.data.data[i].id);
+              localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
+              localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
+              localStorage.setItem('projectstartdate'+course.title+i,res.data.data[i].projectStartDate);
+              localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
+              localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
+              localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
+              this.ddls.push({
+                date : res.data.data[i].projectDeadline,
+                title : course.title+"   "+res.data.data[i].projectTitle,
+              })
+
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course projects:', error);
+        });
+
+      }
+    },
 
     update(){
       this.dialogVisible=true;

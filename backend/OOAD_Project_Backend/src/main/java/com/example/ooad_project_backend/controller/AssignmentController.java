@@ -59,7 +59,7 @@ public class AssignmentController {
         }
     }
 
-    @DeleteMapping("/deleteAssignmentByAssignmentId")
+    @GetMapping("/deleteAssignmentByAssignmentId")//本来是delete
     public Result deleteAssignment(Integer assignmentId) {
         boolean flag = assignmentInfoService.deleteAssignment(assignmentId);
         if (flag) {

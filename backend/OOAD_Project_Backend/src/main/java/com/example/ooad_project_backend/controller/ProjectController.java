@@ -19,7 +19,7 @@ public class ProjectController {
     @Autowired
     private ProjectInfoService projectInfoService;
 
-    @PostMapping("/addProject")
+    @GetMapping("/addProject")
     public Result addProject(String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
                              Integer maxScore, Double proportion, String releaser, UserType releaserType,Date projectStartDate,Integer maxPeopleInTeam, Integer courseId) {
         boolean flag = projectInfoService.addProject(projectTitle, projectDescription, projectDeadline, projectStatus,
@@ -31,7 +31,7 @@ public class ProjectController {
         }
     }
 
-    @DeleteMapping("/deleteProject")
+    @GetMapping("/deleteProject")
     public Result deleteProject(Integer projectId) {
         boolean flag = projectInfoService.deleteProject(projectId);
         if (flag) {

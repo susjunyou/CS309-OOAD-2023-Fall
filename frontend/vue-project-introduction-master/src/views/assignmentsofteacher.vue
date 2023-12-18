@@ -11,6 +11,8 @@
               <el-card @click.native="submitassignment(assignment)" class="assignment-card">
                 <h3>{{ assignment.title }}</h3>
                 <p>截止日期：{{ assignment.ddl }}</p>
+                <el-button type="danger" size="small" @click.stop="deleteAssignment11(assignment)">删除课程</el-button>
+                <el-button type="primary" size="small" @click.stop="editAssignment(assignment)">修改信息</el-button>
               </el-card>
             </el-col>
           </el-row>
@@ -48,13 +50,47 @@
         <el-button type="primary" @click.prevent="addAssignment">确定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="修改作业" :visible.sync="dialogVisible2">
+      <el-form :model="editAssignmentForm">
+        <el-form-item label="作业标题">
+          <el-input v-model="editAssignmentForm.title"></el-input>
+        </el-form-item>
+        <el-form-item label="作业描述">
+          <el-input type="textarea" v-model="editAssignmentForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="截止日期">
+          <el-date-picker v-model="editAssignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="最高分数">
+          <el-input-number v-model="editAssignmentForm.maxScore"></el-input-number>
+        </el-form-item>
+        <el-form-item label="占比">
+          <el-input-number v-model="editAssignmentForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
+        </el-form-item>
+        <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
+        <el-input type="hidden" v-model="editAssignmentForm.courseId"></el-input>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click.stop="commitEdit">确定</el-button>
+      </div>
+    </el-dialog>
+
+
+
+
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
-        <p>发布成功！</p>
+        <p>{{ this.wenzi }}成功！</p>
         <button @click="returnToprotects" class="sumbitt">关闭</button>
       </div>
     </div>
   </div>
+
+
+
+
 </template>
 <script setup>
 import shitshan from "@/components/shitshan.vue";
@@ -67,8 +103,21 @@ export default {
       assignments: [],
       projects: [],
       ddls: [],
+      wenzi:'',
       dialogVisible: false,
+      dialogVisible2:false,
       assignmentForm: {
+        title: '',
+        description: '',
+        deadline: '',
+        status: '',
+        maxScore: '',
+        proportion: '',
+        releaser: '',
+        releaserType: '',
+        courseId: '',
+      },
+      editAssignmentForm:{
         title: '',
         description: '',
         deadline: '',
@@ -83,12 +132,15 @@ export default {
     };
   },
   async created(){
-    this.loadLocalStorageData();
+   await this.loadLocalStorageData();
+   await this.loadAllCoursesinfo();
+   await this.loadLocalStorageData()
   },
   components: {
     shitshan
   },
   methods: {
+
     publishAssignment(){
       this.dialogVisible = true;
     },
@@ -144,11 +196,12 @@ export default {
             courseId: course.id
           }
         }).then((res) => {
-          console.log(res.data.code)
-          console.log(course.id)
-          if (res.data.code === "0") {
+          console.log(res.data)
+            console.log(course.id)
+            if (res.data.code === "0") {
             console.log(res.data.data)
-            localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
+            localStorage.setItem('courseAssignmentLength'+course.title,(res.data.data==null||res.data.data=='null')?0:res.data.data.length)
+              console.log(localStorage.getItem('courseAssignmentLength'+course.title))
             for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
               localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].id);
               localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);/////////////////////////////////////////////////////////////////////////////
@@ -161,7 +214,8 @@ export default {
               })
 
             }
-          }
+          }else     localStorage.setItem('courseAssignmentLength'+course.title,0)
+
         }).catch(error => {
           console.error('Error loading course assignments:', error);
         });
@@ -192,65 +246,7 @@ export default {
         }).catch(error => {
           console.error('Error loading course projects:', error);
         });
-        // //加载attendances
-        // await this.$axios.get('/grade/getAttendanceGradeByCourseIdAndStudentId', {
-        //   params: {
-        //     courseId: course.id,
-        //     studentId: localStorage.getItem('id')
-        //   }
-        // }).then((res) => {
-        //   if (res.data.code === "0") {
-        //     localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
-        //     for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
-        //       localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
-        //       localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
-        //       if (res.data.data[i].attended) {
-        //         localStorage.setItem('attendancegrade'+course.title+i,100);
-        //       }else {
-        //         localStorage.setItem('attendancegrade'+course.title+i,0);
-        //       }
-        //       localStorage.setItem('attendancemaxScore'+course.title+i,res.data.data[i].maxScore);
-        //     }
-        //   }
-        // }).catch(error => {
-        //   console.error('Error loading course attendances:', error);
-        // });
-        //加载assignment成绩
-        // for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
-        //   await this.$axios.get('/grade/getAssignmentGrade', {
-        //     params: {
-        //       studentId: localStorage.getItem('id'),
-        //       assignmentId: localStorage.getItem('assignmentid'+course.title+i)
-        //     }
-        //   }).then((res) => {
-        //     if (res.data.code === "0") {
-        //       localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
-        //       localStorage.setItem('assignmentmaxScore' + course.title + i, res.data.data[0].maxScore);
-        //       localStorage.setItem('assignmentproportion' + course.title + i, res.data.data[0].proportion);
-        //       localStorage.setItem('assignmentgradeDescription' + course.title + i, res.data.data[0].gradeDescription)
-        //     }
-        //   }).catch(error => {
-        //     console.error('Error loading assignment grade:', error);
-        //   });
-        // }
-        // //加载project成绩
-        // for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
-        //   await this.$axios.get('/grade/getProjectGrade', {
-        //     params: {
-        //       studentId: localStorage.getItem('id'),
-        //       projectId: localStorage.getItem('projectid'+course.title+i)
-        //     }
-        //   }).then((res) => {
-        //     if (res.data.code === "0") {
-        //       localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
-        //       localStorage.setItem('projectmaxScore' + course.title + i, res.data.data[0].maxScore);
-        //       localStorage.setItem('projectproportion' + course.title + i, res.data.data[0].proportion);
-        //       localStorage.setItem('projectgradeDescription' + course.title + i, res.data.data[0].gradeDescription);
-        //     }
-        //   }).catch(error => {
-        //     console.error('Error loading project grade:', error);
-        //   });
-        // }
+
       }
     },
 
@@ -259,6 +255,7 @@ export default {
       await this.loadAllCoursesinfo()
       await this.loadLocalStorageData()
       this.dialogVisible = false;
+      this.dialogVisible2 = false;
       this.isPopupVisible = false;
     },
     submitassignment(assignment){
@@ -269,31 +266,113 @@ export default {
 
       this.$router.push({ path: '/pizuoye'});
     },
-   async addAssignment(){
-     let date = new Date(this.assignmentForm.deadline);
-     let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
-     await this.$axios.get('/assignment/addAssignment', {
-       params: {
-         assignmentTitle: this.assignmentForm.title,
-         assignmentDescription: this.assignmentForm.description,
-         assignmentDeadline: formattedDate,
-         assignmentStatus: 'Started',
-         maxScore: this.assignmentForm.maxScore,
-         proportion: this.assignmentForm.proportion,
-         releaser: localStorage.getItem('id'),
-         releaserType: 'TEACHER',
-         courseId: localStorage.getItem('currentcourseid'),
-       }
-     }).then((res) => {
-       console.log(res);
-       if (res.data.code === "0") {
-         this.dialogVisible = false;
-         this.isPopupVisible = true;
-       }
-     }).catch(error => {
-       console.error('Error loading sainfos:', error);
-     });
+    async addAssignment(){
+      console.log(localStorage.getItem('id'))
+      let date = new Date(this.assignmentForm.deadline);
+      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      await this.$axios.get('/assignment/addAssignment', {
+        params: {
+          assignmentTitle: this.assignmentForm.title,
+          assignmentDescription: this.assignmentForm.description,
+          assignmentDeadline: formattedDate,
+          assignmentStatus: 'Started',
+          maxScore: this.assignmentForm.maxScore,
+          proportion: this.assignmentForm.proportion,
+          releaser: localStorage.getItem('id'),
+          releaserType: 'TEACHER',
+          courseId: localStorage.getItem('currentcourseid'),
+        }
+      }).then((res) => {
+        console.log(res);
+        if (res.data.code === "0") {
+          this.wenzi='发布'
+          this.dialogVisible = false;
+          this.isPopupVisible = true;
+
+        }
+      }).catch(error => {
+        console.error('Error loading sainfos:', error);
+      });
     },
+////////
+    async deleteAssignment11(assignment) {
+      console.log('indelete1')
+      await this.$axios.get('/assignment/deleteAssignmentByAssignmentId', {//这里有问题，在后端接口那边是delete mapping，改了，但现在还是不行
+        params: {
+          assignmentId: assignment.id
+        }
+      }).then((res) => {
+        console.log('indelete2')
+        console.log(res)//删除失败
+        if (res.data.code === "0") {
+
+          this.wenzi = "删除";
+          console.log('indelete3')
+          this.isPopupVisible = true;
+        }
+      }).catch(error => {
+        console.error('Error loading course materials:', error);
+      });
+      console.log("删除课程", assignment.title);
+    },
+
+    editAssignment(assignment) {
+
+      // 打开编辑对话框并填充表单数据
+      this.dialogVisible2 = true;//在这里出问题
+      console.log(this.dialogVisible2)
+      console.log('设置可视化')
+      console.log(assignment)
+      localStorage.setItem('currentassignmentid',assignment.id);
+      localStorage.setItem('currentassignmenttitle',assignment.title);
+      console.log('ceshi:'+localStorage.getItem('status'+assignment.title))
+      this.editAssignmentForm.title = assignment.title;
+      this.editAssignmentForm. description = assignment.description;
+      this.editAssignmentForm.deadline = assignment.deadline;
+      this.editAssignmentForm.status = assignment.status;
+      this.editAssignmentForm. maxScore = assignment.maxScore;
+      this.editAssignmentForm.proportion = assignment.proportion;
+      this.editAssignmentForm.releaser = localStorage.getItem('id');
+      this.editAssignmentForm. releaserType = 'TEACHER';
+      this.editAssignmentForm. courseId = localStorage.getItem('currentcourseid');
+console.log(this.editAssignmentForm.status )
+      console.log(this.editAssignmentForm.releaser )
+      console.log(this.editAssignmentForm.releaserType )
+
+    },
+
+
+    async commitEdit(){
+      //updateAssignmentByAssignmentId
+      console.log('this.form:'+this.editAssignmentForm.deadline)
+      let date = new Date(this.editAssignmentForm.deadline);
+      console.log('date:'+date)
+      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      console.log('format:'+formattedDate)
+      let tit = localStorage.getItem('currentassignmenttitle')
+      console.log('tit:'+tit)
+      const res=await  this.$axios.get('/assignment/updateAssignmentByAssignmentId', {
+        params: {
+          assignmentId: localStorage.getItem('currentassignmentid'),
+          assignmentTitle: this.editAssignmentForm.title,
+          assignmentDescription: this.editAssignmentForm.description,
+          assignmentDeadline: formattedDate,
+          assignmentStatus: this.editAssignmentForm.status,
+          maxScore: this.editAssignmentForm.maxScore,
+          proportion: this.editAssignmentForm.proportion,
+          releaser: this.editAssignmentForm.releaser,
+          releaserType: this.editAssignmentForm.releaserType,
+          courseId: localStorage.getItem('currentcourseid'),
+        }
+      })
+      if (res.data.code === "0") {
+        this.wenzi = "修改";
+        this.dialogVisible2 = false; // 关闭对话框
+        this.isPopupVisible = true;
+      }
+    },
+    ///////////
+
     disabledDate(time) {
       const today = new Date(new Date().setHours(0, 0, 0, 0)); // 今天日期设置为午夜开始
       return time.getTime() < today.getTime(); // 禁止选择今天之前的日期
@@ -328,10 +407,11 @@ export default {
         });
       }
       this.assignments=[];
+      console.log(localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
-          status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
+          status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
           title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
@@ -357,11 +437,11 @@ export default {
           title: this.projects[i].title,
         });
       }
-      console.log(this.projects[0])
-      console.log(this.projects[1])
-      console.log("course name="+this.myValue)
-      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+      // console.log(this.projects[0])
+      // console.log(this.projects[1])
+      // console.log("course name="+this.myValue)
+      // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      // console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
     },
 

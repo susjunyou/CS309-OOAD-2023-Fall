@@ -301,65 +301,7 @@ export default {
         }).catch(error => {
           console.error('Error loading course projects:', error);
         });
-        // //加载attendances
-        // await this.$axios.get('/grade/getAttendanceGradeByCourseIdAndStudentId', {
-        //   params: {
-        //     courseId: course.id,
-        //     studentId: localStorage.getItem('id')
-        //   }
-        // }).then((res) => {
-        //   if (res.data.code === "0") {
-        //     localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
-        //     for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
-        //       localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
-        //       localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
-        //       if (res.data.data[i].attended) {
-        //         localStorage.setItem('attendancegrade'+course.title+i,100);
-        //       }else {
-        //         localStorage.setItem('attendancegrade'+course.title+i,0);
-        //       }
-        //       localStorage.setItem('attendancemaxScore'+course.title+i,res.data.data[i].maxScore);
-        //     }
-        //   }
-        // }).catch(error => {
-        //   console.error('Error loading course attendances:', error);
-        // });
-        //加载assignment成绩
-        // for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
-        //   await this.$axios.get('/grade/getAssignmentGrade', {
-        //     params: {
-        //       studentId: localStorage.getItem('id'),
-        //       assignmentId: localStorage.getItem('assignmentid'+course.title+i)
-        //     }
-        //   }).then((res) => {
-        //     if (res.data.code === "0") {
-        //       localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
-        //       localStorage.setItem('assignmentmaxScore' + course.title + i, res.data.data[0].maxScore);
-        //       localStorage.setItem('assignmentproportion' + course.title + i, res.data.data[0].proportion);
-        //       localStorage.setItem('assignmentgradeDescription' + course.title + i, res.data.data[0].gradeDescription)
-        //     }
-        //   }).catch(error => {
-        //     console.error('Error loading assignment grade:', error);
-        //   });
-        // }
-        // //加载project成绩
-        // for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
-        //   await this.$axios.get('/grade/getProjectGrade', {
-        //     params: {
-        //       studentId: localStorage.getItem('id'),
-        //       projectId: localStorage.getItem('projectid'+course.title+i)
-        //     }
-        //   }).then((res) => {
-        //     if (res.data.code === "0") {
-        //       localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
-        //       localStorage.setItem('projectmaxScore' + course.title + i, res.data.data[0].maxScore);
-        //       localStorage.setItem('projectproportion' + course.title + i, res.data.data[0].proportion);
-        //       localStorage.setItem('projectgradeDescription' + course.title + i, res.data.data[0].gradeDescription);
-        //     }
-        //   }).catch(error => {
-        //     console.error('Error loading project grade:', error);
-        //   });
-        // }
+
       }
     },
 

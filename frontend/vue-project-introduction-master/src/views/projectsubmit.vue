@@ -450,6 +450,8 @@ console.log(formattedDate);
 
     async  getAssignmentSubmissionHistory() {
 
+
+
       await this.$axios.get('/submission/getProjectSubmissionHistory', {
         params: {
           studentId: Number(localStorage.getItem("id")),
@@ -457,6 +459,8 @@ console.log(formattedDate);
         }
       }).then((res) => {
         console.log("code====================================="+res.data.code)
+        // console.log('teamiD:')
+        // console.log(localStorage.getItem('myteamid'))
         console.log(res.data)
         let dd = this.in_ddl;
         let n_data = new Date()
@@ -475,7 +479,7 @@ console.log(formattedDate);
             if (k!= null && k > this.finial_grade){
               this.finial_grade = k;
             }
-            console.log(res.data.data[i].submissionDate)
+            //console.log(res.data.data[i].submissionDate)
             this.history.push({
               submissionDate:res.data.data[i].submissionDate,
               grade:k,
@@ -486,6 +490,9 @@ console.log(formattedDate);
       }).catch(error => {
         console.error('Error loading course posts:', error);
       });
+
+
+
     },
 
     onFileSelected(event) {
