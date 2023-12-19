@@ -49,7 +49,7 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
             if (assignmentInfos1.getGrade() == null) return null;
         }
         for (AssignmentInfo assignmentInfo : assignmentInfos) {
-            if (assignmentInfo.getGrade() != null && assignmentInfo.getGrade() > assignmentInfos1.getGrade()) {
+            if (assignmentInfo.getGrade() != null && assignmentInfo.getGrade() > assignmentInfos1.getGrade() ) {
                 assignmentInfos1 = assignmentInfo;
             }
         }

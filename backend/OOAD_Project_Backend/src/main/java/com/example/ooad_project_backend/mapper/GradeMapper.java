@@ -24,13 +24,13 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
     @Select("select * " +
             "from assignment " +
             "         right join assignment_submission on assignment.id = assignment_submission.assignment_id\n" +
-            "where student_id = #{studentId}  and  assignment_id = #{assignmentId}")
+            "where student_id = #{studentId}  and  assignment_id = #{assignmentId} and grade is not null")
     List<AssignmentInfo> findAssignmentGrade(Integer studentId, Integer assignmentId);
 
     @Select("select * " +
             "from project " +
             "         right join project_submission on project.id = project_submission.project_id\n" +
-            "where student_id = #{studentId}  and  project_id = #{projectId}")
+            "where student_id = #{studentId}  and  project_id = #{projectId} and grade is not null")
     List<ProjectInfo> findProjectGrade(Integer studentId, Integer projectId);
 
     @Insert("insert into assignment_submission (student_id, assignment_id, grade, content, grade_description) values (#{studentId}, #{assignmentId}, #{grade}, #{content}, #{grade_description})")
