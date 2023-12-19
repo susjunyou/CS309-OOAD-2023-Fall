@@ -49,7 +49,7 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
             if (assignmentInfos1.getGrade() == null) return null;
         }
         for (AssignmentInfo assignmentInfo : assignmentInfos) {
-            if (assignmentInfo.getGrade() != null && assignmentInfo.getGrade() > assignmentInfos1.getGrade()) {
+            if (assignmentInfo.getGrade() != null && assignmentInfo.getGrade() > assignmentInfos1.getGrade() ) {
                 assignmentInfos1 = assignmentInfo;
             }
         }
@@ -138,7 +138,14 @@ public class GradeServiceImp extends ServiceImpl<GradeMapper, GradeInfo> impleme
 
     @Override
     public AttendanceInfo findAttendanceGrade(Integer studentId, Integer attendanceId) {
-        return gradeMapper.findAttendanceGrade(studentId, attendanceId);
+        List<AttendanceInfo> attendanceInfos = gradeMapper.findAttendanceGrade(studentId, attendanceId);
+        for (AttendanceInfo attendanceInfo : attendanceInfos) {
+            if (attendanceInfo.getGrade() != null) {
+                return attendanceInfo;
+            }
+        }
+        if (attendanceInfos.size() == 0) return null;
+        return attendanceInfos.get(0);
     }
 
 }
