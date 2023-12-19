@@ -105,17 +105,17 @@ public class CourseController {
     }
 
     @GetMapping("/addAttendance")
-public Result addAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                            StatusType AttendanceStatus, Integer max_score, Integer proportion) {
-        return courseInfoService.addAttendance(courseId, AttendanceDate, AttendanceStartTime,
-                AttendanceDeadline, AttendanceStatus, max_score, proportion) ? Result.success() : Result.error("1", "提交失败");
+public Result addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                            StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseInfoService.addAttendance(courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/updateAttendance")
-    public Result updateAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                            StatusType AttendanceStatus, Integer max_score, Integer proportion) {
-        return courseInfoService.updateAttendance(courseId, AttendanceDate, AttendanceStartTime,
-                AttendanceDeadline, AttendanceStatus, max_score, proportion) ? Result.success() : Result.error("1", "提交失败");
+    public Result updateAttendance(Integer id,Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                                   StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseInfoService.updateAttendance(id,courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion) ? Result.success() : Result.error("1", "提交失败");
     }
 
     @GetMapping("/deleteAttendance")
@@ -123,7 +123,6 @@ public Result addAttendance(Integer courseId, Date AttendanceDate, Time Attendan
         courseInfoService.deleteAttendance(id);
         return Result.success();
     }
-
 
 
     @GetMapping("/getAllCourses")

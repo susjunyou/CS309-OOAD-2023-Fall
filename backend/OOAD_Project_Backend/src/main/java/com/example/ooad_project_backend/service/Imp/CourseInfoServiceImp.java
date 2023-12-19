@@ -163,17 +163,17 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
     }
 
     @Override
-    public boolean addAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                                 StatusType AttendanceStatus, Integer max_score, Integer proportion) {
-        return courseDetailsMapper.addAttendance(courseId, AttendanceDate, AttendanceStartTime,
-                AttendanceDeadline, AttendanceStatus, max_score, proportion);
+    public boolean addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                                 StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseDetailsMapper.addAttendance(courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion);
     }
 
     @Override
-    public boolean updateAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                                 StatusType AttendanceStatus, Integer max_score, Integer proportion) {
-        return courseDetailsMapper.updateAttendance(courseId, AttendanceDate, AttendanceStartTime,
-                AttendanceDeadline, AttendanceStatus, max_score, proportion);
+    public boolean updateAttendance(Integer id,Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                                    StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseDetailsMapper.updateAttendance(id,courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion);
     }
 
     @Override

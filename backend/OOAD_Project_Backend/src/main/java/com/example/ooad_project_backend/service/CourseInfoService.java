@@ -59,12 +59,11 @@ public interface CourseInfoService extends IService<CourseInfo> {
     List<CourseInfo> findMySACoursesByStudentId(Integer studentId);
 
 
-    boolean addAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                          StatusType AttendanceStatus, Integer max_score, Integer proportion);
+    boolean addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                          StatusType attendanceStatus, Integer maxScore, Integer proportion);
 
-    boolean updateAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                            StatusType AttendanceStatus, Integer max_score, Integer proportion);
-
+    boolean updateAttendance(Integer id, Integer courseId,Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                             StatusType attendanceStatus, Integer maxScore, Integer proportion);
     void deleteAttendance(Integer id);
 
 }

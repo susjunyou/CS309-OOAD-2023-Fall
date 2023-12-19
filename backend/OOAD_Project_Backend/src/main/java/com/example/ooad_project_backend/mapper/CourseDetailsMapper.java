@@ -86,14 +86,14 @@ public interface CourseDetailsMapper {
     @Delete("delete from course_sa where course_id = #{courseId}")
     void deleteCourseSA(Integer courseId);
 
-    @Insert("insert into attendance (course_id, AttendanceDate, AttendanceStartTime, AttendanceDeadline, AttendanceStatus, max_score, proportion) values (#{courseId}, #{AttendanceDate}, #{AttendanceStartTime}, #{AttendanceDeadline}, #{AttendanceStatus}, #{max_score}, #{proportion})")
-    boolean addAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                       StatusType AttendanceStatus, Integer max_score, Integer proportion);
+    @Insert("insert into attendance (course_id, attendance_date, attendance_start_time, attendance_deadline, attendance_status, max_score, proportion) values (#{courseId}, #{attendanceDate}, #{attendanceStartTime}, #{attendanceDeadline}, #{attendanceStatus}, #{maxScore}, #{proportion})")
+    boolean addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                       StatusType attendanceStatus, Integer maxScore, Integer proportion);
 
-    @Update("update attendance set AttendanceDate = #{AttendanceDate}, AttendanceStartTime = #{AttendanceStartTime}, AttendanceDeadline = #{AttendanceDeadline}, AttendanceStatus = #{AttendanceStatus}, max_score = #{max_score}, proportion = #{proportion} where course_id = #{courseId}")
-    boolean updateAttendance(Integer courseId, Date AttendanceDate, Time AttendanceStartTime, Time AttendanceDeadline,
-                       StatusType AttendanceStatus, Integer max_score, Integer proportion);
 
+    @Update("update attendance set course_id = #{courseId}, attendance_date = #{attendanceDate}, attendance_start_time = #{attendanceStartTime}, attendance_deadline = #{attendanceDeadline}, attendance_status = #{attendanceStatus}, max_score = #{maxScore}, proportion = #{proportion} where id = #{id}")
+    boolean updateAttendance(Integer id, Integer courseId,Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                          StatusType attendanceStatus, Integer maxScore, Integer proportion);
     @Delete("delete from attendance where id = #{id}")
     void deleteAttendance(Integer id);
 
