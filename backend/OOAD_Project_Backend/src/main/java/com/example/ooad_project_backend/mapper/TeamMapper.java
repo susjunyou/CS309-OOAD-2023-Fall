@@ -12,7 +12,7 @@ import java.util.List;
 public interface TeamMapper extends BaseMapper<TeamInfo> {
 
 
-    @Update("update team set team_name = #{teamName}, leader = #{leader}, team_description = #{teamDescription}, team_size = #{teamSize},#recruitment_information ={recruitmentInformation} where team_id = #{teamId}")
+    @Update("update team set team_name = #{teamName}, leader = #{leader}, team_description = #{teamDescription}, team_size = #{teamSize},recruitment_information = #{recruitmentInformation} where team_id = #{teamId}")
     void updateTeamInfo(TeamInfo teamInfo);
 
     @Update("update team set leader = #{studentId} where team_id = #{teamId}")
@@ -47,8 +47,8 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Select("select team_id from team_student where student_id = #{studentId} and project_id  = #{projectId}")
     Integer findTeamIdByProjectIdAndStudentId(Integer projectId, Integer studentId);
 
-    @Select("select team_id from team where project_id =#{projectId} and leader =#{leader} ")
-    List<TeamInfo> findTeamIdByProjectIdAndLeader(Integer projectId, Integer leader);
+//    @Select("select team_id from team where project_id =#{projectId} and leader =#{leader} ")
+//    List<TeamInfo> findTeamIdByProjectIdAndLeader(Integer projectId, Integer leader);
 
     @Select("select student_id from team_student where project_id = #{projectId} and team_id = #{teamId}")
     List<Integer> findStudentIdsByTeamIdAndProjectId(Integer teamId, Integer projectId);
