@@ -41,8 +41,8 @@ public class GradeController {
     }
 
     @GetMapping("/getAttendanceGrade")
-    public Result getAttendanceGrade(Integer studentId,Integer attendanceId) {
-        return gradeService.findAttendanceGrade(studentId, attendanceId) == null? Result.error("1", "No such attendance or the student has not submitted the attendance!") : Result.success(gradeService.findAttendanceGrade(studentId, attendanceId));
+    public Result getAttendanceGrade(Integer studentId, Integer attendanceId) {
+        return gradeService.findAttendanceGrade(studentId, attendanceId) == null ? Result.error("1", "No such attendance or the student has not submitted the attendance!") : Result.success(gradeService.findAttendanceGrade(studentId, attendanceId));
     }
 
     //除了三个必须的参数，其他的content和grade_description都可以不填
@@ -103,7 +103,7 @@ public class GradeController {
                 String[] fields = line.split(",");
                 String studentId = fields[0];
                 String grade = fields[1];
-                if (!gradeService.uploadAssignmentGradeCSV(Integer.parseInt(studentId), assignmentId, Integer.parseInt(grade)))
+                if (!gradeService.uploadAssignmentGradeCSV(assignmentId, Integer.parseInt(studentId), Integer.parseInt(grade)))
                     return Result.error();
             }
         } catch (IOException e) {
@@ -120,7 +120,7 @@ public class GradeController {
                 String[] fields = line.split(",");
                 String studentId = fields[0];
                 String grade = fields[1];
-                if (!gradeService.uploadProjectGradeCSV(Integer.parseInt(studentId), projectId, Integer.parseInt(grade)))
+                if (!gradeService.uploadProjectGradeCSV( projectId, Integer.parseInt(studentId),Integer.parseInt(grade)))
                     return Result.error();
             }
         } catch (IOException e) {
@@ -137,7 +137,7 @@ public class GradeController {
                 String[] fields = line.split(",");
                 String studentId = fields[0];
                 String grade = fields[1];
-                if (!gradeService.uploadAttendanceGradeCSV(Integer.parseInt(studentId), attendanceId, Integer.parseInt(grade)))
+                if (!gradeService.uploadAttendanceGradeCSV(attendanceId, Integer.parseInt(studentId), Integer.parseInt(grade)))
                     return Result.error();
             }
         } catch (IOException e) {
