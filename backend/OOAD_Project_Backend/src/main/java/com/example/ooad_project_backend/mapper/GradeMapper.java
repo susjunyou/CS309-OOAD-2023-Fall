@@ -79,6 +79,6 @@ public interface GradeMapper extends BaseMapper<GradeInfo> {
             "         right join attendance_submission a on attendance.id = a.attendance_id " +
             "where attendance.id = #{attendanceId} " +
             "  and a.student_id = #{studentId}")
-    AttendanceInfo findAttendanceGrade(Integer studentId, Integer attendanceId);
+    List<AttendanceInfo> findAttendanceGrade(Integer studentId, Integer attendanceId);
 
 }
