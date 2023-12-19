@@ -27,7 +27,7 @@ public class FileController {
 
 
     @GetMapping("/fileContent")
-    public Result getFileContent(Integer id){
+    public Result getFileContent(Integer id) {
         FileInfo file = fileService.getFile(id);
         byte[] fileData = file.getFileData();
         String result = new String(fileData, StandardCharsets.UTF_8);
@@ -51,7 +51,7 @@ public class FileController {
     }
 
     //这里的id是material的id
-    @DeleteMapping("/deleteMaterial")
+    @GetMapping("/deleteMaterial")
     public Result deleteMaterial(Integer courseId, Integer id) {
         return fileService.deleteMaterial(courseId, id) ? Result.success() : Result.error("1", "删除失败");
     }
