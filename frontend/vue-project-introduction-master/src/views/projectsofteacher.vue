@@ -285,6 +285,8 @@ export default {
               localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
               localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
+              localStorage.setItem('projectfileid'+course.title+i,res.data.data[i].fileId);
+
               this.ddls.push({
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,

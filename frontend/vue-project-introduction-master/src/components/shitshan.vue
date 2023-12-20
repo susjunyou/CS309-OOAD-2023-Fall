@@ -95,7 +95,7 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-        <el-menu-item index="1" @click="this.$router.push('/teacherhomepage')">Home</el-menu-item>
+        <el-menu-item index="1" @click="go2('teacherhomepage');">Home</el-menu-item>
         <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
         <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
         <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
@@ -350,7 +350,9 @@ export default {
     go(route) {
       this.$router.push(route+"ofteacher");
     },
-
+    go2(route){
+      this.$router.push(route);
+    },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
