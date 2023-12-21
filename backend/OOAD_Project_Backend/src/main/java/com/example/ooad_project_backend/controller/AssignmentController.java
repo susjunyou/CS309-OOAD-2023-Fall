@@ -65,7 +65,7 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/updateAssignmentByAssignmentId")
+    @PostMapping("/updateAssignmentByAssignmentId")
     public Result updateAssignment(Integer assignmentId, String assignmentTitle, String assignmentDescription, Date assignmentDeadline, StatusType assignmentStatus,
                                    Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, MultipartFile file) {
 //        boolean flag = assignmentInfoService.updateAssignment(assignmentId, assignmentTitle, assignmentDescription, assignmentDeadline, assignmentStatus,

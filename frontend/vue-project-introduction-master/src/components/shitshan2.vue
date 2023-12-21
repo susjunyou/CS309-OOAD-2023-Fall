@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-row class="header-bar" background-color="#545c64" text-color="#fff">
+  <div id="app">
+    <el-row class="header-bar">
       <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
       </el-col>
@@ -16,6 +16,8 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
+
+
       <el-col :span="4">
         <el-button type="text" v-popover:profilePopover class="profile-button">
           <i class="el-icon-user"></i> 个人资料
@@ -25,9 +27,10 @@
           <div class="user-profile">
             <img src="../assets/人脸.png" alt="个人信息" class="avatar">
             <h3>姓名：{{ this.name }}</h3>
-            <p>学号：{{ this.id }}</p>
+            <p>id：{{ this.id }}</p>
             <p>邮箱：{{ this.email }}</p>
-            <p>专业：{{ this.major }}</p>
+            <p>教职：{{ this.tenure }}</p>
+            <p>部门：{{ this.department }}</p>
             <el-menu>
               <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
               <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
@@ -71,18 +74,13 @@
           <el-input v-model="edit.e_selfIntroduction"/>
         </el-form-item>
 
-        <el-form-item label="technologystack" prop="technologystack">
-          <el-input v-model="edit.technologystack"/>
+        <el-form-item label="department" prop="department">
+          <el-input v-model="edit.department " disabled="disabled"/>
         </el-form-item>
 
-        <el-form-item label="programmingskill" prop="programmingskill">
-          <el-input v-model="edit.programmingskill"/>
+        <el-form-item label="tenure" prop="tenure" >
+          <el-input v-model="edit.tenure"  disabled="disabled"/>
         </el-form-item>
-
-        <el-form-item label="intendedteammate" prop="intendedteammate">
-          <el-input v-model="edit.intendedteammate"/>
-        </el-form-item>
-
         <el-form-item>
           <el-button type="primary" @click="commitUpdate()">Submit</el-button>
         </el-form-item>
@@ -90,59 +88,26 @@
       </el-form>
     </el-dialog>
 
-<el-row>
-  <el-col :span="3">
-    <el-menu
-        class="course-navbar"
-        mode="vertical"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-      <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-      <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-      <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-      <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-      <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-      <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-      <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-    </el-menu>
-    </el-col>
-  <el-col :span="21">
-    <div class="table-section">
-      <h2 class="table-title">Teacher Information</h2>
-      <el-table :data="teachers" style="width: 90%;" border stripe>
-        <el-table-column prop="name" label="Name"></el-table-column>
-        <el-table-column prop="tenure" label="Tenure"></el-table-column>
-        <el-table-column prop="email" label="Email"></el-table-column>
-        <el-table-column prop="department" label="Department"></el-table-column>
-      </el-table>
+    <el-row class="main-content">
+
+      <slot></slot>
+
+    </el-row>
+    <div v-if="isPopupVisible2" class="popup">
+      <div class="popup-content">
+        <p>请先登录您的账号！</p>
+        <button @click="yes">返回登录</button>
+      </div>
     </div>
 
-    <!-- 学习助手(SA)信息表格 -->
-    <div class="table-section">
-      <h2 class="table-title">SA Information</h2>
-      <el-table :data="saInfos" style="width: 90%;" border stripe>
-        <el-table-column prop="name" label="Name"></el-table-column>
-        <el-table-column prop="email" label="Email"></el-table-column>
-        <el-table-column prop="major" label="Major"></el-table-column>
-      </el-table>
-    </div>
-
-    <!-- 学生信息表格 -->
-    <div class="table-section">
-      <h2 class="table-title">Student Information</h2>
-      <el-table :data="studentInfos" style="width: 90%;" border stripe>
-        <el-table-column prop="name" label="Name"></el-table-column>
-        <el-table-column prop="email" label="Email"></el-table-column>
-        <el-table-column prop="major" label="Major"></el-table-column>
-      </el-table>
-    </div>
-  </el-col>
-</el-row>
   </div>
 </template>
 
-<script >
+
+
+
+<script>
+
 export default {
 
   data() {
@@ -189,9 +154,8 @@ export default {
         e_email:"",
         e_phoneNumber:"",
         e_selfIntroduction:"",
-        technologystack:"",
-        programmingskill:"",
-        intendedteammate:"",
+        department:"",
+        tenure:"",
       },
       // 假设每个DDL是一个对象，包含日期和标题
       ddls: [
@@ -218,41 +182,54 @@ export default {
       projectid:0,
       sid:0,
       saInfos: [],
+      tenure: '',
+      department:'',
       studentInfos: [],
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
-      teachers: [],
       isPopupVisible: false, // 控制弹窗显示的布尔值
-      technologystack:"",
-      programmingskill:"",
-      intendedteammate:"",
+      isPopupVisible2: false, // 控制弹窗显示的布尔值
     };
-
   },
+  name: 'CourseNavbar',
 
 
   async created() {
-    this.id = localStorage.getItem('id');
+    await this.return(),
+
+        this.id = localStorage.getItem('id');
     this.name = localStorage.getItem('name');
-    this.major = localStorage.getItem('major');
+    // this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
+    this.tenure = localStorage.getItem('tenure');
+    this.department = localStorage.getItem('department');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    await this.loadStudentsAndSA();
+    // await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
 
   },
   methods: {
+    async return(){
+      if(localStorage.getItem('id')==null||localStorage.getItem('id')==""||localStorage.getItem('id')==undefined||localStorage.getItem('id')=="null"||localStorage.getItem('id')=="undefined"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"){
+        this.isPopupVisible2=true;
+      }
+    },
+
+    yes(){
+      this.$router.push({
+        path: '/login'
+      })
+    },
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
       this.edit.e_email = this.email;
       this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
       this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
-      this.edit.technologystack = localStorage.getItem('technologystack');
-      this.edit.programmingskill = localStorage.getItem('programmingskill');
-      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
+      this.edit.department = localStorage.getItem('department');
+      this.edit.tenure = localStorage.getItem('tenure');
     },
     commitUpdate(){
       //this.id = this.edit.e_id;
@@ -261,19 +238,18 @@ export default {
       localStorage.setItem('email',this.edit.e_email);
       localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
       localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
-      localStorage.setItem('technologystack',this.edit.technologystack);
-      localStorage.setItem('programmingskill',this.edit.programmingskill);
-      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
       this.dialogVisible = false;
-      this.$axios.get('/student/updateStudentDetails',{
+      this.$axios.get('/teacher/update',{
         params: {
           id:localStorage.getItem('id'),
           email:localStorage.getItem('email'),
           phoneNumber:localStorage.getItem('phoneNumber'),
           selfIntroduction:localStorage.getItem('selfIntroduction'),
-          technologyStack:localStorage.getItem('technologystack'),
-          programmingSkill:localStorage.getItem('programmingskill'),
-          intendedTeammate:localStorage.getItem('intendedteammate'),
+          department:localStorage.getItem('department'),
+          tenure:localStorage.getItem('tenure'),
+          name:localStorage.getItem('name'),
+          account:localStorage.getItem('account'),
+          password:localStorage.getItem('password'),
         }
       }).then(res => {
         console.log('dd');
@@ -284,11 +260,9 @@ export default {
           localStorage.setItem('email',this.edit.e_email);
           localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
           localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
-          localStorage.setItem('technologystack',this.edit.technologystack);
-          localStorage.setItem('programmingskill',this.edit.programmingskill);
-          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
+          localStorage.setItem('department',this.edit.department);
+          localStorage.setItem('tenure',this.edit.tenure);
           console.log('sss');
-          this.isPopupVisible = true;
         }else {
           console.log("error")
         }
@@ -300,7 +274,7 @@ export default {
       this.showSaDialog = true;
     },
     studentClick() {
-      this.$router.push('/members');
+      this.$router.push('/membersofteacher');
     },
     async loadStudentsAndSA(){
       this.saInfos = [];
@@ -345,67 +319,33 @@ export default {
         console.error('Error loading sainfos:', error);
       });
 
-      await this.$axios.get('/course/getTeacher', {
-        params: {
-          courseId: localStorage.getItem('currentcourseid')
-        }
-      }).then((res) => {
-        if (res.data.code === "0") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.teachers.push({
-              email: res.data.data[i].email,
-              name: res.data.data[i].name,
-              id: res.data.data[i].id,
-              major: res.data.data[i].major,
-              tenure: res.data.data[i].tenure,
-              department: res.data.data[i].department,
-              selfIntroduction: res.data.data[i].selfIntroduction,
-            })
-          }
-        }
-      }).catch(error => {
-        console.error('Error loading sainfos:', error);
-      });
     },
     logoutClick() {
       this.$router.push('/Login');
       localStorage.clear();
     },
     goTo(route) {
+// 假设使用 Vue Router 进行导航    goTo(route) {
 // 假设使用 Vue Router 进行导航
-      localStorage.setItem("currentcourse",route.title);
       localStorage.setItem("currentcourseid",route.id);
-      // this.myValue=route.title;
+      localStorage.setItem("currentcourse",route.title);
       this.myValue=route.title;
+      this.$router.push('/courseofteacher');
       this.loadLocalStorageData();
-      this.loadStudentsAndSA();
-      this.$router.push({ path: '/course' });
-    },
-    submitproject(route) {
-      localStorage.setItem("currentprojectid",route.id)
-      this.$router.push('projectsubmit');
-    },
-    join(route) {
-      localStorage.setItem("currentprojectid",route.id)
-      this.$router.push('joinTeam');
-    },
-    go1(route) {
-      console.log(route.id)
-      localStorage.setItem("currentprojectid",route.id);
-      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
-      this.$router.push('createTeam');
     },
     go(route) {
-      // localStorage.setItem("currentprojectid",route)
-      this.$router.push(route);
+      this.$router.push(route+"ofteacher");
     },
+
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
-          id: i + 1,
+          id: localStorage.getItem('coursesid' + i),
           title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
         });
       }
       this.posts=[];
@@ -435,6 +375,10 @@ export default {
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
+        this.ddls.push({
+          date: this.assignments[i].ddl,
+          title: this.assignments[i].title,
+        });
       }
       this.projects=[];
       for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
@@ -447,55 +391,91 @@ export default {
           status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
           maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
         });
-        this.ddls=[];
         this.ddls.push({
           date: this.projects[i].ddl,
           title: this.projects[i].title,
         });
       }
+      console.log(this.projects[0])
+      console.log(this.projects[1])
+      console.log("course name="+this.myValue)
+      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
-    },  },
+    },
+
+  },
 }
+
 </script>
-
-
 <style scoped>
-.clickable-text{
-  text-decoration: underline; /* 添加下划线 */
-  color: blue; /* 设置为蓝色或其他突出的颜色 */
-  cursor: pointer; /* 鼠标悬停时显示手形光标 */
-  .clickable-text:hover {
-    color: darkblue; /* 悬停时改变颜色 */
-  }
+
+
+.sa-info {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-top: 20px;
 }
+.student-info {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+.ddl-highlight {
+  border: 2px solid red;
+  border-radius: 50%;
+}
+.today-highlight {
+  border: 2px solid blue;
+  border-radius: 50%;
+}
+
+
+/* 为帖子添加样式 */
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
+
 .header-bar {
   background-color: cornflowerblue;
-  color: #fff;
-  line-height: 60px; /* 根据需要调整高度 */
-  padding: 0 20px; /* 根据需要调整内边距 */
-}
-.header-title {
-  text-align: right; /* 将文本对齐到右边 */
-  padding-right: 100px; /* 或者您需要的任何值，以便向右移动标题 */
-}
-.header-bar h1 {
-  margin: 0; /* 移除默认的margin */
-}
-.course-navbar {
-   width: 200px;
-   background-color: #f2f2f2;
-   height: 100vh; /* 设置高度为视口的100% */
-   overflow-y: auto; /* 如果内容太多可以滚动 */
- }
-.table-section {
-  margin-left: 100px;
-  margin-bottom: 30px; /* 表格间距 */
+  color: white;
+  line-height: 60px;
+  padding: 0 20px;
 }
 
-.table-title {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 10px; /* 标题和表格之间的间距 */
+.main-content {
+  display: flex;
+}
+
+.course-navbar {
+  width: 200px;
+  background-color: #f2f2f2;
+  height: 100vh; /* 设置高度为视口的100% */
+}
+
+.posts-container {
+  margin-right: 10px; /* Adjust the margin as needed */
+  padding: 10px;
+  overflow: auto;
+}
+
+.post {
+  text-align: left;
+  border: 1px solid gainsboro;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.calendar-container {
+  padding: 20px;
+}
+.course-description {
+  margin-top: 20px; /* 与日历的间距 */
+  padding: 10px;
+  border: 1px solid #ccc; /* 描述框的边框 */
+  background-color: #f9f9f9; /* 轻微背景颜色区分 */
 }
 .user-profile {
   text-align: center; /* 居中用户信息 */
@@ -519,3 +499,6 @@ export default {
   /* 其他需要的样式 */
 }
 </style>
+
+
+

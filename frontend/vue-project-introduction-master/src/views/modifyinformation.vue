@@ -27,7 +27,7 @@
                 <template v-slot="{ row }">
                   <div v-for="member in row.teammembers" :key="member.id" class="team-member" style="margin-top:10px">
                     {{ member.name }} (学号：{{ member.id }})
-                    <el-button type="danger" size="mini" @click="removeMember(row, member)">开除</el-button>
+                    <el-button type="danger" size="mini" @click="removeMember(row, member)" :disabled="row.leader === member.id">开除</el-button>
                   </div>
                   <p v-if="row.leader">组长学号：{{ row.leader }}</p>
 
@@ -36,7 +36,7 @@
               <el-table-column label="更改答辩老师/时间">
                 <template v-slot="scope">
                   <el-button type="success" size="small" @click="update1(scope.row)" style="margin-left: 10px">更改答辩老师/时间</el-button>
-                  <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px">更改小队名称/描述</el-button>
+                  <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px">更改小队信息</el-button>
                 </template>
 
               </el-table-column>
@@ -121,6 +121,9 @@
         <el-form-item label="小组描述">
           <el-input v-model="dialogForm2.teamdescription" type="textarea" placeholder="请输入小组描述"></el-input>
         </el-form-item>
+        <el-form-item label="招募信息">
+          <el-input v-model="dialogForm2.recruitmentInformation" type="textarea" placeholder="请输入小组招募信息"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible2 = false">取消</el-button>
@@ -195,6 +198,7 @@ export default {
       dialogForm2: {
         teamname: '',
         teamdescription: '',
+        recruitmentInformation:'',
       },
       wenzi: "",
       currentteam:null,
@@ -277,20 +281,38 @@ export default {
     update5(row){
       this.dialogForm2.teamname = row.name;
       this.dialogForm2.teamdescription = row.description;
+      this.dialogForm2.recruitmentInformation = row.recruitmentInformation;
       this.currentteam = row;
       this.dialogVisible2 = true;
     },
-    updateTeamInfo() {
+   async updateTeamInfo() {
       // 在这里处理对话框提交的数据
       // 例如，发送请求到后端更新小组信息
-
-      this.$axios.get('/team/updateTeamInfo', {
+     const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
+       params: {
+         teamId: this.currentteam.id,
+       }
+     });
+     const team = res1.data.data;
+     await this.$axios.get('/team/updateTeamInfo', {
         params: {
-          teamId: this.currentteam.id,
+          teamId: team.teamId,
+          recruitmentInformation:this.dialogForm2.recruitmentInformation,
           teamName: this.dialogForm2.teamname,
-          teamDescription: this.dialogForm2.teamdescription,
-          leader: this.currentteam.leader,
-          teamSize: this.currentteam.teamsize,
+          projectId:team.projectId,
+          leader:team.leader,
+          teamDescription:this.dialogForm2.teamdescription,
+
+          teamSize:team.teamSize,
+
+          teamMembers:team.teamMembers,
+
+          teacherId:team.teacherId,
+
+          presentationDate:team.presentationDate,
+
+
+
           // teamMembers: this.currentteam.teammembers,
         }
       }).then((res) => {
@@ -469,6 +491,7 @@ export default {
                 currentmembercount: res1.data.data ? res1.data.data.length : 0,
                 teacherid: team.teacherId,
                 presentationdate: team.presentationDate,
+                recruitmentInformation:team.recruitmentInformation,
                 selectedLeaderId:'',
               });
             }else {
@@ -484,6 +507,8 @@ export default {
                 currentmembercount:  0,
                 teacherid: team.teacherId,
                 presentationdate: team.presentationDate,
+                recruitmentInformation:team.recruitmentInformation,
+
                 selectedLeaderId:'',
               });
             }

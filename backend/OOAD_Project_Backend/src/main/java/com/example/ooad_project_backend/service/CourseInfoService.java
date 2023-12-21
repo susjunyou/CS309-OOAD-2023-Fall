@@ -2,7 +2,10 @@ package com.example.ooad_project_backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.ooad_project_backend.entity.*;
+import com.example.ooad_project_backend.enums.StatusType;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 
@@ -54,5 +57,13 @@ public interface CourseInfoService extends IService<CourseInfo> {
     List<StudentInfo> findSAInfoNotInCourseByCourseId(Integer courseId);
 
     List<CourseInfo> findMySACoursesByStudentId(Integer studentId);
+
+
+    boolean addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                          StatusType attendanceStatus, Integer maxScore, Integer proportion);
+
+    boolean updateAttendance(Integer id, Integer courseId,Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                             StatusType attendanceStatus, Integer maxScore, Integer proportion);
+    void deleteAttendance(Integer id);
 
 }

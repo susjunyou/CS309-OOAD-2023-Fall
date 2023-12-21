@@ -6,7 +6,7 @@
       <div class="team-creation-wrapper">
         <!-- 左侧填写表单区域 -->
         <div class="form-section">
-          <el-form ref="teamForm" :model="teamForm" label-width="100px">
+          <el-form ref="teamForm" :model="teamForm" :rules="rules" label-width="100px">
             <el-form-item label="小组名称">
               <el-input v-model="teamForm.name"></el-input>
             </el-form-item>
@@ -21,8 +21,8 @@
               <el-input v-model="teamForm.projectId" disabled></el-input>
             </el-form-item>
 
-            <el-form-item label="队长 ID">
-              <el-select v-model="teamForm.leaderId" placeholder="请选择">
+            <el-form-item label="队长 ID" prop="leaderId" required>
+              <el-select v-model="teamForm.leaderId" placeholder="请选择" required>
                 <el-option v-for="id in selectedStudents" :key="id" :label="id" :value="id"></el-option>
               </el-select>
             </el-form-item>
@@ -65,6 +65,10 @@ import shitshan from "@/components/shitshan.vue";
 export default {
   data() {
     return {
+      rules: {
+        leaderId: [
+          { required: true, message: '请选择队长', trigger: 'change' }
+        ],},
       courses: [],
       posts: [],
       materials: [],
@@ -117,60 +121,63 @@ export default {
 
 
     async submitTeam() {
+      this.$refs.teamForm.validate(async (valid) => {
+        if (valid) {
+          const createRes = await this.$axios.get('/team/create', {
+            params: {
+              teamName: String(this.teamForm.name),
+              teamDescription: String(this.teamForm.description),
+              maxMembers: Number(this.teamForm.maxMembers),
+              projectId: Number(localStorage.getItem('currentprojectid')),
+              leader: Number(this.teamForm.leaderId),
+              teamSize: this.teamForm.maxMembers,
+            }
+          });
 
-        const createRes = await this.$axios.get('/team/create', {
-          params: {
-            teamName: String(this.teamForm.name),
-            teamDescription: String(this.teamForm.description),
-            maxMembers: Number(this.teamForm.maxMembers),
-            projectId:Number(localStorage.getItem('currentprojectid')),
-            leader:Number(this.teamForm.leaderId),
-            teamSize: this.teamForm.maxMembers,          }
-        });
 
+          const findRes = await this.$axios.get('/team/findTeamInfoByProjectId', {
+            params: {
+              projectId: localStorage.getItem("currentprojectid")
+            }
+          });
+          console.log(findRes.data.data);
+          if (findRes.data.code === "0") {
+            localStorage.setItem(localStorage.getItem("currentcourse") + " " + localStorage.getItem("currentprojectid") + " " + "teamcount", findRes.data.data.length);
+            // this.teamcount = res.data.data.length;
+            for (let i = 0; i < findRes.data.data.length; i++) {
+              const team = findRes.data.data[i];
+              console.log(this.teamForm.leaderId);
+              console.log(findRes.data.data[i].leader);
+              if (findRes.data.data[i].leader === this.teamForm.leaderId) {
+                console.log("yes1");
+                for (let j = 0; j < this.selectedStudents.length; j++) {
+                  console.log("yes2");
 
-
-      const findRes = await this.$axios.get('/team/findTeamInfoByProjectId', {
-        params: {
-          projectId: localStorage.getItem("currentprojectid")
-        }
-      });
-      console.log(findRes.data.data);
-      if (findRes.data.code === "0") {
-        localStorage.setItem(localStorage.getItem("currentcourse")+" "+localStorage.getItem("currentprojectid")+" "+"teamcount", findRes.data.data.length);
-        // this.teamcount = res.data.data.length;
-        for (let i = 0; i < findRes.data.data.length; i++) {
-          const team = findRes.data.data[i];
-          console.log(this.teamForm.leaderId);
-          console.log(findRes.data.data[i].leader);
-          if(findRes.data.data[i].leader === this.teamForm.leaderId){
-            console.log("yes1");
-            for (let j = 0; j < this.selectedStudents.length; j++) {
-              console.log("yes2");
-
-              if (this.selectedStudents[j] != team.leader){
-                console.log("yes3");
-              await this.$axios.get('/team/join', {
-                  params: {
-                    studentId: this.selectedStudents[j],
-                    teamId: Number(team.teamId),
-                    projectId: Number(team.projectId),
-                    teamSize: team.teamSize,
-                    leader: Number(team.leader),
-                  },
-                })
+                  if (this.selectedStudents[j] != team.leader) {
+                    console.log("yes3");
+                    await this.$axios.get('/team/join', {
+                      params: {
+                        studentId: this.selectedStudents[j],
+                        teamId: Number(team.teamId),
+                        projectId: Number(team.projectId),
+                        teamSize: team.teamSize,
+                        leader: Number(team.leader),
+                      },
+                    })
+                  }
+                }
               }
+
+
             }
           }
 
 
+          if (createRes.data.code === "0") {
+            this.isPopupVisible = true;
+          }
         }
-      }
-
-
-      if (createRes.data.code === "0") {
-        this.isPopupVisible = true;
-      }
+      },);
     },
 
 

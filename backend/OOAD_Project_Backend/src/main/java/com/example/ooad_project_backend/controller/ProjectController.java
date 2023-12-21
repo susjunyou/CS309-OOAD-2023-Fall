@@ -84,7 +84,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/getProjectByCourseId")
+    @GetMapping("/getProjectByCourseId")
     public Result getProjectByCourseId(Integer courseId) {
         List<com.example.ooad_project_backend.entity.ProjectInfo> projectInfoList = projectInfoService.getProjectByCourseId(courseId);
         if (projectInfoList != null) {

@@ -4,9 +4,13 @@
     <shitshan>
       <div class="attendance-list">
         <hr class="separator">
-        <h1>项目成绩</h1>
         <h1>{{this.currentprojecttitle}}</h1>
         <h2>{{this.currentprojectddl}}</h2>
+        <div class="file-upload">
+          <input type="file"   @change="onFileSelected"/>
+          <!--        @change="handleFileUpload"-->
+          <el-button class="submit" @click.prevent="submitGrade" :disabled="this.disable_submit">SubmitGrade</el-button>
+        </div>
         <ul>
           <li>
             <table>
@@ -30,10 +34,15 @@
           </li>
         </ul>
         <div id="main123" style="width: 100%; height:400px"></div>
-        <h1>底部</h1>
       </div>
     </shitshan>
     <!-- 你的其他内容 -->
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>提交成功！</p>
+        <button @click="returnToassignments">关闭</button>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -57,6 +66,8 @@ export default {
       num80:'',
       num90:'',
       num100:'',
+      file:null,
+      isPopupVisible:false,
     };
   },
   async created(){
@@ -70,6 +81,28 @@ export default {
     shitshan
   },
   methods: {
+    onFileSelected(event) {
+      // event.target.files 包含了用户选中的文件列表
+      this.file = event.target.files[0]; // 保存第一个选中的文件
+    },
+    submitGrade(){
+      let formData = new FormData();
+      formData.append('projectId',this.currentprojectid);
+      formData.append('file',this.file);
+      this.$axios.post('/grade/uploadProjectGradeCSV',formData,{
+        headers:{
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(res=>{
+        if(res.data.code==="0"){
+          this.isPopupVisible=true;
+        }
+      })
+    },
+    returnToassignments(){
+      this.isPopupVisible=false;
+      this.$router.push('/gradebookofteacher')
+    },
     // getClass(){
     //   // var echarts=require('echarts');
     //   // var myChart = echarts.init(document.getElementById('main123'));
@@ -281,5 +314,23 @@ export default {
   position: absolute;
   width: 80%;
   left: 200px; /* 右移 50px，根据需要调整 */
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 </style>
