@@ -4,31 +4,31 @@
     <shitshan>
 
       <div class="assign" style="width: 88%">
-      <div class="assignment-container" >
-        <!-- ...之前的代码... -->
-        <el-row :gutter="20">
-          <el-col v-for="project in projects" :key="project.id" :span="8" >
-            <el-card  class="assignment-card" @click.native="join(project)">
-              <h3>{{ project.title }}</h3>
-              <a v-if="project.file.downloadUrl"
-                 :href="project.file.downloadUrl"
-                 :download="project.file.fileName"
-                 @click.stop="handleDownload(project)">
-                {{ project.file.fileName }}
-              </a>                <p v-else class="placeholder">没有文件</p>
-              <p>截止日期：{{ project.ddl }}</p>
-              <el-button type="danger" size="small" @click.stop="deleteProject(project)">删除课程</el-button>
-              <el-button type="primary" size="small" @click.stop="editProject(project)">修改信息</el-button>
-            </el-card>
-          </el-col>
-        </el-row>
-        <!-- ...之后的代码... -->
+        <div class="assignment-container" >
+          <!-- ...之前的代码... -->
+          <el-row :gutter="20">
+            <el-col v-for="project in projects" :key="project.id" :span="8" >
+              <el-card  class="assignment-card" @click.native="join(project)">
+                <h3>{{ project.title }}</h3>
+                <a v-if="project.file.downloadUrl"
+                   :href="project.file.downloadUrl"
+                   :download="project.file.fileName"
+                   @click.stop="handleDownload(project)">
+                  {{ project.file.fileName }}
+                </a>                <p v-else class="placeholder">没有文件</p>
+                <p>截止日期：{{ project.ddl }}</p>
+                <el-button type="danger" size="small" @click.stop="deleteProject(project)">删除课程</el-button>
+                <el-button type="primary" size="small" @click.stop="editProject(project)">修改信息</el-button>
+              </el-card>
+            </el-col>
+          </el-row>
+          <!-- ...之后的代码... -->
 
+        </div>
+        <div class="publish-button-container">
+          <el-button class="sumbitt" @click="publishProject">发布Project</el-button>
+        </div>
       </div>
-      <div class="publish-button-container">
-        <el-button class="sumbitt" @click="publishProject">发布Project</el-button>
-      </div>
-  </div>
 
     </shitshan>
     <!-- 你的其他内容 -->
@@ -154,7 +154,7 @@ export default {
     };
   },
   async created(){
-   await this.loadLocalStorageData();
+    await this.loadLocalStorageData();
     await this.loadAllCoursesinfo();
     await this.loadLocalStorageData()
   },
@@ -285,6 +285,8 @@ export default {
               localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
               localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
+              localStorage.setItem('projectfileid'+course.title+i,res.data.data[i].fileId);
+
               this.ddls.push({
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,
@@ -675,6 +677,7 @@ export default {
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 20px;
+
 
   background-color: #f5f5f5;
   border-radius: 15px;

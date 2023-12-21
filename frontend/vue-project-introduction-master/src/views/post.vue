@@ -57,27 +57,29 @@
       </el-menu>
 
 
-
-
-
-
     <el-button type="primary" class="custom-button" @click="showPostForm"  >发表</el-button>
-      <div class="assignment-container">
+      <div class="card-container" style="display: flex; flex-wrap: wrap">
         <!-- ...之前的代码... -->
         <el-row :gutter="20">
-          <el-col v-for="post in posts" :key="post.id" :span="6" >
-            <el-card  class="assignment-card" @click.native="showReplyForm(post)">
+          <el-col v-for="post in posts" :key="post.id" :span="24" >
+            <el-card  class="post-card" @click.native="showReplyForm(post)" >
               <h3>{{ post.title }}</h3>
               <p>发布者：{{ post.author }}</p>
+              <p>{{ post.content }}</p>
             </el-card>
           </el-col>
         </el-row>
         <!-- ...之后的代码... -->
 
       </div>
-
-
-
+<!--    <div>-->
+<!--    <el-col :span="17" class="posts-container">-->
+<!--    <div v-for="post in posts" :key="post.id" >-->
+<!--      <h3>{{ post.title }} 发布者: {{ post.author }}</h3>-->
+<!--      <p>{{ post.content }}</p>-->
+<!--    </div>-->
+<!--    </el-col>-->
+<!--    </div>-->
       <!--      发布post-->
       <el-dialog
           :visible.sync="showForm"
@@ -771,6 +773,7 @@ export default {
   margin-top: 10px;
   width: 350px;
   height: 150px;
+
 }
 
 .assignment-card:hover {
@@ -802,6 +805,27 @@ export default {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-container{
+  flex-wrap: wrap;
+  display: flex;
+  margin: 20px;
+  padding-left: 200px;
+  //border: 1px solid red;
+  height: auto;
+}
+.post-card{
+  cursor: pointer;
+  transition: box-shadow .3s;
+  //border: 1px solid gainsboro;
+  //margin-top: 10px;
+  width: 1200px;
+  height: 150px;
+  border:1px solid #000;
+}
+.post-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
 </style>
 

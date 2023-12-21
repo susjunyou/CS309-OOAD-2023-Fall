@@ -119,9 +119,23 @@
               <h3>{{ reply.authorType }} 回答者: {{ reply.replyAuthor }}</h3>
               <p>{{ reply.replyContent }}</p>
             </div>
-
           </el-col>
-<!--          <div v-for="reply in replys" :key="reply.replyContent">-->
+<!--          <div class="assignment-container">-->
+<!--            &lt;!&ndash; ...之前的代码... &ndash;&gt;-->
+<!--            <el-row :gutter="20">-->
+<!--              <el-col v-for="reply in replys" :key="reply.replyContent" class="post" >-->
+<!--                <el-card  class="assignment-card" @click.native="showReplyForm(post)">-->
+<!--                  <h3>{{ reply.authorType }}</h3>-->
+<!--                  <p>回答者：{{ reply.replyAuthor }}</p>-->
+<!--                  <p>{{ reply.replyContent }}</p>-->
+<!--                </el-card>-->
+<!--              </el-col>-->
+<!--            </el-row>-->
+<!--            &lt;!&ndash; ...之后的代码... &ndash;&gt;-->
+
+<!--          </div>-->
+
+          <!--          <div v-for="reply in replys" :key="reply.replyContent">-->
 <!--            <h3>回答{{ reply.replyContent }}</h3>-->
 <!--          </div>-->
           <h4>你的回答：</h4>
@@ -685,6 +699,7 @@ export default {
   padding: 10px;
   overflow: auto;
   width: 80%; /* 或者设置你想要的宽度 */
+  border:1px solid #000;
 }
 </style>
 

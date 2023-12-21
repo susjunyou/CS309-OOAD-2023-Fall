@@ -50,7 +50,7 @@ public class ProjectController {
 
     }
 
-    @DeleteMapping("/deleteProject")
+    @GetMapping("/deleteProject")
     public Result deleteProject(Integer projectId) {
         boolean flag = projectInfoService.deleteProject(projectId);
         if (flag) {
@@ -60,7 +60,7 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/updateProject")
+    @PostMapping("/updateProject")
     public Result updateProject(Integer projectId, String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
                                 Integer maxScore, Double proportion, Integer releaser, UserType releaserType,Date projectStartDate,Integer maxPeopleInTeam, Integer courseId, MultipartFile file) {
 
