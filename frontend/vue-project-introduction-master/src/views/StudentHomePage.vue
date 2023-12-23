@@ -85,13 +85,13 @@
       <!-- 课程卡片列表 -->
       <el-col :span="18" class="course-list">
         <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" :span="8" class="course-item">
+          <el-col v-for="course in courses" :key="course.id" :span="8" class="course-item" style="min-height:180px">
             <el-card class="course-card" @click.native="goTo(course)">
               <h3>{{ course.code }}</h3>
               <h3>{{ course.title }}</h3>
             </el-card>
           </el-col>
-          <el-col v-for="course in coursessa" :key="course.id" :span="8" class="course-item">
+          <el-col v-for="course in coursessa" :key="course.id" :span="8" class="course-item" style="min-height: 180px">
             <el-card class="course-card sa-course-card" @click.native="goTo3(course)">
               <h3>{{ course.code }}</h3>
               <h3>{{ course.title }}</h3>

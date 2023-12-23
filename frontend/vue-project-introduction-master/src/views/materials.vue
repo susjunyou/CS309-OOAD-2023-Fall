@@ -92,31 +92,32 @@
       </el-dialog>
 
 
+
+
+
       <!--  <div>-->
+        <el-menu
+            class="course-navbar"
+            mode="vertical"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b">
+          <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+          <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
+          <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+          <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+          <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+          <el-menu-item index="7" @click="studentClick">members</el-menu-item>
+          <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+        </el-menu>
 
 
-      <el-row :gutter="20">
 
-        <div>
-          <el-menu
-              class="course-navbar"
-              mode="vertical"
-              background-color="#545c64"
-              text-color="#fff"
-              active-text-color="#ffd04b">
-            <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-            <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-            <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-            <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-            <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-            <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-            <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-          </el-menu>
-        </div>
         <div class="assignment-container">
           <!--          <el-row :gutter="20">-->
+          <el-row :gutter="20">
           <el-col v-for="material in materials" :key="material.id" :span="6" >
-            <el-card class="assignment-card" >
+            <el-card class="assignment-card"  style="min-height: 180px">
               <h3>{{ material.name }}</h3>
               <p>{{ material.description }}</p>
               <a v-if="material.file.downloadUrl" :href="material.file.downloadUrl" :download="material.file.fileName">{{ material.file.fileName }}</a>
@@ -125,8 +126,9 @@
             </el-card>
           </el-col>
           <!--          </el-row>-->
-        </div>
       </el-row>
+        </div>
+
 
     </div>
 
@@ -700,14 +702,11 @@ export default {
   /* 其他需要的样式 */
 }
 
-.assignment-container{
-//margin-top: 50px;
-//margin-left: 0px;
-//margin-right: 70px;
-  margin: 20px;
-  padding-left: 10px;
-
+.assignment-container {
+  margin-left: 20px;
+  padding-left: 200px;
 }
+
 .assignment-card {
   cursor: pointer;
   transition: box-shadow .3s;

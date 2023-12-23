@@ -6,7 +6,7 @@
       <div class="coursecontainer">
 
         <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" :span="7">
+          <el-col v-for="course in courses" :key="course.id" :span="7" style="min-height: 180px">
             <el-card class="course-card" @click.native="goTo(course)">
               <h3>{{ course.code }}</h3>
               <h3>{{ course.title }}</h3>
