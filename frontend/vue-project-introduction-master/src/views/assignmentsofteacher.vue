@@ -49,8 +49,8 @@
         <el-form-item label="最高分数">
           <el-input-number v-model="assignmentForm.maxScore"></el-input-number>
         </el-form-item>
-        <el-form-item label="占比">
-          <el-input-number v-model="assignmentForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
+        <el-form-item label="占比" label-width="70px">
+          <el-input-number v-model="assignmentForm.proportion" :min="0" :max="100" step="0.01" ></el-input-number>
         </el-form-item>
         <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
         <el-input type="hidden" v-model="assignmentForm.courseId"></el-input>
@@ -680,4 +680,6 @@ export default {
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
+
+
 </style>

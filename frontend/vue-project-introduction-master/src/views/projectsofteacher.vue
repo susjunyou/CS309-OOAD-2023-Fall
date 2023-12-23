@@ -40,16 +40,16 @@
         <el-form-item label="Project描述">
           <el-input type="textarea" v-model="projectForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="作业文件" >
+        <el-form-item label="作业文件" label-width="93px">
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
-        <el-form-item label="截止日期">
+        <el-form-item label="截止日期" label-width="93px">
           <el-date-picker v-model="projectForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
         </el-form-item>
-        <el-form-item label="最高分数">
+        <el-form-item label="最高分数" label-width="93px">
           <el-input-number v-model="projectForm.maxScore"></el-input-number>
         </el-form-item>
-        <el-form-item label="占比">
+        <el-form-item label="占比" label-width="93px">
           <el-input-number v-model="projectForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
         </el-form-item>
 
