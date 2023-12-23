@@ -17,7 +17,7 @@
                   {{ project.file.fileName }}
                 </a>                <p v-else class="placeholder">没有文件</p>
                 <p>截止日期：{{ project.ddl }}</p>
-                <el-button type="danger" size="small" @click.stop="deleteProject(project)">删除课程</el-button>
+                <el-button type="danger" size="small" @click.stop="deleteProject(project)">删除工程</el-button>
                 <el-button type="primary" size="small" @click.stop="editProject(project)">修改信息</el-button>
               </el-card>
             </el-col>

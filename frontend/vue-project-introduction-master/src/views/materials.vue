@@ -95,9 +95,9 @@
       <!--  <div>-->
 
 
-      <el-row :gutter="20">
-        <el-col :span="3">
+      <el-row >
 
+<div>
           <el-menu
               class="course-navbar"
               mode="vertical"
@@ -112,7 +112,7 @@
             <el-menu-item index="7" @click="studentClick">members</el-menu-item>
             <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
           </el-menu>
-        </el-col>
+</div>
         <el-col v-for="material in materials" :key="material.id" :span="6" >
           <el-card class="assignment-card" >
             <h3>{{ material.name }}</h3>

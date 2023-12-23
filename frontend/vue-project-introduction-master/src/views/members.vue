@@ -89,9 +89,7 @@
 
       </el-form>
     </el-dialog>
-
-<el-row>
-  <el-col :span="3">
+<div>
     <el-menu
         class="course-navbar"
         mode="vertical"
@@ -106,8 +104,9 @@
       <el-menu-item index="7" @click="studentClick">members</el-menu-item>
       <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
     </el-menu>
-    </el-col>
-  <el-col :span="21">
+  </div>
+    <div class="table-section2">
+
     <div class="table-section">
       <h2 class="table-title">Teacher Information</h2>
       <el-table :data="teachers" style="width: 90%;" border stripe>
@@ -137,8 +136,7 @@
         <el-table-column prop="major" label="Major"></el-table-column>
       </el-table>
     </div>
-  </el-col>
-</el-row>
+    </div>
   </div>
 </template>
 
@@ -509,7 +507,10 @@ export default {
 }
 
 
-
+.table-section2{
+  margin-left: 100px;
+  padding-left: 100px;
+}
 
 /* 自定义profile按钮样式 */
 

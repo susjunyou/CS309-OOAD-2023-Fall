@@ -3,7 +3,7 @@
     <!-- 你的其他内容 -->
     <shitshan>
 
-
+      <div class="assign" style="width: 88%">
       <div class="assignment-container">
         <!-- ...之前的代码... -->
         <el-row :gutter="20">
@@ -17,6 +17,7 @@
         <!-- ...之后的代码... -->
 
       </div>
+  </div>
     </shitshan>
     <!-- 你的其他内容 -->
   </div>
@@ -283,16 +284,21 @@ export default {
 </script>
 
 <style scoped>
-.assignment-container {
-  margin: 20px;
-  padding-left: 200px;
-  width: 100%;
+.assignment-container{
+  margin-top: 50px;
+  margin-left: 0px;
+  margin-right: 70px;
 }
+.assignment-card{
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
 
-.assignment-card {
-  cursor: pointer;
-  transition: box-shadow .3s;
-  border: 1px solid gainsboro;
+
+  background-color: #f5f5f5;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px 0
 }
 
 .assignment-card:hover {

@@ -570,18 +570,23 @@ export default {
   background-color: cornflowerblue;
   color: white;
   line-height: 60px;
-  padding: 0 20px;
+  padding: 0 ;
 }
 
 .main-content {
   display: flex;
 }
 
-.course-navbar {
-  width: 200px;
-  background-color: #f2f2f2;
-  height: 100vh; /* 设置高度为视口的100% */
+.course-navbar, .header-bar {
+  margin: 0; /* 移除外边距 */
+  padding: 0; /* 移除内边距 */
 }
+
+.el-row, .el-col {
+  margin: 0;
+  padding: 0;
+}
+
 
 .posts-container {
   margin-right: 10px; /* Adjust the margin as needed */
@@ -629,6 +634,7 @@ export default {
 
 
 .calendar {
+  margin-top: 200px;
   width: 300px; /* 固定日历的宽度 */
 }
 .ddl-past {

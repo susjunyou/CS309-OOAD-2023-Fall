@@ -104,44 +104,44 @@ export default {
       this.$router.push('/gradebookofteacher')
     },
     getClass(){
-      var echarts=require('echarts');
-      var myChart = echarts.init(document.getElementById('main123'));
-      var option={
-        title:{
-          text:'成绩',
-          x:'center',
-        },
-        legend:{
-          orient:"vertical",
-          top:'20',
-          right:'100',
-          data:['人数'],
-        },
-        tooltip:{},
-        xAxis:{
-          data:['<60','60~69','70~79','80~89','>=90'],
-          axisTick:{
-            alignWithLabel:true,
-            show:true,
-            interval:0
-          }
-        },
-        yAxis:{},
-        series:[{
-          name:'人数',
-          type:'bar',
-          data:[this.num60,this.num70,this.num80,this.num90,this.num100],
-          label:{
-            show: true,
-            position:'outside',
-            color: 'black'
-          }
-        }],
-        itemStyle:{
-          color: 'black'
-        }
-      };
-      myChart.setOption(option);
+      // var echarts=require('echarts');
+      // var myChart = echarts.init(document.getElementById('main123'));
+      // var option={
+      //   title:{
+      //     text:'成绩',
+      //     x:'center',
+      //   },
+      //   legend:{
+      //     orient:"vertical",
+      //     top:'20',
+      //     right:'100',
+      //     data:['人数'],
+      //   },
+      //   tooltip:{},
+      //   xAxis:{
+      //     data:['<60','60~69','70~79','80~89','>=90'],
+      //     axisTick:{
+      //       alignWithLabel:true,
+      //       show:true,
+      //       interval:0
+      //     }
+      //   },
+      //   yAxis:{},
+      //   series:[{
+      //     name:'人数',
+      //     type:'bar',
+      //     data:[this.num60,this.num70,this.num80,this.num90,this.num100],
+      //     label:{
+      //       show: true,
+      //       position:'outside',
+      //       color: 'black'
+      //     }
+      //   }],
+      //   itemStyle:{
+      //     color: 'black'
+      //   }
+      // };
+      // myChart.setOption(option);
     },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
