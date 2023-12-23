@@ -79,8 +79,8 @@
         </el-form-item>
 
         <el-form-item label="tenure" prop="tenure" >
-        <el-input v-model="edit.tenure"  disabled="disabled"/>
-      </el-form-item>
+          <el-input v-model="edit.tenure"  disabled="disabled"/>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="commitUpdate()">Submit</el-button>
         </el-form-item>
@@ -210,21 +210,15 @@ export default {
 
 
   async created() {
-    await this.return(),
+    await this.gosjy();
 
-        this.id = localStorage.getItem('id');
-    this.name = localStorage.getItem('name');
-    // this.major = localStorage.getItem('major');
-    this.email = localStorage.getItem('email');
-    this.tenure = localStorage.getItem('tenure');
-    this.department = localStorage.getItem('department');
-    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    // await this.loadStudentsAndSA();
-    this.myValue=localStorage.getItem("currentcourse");
-    this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
+
 
   },
   methods: {
+    gosjy(){
+      this.$router.push('/courseofteacher')
+    },
     gotot(){
       this.$router.push('/teacherhomepage')
     },
@@ -341,14 +335,14 @@ export default {
       this.$router.push('/Login');
       localStorage.clear();
     },
-   async goTo(route) {
+    async goTo(route) {
 // 假设使用 Vue Router 进行导航    goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourseid",route.id);
       localStorage.setItem("currentcourse",route.title);
       this.myValue=route.title;
       await this.loadLocalStorageData();
-      this.$router.push('/middle');
+      this.$router.push('/courseofteacher');
     },
     go(route) {
       this.$router.push(route+"ofteacher");
