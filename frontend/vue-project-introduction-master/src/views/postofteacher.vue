@@ -4,6 +4,7 @@
 
 <shitshan>
   <div class="assign" style="width: 88%">
+    <el-button type="primary" class="custom-button" @click="showPostForm"  >发表</el-button>
     <div class="assignment-container">
       <!-- ...之前的代码... -->
 
@@ -11,18 +12,16 @@
         <el-col v-for="post in posts" :key="post.id" :span="6" >
           <el-card  class="assignment-card" @click.native="showReplyForm(post)" >
             <h3>{{ post.title }}</h3>
-            <p>发布者：{{ post.author }}</p>
-            <p>{{ post.content }}</p>
+            <p>发布者：{{ post.authorname }}</p>
           </el-card>
         </el-col>
       </el-row>
       <!-- ...之后的代码... -->
 
     </div>
-    <div class="publish-button-container">
-      <el-button class="sumbitt" @click="publishAssignment">发布通知</el-button>
-    </div>
+
   </div>
+
 
 
 
@@ -395,16 +394,10 @@ export default {
         console.error('Error loading sainfos:', error);
       });
       localStorage.setItem('currentpostid',post.id);
-      localStorage.setItem('currentauthor',post.author);
+      localStorage.setItem('currentauthor',post.authorname);
       localStorage.setItem('currenttitle',post.title);
       localStorage.setItem('currentcontent',post.content);
-      this.$router.push({path:'/postReply',
-        query:{
-          postid:post.id,
-          title:post.title,
-          content:post.content,
-          author:post.author,
-        }})
+      this.$router.push({path:'/postreplyofteacher'})
 
     },
     submitreplyForm(){
@@ -463,13 +456,41 @@ export default {
                 localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
                 localStorage.setItem('postType'+localStorage.getItem('currentcourse') + i,res.data.data[i].postType);
                 if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='QUESTION'){
-                  this.posts.push({
-                    course: localStorage.getItem('currentcourse'),
-                    id: res.data.data[i].postId,
-                    title: res.data.data[i].postTitle,
-                    content: res.data.data[i].postContent,
-                    author: res.data.data[i].postAuthor,
-                  })
+                  if (res.data.data[i].authorType==='TEACHER'){
+                    this.$axios.get('/teacher/getTeacherInfoById',{
+                      params:{
+                        id:res.data.data[i].postAuthor,
+                      }
+                    }).then(response=>{
+                      if(response.data.code==="0"){
+                        this.posts.push({
+                          course: localStorage.getItem('currentcourse'),
+                          id: res.data.data[i].postId,
+                          title: res.data.data[i].postTitle,
+                          content: res.data.data[i].postContent,
+                          author: res.data.data[i].postAuthor,
+                          authorname:response.data.data.name,
+                        })
+                      }
+                    })
+                  }else if(res.data.data[i].authorType==='STUDENT'){
+                    this.$axios.get('/student/getStudent',{
+                      params:{
+                        id:res.data.data[i].postAuthor,
+                      }
+                    }).then(response=>{
+                      if(response.data.code==="0"){
+                        this.posts.push({
+                          course: localStorage.getItem('currentcourse'),
+                          id: res.data.data[i].postId,
+                          title: res.data.data[i].postTitle,
+                          content: res.data.data[i].postContent,
+                          author: res.data.data[i].postAuthor,
+                          authorname:response.data.data.name,
+                        })
+                      }
+                    })
+                  }
                 }
               }
             }
@@ -495,7 +516,7 @@ export default {
     },
     returnTocourse(){
       this.isPopupVisible = false;
-      this.$router.push('/post');
+      this.$router.push('/postofteacher');
     },
     saClick() {
       this.showSaDialog = true;
@@ -576,16 +597,62 @@ export default {
         });
       }
       this.posts=[];
-      for (let i = localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse"))-1; i >=0; i--) {
-        if (localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) === 'QUESTION'){
-          this.posts.push({
-            id: localStorage.getItem('postid' + localStorage.getItem("currentcourse")+i),
-            content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
-            title: localStorage.getItem('posttitle' + localStorage.getItem("currentcourse")+i),
-            author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
-          });
+      this.$axios.get('/course/posts', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
         }
-      }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.posts=[];
+          localStorage.setItem('coursePostLength'+localStorage.getItem('currentcourse'),res.data.data.length)
+          for(let i = localStorage.getItem('coursePostLength'+localStorage.getItem('currentcourse'))-1;i>=0;i--) {
+            localStorage.setItem('postid' + localStorage.getItem('currentcourse') + i, res.data.data[i].postId);
+            localStorage.setItem('post' + localStorage.getItem('currentcourse') + i, res.data.data[i].postContent);
+            localStorage.setItem('posttitle' + localStorage.getItem('currentcourse') + i, res.data.data[i].postTitle);
+            localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
+            localStorage.setItem('postType'+localStorage.getItem('currentcourse') + i,res.data.data[i].postType);
+            if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='QUESTION'){
+              if (res.data.data[i].authorType==='TEACHER'){
+                this.$axios.get('/teacher/getTeacherInfoById',{
+                  params:{
+                    id:res.data.data[i].postAuthor,
+                  }
+                }).then(response=>{
+                  if(response.data.code==="0"){
+                    this.posts.push({
+                      course: localStorage.getItem('currentcourse'),
+                      id: res.data.data[i].postId,
+                      title: res.data.data[i].postTitle,
+                      content: res.data.data[i].postContent,
+                      author: res.data.data[i].postAuthor,
+                      authorname:response.data.data.name,
+                    })
+                  }
+                })
+              }else if(res.data.data[i].authorType==='STUDENT'){
+                this.$axios.get('/student/getStudent',{
+                  params:{
+                    id:res.data.data[i].postAuthor,
+                  }
+                }).then(response=>{
+                  if(response.data.code==="0"){
+                    this.posts.push({
+                      course: localStorage.getItem('currentcourse'),
+                      id: res.data.data[i].postId,
+                      title: res.data.data[i].postTitle,
+                      content: res.data.data[i].postContent,
+                      author: res.data.data[i].postAuthor,
+                      authorname:response.data.data.name,
+                    })
+                  }
+                })
+              }
+            }
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading course posts:', error);
+      });
       this.materials=[];
 
       for (let i = 0; i < localStorage.getItem('courseMaterialLength'+localStorage.getItem("currentcourse")); i++) {
