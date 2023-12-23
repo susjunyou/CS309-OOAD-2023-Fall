@@ -35,8 +35,8 @@
                 </el-table-column>
                 <el-table-column label="更改答辩老师/时间">
                   <template v-slot="scope">
-                    <el-button type="success" size="small" @click="update1(scope.row)" style="margin-left: 10px">更改答辩老师/时间</el-button>
-                    <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px">更改小队信息</el-button>
+                    <el-button type="success" size="small" @click="update1(scope.row)" style="margin-left: 10px;min-width: 140px">更改答辩老师/时间</el-button>
+                    <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px;min-width: 140px">更改小队信息</el-button>
                   </template>
 
                 </el-table-column>
@@ -68,8 +68,8 @@
                 <!-- Other columns as needed -->
               </el-table>
             </div>
-            <el-button type="success" size="small" @click="update4()" class="sumbitt">添加小组</el-button>
-            <el-button type="success" size="small" @click="dialogVisible3 = true" class="sumbitt">批量添加小组</el-button>
+            <el-button type="success" size="small" @click="update4()" class="sumbitt" style="min-width: 160px">添加小组</el-button>
+            <el-button type="success" size="small" @click="dialogVisible3 = true" class="sumbitt" style="min-width: 160px">批量添加小组</el-button>
 
           </div>
 
