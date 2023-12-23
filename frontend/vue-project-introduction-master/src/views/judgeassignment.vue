@@ -15,10 +15,30 @@
               <p v-else class="placeholder">没有文本内容</p>
             </div>
           </div>
+          <!-- 在相应位置添加以下代码 -->
+<!--          <div class="file-display">-->
+<!--            <h3>txt文件内容</h3>-->
+<!--            <pre v-if="file.fileType === 'text/plain'">{{ this.filedata }}</pre>-->
+<!--            <p v-else class="placeholder">无法展示此文件类型</p>-->
+<!--          </div>-->
+
+<!--          <div class="file-display">-->
+<!--            <h3>PDF 预览</h3>-->
+<!--            <canvas ref="pdfCanvas" v-if="file.fileType === 'application/pdf'" width="100%" height="600px"></canvas>-->
+<!--            <p v-else class="placeholder">无法展示此文件类型</p>-->
+<!--          </div>-->
+
+<!--          <div class="file-submission">-->
+<!--            <h3>学生文件提交</h3>-->
+<!--            <a v-if="file.fileData" :href="fileBlobUrl" target="_blank" @click.prevent="openFileInNewTab">在新标签页中打开文件</a>-->
+<!--            <p v-else class="placeholder">没有文件提交</p>-->
+<!--          </div>-->
+
           <div class="file-submission">
             <h3>学生文件提交</h3>
             <!-- 如果有文件URL，则显示下载链接，否则显示占位符 -->
-            <a v-if="file.downloadUrl" :href="file.downloadUrl" :download="file.fileName">{{ file.fileName }}</a>
+            <a v-if="file.fileType === 'application/pdf'" :href="fileBlobUrl" target="_blank" @click.prevent="openFileInNewTab">{{file.fileName}}</a>
+            <a v-else-if="file.downloadUrl" :href="file.downloadUrl" :download="file.fileName">{{ file.fileName }}</a>
             <p v-else class="placeholder">没有文件提交</p>
           </div>
         </div>
@@ -55,6 +75,8 @@
 </template>
 <script setup>
 import shitshan from "@/components/shitshan.vue";
+import * as pdfjsLib from 'pdfjs-dist';
+
 export default {
   data() {
     return {
@@ -70,18 +92,73 @@ export default {
       content: '',
       fileDownloadUrl: '',
       isPopupVisible:false,
+      pdfDocument: null, // PDF Document 对象
+      pdfCanvas: null, // Canvas 对象
+      fileBlobUrl:'',
+      filedata:'',
     };
   },
   async created(){
     this.loadLocalStorageData();
     this.content = localStorage.getItem("currentcontent");
     await this.getFileData();
-
+    await this.showPdf();
+    await this.showfile();
   },
   components: {
     shitshan
   },
   methods: {
+    async showPdf() {
+      if (this.file.fileType === 'application/pdf') {
+        try {
+          const pdfBase64 = this.file.fileData; // 假设文件数据已经获取到
+          const pdfData = atob(pdfBase64); // 解码 Base64 字符串
+          console.log(pdfData)
+          // 创建 PDF Document 对象
+          this.pdfDocument = await pdfjsLib.getDocument({ data: pdfData }).promise;
+          // 获取第一页并在 Canvas 上渲染
+          const page = await this.pdfDocument.getPage(1);
+          this.pdfCanvas = this.$refs.pdfCanvas; // 获取 Canvas 引用
+          const context = this.pdfCanvas.getContext('2d');
+          const viewport = page.getViewport({ scale: 1.5 });
+          this.pdfCanvas.width = viewport.width;
+          this.pdfCanvas.height = viewport.height;
+          await page.render({
+            canvasContext: context,
+            viewport: viewport
+          }).promise;
+        } catch (error) {
+          console.error('Error loading PDF:', error);
+        }
+      }
+    },
+    decodeBase64(base64String) {
+      return atob(base64String); // 解码Base64字符串为原始内容
+    },
+
+      // 生成 Blob URL 的方法
+      createBlobUrl(){
+        if (this.file.fileData) {
+          const decodedData = atob(this.file.fileData);
+          const arrayBuffer = new ArrayBuffer(decodedData.length);
+          const uint8Array = new Uint8Array(arrayBuffer);
+
+          for (let i = 0; i < decodedData.length; i++) {
+            uint8Array[i] = decodedData.charCodeAt(i);
+          }
+
+          const blob = new Blob([arrayBuffer], { type: 'application/pdf' }); // 修改 MIME 类型以适应您的文件类型
+          return URL.createObjectURL(blob);
+        }
+        return '';
+      },
+    openFileInNewTab(){
+      this.fileBlobUrl = this.createBlobUrl();
+      if (this.fileBlobUrl) {
+        window.open(this.fileBlobUrl, '_blank');
+      }
+    },
    async submitGrade(){
       console.log(this.grade);
       console.log(this.comment);
@@ -122,8 +199,18 @@ export default {
         });
         if (response.data.code === "0") {
           this.file = response.data.data;
+          console.log(this.file)
           this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
           this.file.downloadUrl = this.fileDownloadUrl;
+          console.log(this.file.fileData);
+        }
+        const res=await this.$axios.get('/course/fileContent',{
+          params:{
+            id: localStorage.getItem("currentfileid")
+          }
+        });
+        if(res.data.code==="0") {
+          this.filedata = res.data.data;
         }
       } catch (error) {
         console.error('Error loading files:', error);
