@@ -7,7 +7,7 @@
         <div class="assignment-container" >
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
-            <el-col v-for="project in projects" :key="project.id" :span="8" >
+            <el-col v-for="project in projects" :key="project.id" :span="6" >
               <el-card  class="assignment-card" @click.native="join(project)">
                 <h3>{{ project.title }}</h3>
                 <a v-if="project.file.downloadUrl"
@@ -667,21 +667,18 @@ export default {
 
 <style scoped>
 .assignment-container{
-  margin-top: 50px;
-  margin-left: 0px;
-  margin-right: 70px;
+//margin-top: 50px;
+//margin-left: 0px;
+//margin-right: 70px;
+  margin: 20px;
+  padding-left: 10px;
+
 }
 
 .assignment-card{
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-
-
-  background-color: #f5f5f5;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px 0
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
 }
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);

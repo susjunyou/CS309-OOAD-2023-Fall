@@ -95,9 +95,9 @@
       <!--  <div>-->
 
 
-      <el-row >
+      <el-row :gutter="20">
 
-<div>
+        <div>
           <el-menu
               class="course-navbar"
               mode="vertical"
@@ -112,17 +112,20 @@
             <el-menu-item index="7" @click="studentClick">members</el-menu-item>
             <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
           </el-menu>
-</div>
-        <el-col v-for="material in materials" :key="material.id" :span="6" >
-          <el-card class="assignment-card" >
-            <h3>{{ material.name }}</h3>
-            <p>{{ material.description }}</p>
-            <a v-if="material.file.downloadUrl" :href="material.file.downloadUrl" :download="material.file.fileName">{{ material.file.fileName }}</a>
-            <p v-else class="placeholder">没有文件</p>
+        </div>
+        <div class="assignment-container">
+          <!--          <el-row :gutter="20">-->
+          <el-col v-for="material in materials" :key="material.id" :span="6" >
+            <el-card class="assignment-card" >
+              <h3>{{ material.name }}</h3>
+              <p>{{ material.description }}</p>
+              <a v-if="material.file.downloadUrl" :href="material.file.downloadUrl" :download="material.file.fileName">{{ material.file.fileName }}</a>
+              <p v-else class="placeholder">没有文件</p>
 
-          </el-card>
-        </el-col>
-
+            </el-card>
+          </el-col>
+          <!--          </el-row>-->
+        </div>
       </el-row>
 
     </div>
@@ -696,13 +699,24 @@ export default {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
 }
+
+.assignment-container{
+//margin-top: 50px;
+//margin-left: 0px;
+//margin-right: 70px;
+  margin: 20px;
+  padding-left: 10px;
+
+}
 .assignment-card {
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-  margin-left: 115px;
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+
 }
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
+
+
 </style>

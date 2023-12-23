@@ -4,10 +4,10 @@
     <shitshan>
 
 
-      <div class="assign" style="width: 88%">
+      <div class="assignment-containerassign" style="width: 88%">
         <div class="assignment-container">
           <!-- ...之前的代码... -->
-          <el-row :gutter="50">
+          <el-row :gutter="20">
             <el-col v-for="material in materials" :key="material.id" :span="6" >
               <el-card class="assignment-card" >
                 <h3>{{ material.name }}</h3>
@@ -72,22 +72,22 @@ export default {
       form: {
         name: '',
         description: '',
-      file:''
+        file:''
       },
       uploadfile: null,
       isPopupVisible: false,
     };
   },
   async created(){
-  await  this.loadLocalStorageData();
-   await this.loadAllCoursesinfo();
-   await this.loadLocalStorageData();
+    await  this.loadLocalStorageData();
+    await this.loadAllCoursesinfo();
+    await this.loadLocalStorageData();
   },
   components: {
     shitshan
   },
   methods: {
-  async  returnToassignments(){
+    async  returnToassignments(){
       await  this.loadLocalStorageData();
       await this.loadAllCoursesinfo();
       await this.loadLocalStorageData();
@@ -382,7 +382,7 @@ export default {
       // event.target.files 包含了用户选中的文件列表
       this.form.file = event.target.files[0]; // 保存第一个选中的文件
     },
-   async submitForm(){
+    async submitForm(){
       let formData = new FormData();
       formData.append('courseId',localStorage.getItem('currentcourseid'));
       formData.append('name', this.form.name);
@@ -417,10 +417,19 @@ export default {
 </script>
 
 <style scoped>
+
+.assignment-container{
+//margin-top: 50px;
+//margin-left: 0px;
+//margin-right: 70px;
+  margin: 20px;
+  padding-left: 10px;
+
+}
 .assignment-card {
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
 
 }
 .assignment-card:hover {
