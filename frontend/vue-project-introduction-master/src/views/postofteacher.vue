@@ -1,69 +1,15 @@
 <template>
   <div id="app">
 
-    <el-row class="header-bar">
-      <el-col :span="15">
-        <h1 class="header-title">Project Helper</h1>
-      </el-col>
-      <el-col :span="5">
-        <el-dropdown trigger="click">
-          <span class="el-dropdown-link">
-            课程列表<i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="course in courses" :key="course.id" @click.native="goTo(course)">
-              {{ course.title }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-col>
 
-      <el-col :span="4">
-        <el-button type="text" v-popover:profilePopover class="profile-button">
-          <i class="el-icon-user"></i> 个人资料
-        </el-button>
-        <el-popover ref="profilePopover" placement="bottom" width="200" trigger="click">
-          <!-- popover内容 -->
-          <div class="user-profile">
-            <img src="../assets/人脸.png" alt="个人信息" class="avatar">
-            <h3>姓名：{{ this.name }}</h3>
-            <p>学号：{{ this.id }}</p>
-            <p>邮箱：{{ this.email }}</p>
-            <p>专业：{{ this.major }}</p>
-            <el-menu>
-              <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
-              <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
-              <el-menu-item index="3" @click="logoutClick">LogOut</el-menu-item>
-            </el-menu>
-          </div>
-        </el-popover>
-
-      </el-col>
-
-    </el-row>
-
-    <el-menu
-        class="course-navbar"
-        mode="vertical"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-      <el-menu-item index="1" @click="go('teacherhomepage')">Home</el-menu-item>
-      <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-      <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-      <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-      <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-      <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-      <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-    </el-menu>
-
-
-    <el-button type="primary" class="custom-button" @click="showPostForm"  >发表</el-button>
-    <div class="card-container" style="display: flex; flex-wrap: wrap">
+<shitshan>
+  <div class="assign" style="width: 88%">
+    <div class="assignment-container">
       <!-- ...之前的代码... -->
+
       <el-row :gutter="20">
-        <el-col v-for="post in posts" :key="post.id" :span="24" >
-          <el-card  class="post-card" @click.native="showReplyForm(post)" >
+        <el-col v-for="post in posts" :key="post.id" :span="6" >
+          <el-card  class="assignment-card" @click.native="showReplyForm(post)" >
             <h3>{{ post.title }}</h3>
             <p>发布者：{{ post.author }}</p>
             <p>{{ post.content }}</p>
@@ -73,6 +19,16 @@
       <!-- ...之后的代码... -->
 
     </div>
+    <div class="publish-button-container">
+      <el-button class="sumbitt" @click="publishAssignment">发布通知</el-button>
+    </div>
+  </div>
+
+
+
+
+
+</shitshan>
     <!--    <div>-->
     <!--    <el-col :span="17" class="posts-container">-->
     <!--    <div v-for="post in posts" :key="post.id" >-->
@@ -236,11 +192,14 @@
 
 <script>
 
-//import shitshan from "@/components/shitshan.vue";
+import shitshan from "@/components/shitshan.vue";
 
 export default {
-
+  components: {
+    shitshan
+  },
   data() {
+
     const e_idValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
       const re = /^[0-9]/;
       if (!value) {
@@ -708,12 +667,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 
-.header-bar {
-  background-color: cornflowerblue;
-  color: white;
-  line-height: 60px;
-  padding: 0 20px;
-}
+
 
 .main-content {
   display: flex;
@@ -766,24 +720,7 @@ export default {
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
-.assignment-container {
-  margin: 20px;
-  padding-left: 200px;
-}
 
-.assignment-card {
-  cursor: pointer;
-  transition: box-shadow .3s;
-  border: 1px solid gainsboro;
-  margin-top: 10px;
-  width: 350px;
-  height: 150px;
-
-}
-
-.assignment-card:hover {
-  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
-}
 .custom-button {
   background-color: #3498db; /* 更改背景色 */
   color: #ffffff; /* 更改文字颜色 */
@@ -830,6 +767,21 @@ export default {
   border:1px solid #000;
 }
 .post-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+}
+.assignment-container{
+//margin-top: 50px;
+//margin-left: 0px;
+//margin-right: 70px;
+  padding-left: 10px;
+
+}
+.assignment-card{
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+}
+.assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
 </style>
