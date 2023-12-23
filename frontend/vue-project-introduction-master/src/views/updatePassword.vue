@@ -641,7 +641,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 .popup-content {
   background-color: white;
   padding: 20px;

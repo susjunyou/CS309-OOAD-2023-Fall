@@ -687,7 +687,11 @@ export default {
 }
 
 
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 
 /* 自定义profile按钮样式 */
 
