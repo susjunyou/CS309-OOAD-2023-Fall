@@ -3,70 +3,70 @@
     <!-- 你的其他内容 -->
     <shitshan>
 
-      <div class="assignments-wrapper">
+      <div class="assignments-wrapper" style="width: 88%;">
         <!-- 左侧部分 -->
         <div class="left-panel">
           <!-- 已提交学生信息 -->
           <div class="submitted-students" >
             <h3>所有小组信息</h3>
             <div style="overflow-y: auto">
-            <el-table
-                :data="teams"
-                border
-                style="height: 75%;"
-                @row-click="handleRowClick">
-              <el-table-column
-                  prop="name"
-                  label="小组名称"
-              ></el-table-column>
-              <el-table-column
-                  prop="description"
-                  label="小组描述"
-              ></el-table-column>
-              <el-table-column label="小组成员">
-                <template v-slot="{ row }">
-                  <div v-for="member in row.teammembers" :key="member.id" class="team-member" style="margin-top:10px">
-                    {{ member.name }} (学号：{{ member.id }})
-                    <el-button type="danger" size="mini" @click="removeMember(row, member)" :disabled="row.leader === member.id">开除</el-button>
-                  </div>
-                  <p v-if="row.leader">组长学号：{{ row.leader }}</p>
-                  <el-button type="success" size="mini" @click="showAddMemberDialog(row)" :disabled="row.teamSize>=maxMembersLimit">添加成员</el-button>
-                </template>
-              </el-table-column>
-              <el-table-column label="更改答辩老师/时间">
-                <template v-slot="scope">
-                  <el-button type="success" size="small" @click="update1(scope.row)" style="margin-left: 10px">更改答辩老师/时间</el-button>
-                  <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px">更改小队信息</el-button>
-                </template>
+              <el-table
+                  :data="teams"
+                  border
+                  style="height: 75%;"
+                  @row-click="handleRowClick">
+                <el-table-column
+                    prop="name"
+                    label="小组名称"
+                ></el-table-column>
+                <el-table-column
+                    prop="description"
+                    label="小组描述"
+                ></el-table-column>
+                <el-table-column label="小组成员">
+                  <template v-slot="{ row }">
+                    <div v-for="member in row.teammembers" :key="member.id" class="team-member" style="margin-top:10px">
+                      {{ member.name }} (学号：{{ member.id }})
+                      <el-button type="danger" size="mini" @click="removeMember(row, member)" :disabled="row.leader === member.id">开除</el-button>
+                    </div>
+                    <p v-if="row.leader">组长学号：{{ row.leader }}</p>
+                    <el-button type="success" size="mini" @click="showAddMemberDialog(row)" :disabled="row.teamSize>=maxMembersLimit">添加成员</el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column label="更改答辩老师/时间">
+                  <template v-slot="scope">
+                    <el-button type="success" size="small" @click="update1(scope.row)" style="margin-left: 10px">更改答辩老师/时间</el-button>
+                    <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px">更改小队信息</el-button>
+                  </template>
 
-              </el-table-column>
-              <el-table-column label="更改小组队长">
-                <template v-slot="scope">
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <el-select v-model="scope.row.selectedLeaderId" placeholder="选择新队长">
-                        <el-option
-                            v-for="member in getNonLeaderMembers(scope.row)"
-                            :key="member.id"
-                            :label="member.id"
-                            :value="member.id">
-                        </el-option>
-                      </el-select>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-button type="success" size="small" @click="update2(scope.row)">更改</el-button>
-                    </el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-              <el-table-column label="删除小队">
-                <template v-slot="scope">
-                  <el-button type="danger" size="small" @click.prevent="update3(scope.row)">删除小队</el-button>
-                </template>
-              </el-table-column>
+                </el-table-column>
+                <el-table-column label="更改小组队长">
+                  <template v-slot="scope">
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <el-select v-model="scope.row.selectedLeaderId" placeholder="选择新队长">
+                          <el-option
+                              v-for="member in getNonLeaderMembers(scope.row)"
+                              :key="member.id"
+                              :label="member.id"
+                              :value="member.id">
+                          </el-option>
+                        </el-select>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-button type="success" size="small" @click="update2(scope.row)">更改</el-button>
+                      </el-col>
+                    </el-row>
+                  </template>
+                </el-table-column>
+                <el-table-column label="删除小队">
+                  <template v-slot="scope">
+                    <el-button type="danger" size="small" @click.prevent="update3(scope.row)">删除小队</el-button>
+                  </template>
+                </el-table-column>
 
-              <!-- Other columns as needed -->
-            </el-table>
+                <!-- Other columns as needed -->
+              </el-table>
             </div>
             <el-button type="success" size="small" @click="update4()" class="sumbitt">添加小组</el-button>
             <el-button type="success" size="small" @click="dialogVisible3 = true" class="sumbitt">批量添加小组</el-button>
@@ -78,19 +78,19 @@
         </div>
         <el-dialog title="发布作业" :visible.sync="dialogVisible">
 
-        <h3>未加入小队的成员</h3>
-        <el-table :data="studentsnotjointeam" style="width: 100%">
-          <el-table-column type="index"></el-table-column>
-          <el-table-column label="选择">
-            <template v-slot="{ row }">
-              <el-checkbox v-model="selectedStudents" :label="row.id"></el-checkbox>
-            </template>
-          </el-table-column>
-          <el-table-column prop="name" label="姓名"></el-table-column>
-          <el-table-column prop="major" label="专业"></el-table-column>
-          <el-table-column prop="email" label="邮箱"></el-table-column>
+          <h3>未加入小队的成员</h3>
+          <el-table :data="studentsnotjointeam" style="width: 100%">
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="选择">
+              <template v-slot="{ row }">
+                <el-checkbox v-model="selectedStudents" :label="row.id"></el-checkbox>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="major" label="专业"></el-table-column>
+            <el-table-column prop="email" label="邮箱"></el-table-column>
 
-        </el-table>
+          </el-table>
         </el-dialog>
         <!-- 右侧部分 -->
 
@@ -112,15 +112,15 @@
         <el-form-item label="答辩日期">
           <el-date-picker v-model="dialogForm.presentationDate" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
-<!--        <el-form-item label="答辩时间">-->
-<!--          <el-time-picker-->
-<!--              v-model="dialogForm.presentationTime"-->
-<!--              :picker-options="timePickerOptions"-->
-<!--              placeholder="选择时间"-->
-<!--              format="HH:mm"-->
-<!--              value-format="HH:mm">-->
-<!--          </el-time-picker>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="答辩时间">-->
+        <!--          <el-time-picker-->
+        <!--              v-model="dialogForm.presentationTime"-->
+        <!--              :picker-options="timePickerOptions"-->
+        <!--              placeholder="选择时间"-->
+        <!--              format="HH:mm"-->
+        <!--              value-format="HH:mm">-->
+        <!--          </el-time-picker>-->
+        <!--        </el-form-item>-->
 
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -250,12 +250,12 @@ export default {
       this.currentteamsize=team.teamsize;
     },
 
-  async  addMemberToTeam() {
+    async  addMemberToTeam() {
       // 在这里实现添加成员到小组的逻辑
       // 例如，使用 Axios 发送请求到后端，添加成员到 currentTeam
       // 添加成功后，您可能需要更新 teams 数组或相关数据以反映新成员的加入
 
-    const rs=  await this.$axios.get('/team/join', {
+      const rs=  await this.$axios.get('/team/join', {
         params: {
           studentId: this.selectedStudentId,
           teamId: Number(this.currentteamid),
@@ -264,11 +264,11 @@ export default {
           leader: this.currentleader,
         },
       })
-    if(rs.data.code === "0"){
-      this.wenzi="添加"
-          this.dialogVisibleAddMember = false;
-      this.isPopupVisible=true;
-    }
+      if(rs.data.code === "0"){
+        this.wenzi="添加"
+        this.dialogVisibleAddMember = false;
+        this.isPopupVisible=true;
+      }
 
     },
     async loadstudentnotjointeam(){
@@ -349,16 +349,16 @@ export default {
       this.currentteam = row;
       this.dialogVisible2 = true;
     },
-   async updateTeamInfo() {
+    async updateTeamInfo() {
       // 在这里处理对话框提交的数据
       // 例如，发送请求到后端更新小组信息
-     const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
-       params: {
-         teamId: this.currentteam.id,
-       }
-     });
-     const team = res1.data.data;
-     await this.$axios.get('/team/updateTeamInfo', {
+      const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
+        params: {
+          teamId: this.currentteam.id,
+        }
+      });
+      const team = res1.data.data;
+      await this.$axios.get('/team/updateTeamInfo', {
         params: {
           teamId: team.teamId,
           recruitmentInformation:this.dialogForm2.recruitmentInformation,
@@ -391,9 +391,9 @@ export default {
 
     updateDefenseInfo() {
       console.log(this.dialogForm.teacherId);
-        let date = new Date(this.dialogForm.presentationDate);
-        let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
-        this.dialogForm.presentationDate = formattedDate;
+      let date = new Date(this.dialogForm.presentationDate);
+      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      this.dialogForm.presentationDate = formattedDate;
       this.$axios.get('/presentation/addPresentation', {
         params: {
           teamId: localStorage.getItem('currentteamid'),
