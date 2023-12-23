@@ -110,16 +110,12 @@
         </el-menu>
 
 
-        <div>
-          <h1>题目: {{this.currenttitle}}</h1>
-          <h4>作者: {{this.currentauthor}}</h4>
-          <h3>内容: {{this.currentcontent}}</h3>
-          <el-col :span="17" class="posts-container">
-            <div v-for="reply in replys" :key="reply.replyContent" class="post">
-              <h3>{{ reply.authorType }} 回答者: {{ reply.replyAuthor }}</h3>
-              <p>{{ reply.replyContent }}</p>
-            </div>
-          </el-col>
+<!--        <div>-->
+<!--          <h1>题目: {{this.currenttitle}}</h1>-->
+<!--          <h4>作者: {{this.currentauthor}}</h4>-->
+<!--          <h3>内容: {{this.currentcontent}}</h3>-->
+
+
 <!--          <div class="assignment-container">-->
 <!--            &lt;!&ndash; ...之前的代码... &ndash;&gt;-->
 <!--            <el-row :gutter="20">-->
@@ -138,10 +134,29 @@
           <!--          <div v-for="reply in replys" :key="reply.replyContent">-->
 <!--            <h3>回答{{ reply.replyContent }}</h3>-->
 <!--          </div>-->
-          <h4>你的回答：</h4>
-          <input type="text" v-model="yourreplyContent">
-          <el-button type="primary" @click="submitReply()">提交</el-button>
+
+<!--        </div>-->
+      <div class="announcement">
+        <div class="announcement-header">
+          <h1 class="announcement-title">题目: {{ this.currenttitle }}</h1>
+          <h4 class="announcement-author">作者: {{ currentauthor }}</h4>
         </div>
+        <hr class="divider"> <!-- 添加分隔线 -->
+        <div class="announcement-content">
+          <h3>内容:</h3>
+          <p>{{ currentcontent }}</p>
+        </div>
+        <hr class="divider"> <!-- 添加分隔线 -->
+<!--        <el-col :span="17" class="posts-container">-->
+          <div v-for="reply in replys" :key="reply.replyContent" class="post">
+            <h3>{{ reply.authorType }} 回答者: {{ reply.authorname }}</h3>
+            <p>{{ reply.replyContent }}</p>
+          </div>
+<!--        </el-col>-->
+        <h4>你的回答：</h4>
+        <input type="text" v-model="yourreplyContent">
+        <el-button type="primary" @click="submitReply()">提交</el-button>
+      </div>
     </el-row>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
@@ -335,12 +350,37 @@ export default {
                 localStorage.setItem('replyAuthor'+this.currentpostid+i, res.data.data[i].replyAuthor);
                 localStorage.setItem('replyDate'+this.currentpostid+i, res.data.data[i].replyDate);
                 localStorage.setItem('authorType'+this.currentpostid+i, res.data.data[i].authorType);
-                this.replys.push({
-                  replyContent:localStorage.getItem('replyContent'+this.currentpostid+i),
-                  replyAuthor:localStorage.getItem('replyAuthor'+this.currentpostid+i),
-                  replyDate:localStorage.getItem('replyDate'+this.currentpostid+i),
-                  authorType:localStorage.getItem('authorType'+this.currentpostid+i),
-                });
+                if (res.data.data[i].authorType==='TEACHER'){
+                  this.$axios.get('/teacher/getTeacherInfoById',{
+                    params:{
+                      id:res.data.data[i].replyAuthor,
+                    }
+                  }).then(response=>{
+                    if(response.data.code==="0"){
+                      this.replys.push({
+                        authorType:res.data.data[i].authorType,
+                        replyContent: res.data.data[i].replyContent,
+                        author: res.data.data[i].replyAuthor,
+                        authorname:response.data.data.name,
+                      })
+                    }
+                  })
+                }else if(res.data.data[i].authorType==='STUDENT'){
+                  this.$axios.get('/student/getStudent',{
+                    params:{
+                      id:res.data.data[i].replyAuthor,
+                    }
+                  }).then(response=>{
+                    if(response.data.code==="0"){
+                      this.replys.push({
+                        authorType:res.data.data[i].authorType,
+                        replyContent: res.data.data[i].replyContent,
+                        author: res.data.data[i].replyAuthor,
+                        authorname:response.data.data.name,
+                      })
+                    }
+                  })
+                }
               }
             }
           }).catch(error => {
@@ -491,12 +531,37 @@ export default {
             localStorage.setItem('replyAuthor'+this.currentpostid+i, res.data.data[i].replyAuthor);
             localStorage.setItem('replyDate'+this.currentpostid+i, res.data.data[i].replyDate);
             localStorage.setItem('authorType'+this.currentpostid+i, res.data.data[i].authorType);
-            this.replys.push({
-              replyContent:localStorage.getItem('replyContent'+this.currentpostid+i),
-              replyAuthor:localStorage.getItem('replyAuthor'+this.currentpostid+i),
-              replyDate:localStorage.getItem('replyDate'+this.currentpostid+i),
-              authorType:localStorage.getItem('authorType'+this.currentpostid+i),
-            });
+            if (res.data.data[i].authorType==='TEACHER'){
+              this.$axios.get('/teacher/getTeacherInfoById',{
+                params:{
+                  id:res.data.data[i].replyAuthor,
+                }
+              }).then(response=>{
+                if(response.data.code==="0"){
+                  this.replys.push({
+                    authorType:res.data.data[i].authorType,
+                    replyContent: res.data.data[i].replyContent,
+                    author: res.data.data[i].replyAuthor,
+                    authorname:response.data.data.name,
+                  })
+                }
+              })
+            }else if(res.data.data[i].authorType==='STUDENT'){
+              this.$axios.get('/student/getStudent',{
+                params:{
+                  id:res.data.data[i].replyAuthor,
+                }
+              }).then(response=>{
+                if(response.data.code==="0"){
+                  this.replys.push({
+                    authorType:res.data.data[i].authorType,
+                    replyContent: res.data.data[i].replyContent,
+                    author: res.data.data[i].replyAuthor,
+                    authorname:response.data.data.name,
+                  })
+                }
+              })
+            }
           }
         }
       }).catch(error => {
@@ -700,6 +765,46 @@ export default {
   overflow: auto;
   width: 80%; /* 或者设置你想要的宽度 */
   border:1px solid #000;
+}
+
+.announcement {
+  font-family: Arial, sans-serif; /* 设置字体 */
+  width: 1400px;
+  margin: 0 auto; /* 水平居中 */
+  margin-top: 10px;
+  text-align: left;
+  padding: 20px;
+  border: 2px solid #ccc; /* 边框 */
+  border-radius: 20px; /* 圆角 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+}
+
+.announcement-title {
+
+  font-size: 38px; /* 题目字体大小 */
+  margin-bottom: 10px; /* 底部间距 */
+}
+
+.announcement-author {
+  font-style: italic; /* 作者名斜体显示 */
+  font-size: 20px;
+  margin-bottom: 15px; /* 底部间距 */
+}
+
+.announcement-content h3 {
+  font-size: 32px; /* 内容标题字体大小 */
+  margin-bottom: 5px; /* 底部间距 */
+}
+
+/* 修改内容样式 */
+.announcement-content p {
+  line-height: 3; /* 行高 */
+
+}
+
+.divider {
+  border-top: 2px solid #ccc; /* 分隔线样式 */
+  margin: 20px 0; /* 上下边距 */
 }
 </style>
 
