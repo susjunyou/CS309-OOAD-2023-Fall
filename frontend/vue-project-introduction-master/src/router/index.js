@@ -56,6 +56,7 @@ import postsa from "@/views/postsa.vue";
 import projectssa from "@/views/projectssa.vue";
 import projectgradebooksa from "@/views/projectgradebooksa.vue";
 import teamssa from "@/views/teamssa.vue";
+import anouncement from "@/views/anouncement.vue";
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -114,6 +115,7 @@ const routes = [
     {path: '/projectssa',component: projectssa},
     {path: '/projectgradebooksa',component: projectgradebooksa},
     {path: '/teamssa',component: teamssa},
+    {path: '/anouncement',component: anouncement},
     {path: '/', redirect: '/login'}
 
 ]

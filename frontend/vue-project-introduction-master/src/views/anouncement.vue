@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-row class="header-bar" >
+    <el-row class="header-bar">
       <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
       </el-col>
@@ -16,6 +16,8 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
+
+
       <el-col :span="4">
         <el-button type="text" v-popover:profilePopover class="profile-button">
           <i class="el-icon-user"></i> 个人资料
@@ -35,7 +37,9 @@
             </el-menu>
           </div>
         </el-popover>
+
       </el-col>
+
     </el-row>
     <el-dialog
         :visible.sync="dialogVisible"
@@ -69,18 +73,6 @@
           <el-input v-model="edit.e_selfIntroduction"/>
         </el-form-item>
 
-        <el-form-item label="technologystack" prop="technologystack">
-          <el-input v-model="edit.technologystack"/>
-        </el-form-item>
-
-        <el-form-item label="programmingskill" prop="programmingskill">
-          <el-input v-model="edit.programmingskill"/>
-        </el-form-item>
-
-        <el-form-item label="intendedteammate" prop="intendedteammate">
-          <el-input v-model="edit.intendedteammate"/>
-        </el-form-item>
-
         <el-form-item>
           <el-button type="primary" @click="commitUpdate()">Submit</el-button>
         </el-form-item>
@@ -89,7 +81,6 @@
     </el-dialog>
 
     <el-row class="main-content">
-      <el-col>
       <el-menu
           class="course-navbar"
           mode="vertical"
@@ -97,40 +88,27 @@
           text-color="#fff"
           active-text-color="#ffd04b">
         <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-        <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
+        <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
         <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
         <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
         <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
         <el-menu-item index="7" @click="studentClick">members</el-menu-item>
         <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
       </el-menu>
-        <div>
-          <h1>{{currentCourse}}</h1>
-          <div class="post">
-            <h3>CourseDescription: {{currentCourseDescription}}</h3>
-          </div>
+
+      <div class="announcement">
+        <div class="announcement-header">
+          <h1 class="announcement-title">题目: {{ anouncementtitle }}</h1>
+          <h4 class="announcement-author">作者: {{ anouncementauthorname }}</h4>
         </div>
-        <h2>Announcements</h2>
-        <div class="assignment-container">
-          <!-- ...之前的代码... -->
-          <el-row :gutter="20">
-            <el-col v-for="anouncement in anouncements" :key="anouncement.id" :span="6" >
-              <el-card  class="assignment-card" @click.native="showanouncement(anouncement)">
-                <h3>{{ anouncement.title }}</h3>
-                <p>发布者：{{ anouncement.authorname }}</p>
-              </el-card>
-            </el-col>
-          </el-row>
-          <!-- ...之后的代码... -->
-
+        <hr class="divider"> <!-- 添加分隔线 -->
+        <div class="announcement-content">
+          <h3>内容:</h3>
+          <p>{{ anouncementcontent }}</p>
         </div>
-      </el-col>
-      <el-col :span="8" class="calendar">
-        <v-calendar :attributes="attrs"></v-calendar>
-      </el-col>
-
-
+      </div>
     </el-row>
+
 
 
   </div>
@@ -186,10 +164,7 @@ export default {
         e_id: "",
         e_email:"",
         e_phoneNumber:"",
-        e_selfIntroduction:"",
-        technologystack:"",
-        programmingskill:"",
-        intendedteammate:"",
+        e_selfIntroduction:""
       },
       // 假设每个DDL是一个对象，包含日期和标题
       ddls: [
@@ -221,12 +196,9 @@ export default {
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
       isPopupVisible: false, // 控制弹窗显示的布尔值
-      currentCourse:'',
-      currentCourseDescription:'',
-      anouncements:[],
-      technologystack:"",
-      programmingskill:"",
-      intendedteammate:"",
+      anouncementtitle:'',
+      anouncementauthorname:'',
+      anouncementcontent:'',
     };
   },
   name: 'CourseNavbar',
@@ -237,62 +209,23 @@ export default {
     this.name = localStorage.getItem('name');
     this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
+    this.anouncementtitle=localStorage.getItem("anouncementtitle");
+    this.anouncementauthorname=localStorage.getItem("anouncementauthorname");
+    this.anouncementcontent=localStorage.getItem("anouncementcontent");
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
     await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
-    const today = new Date();
-    this.attrs=[];
-    console.log(localStorage.getItem("currentcourse"));
-    this.attrs = this.ddls.map(ddl => {
-      const ddlDate = new Date(ddl.date);
-      let contentClass = '';
-      if (ddlDate < today) {
-        contentClass = 'ddl-past'; // 过去的DDL
-      } else if (ddlDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
-        contentClass = 'today-highlight'; // 今天
-      } else {
-        contentClass = 'ddl-future'; // 将来的DDL
-      }
 
-      return {
-        key: ddl.date,
-        dates: ddlDate,
-        highlight: {
-          contentClass: contentClass,
-        },
-        popover: {
-          label: ddl.title,
-        },
-      };
-    });
-    this.attrs.push({
-      key: 'today',
-      dates: today,
-      highlight: {
-        contentClass: 'today-highlight',
-      },
-      popover: {
-        label: '今天',
-      },
-    });
   },
   methods: {
-    showanouncement(anouncement){
-      localStorage.setItem("anouncementtitle",anouncement.title)
-      localStorage.setItem("anouncementauthorname",anouncement.authorname)
-      localStorage.setItem("anouncementcontent",anouncement.content)
-      this.$router.push({path:'/anouncement'})
-    },
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
       this.edit.e_email = this.email;
       this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
       this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
-      this.edit.technologystack = localStorage.getItem('technologystack');
-      this.edit.programmingskill = localStorage.getItem('programmingskill');
-      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
+
     },
     commitUpdate(){
       //this.id = this.edit.e_id;
@@ -301,19 +234,13 @@ export default {
       localStorage.setItem('email',this.edit.e_email);
       localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
       localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
-      localStorage.setItem('technologystack',this.edit.technologystack);
-      localStorage.setItem('programmingskill',this.edit.programmingskill);
-      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
       this.dialogVisible = false;
       this.$axios.get('/student/updateStudentDetails',{
         params: {
           id:localStorage.getItem('id'),
           email:localStorage.getItem('email'),
           phoneNumber:localStorage.getItem('phoneNumber'),
-          selfIntroduction:localStorage.getItem('selfIntroduction'),
-          technologyStack:localStorage.getItem('technologystack'),
-          programmingSkill:localStorage.getItem('programmingskill'),
-          intendedTeammate:localStorage.getItem('intendedteammate'),
+          selfIntroduction:localStorage.getItem('selfIntroduction')
         }
       }).then(res => {
         console.log('dd');
@@ -324,11 +251,7 @@ export default {
           localStorage.setItem('email',this.edit.e_email);
           localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
           localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
-          localStorage.setItem('technologystack',this.edit.technologystack);
-          localStorage.setItem('programmingskill',this.edit.programmingskill);
-          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
           console.log('sss');
-          this.isPopupVisible = true;
         }else {
           console.log("error")
         }
@@ -390,50 +313,14 @@ export default {
       this.$router.push('/Login');
       localStorage.clear();
     },
-    async goTo(route) {
+    goTo(route) {
 // 假设使用 Vue Router 进行导航    goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourseid",route.id);
       localStorage.setItem("currentcourse",route.title);
       this.myValue=route.title;
-      await this.loadLocalStorageData();
-      await this.loadStudentsAndSA();
-      const today = new Date();
-      this.attrs=[],
-          this.attrs = this.ddls.map(ddl => {
-            const ddlDate = new Date(ddl.date);
-            let contentClass = '';
-
-            if (ddlDate < today) {
-              contentClass = 'ddl-past'; // 过去的DDL
-            } else if (ddlDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
-              contentClass = 'today-highlight'; // 今天
-            } else {
-              contentClass = 'ddl-future'; // 将来的DDL
-            }
-
-            return {
-              key: ddl.date,
-              dates: ddlDate,
-              highlight: {
-                contentClass: contentClass,
-              },
-              popover: {
-                label: ddl.title,
-              },
-            };
-          });
-      this.attrs.push({
-        key: 'today',
-        dates: today,
-        highlight: {
-          contentClass: 'today-highlight',
-        },
-        popover: {
-          label: '今天',
-        },
-      });
-
+      this.loadLocalStorageData();
+      this.loadStudentsAndSA();
     },
     go(route) {
       this.$router.push(route);
@@ -441,8 +328,6 @@ export default {
 
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
-      this.currentCourse=localStorage.getItem("currentcourse");
-      this.currentCourseDescription=localStorage.getItem('courseDescription'+localStorage.getItem('currentcourseid'));
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
         this.courses.push({
@@ -452,63 +337,6 @@ export default {
           code: localStorage.getItem('coursecode' +i),
         });
       }
-      this.anouncements=[];
-      this.$axios.get('/course/posts', {
-        params: {
-          courseId: localStorage.getItem('currentcourseid'),
-        }
-      }).then((res) => {
-        if (res.data.code === "0") {
-          this.posts=[];
-          localStorage.setItem('coursePostLength'+localStorage.getItem('currentcourse'),res.data.data.length)
-          for(let i = localStorage.getItem('coursePostLength'+localStorage.getItem('currentcourse'))-1;i>=0;i--) {
-            localStorage.setItem('postid' + localStorage.getItem('currentcourse') + i, res.data.data[i].postId);
-            localStorage.setItem('post' + localStorage.getItem('currentcourse') + i, res.data.data[i].postContent);
-            localStorage.setItem('posttitle' + localStorage.getItem('currentcourse') + i, res.data.data[i].postTitle);
-            localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
-            localStorage.setItem('postType'+localStorage.getItem('currentcourse') + i,res.data.data[i].postType);
-            if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='ANNOUNCEMENT'){
-              if (res.data.data[i].authorType==='TEACHER'){
-                this.$axios.get('/teacher/getTeacherInfoById',{
-                  params:{
-                    id:res.data.data[i].postAuthor,
-                  }
-                }).then(response=>{
-                  if(response.data.code==="0"){
-                    this.anouncements.push({
-                      course: localStorage.getItem('currentcourse'),
-                      id: res.data.data[i].postId,
-                      title: res.data.data[i].postTitle,
-                      content: res.data.data[i].postContent,
-                      author: res.data.data[i].postAuthor,
-                      authorname:response.data.data.name,
-                    })
-                  }
-                })
-              }else if(res.data.data[i].authorType==='STUDENT'){
-                this.$axios.get('/student/getStudent',{
-                  params:{
-                    id:res.data.data[i].postAuthor,
-                  }
-                }).then(response=>{
-                  if(response.data.code==="0"){
-                    this.anouncements.push({
-                      course: localStorage.getItem('currentcourse'),
-                      id: res.data.data[i].postId,
-                      title: res.data.data[i].postTitle,
-                      content: res.data.data[i].postContent,
-                      author: res.data.data[i].postAuthor,
-                      authorname:response.data.data.name,
-                    })
-                  }
-                })
-              }
-            }
-          }
-        }
-      }).catch(error => {
-        console.error('Error loading course posts:', error);
-      });
       this.posts=[];
       for (let i = 0; i < localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse")); i++) {
         this.posts.push({
@@ -528,7 +356,6 @@ export default {
         });
       }
       this.assignments=[];
-      this.ddls=[];
       for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
         this.assignments.push({
           id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
@@ -537,7 +364,6 @@ export default {
           description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
           ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
         });
-
         this.ddls.push({
           date: this.assignments[i].ddl,
           title: this.assignments[i].title,
@@ -559,7 +385,12 @@ export default {
           title: this.projects[i].title,
         });
       }
-    console.log(this.ddls)
+      console.log(this.projects[0])
+      console.log(this.projects[1])
+      console.log("course name="+this.myValue)
+      console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+
     },
 
   },
@@ -596,23 +427,21 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 
-
+.header-bar {
+  background-color: cornflowerblue;
+  color: white;
+  line-height: 60px;
+  padding: 0 20px;
+}
 
 .main-content {
   display: flex;
 }
 
-
-
-.el-row, .el-col {
-  margin: 0;
-  padding: 0;
-}
-.header-bar{
-  background-color: cornflowerblue;
-  color: white;
-  line-height: 100px;
-  padding: 0 20px;
+.course-navbar {
+  width: 200px;
+  background-color: #f2f2f2;
+  height: 100vh; /* 设置高度为视口的100% */
 }
 
 .posts-container {
@@ -637,8 +466,16 @@ export default {
   border: 1px solid #ccc; /* 描述框的边框 */
   background-color: #f9f9f9; /* 轻微背景颜色区分 */
 }
+.user-profile {
+  text-align: center; /* 居中用户信息 */
+}
 
-
+.avatar {
+  width: 80px; /* 头像大小 */
+  height: 80px; /* 头像大小 */
+  border-radius: 50%; /* 圆形头像 */
+  margin-bottom: 10px; /* 头像与姓名之间的间距 */
+}
 
 
 
@@ -651,52 +488,45 @@ export default {
   /* 其他需要的样式 */
 }
 
-
-.calendar {
-  margin-top: 200px;
-  width: 300px; /* 固定日历的宽度 */
-}
-.ddl-past {
-  border: 2px solid red;
-  border-radius: 50%;
-}
-
-.ddl-future {
-  border: 2px solid green;
-  border-radius: 50%;
-}
-
-.today-highlight {
-  border: 2px solid blue;
-  border-radius: 50%;
-}
-.post {
-  text-align: left;
-  border: 1px solid gainsboro;
-  margin-bottom: 10px;
-  padding: 10px;
-  margin-left:400px;
-  margin-right: 200px;
-
-}
-.assignment-container {
-  margin: 20px;
-  padding-left: 200px;
-}
-
-.assignment-card {
-  cursor: pointer;
-  transition: box-shadow .3s;
-  border: 1px solid gainsboro;
+.announcement {
+  font-family: Arial, sans-serif; /* 设置字体 */
+  width: 1400px;
+  margin: 0 auto; /* 水平居中 */
   margin-top: 10px;
-  width: 280px;
-  height: 150px;
+  text-align: left;
+  padding: 20px;
+  border: 2px solid #ccc; /* 边框 */
+  border-radius: 20px; /* 圆角 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
 }
 
-.assignment-card:hover {
-  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+.announcement-title {
+
+  font-size: 38px; /* 题目字体大小 */
+  margin-bottom: 10px; /* 底部间距 */
 }
 
+.announcement-author {
+  font-style: italic; /* 作者名斜体显示 */
+  font-size: 20px;
+  margin-bottom: 15px; /* 底部间距 */
+}
+
+.announcement-content h3 {
+  font-size: 32px; /* 内容标题字体大小 */
+  margin-bottom: 5px; /* 底部间距 */
+}
+
+/* 修改内容样式 */
+.announcement-content p {
+  line-height: 3; /* 行高 */
+
+}
+
+.divider {
+  border-top: 2px solid #ccc; /* 分隔线样式 */
+  margin: 20px 0; /* 上下边距 */
+}
 </style>
 
 
