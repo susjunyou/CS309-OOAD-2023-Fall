@@ -161,18 +161,32 @@ export default {
   },
   methods: {
    async loadnotin() {
+     await this.loadStudentsAndSA();
      this.studentsnotin = [];
      this.sanotin=[];
      this.teachersnotin=[];
+     await this.$axios.get('/admin/getSANotInCourse', {
+       params: {
+         courseId: localStorage.getItem('currentcourseid'),
+       }
+     }).then((res) => {
+       if (res.data.code === "0") {
+         for (let i = 0; i < res.data.data.length; i++) {
+           this.sanotin.push(res.data.data[i]);
+         }
+       }
+     }).catch(error => {
+       console.error('Error loading sainfos:', error);
+     });
      await this.$axios.get('/admin/getStudentNotInCourse', {
        params: {
          courseId: localStorage.getItem('currentcourseid'),
        }
      }).then((res) => {
        if (res.data.code === "0") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.studentsnotin.push(res.data.data[i]);
-          }
+         let filteredStudents = res.data.data.filter(student =>
+             !this.saInfos.some(sa => sa.id === student.id));
+         this.studentsnotin.push(...filteredStudents);
        }
      }).catch(error => {
        console.error('Error loading sainfos:', error);
@@ -192,19 +206,7 @@ export default {
        console.error('Error loading sainfos:', error);
      });
 
-     await this.$axios.get('/admin/getSANotInCourse', {
-       params: {
-         courseId: localStorage.getItem('currentcourseid'),
-       }
-     }).then((res) => {
-       if (res.data.code === "0") {
-         for (let i = 0; i < res.data.data.length; i++) {
-           this.sanotin.push(res.data.data[i]);
-         }
-       }
-     }).catch(error => {
-       console.error('Error loading sainfos:', error);
-     });
+
       },
 
 
