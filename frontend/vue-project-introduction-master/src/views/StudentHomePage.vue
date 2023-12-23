@@ -3,10 +3,10 @@
 
   <div id="app">
     <el-row class="header-bar" background-color="#545c64" text-color="#fff">
-      <el-col :span="14">
+      <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="9">
         <el-button type="text" v-popover:profilePopover class="profile-button">
           <i class="el-icon-user" ></i> 个人资料
         </el-button>
@@ -819,7 +819,8 @@ el-button{
 }
 .header-title {
   text-align: right; /* 将文本对齐到右边 */
-  padding-right: 100px; /* 或者您需要的任何值，以便向右移动标题 */
+  padding-right: 120px; /* 或者您需要的任何值，以便向右移动标题 */
+  margin-right: 20px;
 }
 .header-bar h1 {
   margin: 0; /* 移除默认的margin */

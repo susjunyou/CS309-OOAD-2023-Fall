@@ -580,17 +580,6 @@ export default {
         }
       }
     },
-
-    go1(route) {
-      console.log(route.id)
-      localStorage.setItem("currentprojectid",route.id);
-      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
-      this.$router.push('createTeam');
-    },
-    go(route) {
-      // localStorage.setItem("currentprojectid",route)
-      this.$router.push(route);
-    },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
@@ -726,6 +715,18 @@ export default {
       // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       // console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
 
+    },
+
+
+    go1(route) {
+      console.log(route.id)
+      localStorage.setItem("currentprojectid",route.id);
+      localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
+      this.$router.push('createTeam');
+    },
+    go(route) {
+      // localStorage.setItem("currentprojectid",route)
+      this.$router.push(route);
     },
 
   },

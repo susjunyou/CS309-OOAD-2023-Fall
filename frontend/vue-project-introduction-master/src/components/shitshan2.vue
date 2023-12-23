@@ -27,9 +27,10 @@
           <div class="user-profile">
             <img src="../assets/人脸.png" alt="个人信息" class="avatar">
             <h3>姓名：{{ this.name }}</h3>
-            <p>学号：{{ this.id }}</p>
+            <p>id：{{ this.id }}</p>
             <p>邮箱：{{ this.email }}</p>
-            <p>专业：{{ this.major }}</p>
+            <p>教职：{{ this.tenure }}</p>
+            <p>部门：{{ this.department }}</p>
             <el-menu>
               <el-menu-item index="1" @click="go('updatePassword')">修改密码</el-menu-item>
               <el-menu-item index="2" @click="update">修改个人信息</el-menu-item>
@@ -73,18 +74,13 @@
           <el-input v-model="edit.e_selfIntroduction"/>
         </el-form-item>
 
-        <el-form-item label="technologystack" prop="technologystack">
-          <el-input v-model="edit.technologystack"/>
+        <el-form-item label="department" prop="department">
+          <el-input v-model="edit.department " disabled="disabled"/>
         </el-form-item>
 
-        <el-form-item label="programmingskill" prop="programmingskill">
-          <el-input v-model="edit.programmingskill"/>
+        <el-form-item label="tenure" prop="tenure" >
+          <el-input v-model="edit.tenure"  disabled="disabled"/>
         </el-form-item>
-
-        <el-form-item label="intendedteammate" prop="intendedteammate">
-          <el-input v-model="edit.intendedteammate"/>
-        </el-form-item>
-
         <el-form-item>
           <el-button type="primary" @click="commitUpdate()">Submit</el-button>
         </el-form-item>
@@ -94,87 +90,17 @@
 
     <el-row class="main-content">
 
-        <el-menu
-            class="course-navbar"
-            mode="vertical"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b">
-          <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-          <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-          <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-          <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-          <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-          <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-          <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-        </el-menu>
+      <slot></slot>
 
-
-        <div>
-          <h1>题目: {{this.currenttitle}}</h1>
-          <h4>作者: {{this.currentauthor}}</h4>
-          <h3>内容: {{this.currentcontent}}</h3>
-          <el-col :span="17" class="posts-container">
-            <div v-for="reply in replys" :key="reply.replyContent" class="post">
-              <h3>{{ reply.authorType }} 回答者: {{ reply.replyAuthor }}</h3>
-              <p>{{ reply.replyContent }}</p>
-            </div>
-          </el-col>
-<!--          <div class="assignment-container">-->
-<!--            &lt;!&ndash; ...之前的代码... &ndash;&gt;-->
-<!--            <el-row :gutter="20">-->
-<!--              <el-col v-for="reply in replys" :key="reply.replyContent" class="post" >-->
-<!--                <el-card  class="assignment-card" @click.native="showReplyForm(post)">-->
-<!--                  <h3>{{ reply.authorType }}</h3>-->
-<!--                  <p>回答者：{{ reply.replyAuthor }}</p>-->
-<!--                  <p>{{ reply.replyContent }}</p>-->
-<!--                </el-card>-->
-<!--              </el-col>-->
-<!--            </el-row>-->
-<!--            &lt;!&ndash; ...之后的代码... &ndash;&gt;-->
-
-<!--          </div>-->
-
-          <!--          <div v-for="reply in replys" :key="reply.replyContent">-->
-<!--            <h3>回答{{ reply.replyContent }}</h3>-->
-<!--          </div>-->
-          <h4>你的回答：</h4>
-          <input type="text" v-model="yourreplyContent">
-          <el-button type="primary" @click="submitReply()">提交</el-button>
-        </div>
     </el-row>
-    <div v-if="isPopupVisible" class="popup">
+    <div v-if="isPopupVisible2" class="popup">
       <div class="popup-content">
-        <p>提交成功！</p>
-        <button @click="returnTocourse">关闭</button>
+        <p>请先登录您的账号！</p>
+        <button @click="yes">返回登录</button>
       </div>
     </div>
 
-    <el-dialog title="SA信息" :visible.sync="showSaDialog" width="60%">
-      <div v-for="sa in saInfos" :key="sa.id" class="sa-info">
-        <h3>{{ sa.name }}</h3>
-        <p>邮箱: {{ sa.email }}</p>
-        <p>专业: {{ sa.major }}</p>
-        <p>自我介绍: {{ sa.selfIntroduction }}</p>
-      </div>
-    </el-dialog>
-
-    <!-- 学生信息对话框 -->
-    <el-dialog title="学生信息" :visible.sync="showStudentDialog" width="60%">
-      <div v-for="student in studentInfos" :key="student.id" class="student-info">
-        <h3>{{ student.name }}</h3>
-        <p>邮箱: {{ student.email }}</p>
-        <p>专业: {{ student.major }}</p>
-        <p>自我介绍: {{ student.selfIntroduction }}</p>
-      </div>
-    </el-dialog>
-
   </div>
-
-
-
-
-
 </template>
 
 
@@ -183,7 +109,6 @@
 <script>
 
 export default {
-
 
   data() {
     const e_idValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
@@ -196,7 +121,6 @@ export default {
       }
       callback();
     };
-
     const e_phoneNumberValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
       const re = /^[0-9]+/;//(?=.*[0-9])(?=.*[a-zA-Z])
       if (!value) {
@@ -208,6 +132,7 @@ export default {
       callback();
     };
     return {
+      // 初始化组件数据属性
       rules: {
 
         e_id: [
@@ -229,9 +154,8 @@ export default {
         e_email:"",
         e_phoneNumber:"",
         e_selfIntroduction:"",
-        technologystack:"",
-        programmingskill:"",
-        intendedteammate:"",
+        department:"",
+        tenure:"",
       },
       // 假设每个DDL是一个对象，包含日期和标题
       ddls: [
@@ -242,130 +166,70 @@ export default {
       courses: [],
       posts: [],
       assignments: [],
+      projects: [],
+      materials: [],
+      myValue: '',
       major: '',
       id :0,
       email:'',
       name:'',
-      projects: [],
-      materials: [],
-      myValue: '',
+      team: {
+        title: '',
+        description: '',
+        teamSize: 0
+      },
+      maxpeople:0,
+      projectid:0,
+      sid:0,
       saInfos: [],
+      tenure: '',
+      department:'',
       studentInfos: [],
       showSaDialog: false, // 控制SA信息对话框的显示
       showStudentDialog: false, // 控制学生信息对话框的显示
       courseDescription:'',
-      currenttitle: '',
-      currentauthor: '',
-      currentcontent:  '',
-      replys:[],
-      currentpostid:'',
-      yourReplyContent:'',
-      isPopupVisible:false,
-      technologystack:"",
-      programmingskill:"",
-      intendedteammate:"",
+      isPopupVisible: false, // 控制弹窗显示的布尔值
+      isPopupVisible2: false, // 控制弹窗显示的布尔值
     };
   },
   name: 'CourseNavbar',
 
+
   async created() {
-    this.id = localStorage.getItem('id');
+    await this.return(),
+
+        this.id = localStorage.getItem('id');
     this.name = localStorage.getItem('name');
-    this.major = localStorage.getItem('major');
-    // this.phoneNumber = localStorage.getItem('phoneNumber');
-    this.currentpostid=localStorage.getItem('currentpostid');
-    this.currentauthor=localStorage.getItem('currentauthor');
-    this.currenttitle=localStorage.getItem('currenttitle');
-    this.currentcontent=localStorage.getItem('currentcontent');
+    // this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
-    await this.loadpostreply();
+    this.tenure = localStorage.getItem('tenure');
+    this.department = localStorage.getItem('department');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    await this.loadStudentsAndSA();
+    // await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
-    this.attrs = this.ddls.map(ddl => ({
-      key: ddl.date,
-      dates: new Date(ddl.date),
-      highlight: {
-        contentClass: 'ddl-highlight', // 应用于内容的CSS类
-      },
-      popover: {
-        label: ddl.title, // 弹出显示的信息
-      },
-    }));
-    this.attrs.push({
-      key: 'today',
-      highlight: {
-        contentClass: 'today-highlight', // 应用于当前日期的CSS类
-      },
-      dates: new Date(), // 当前日期
-      popover: {
-        label: 'Today', // 在这里添加你想要显示的文本
-      },
-    });
+
   },
   methods: {
-    submitReply(){
-      const currentpostid=localStorage.getItem('currentpostid');
-      const yourreplycontent=this.yourreplyContent;
-      const submitDate = new Date();
-      const formattedDate = submitDate.toISOString().split('T')[0]; // 获取 yyyy-MM-dd 格式
-      this.$axios.get('/post/releaseReply', {
-        params: {
-          replyAuthor: localStorage.getItem('id'),
-          authorType: localStorage.getItem('userType'),
-          replyContent: yourreplycontent,
-          postId: currentpostid,
-          replyTime: formattedDate,
-        }
-      }).then(res => {
-        if (res.data.code === "0") {
-          this.yourreplyContent = "";
-          this.isPopupVisible=true;
-          this.$axios.get('/post/getReplyByPostId',{
-            params: {
-              postId:this.currentpostid,
-            }
-          }).then((res) => {
-            if (res.data.code === "0") {
-              this.replys=[];
-              localStorage.setItem('replylength'+this.currentpostid,res.data.data.length);
-              for(let i=res.data.data.length-1;i>=0;i--){
-                localStorage.setItem('replyContent'+this.currentpostid+i, res.data.data[i].replyContent);
-                localStorage.setItem('replyAuthor'+this.currentpostid+i, res.data.data[i].replyAuthor);
-                localStorage.setItem('replyDate'+this.currentpostid+i, res.data.data[i].replyDate);
-                localStorage.setItem('authorType'+this.currentpostid+i, res.data.data[i].authorType);
-                this.replys.push({
-                  replyContent:localStorage.getItem('replyContent'+this.currentpostid+i),
-                  replyAuthor:localStorage.getItem('replyAuthor'+this.currentpostid+i),
-                  replyDate:localStorage.getItem('replyDate'+this.currentpostid+i),
-                  authorType:localStorage.getItem('authorType'+this.currentpostid+i),
-                });
-              }
-            }
-          }).catch(error => {
-            console.error('Error loading sainfos:', error);
-          });
-        }
-      }).catch(err => {
-        console.log(err);
+    async return(){
+      if(localStorage.getItem('id')==null||localStorage.getItem('id')==""||localStorage.getItem('id')==undefined||localStorage.getItem('id')=="null"||localStorage.getItem('id')=="undefined"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"){
+        this.isPopupVisible2=true;
+      }
+    },
+
+    yes(){
+      this.$router.push({
+        path: '/login'
       })
     },
-    returnTocourse(){
-      this.isPopupVisible = false;
-      this.$router.push('/postReply');
-    },
-
-
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
       this.edit.e_email = this.email;
       this.edit.e_phoneNumber = localStorage.getItem('phoneNumber');
       this.edit.e_selfIntroduction = localStorage.getItem('selfIntroduction');
-      this.edit.technologystack = localStorage.getItem('technologystack');
-      this.edit.programmingskill = localStorage.getItem('programmingskill');
-      this.edit.intendedteammate = localStorage.getItem('intendedteammate');
+      this.edit.department = localStorage.getItem('department');
+      this.edit.tenure = localStorage.getItem('tenure');
     },
     commitUpdate(){
       //this.id = this.edit.e_id;
@@ -374,19 +238,18 @@ export default {
       localStorage.setItem('email',this.edit.e_email);
       localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
       localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
-      localStorage.setItem('technologystack',this.edit.technologystack);
-      localStorage.setItem('programmingskill',this.edit.programmingskill);
-      localStorage.setItem('intendedteammate',this.edit.intendedteammate);
       this.dialogVisible = false;
-      this.$axios.get('/student/updateStudentDetails',{
+      this.$axios.get('/teacher/update',{
         params: {
           id:localStorage.getItem('id'),
           email:localStorage.getItem('email'),
           phoneNumber:localStorage.getItem('phoneNumber'),
           selfIntroduction:localStorage.getItem('selfIntroduction'),
-          technologyStack:localStorage.getItem('technologystack'),
-          programmingSkill:localStorage.getItem('programmingskill'),
-          intendedTeammate:localStorage.getItem('intendedteammate'),
+          department:localStorage.getItem('department'),
+          tenure:localStorage.getItem('tenure'),
+          name:localStorage.getItem('name'),
+          account:localStorage.getItem('account'),
+          password:localStorage.getItem('password'),
         }
       }).then(res => {
         console.log('dd');
@@ -397,11 +260,9 @@ export default {
           localStorage.setItem('email',this.edit.e_email);
           localStorage.setItem('phoneNumber',this.edit.e_phoneNumber);
           localStorage.setItem('selfIntroduction',this.edit.e_selfIntroduction);
-          localStorage.setItem('technologystack',this.edit.technologystack);
-          localStorage.setItem('programmingskill',this.edit.programmingskill);
-          localStorage.setItem('intendedteammate',this.edit.intendedteammate);
+          localStorage.setItem('department',this.edit.department);
+          localStorage.setItem('tenure',this.edit.tenure);
           console.log('sss');
-          this.isPopupVisible = true;
         }else {
           console.log("error")
         }
@@ -413,25 +274,7 @@ export default {
       this.showSaDialog = true;
     },
     studentClick() {
-      this.$router.push('/members');
-    },
-    logoutClick() {
-      this.$router.push('/Login');
-      localStorage.clear();
-    },
-    goTo(route) {
-// 假设使用 Vue Router 进行导航    goTo(route) {
-// 假设使用 Vue Router 进行导航
-      localStorage.setItem("currentcourseid",route.id);
-      localStorage.setItem("currentcourse",route.title);
-      this.myValue=route.title;
-      this.loadLocalStorageData();
-      this.loadStudentsAndSA();
-      this.$router.push({ path: '/course' });
-    },
-    go(route) {
-
-      this.$router.push(route);
+      this.$router.push('/membersofteacher');
     },
     async loadStudentsAndSA(){
       this.saInfos = [];
@@ -475,34 +318,25 @@ export default {
       }).catch(error => {
         console.error('Error loading sainfos:', error);
       });
+
     },
-    async loadpostreply(){
-      this.replys=[];
-      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
-      this.$axios.get('/post/getReplyByPostId',{
-        params: {
-          postId:this.currentpostid,
-        }
-      }).then((res) => {
-        if (res.data.code === "0") {
-          localStorage.setItem('replylength'+this.currentpostid,res.data.data.length);
-          for(let i=res.data.data.length-1;i>=0;i--){
-            localStorage.setItem('replyContent'+this.currentpostid+i, res.data.data[i].replyContent);
-            localStorage.setItem('replyAuthor'+this.currentpostid+i, res.data.data[i].replyAuthor);
-            localStorage.setItem('replyDate'+this.currentpostid+i, res.data.data[i].replyDate);
-            localStorage.setItem('authorType'+this.currentpostid+i, res.data.data[i].authorType);
-            this.replys.push({
-              replyContent:localStorage.getItem('replyContent'+this.currentpostid+i),
-              replyAuthor:localStorage.getItem('replyAuthor'+this.currentpostid+i),
-              replyDate:localStorage.getItem('replyDate'+this.currentpostid+i),
-              authorType:localStorage.getItem('authorType'+this.currentpostid+i),
-            });
-          }
-        }
-      }).catch(error => {
-        console.error('Error loading sainfos:', error);
-      });
+    logoutClick() {
+      this.$router.push('/Login');
+      localStorage.clear();
     },
+    goTo(route) {
+// 假设使用 Vue Router 进行导航    goTo(route) {
+// 假设使用 Vue Router 进行导航
+      localStorage.setItem("currentcourseid",route.id);
+      localStorage.setItem("currentcourse",route.title);
+      this.myValue=route.title;
+      this.$router.push('/courseofteacher');
+      this.loadLocalStorageData();
+    },
+    go(route) {
+      this.$router.push(route+"ofteacher");
+    },
+
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
@@ -523,16 +357,8 @@ export default {
           author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
         });
       }
-      // this.replys=[];
-      // for (let i = localStorage.getItem('replylength'+this.currentpostid); i >=0 ; i--) {
-      //     this.replys.push({
-      //       replyContent:localStorage.getItem('replyContent'+this.currentpostid+i),
-      //       replyAuthor:localStorage.getItem('replyAuthor'+this.currentpostid+i),
-      //       replyDate:localStorage.getItem('replyDate'+this.currentpostid+i),
-      //       authorType:localStorage.getItem('authorType'+this.currentpostid+i),
-      //     });
-      // }
       this.materials=[];
+
       for (let i = 0; i < localStorage.getItem('courseMaterialLength'+localStorage.getItem("currentcourse")); i++) {
         this.materials.push({
           id:localStorage.getItem('materialid' + localStorage.getItem("currentcourse")+i),
@@ -579,9 +405,7 @@ export default {
     },
 
   },
-
 }
-
 
 </script>
 <style scoped>
@@ -629,7 +453,6 @@ export default {
   width: 200px;
   background-color: #f2f2f2;
   height: 100vh; /* 设置高度为视口的100% */
-  overflow-y: auto; /* 如果内容太多可以滚动 */
 }
 
 .posts-container {
@@ -674,32 +497,6 @@ export default {
 .profile-button {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
-}
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.posts-container {
-  margin-right: 1000px; /* Adjust the margin as needed */
-  margin-left: 200px;
-  padding: 10px;
-  overflow: auto;
-  width: 80%; /* 或者设置你想要的宽度 */
-  border:1px solid #000;
 }
 </style>
 

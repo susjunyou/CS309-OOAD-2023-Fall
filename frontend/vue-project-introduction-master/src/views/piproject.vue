@@ -74,7 +74,7 @@
           <el-table
               :data="selectedTeamSubmissions"
               border
-              style="height: 100%;">
+              style="height: 80%;">
             <el-table-column
                 prop="name"
                 label="小队名称"
@@ -101,9 +101,21 @@
             </el-table-column>
             <!-- Other columns as needed -->
           </el-table>
+          <el-button type="success" @click="search">查看互评成绩</el-button>
         </div>
       </div>
-    </shitshan>>
+    </shitshan>
+    <el-dialog
+        title="互评成绩"
+        :visible.sync="showDialog"
+        width="50%">
+      <el-table v-if="corate!=null&&corate.length > 0&&corate!=undefined&&corate!='null'" :data="corate" style="width: 100%">
+        <el-table-column prop="id" label="小组名字"></el-table-column>
+        <el-table-column prop="comment" label="评论"></el-table-column>
+        <el-table-column prop="grade" label="分数"></el-table-column>
+      </el-table>
+      <p v-else style="color: red;">{{ noCorateMessage }}</p>
+    </el-dialog>
     <!-- 你的其他内容 -->
   </div>
 </template>
@@ -127,6 +139,9 @@ export default {
       studentInfos: [],
       teachers: [],
       teams: [],
+      corate:[],
+      showDialog: false, // 控制弹窗的显示
+      noCorateMessage: '', // 用于存储提示信息
     };
   },
   async created(){
@@ -138,6 +153,39 @@ export default {
     shitshan
   },
   methods: {
+   async search(){
+const res=await this.$axios.get('/team/getOtherTeamGrade', {
+        params: {
+          teamId: this.selectedTeamId,
+          projectId: Number(localStorage.getItem("currentprojectid")),
+        },
+      })
+     console.log(res.data)
+
+     if(res.data.code==="0"){
+      this.corate=[]
+for (let i=0;i<res.data.data.length;i++){
+  const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
+    params: {
+      teamId: res.data.data[i].team2,
+    }
+  });
+
+  this.corate.push({
+    grade:res.data.data[i].grade,
+    comment:res.data.data[i].comment,
+    id:res1.data.data.teamName
+  })
+}
+       this.showDialog = true;
+      this.noCorateMessage = '';
+      console.log(this.corate)
+      }else{
+        this.noCorateMessage = '没有互评成绩';
+        console.log(this.noCorateMessage)
+       console.log(this.corate.length)
+      }
+   },
     pigai(a){
       localStorage.setItem("currentteamid", a.teamid);
       localStorage.setItem("currentteammembers", a.teammembers);

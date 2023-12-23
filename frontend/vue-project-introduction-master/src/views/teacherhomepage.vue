@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 你的其他内容 -->
-    <shitshan>
+    <shitshan2>
 
       <div class="coursecontainer">
 
         <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" :span="11">
+          <el-col v-for="course in courses" :key="course.id" :span="7">
             <el-card class="course-card" @click.native="goTo(course)">
               <h3>{{ course.code }}</h3>
               <h3>{{ course.title }}</h3>
@@ -15,12 +15,12 @@
         </el-row>
 
       </div>
-    </shitshan>>
+    </shitshan2>
     <!-- 你的其他内容 -->
   </div>
 </template>
 <script setup>
-import shitshan from "@/components/shitshan.vue";
+import shitshan2 from "@/components/shitshan2.vue";
 export default {
   data() {
     return {
@@ -39,7 +39,7 @@ export default {
 
   },
   components: {
-    shitshan
+    shitshan2
   },
   methods: {
     async loadAllCoursesinfo() {
@@ -286,6 +286,7 @@ export default {
 
 <style scoped>
 .coursecontainer{
+  width: 100%;
   margin-top: 50px;
   margin-left: 50px;
 }

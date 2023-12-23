@@ -2,6 +2,7 @@ package com.example.ooad_project_backend.service.Imp;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ooad_project_backend.entity.*;
+import com.example.ooad_project_backend.enums.StatusType;
 import com.example.ooad_project_backend.mapper.CourseDetailsMapper;
 import com.example.ooad_project_backend.mapper.CourseInfoMapper;
 import com.example.ooad_project_backend.mapper.CourseTeacherMapper;
@@ -10,6 +11,8 @@ import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,4 +161,24 @@ public class CourseInfoServiceImp extends ServiceImpl<CourseInfoMapper, CourseIn
         }
         return courseInfoList;
     }
+
+    @Override
+    public boolean addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                                 StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseDetailsMapper.addAttendance(courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion);
+    }
+
+    @Override
+    public boolean updateAttendance(Integer id,Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                                    StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseDetailsMapper.updateAttendance(id,courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion);
+    }
+
+    @Override
+    public void deleteAttendance(Integer id) {
+        courseDetailsMapper.deleteAttendance(id);
+    }
+
 }

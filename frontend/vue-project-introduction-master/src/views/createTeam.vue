@@ -110,19 +110,27 @@
     <div class="center-container">
     <div class="form-container">
       <form >
-        <div class="form-group">
+   <form-item>
           <input type="text" v-model="team.title" placeholder="团队标题" class="form-control" />
-        </div>
-        <div class="form-group">
-          <input type="text" v-model="team.description" placeholder="团队描述" class="form-control" />
-        </div>
-        <div class="form-group">
+        </form-item>
+        <form-item>
+
+          <el-input type="textarea" v-model="team.description" placeholder="团队描述" class="form-control"  :rows="8"/>
+
+        </form-item>
+        <form-item>
+          <el-input type="textarea" v-model="team.recruitmentInformation" placeholder="招募信息" class="form-control" :rows="8" />
+        </form-item>
+        <form-item>
+
           <select v-model="team.teamSize" class="form-control">
             <option disabled value="0">请选择团队大小</option>
             <option v-for="number in maxpeople" :key="number" :value="number">{{ number }}</option>
           </select>
-        </div>
+        </form-item>
+        <form-item>
         <button type="submit" class="submit-btn" @click.prevent="createTeam">创建团队</button>
+        </form-item>
       </form>
     </div>
     </div>
@@ -205,7 +213,9 @@ export default {
       team: {
         title: '',
         description: '',
-        teamSize:2
+        teamSize:2,
+        recruitmentInformation:'',
+
       },
       maxpeople:0,
       projectid:0,
@@ -309,6 +319,7 @@ export default {
           teamDescription: String(this.team.description),
           teamSize: Number(this.team.teamSize),
           projectId:Number(this.projectid),
+          recruitmentInformation:this.team.recruitmentInformation,
           leader:Number(this.sid),
         }
       }).then((res) => {
@@ -463,6 +474,7 @@ export default {
 }
 
 .form-container {
+  height: 50%;
   max-width: 700px;
   margin: 0 auto;
   padding: 200px;

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-row class="header-bar">
+    <el-row class="header-bar" >
       <el-col :span="15">
         <h1 class="header-title">Project Helper</h1>
       </el-col>
@@ -16,8 +16,6 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
-
-
       <el-col :span="4">
         <el-button type="text" v-popover:profilePopover class="profile-button">
           <i class="el-icon-user"></i> 个人资料
@@ -37,9 +35,7 @@
             </el-menu>
           </div>
         </el-popover>
-
       </el-col>
-
     </el-row>
     <el-dialog
         :visible.sync="dialogVisible"
@@ -566,21 +562,23 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 
-.header-bar {
-  background-color: cornflowerblue;
-  color: white;
-  line-height: 60px;
-  padding: 0 20px;
-}
+
 
 .main-content {
   display: flex;
 }
 
-.course-navbar {
-  width: 200px;
-  background-color: #f2f2f2;
-  height: 100vh; /* 设置高度为视口的100% */
+
+
+.el-row, .el-col {
+  margin: 0;
+  padding: 0;
+}
+.header-bar{
+  background-color: cornflowerblue;
+  color: white;
+  line-height: 100px;
+  padding: 0 20px;
 }
 
 .posts-container {
@@ -605,16 +603,8 @@ export default {
   border: 1px solid #ccc; /* 描述框的边框 */
   background-color: #f9f9f9; /* 轻微背景颜色区分 */
 }
-.user-profile {
-  text-align: center; /* 居中用户信息 */
-}
 
-.avatar {
-  width: 80px; /* 头像大小 */
-  height: 80px; /* 头像大小 */
-  border-radius: 50%; /* 圆形头像 */
-  margin-bottom: 10px; /* 头像与姓名之间的间距 */
-}
+
 
 
 
@@ -629,6 +619,7 @@ export default {
 
 
 .calendar {
+  margin-top: 200px;
   width: 300px; /* 固定日历的宽度 */
 }
 .ddl-past {

@@ -3,6 +3,7 @@ package com.example.ooad_project_backend.controller;
 
 import com.example.ooad_project_backend.common.Result;
 import com.example.ooad_project_backend.entity.*;
+import com.example.ooad_project_backend.enums.StatusType;
 import com.example.ooad_project_backend.service.CourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @RestController
@@ -100,6 +103,27 @@ public class CourseController {
             return Result.success(attendanceInfos);
         }
     }
+
+    @GetMapping("/addAttendance")
+public Result addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                            StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseInfoService.addAttendance(courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion) ? Result.success() : Result.error("1", "提交失败");
+    }
+
+    @GetMapping("/updateAttendance")
+    public Result updateAttendance(Integer id,Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                                   StatusType attendanceStatus, Integer maxScore, Integer proportion) {
+        return courseInfoService.updateAttendance(id,courseId, attendanceDate, attendanceStartTime,
+                attendanceDeadline, attendanceStatus, maxScore, proportion) ? Result.success() : Result.error("1", "提交失败");
+    }
+
+    @GetMapping("/deleteAttendance")
+    public Result deleteAttendance(Integer id) {
+        courseInfoService.deleteAttendance(id);
+        return Result.success();
+    }
+
 
     @GetMapping("/getAllCourses")
     public Result getAllCourses() {

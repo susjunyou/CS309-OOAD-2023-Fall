@@ -1,8 +1,11 @@
 package com.example.ooad_project_backend.mapper;
 
 import com.example.ooad_project_backend.entity.*;
+import com.example.ooad_project_backend.enums.StatusType;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @Mapper
@@ -82,6 +85,17 @@ public interface CourseDetailsMapper {
 
     @Delete("delete from course_sa where course_id = #{courseId}")
     void deleteCourseSA(Integer courseId);
+
+    @Insert("insert into attendance (course_id, attendance_date, attendance_start_time, attendance_deadline, attendance_status, max_score, proportion) values (#{courseId}, #{attendanceDate}, #{attendanceStartTime}, #{attendanceDeadline}, #{attendanceStatus}, #{maxScore}, #{proportion})")
+    boolean addAttendance(Integer courseId, Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                       StatusType attendanceStatus, Integer maxScore, Integer proportion);
+
+
+    @Update("update attendance set course_id = #{courseId}, attendance_date = #{attendanceDate}, attendance_start_time = #{attendanceStartTime}, attendance_deadline = #{attendanceDeadline}, attendance_status = #{attendanceStatus}, max_score = #{maxScore}, proportion = #{proportion} where id = #{id}")
+    boolean updateAttendance(Integer id, Integer courseId,Date attendanceDate, Time attendanceStartTime, Time attendanceDeadline,
+                          StatusType attendanceStatus, Integer maxScore, Integer proportion);
+    @Delete("delete from attendance where id = #{id}")
+    void deleteAttendance(Integer id);
 
 }
 

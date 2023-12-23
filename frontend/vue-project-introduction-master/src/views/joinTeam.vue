@@ -131,6 +131,7 @@
         <div class="button-container">
           <button class="sumbitt" @click="() => leaveTeam()">离开小队</button>
           <button class="sumbitt" @click="() => submitproject()">提交project</button>
+          <el-button class="sumbitt" @click="() => editRecruitment()" :disabled="id != myTeam[0].leader">修改招募信息</el-button>
         </div>
         </div>
         <div style="width: 100%; padding: 20px 10px;">
@@ -232,15 +233,17 @@
       <div class="team-card" v-for="team in teams" :key="team.id">
         <h3>{{ team.name }}</h3>
         <p>{{ team.description }}</p>
-        <p>当前人数: {{ team.teammembers.length }} / 最多人数: {{ team.teamsize }}</p>
+        <p>当前人数: {{ team.currentmembercount}} / 最多人数: {{ team.teamsize }}</p>
         <!-- 显示成员列表 -->
         <ul>
           <li v-for="(member, index) in team.teammembers" :key="member.id">
             成员{{ index + 1 }}     姓名: {{ member.name }}     id：{{member.id}}
           </li>
         </ul>
-
+        <el-button class="sumbitt" @click.stop="descrip(team)">查看招募信息</el-button>
         <button class="sumbitt" @click="requestTeam(team)">申请加入队伍</button>
+
+
       </div>
     </div>
       </div>
@@ -305,7 +308,46 @@
         <el-button type="primary" @click.stop="commitEdit">确定</el-button>
       </div>
     </el-dialog>
+    <div v-if="isPopupVisible4" class="popup">
+      <div class="popup-content">
+        <p>{{ this.message }}</p>
+        <button @click="isPopupVisible4=false" class="sumbitt">关闭</button>
+      </div>
+    </div>
+    <el-dialog
+        title="修改招募信息"
+        :visible.sync="recruitmentDialogVisible"
+        width="50%"
+    >
+      <el-form :model="editRecruitmentForm">
 
+        <el-form-item label="小队名称">
+          <el-input
+              type="textarea"
+              v-model="editRecruitmentForm.teamName"
+              :rows="1"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="小队描述">
+          <el-input
+              type="textarea"
+              v-model="editRecruitmentForm.teamDescription"
+              :rows="4"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="招募信息">
+          <el-input
+              type="textarea"
+              v-model="editRecruitmentForm.recruitmentInformation"
+              :rows="4"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="recruitmentDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="commitRecruitmentEdit">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -397,6 +439,7 @@ export default {
       currentprojectid:0,
       isPopupVisible2:false,
       isPopupVisible3:false,
+      isPopupVisible4:false,
       invitlist:[],//邀请他的的那个学生信息
       trueinvitslist:[],//邀请他的的队伍信息
       technologystack:'',
@@ -405,6 +448,14 @@ export default {
       ratedteams:[],
       unratedteams:[],
       dialogVisible2:false,
+      message:'',
+      recruitmentDialogVisible: false,
+      editRecruitmentForm: {
+        recruitmentInformation: '',
+        teamName:'',
+        teamDescription: '',
+      },
+      teamcopy:[],
       editAssignmentForm: {
         comment: '',
         grade: '',
@@ -436,8 +487,52 @@ export default {
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
     console.log(this.requeststudent);
+    console.log(this.id)
+    console.log(this.myTeam[0].leader)
+    console.log(this.teamcopy[0])
   },
+
   methods: {
+    editRecruitment() {
+      // 加载当前招募信息到表单
+      this.editRecruitmentForm.recruitmentInformation = this.myTeam[0].recruitmentInformation;
+      this.editRecruitmentForm.teamName = this.teamcopy[0].teamName;
+      this.editRecruitmentForm.teamDescription = this.teamcopy[0].teamDescription;
+      this.recruitmentDialogVisible = true;
+    },
+    async commitRecruitmentEdit() {
+     const res= await this.$axios.get('/team/updateTeamInfo',{
+        params: {
+          teamId: this.teamcopy[0].teamId,
+          recruitmentInformation: this.editRecruitmentForm.recruitmentInformation,
+          teamName: this.editRecruitmentForm.teamName,
+          projectId:this.teamcopy[0].projectId,
+          leader:this.teamcopy[0].leader,
+          teamDescription:this.editRecruitmentForm.teamDescription,
+
+          teamSize:this.teamcopy[0].teamSize,
+
+          teamMembers:this.teamcopy[0].teamMembers,
+
+          teacherId:this.teamcopy[0].teacherId,
+
+          presentationDate:this.teamcopy[0].presentationDate,
+
+        }
+
+      })
+      if(res.data.code === "0"){
+        await this.getTeam();
+        this.recruitmentDialogVisible = false;
+        this.message='修改成功';
+        this.isPopupVisible4=true;
+      }
+    },
+    descrip(team){
+      this.message=team.recruitmentInformation,
+
+          this.isPopupVisible4=true;
+    },
   async  commitEdit(){
     const res=await  this.$axios.get('/team/updateTeamPeerRevision',{
       params: {
@@ -1095,9 +1190,12 @@ this.dialogVisible2=true;
                 teamId: team.teamId
               }
             });
+
             if (res1.data.code === "0" && Array.isArray(res1.data.data)) {
               const isMember = res1.data.data.some(member => member.id === Number(localStorage.getItem('id')));
               if (isMember) {
+                console.log(team.leader)
+
                 this.myTeam.push({
                   id: team.teamId,
                   name: team.teamName,
@@ -1107,7 +1205,9 @@ this.dialogVisible2=true;
                   teamsize: team.teamSize,
                   teammembers: res1.data.data,
                   currentmembercount: res1.data.data ? res1.data.data.length : 0,
+                  recruitmentInformation:team.recruitmentInformation,
                 });
+                this.teamcopy.push(team),
                 this.hasJoinedTeam = true;
                 console.log(isMember);
                 console.log(team.leader);
@@ -1128,6 +1228,21 @@ this.dialogVisible2=true;
                 teamsize: team.teamSize,
                 teammembers: res1.data.data,
                 currentmembercount: res1.data.data ? res1.data.data.length : 0,
+                recruitmentInformation:team.recruitmentInformation,
+
+              });
+            }else {
+              this.teams.push({
+                id: team.teamId,
+                name: team.teamName,
+                description: team.teamDescription,
+                leader: team.leader,
+                projectid: team.projectId,
+                teamsize: team.teamSize,
+                teammembers:null,
+                currentmembercount:  0,
+                recruitmentInformation:team.recruitmentInformation,
+
               });
             }
           }

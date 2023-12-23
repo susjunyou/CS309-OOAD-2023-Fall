@@ -95,7 +95,7 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-        <el-menu-item index="1" @click="this.$router.push('/teacherhomepage')">Home</el-menu-item>
+        <el-menu-item index="1" @click="gotot()">Home</el-menu-item>
         <el-menu-item index="2" @click="go('course')">Post</el-menu-item>
         <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
         <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
@@ -225,6 +225,9 @@ export default {
 
   },
   methods: {
+    gotot(){
+      this.$router.push('/teacherhomepage')
+    },
     async return(){
       if(localStorage.getItem('id')==null||localStorage.getItem('id')==""||localStorage.getItem('id')==undefined||localStorage.getItem('id')=="null"||localStorage.getItem('id')=="undefined"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"||localStorage.getItem('id')=="NaN"){
         this.isPopupVisible2=true;
