@@ -14,7 +14,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="anouncement in anouncements" :key="anouncement.id" :span="6" >
-              <el-card  class="assignment-card" >
+              <el-card  class="assignment-card" @click.native="showanouncement(anouncement)">
                 <h3>{{ anouncement.title }}</h3>
                 <p>发布者：{{ anouncement.authorname }}</p>
               </el-card>
@@ -92,6 +92,12 @@ export default {
     shitshan
   },
   methods: {
+    showanouncement(anouncement){
+      localStorage.setItem("anouncementtitle",anouncement.title)
+      localStorage.setItem("anouncementauthorname",anouncement.authorname)
+      localStorage.setItem("anouncementcontent",anouncement.content)
+      this.$router.push({path:'/anouncementofteacher'})
+    },
     async submitForm() {
       const submitDate = new Date();
       const formattedDate = submitDate.toISOString().split('T')[0]; // 获取 yyyy-MM-dd 格式

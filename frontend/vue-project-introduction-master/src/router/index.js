@@ -38,6 +38,7 @@ import memberadmin from "@/views/memberadmin.vue";
 import attendancegradebookofteacher from "@/views/attendancegradebookofteacher.vue";
 import assignmentgradebookofteacher from "@/views/assignmentgradebookofteacher.vue";
 import projectgradebookofteacher from "@/views/projectgradebookofteacher.vue";
+import anouncementofteacher from "@/views/anouncementofteacher.vue";
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -78,6 +79,7 @@ const routes = [
     {path: '/attendancegradebookofteacher',component:attendancegradebookofteacher},
     {path: '/assignmentgradebookofteacher',component: assignmentgradebookofteacher},
     {path: '/projectgradebookofteacher',component: projectgradebookofteacher},
+    {path: '/anouncementofteacher',component: anouncementofteacher},
     {path: '/', redirect: '/login'}
 
 ]
