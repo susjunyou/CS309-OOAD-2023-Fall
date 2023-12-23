@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 你的其他内容 -->
-    <shitshan>
+    <shitshangaimima>
 
       <div>
         <div class="change-password-form">
@@ -25,7 +25,7 @@
           <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
         </div>
       </div>
-    </shitshan>
+    </shitshangaimima>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
         <p>修改成功！</p>
@@ -36,7 +36,7 @@
   </div>
 </template>
 <script setup>
-import shitshan from "@/components/shitshan.vue";
+import shitshangaimima from "@/components/shitshangaimima.vue";
 export default {
   data() {
     return {
@@ -89,7 +89,7 @@ export default {
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));  },
   components: {
-    shitshan
+    shitshangaimima
   },
   methods: {
     close(){
