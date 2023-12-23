@@ -74,6 +74,11 @@ public class TeacherInfoServiceImp extends ServiceImpl<TeacherInfoMapper, Teache
         return true;
     }
 
+    @Override
+    public TeacherInfo findTeacherInfoById(Integer id) {
+        return teacherInfoMapper.findTeacherInfoById(id);
+    }
+
 
     public List<TeacherInfo> findALl() {
         return teacherInfoMapper.getAll();
