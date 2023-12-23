@@ -3,82 +3,99 @@
     <!-- 你的其他内容 -->
     <shitshansa>
 
-      <div class="assignments-wrapper">
+      <div class="assignments-wrapper" style="width: 88%;">
         <!-- 左侧部分 -->
         <div class="left-panel">
           <!-- 已提交学生信息 -->
-          <div class="submitted-students">
+          <div class="submitted-students" >
             <h3>所有小组信息</h3>
-            <el-table
-                :data="teams"
-                border
-                style="height: 75%;"
-                @row-click="handleRowClick">
-              <el-table-column
-                  prop="name"
-                  label="小组名称"
-              ></el-table-column>
-              <el-table-column
-                  prop="description"
-                  label="小组描述"
-              ></el-table-column>
-              <el-table-column label="小组成员">
-                <template v-slot="{ row }">
-                  <div v-for="member in row.teammembers" :key="member.id" class="team-member" style="margin-top:10px">
-                    {{ member.name }} (学号：{{ member.id }})
-                    <el-button type="danger" size="mini" @click="removeMember(row, member)">开除</el-button>
-                  </div>
-                  <p v-if="row.leader">组长学号：{{ row.leader }}</p>
+            <div style="overflow-y: auto">
+              <el-table
+                  :data="teams"
+                  border
+                  style="height: 75%;"
+                  @row-click="handleRowClick">
+                <el-table-column
+                    prop="name"
+                    label="小组名称"
+                ></el-table-column>
+                <el-table-column
+                    prop="description"
+                    label="小组描述"
+                ></el-table-column>
+                <el-table-column label="小组成员">
+                  <template v-slot="{ row }">
+                    <div v-for="member in row.teammembers" :key="member.id" class="team-member" style="margin-top:10px">
+                      {{ member.name }} (学号：{{ member.id }})
+                      <el-button type="danger" size="mini" @click="removeMember(row, member)" :disabled="row.leader === member.id">开除</el-button>
+                    </div>
+                    <p v-if="row.leader">组长学号：{{ row.leader }}</p>
+                    <el-button type="success" size="mini" @click="showAddMemberDialog(row)" :disabled="row.teamSize>=maxMembersLimit">添加成员</el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column label="更改答辩老师/时间">
+                  <template v-slot="scope">
+                    <el-button type="success" size="small" @click="update1(scope.row)" style="margin-left: 10px;min-width: 140px">更改答辩老师/时间</el-button>
+                    <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px;min-width: 140px">更改小队信息</el-button>
+                  </template>
 
-                </template>
-              </el-table-column>
-              <el-table-column label="更改答辩老师/时间">
-                <template v-slot="scope">
-                  <el-button type="success" size="small" @click="update1(scope.row)" style="margin-left: 10px">更改答辩老师/时间</el-button>
-                  <el-button type="success" size="small" @click="update5(scope.row)" style="margin-top: 15px">更改小队名称/描述</el-button>
-                </template>
+                </el-table-column>
+                <el-table-column label="更改小组队长">
+                  <template v-slot="scope">
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <el-select v-model="scope.row.selectedLeaderId" placeholder="选择新队长">
+                          <el-option
+                              v-for="member in getNonLeaderMembers(scope.row)"
+                              :key="member.id"
+                              :label="member.id"
+                              :value="member.id">
+                          </el-option>
+                        </el-select>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-button type="success" size="small" @click="update2(scope.row)">更改</el-button>
+                      </el-col>
+                    </el-row>
+                  </template>
+                </el-table-column>
+                <el-table-column label="删除小队">
+                  <template v-slot="scope">
+                    <el-button type="danger" size="small" @click.prevent="update3(scope.row)">删除小队</el-button>
+                  </template>
+                </el-table-column>
 
-              </el-table-column>
-              <el-table-column label="更改小组队长">
-                <template v-slot="scope">
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <el-select v-model="scope.row.selectedLeaderId" placeholder="选择新队长">
-                        <el-option
-                            v-for="member in getNonLeaderMembers(scope.row)"
-                            :key="member.id"
-                            :label="member.id"
-                            :value="member.id">
-                        </el-option>
-                      </el-select>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-button type="success" size="small" @click="update2(scope.row)">更改</el-button>
-                    </el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-              <el-table-column label="删除小队">
-                <template v-slot="scope">
-                  <el-button type="danger" size="small" @click.prevent="update3(scope.row)">删除小队</el-button>
-                </template>
-              </el-table-column>
-
-              <!-- Other columns as needed -->
-            </el-table>
-            <el-button type="success" size="small" @click="update4()" class="sumbitt">添加小组</el-button>
-            <el-button type="success" size="small" @click="dialogVisible3 = true" class="sumbitt">批量添加小组</el-button>
+                <!-- Other columns as needed -->
+              </el-table>
+            </div>
+            <el-button type="success" size="small" @click="update4()" class="sumbitt" style="min-width: 160px">添加小组</el-button>
+            <el-button type="success" size="small" @click="dialogVisible3 = true" class="sumbitt" style="min-width: 160px">批量添加小组</el-button>
 
           </div>
 
           <!-- 未提交学生信息 -->
 
         </div>
+        <el-dialog title="发布作业" :visible.sync="dialogVisible">
 
+          <h3>未加入小队的成员</h3>
+          <el-table :data="studentsnotjointeam" style="width: 100%">
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="选择">
+              <template v-slot="{ row }">
+                <el-checkbox v-model="selectedStudents" :label="row.id"></el-checkbox>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="major" label="专业"></el-table-column>
+            <el-table-column prop="email" label="邮箱"></el-table-column>
+
+          </el-table>
+        </el-dialog>
         <!-- 右侧部分 -->
 
       </div>
-    </shitshansa>>
+    </shitshansa>
     <!-- 你的其他内容 -->
     <el-dialog :visible.sync="dialogVisible" title="更改答辩信息">
       <el-form :model="dialogForm">
@@ -119,38 +136,31 @@
         <el-form-item label="小组描述">
           <el-input v-model="dialogForm2.teamdescription" type="textarea" placeholder="请输入小组描述"></el-input>
         </el-form-item>
+        <el-form-item label="招募信息">
+          <el-input v-model="dialogForm2.recruitmentInformation" type="textarea" placeholder="请输入小组招募信息"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible2 = false">取消</el-button>
     <el-button type="primary" @click="updateTeamInfo">确定</el-button>
   </span>
     </el-dialog>
-    <el-dialog :visible.sync="dialogVisible3" title="批量添加小组">
-      <el-form ref="bulkTeamForm" :model="bulkTeamForm">
-        <el-form-item label="小组数量">
-          <el-input-number v-model="bulkTeamForm.numberOfTeams" :min="1"></el-input-number>
-        </el-form-item>
-        <!-- 其他表单项 -->
-        <el-form-item label="小组大小">
-          <el-input-number v-model="bulkTeamForm.teamsize" :min="1" :max="maxMembersLimit"></el-input-number>
-        </el-form-item>
-        <el-form-item label="小组名称">
-          <el-input v-model="bulkTeamForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="小组描述">
-          <el-input type="textarea" v-model="bulkTeamForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="项目 ID">
-          <el-input v-model="bulkTeamForm.projectid" disabled></el-input>
-        </el-form-item>
-      </el-form>
-      <!-- 对话框的其他内容 -->
+    <el-dialog :visible.sync="dialogVisibleAddMember" title="添加成员">
+      <el-table :data="studentsnotjointeam" style="width: 100%">
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="major" label="专业"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column label="选择">
+          <template v-slot="{ row }">
+            <el-radio v-model="selectedStudentId" :label="row.id"></el-radio>
+          </template>
+        </el-table-column>
+      </el-table>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible3 = false">取消</el-button>
-    <el-button type="primary" @click="submitBulkTeams">确定</el-button>
-  </span>
+      <el-button @click="dialogVisibleAddMember = false">取消</el-button>
+      <el-button type="primary" @click="addMemberToTeam">确认添加</el-button>
+    </span>
     </el-dialog>
-
 
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
@@ -162,12 +172,16 @@
 </template>
 <script setup>
 import shitshansa from "@/components/shitshansa.vue";
+
 export default {
   data() {
     return {
       courses: [],
       posts: [],
       materials: [],
+      dialogVisibleAddMember: false, // 控制添加成员对话框的显示
+      selectedStudentId: null, // 选中的学生ID
+      currentTeam: null, // 当前操作的小组对象
       assignments: [],
       projects: [],
       ddls: [],
@@ -183,8 +197,10 @@ export default {
       isPopupVisible: false,
       dialogVisible: false,
       dialogVisible2: false,
+      studentsnotjointeam:[],
+      selectedStudents: [],
+      dialogVisible4: false,
       maxMembersLimit: Number(localStorage.getItem("currentprojectmaxpeopleinteam")) , // 假设 10 是默认最大值
-
       dialogForm: {
         teacherId: '',
         presentationDate: '',
@@ -193,9 +209,12 @@ export default {
       dialogForm2: {
         teamname: '',
         teamdescription: '',
+        recruitmentInformation:'',
       },
       wenzi: "",
-      currentteam:null,
+      currentteamid:null,
+      currentleader:0,
+      currentteamsize:0,
       dialogVisible3: false, // 控制批量添加小组对话框的显示
       bulkTeamForm: { // 批量添加小组的表单数据
         teamsize: 1,
@@ -218,11 +237,62 @@ export default {
     await this.loadStudentsAndSA();
     console.log(this.teachers);
     await this.getTeam();
+    await this.loadstudentnotjointeam();
   },
   components: {
     shitshansa
   },
   methods: {
+    showAddMemberDialog(team) {
+      this.dialogVisibleAddMember = true;
+      this.currentteamid=team.id;
+      this.currentleader=team.leader;
+      this.currentteamsize=team.teamsize;
+    },
+
+    async  addMemberToTeam() {
+      // 在这里实现添加成员到小组的逻辑
+      // 例如，使用 Axios 发送请求到后端，添加成员到 currentTeam
+      // 添加成功后，您可能需要更新 teams 数组或相关数据以反映新成员的加入
+
+      const rs=  await this.$axios.get('/team/join', {
+        params: {
+          studentId: this.selectedStudentId,
+          teamId: Number(this.currentteamid),
+          projectId: Number(localStorage.getItem('currentprojectid')),
+          teamSize: this.currentteamsize,
+          leader: this.currentleader,
+        },
+      })
+      if(rs.data.code === "0"){
+        this.wenzi="添加"
+        this.dialogVisibleAddMember = false;
+        this.isPopupVisible=true;
+      }
+
+    },
+    async loadstudentnotjointeam(){
+      this.studentsnotjointeam = [];
+      this.$axios.get('/team/getStudentNotJoinTeam',{
+        params: {
+          projectId:localStorage.getItem('currentprojectid'),
+          courseId:localStorage.getItem('currentcourseid')
+        }
+      }).then(res => {
+        // console.log('ddasdawdadwdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdawdaw');
+        if(res.data.code === "0"){
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.studentsnotjointeam.push(
+                res.data.data[i]
+            )
+          } console.log('sss');
+        }else {
+          console.log("error")
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     async submitBulkTeams() {
 
       for (let i = 0; i < this.bulkTeamForm.numberOfTeams; i++) {
@@ -275,20 +345,38 @@ export default {
     update5(row){
       this.dialogForm2.teamname = row.name;
       this.dialogForm2.teamdescription = row.description;
+      this.dialogForm2.recruitmentInformation = row.recruitmentInformation;
       this.currentteam = row;
       this.dialogVisible2 = true;
     },
-    updateTeamInfo() {
+    async updateTeamInfo() {
       // 在这里处理对话框提交的数据
       // 例如，发送请求到后端更新小组信息
-
-      this.$axios.get('/team/updateTeamInfo', {
+      const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
         params: {
           teamId: this.currentteam.id,
+        }
+      });
+      const team = res1.data.data;
+      await this.$axios.get('/team/updateTeamInfo', {
+        params: {
+          teamId: team.teamId,
+          recruitmentInformation:this.dialogForm2.recruitmentInformation,
           teamName: this.dialogForm2.teamname,
-          teamDescription: this.dialogForm2.teamdescription,
-          leader: this.currentteam.leader,
-          teamSize: this.currentteam.teamsize,
+          projectId:team.projectId,
+          leader:team.leader,
+          teamDescription:this.dialogForm2.teamdescription,
+
+          teamSize:team.teamSize,
+
+          teamMembers:team.teamMembers,
+
+          teacherId:team.teacherId,
+
+          presentationDate:team.presentationDate,
+
+
+
           // teamMembers: this.currentteam.teammembers,
         }
       }).then((res) => {
@@ -325,6 +413,7 @@ export default {
     },
     returnToprotects(){
       this.getTeam();
+      this.loadstudentnotjointeam();
       this.isPopupVisible = false;
 
     },
@@ -467,6 +556,7 @@ export default {
                 currentmembercount: res1.data.data ? res1.data.data.length : 0,
                 teacherid: team.teacherId,
                 presentationdate: team.presentationDate,
+                recruitmentInformation:team.recruitmentInformation,
                 selectedLeaderId:'',
               });
             }else {
@@ -482,6 +572,8 @@ export default {
                 currentmembercount:  0,
                 teacherid: team.teacherId,
                 presentationdate: team.presentationDate,
+                recruitmentInformation:team.recruitmentInformation,
+
                 selectedLeaderId:'',
               });
             }
@@ -501,11 +593,11 @@ export default {
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
-      for (let i = 0; i < localStorage.getItem('length'); i++) {
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
         this.courses.push({
           id: localStorage.getItem('coursesidsa' + i),
           title: localStorage.getItem('coursessa' + i),
-          description: localStorage.getItem('courseDescriptionsa' + localStorage.getItem('coursesidsa' + i)),
+          description: localStorage.getItem('courseDescriptionsa' + i),
           code: localStorage.getItem('coursecodesa' +i),
         });
       }

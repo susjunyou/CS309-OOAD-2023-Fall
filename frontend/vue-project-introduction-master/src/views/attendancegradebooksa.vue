@@ -4,9 +4,13 @@
     <shitshansa>
       <div class="attendance-list">
         <hr class="separator">
-        <h1>出勤记录</h1>
         <h1>{{this.currentattendanceid}}</h1>
         <h2>{{this.currentattendanceData}}</h2>
+        <div class="file-upload">
+          <input type="file"   @change="onFileSelected"/>
+          <!--        @change="handleFileUpload"-->
+          <el-button class="submit" @click.prevent="submitGrade" :disabled="this.disable_submit">SubmitGrade</el-button>
+        </div>
         <ul>
           <li>
             <table>
@@ -28,10 +32,15 @@
           </li>
         </ul>
         <div id="main123" style="width: 100%; height:400px"></div>
-        <h1>底部</h1>
       </div>
     </shitshansa>
     <!-- 你的其他内容 -->
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>提交成功！</p>
+        <button @click="returnToassignments">关闭</button>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -49,68 +58,92 @@ export default {
       currentattendanceData:'',
       studentInfos:[],
       attendancegrades:[],
-      numyi:'',
-      numwei:'',
+      numyi:'',//已签到人数
+      numwei:'',//未签到人数
+      file:null,
+      isPopupVisible:false,
     };
   },
   async created(){
     this.currentattendanceid =localStorage.getItem('currentattendanceid');
     this.currentattendanceData=localStorage.getItem('currentattendanceDate');
     await this.loadLocalStorageData();
-    // await this.getClass();
+    await this.getClass();
   },
   components: {
     shitshansa
   },
   methods: {
-    // getClass(){
-    //   // var echarts=require('echarts');
-    //   // var myChart = echarts.init(document.getElementById('main123'));
-    //   var option={
-    //     title:{
-    //       text:'成绩',
-    //       x:'center',
-    //     },
-    //     legend:{
-    //       orient:"vertical",
-    //       top:'20',
-    //       right:'100',
-    //       data:['人数'],
-    //     },
-    //     tooltip:{},
-    //     xAxis:{
-    //       data:['已签','未签'],
-    //       axisTick:{
-    //         alignWithLabel:true,
-    //         show:true,
-    //         interval:0
-    //       }
-    //     },
-    //     yAxis:{},
-    //     series:[{
-    //       name:'人数',
-    //       type:'bar',
-    //       data:[this.numyi,this.numwei],
-    //       label:{
-    //         show: true,
-    //         position:'outside',
-    //         color: 'black'
-    //       }
-    //     }],
-    //     itemStyle:{
-    //       color: 'black'
-    //     }
-    //   };
-    //   // myChart.setOption(option);
-    // },
+    onFileSelected(event) {
+      // event.target.files 包含了用户选中的文件列表
+      this.file = event.target.files[0]; // 保存第一个选中的文件
+    },
+    submitGrade(){
+      let formData = new FormData();
+      formData.append('attendanceId',this.currentattendanceid);
+      formData.append('file',this.file);
+      this.$axios.post('/grade/uploadAttendanceGradeCSV',formData,{
+        headers:{
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(res=>{
+        if(res.data.code==="0"){
+          this.isPopupVisible=true;
+        }
+      })
+    },
+    returnToassignments(){
+      this.isPopupVisible=false;
+      this.$router.push('/gradebooksa')
+    },
+    getClass(){
+      var echarts=require('echarts');
+      var myChart = echarts.init(document.getElementById('main123'));
+      var option={
+        title:{
+          text:'成绩',
+          x:'center',
+        },
+        legend:{
+          orient:"vertical",
+          top:'20',
+          right:'100',
+          data:['人数'],
+        },
+        tooltip:{},
+        xAxis:{
+          data:['已签','未签'],
+          axisTick:{
+            alignWithLabel:true,
+            show:true,
+            interval:0
+          }
+        },
+        yAxis:{},
+        series:[{
+          name:'人数',
+          type:'bar',
+          data:[this.numyi,this.numwei],
+          label:{
+            show: true,
+            position:'outside',
+            color: 'black'
+          }
+        }],
+        itemStyle:{
+          color: 'black'
+        }
+      };
+      myChart.setOption(option);
+    },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
-      for (let i = 0; i < localStorage.getItem('length'); i++) {
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
         this.courses.push({
           id: localStorage.getItem('coursesidsa' + i),
           title: localStorage.getItem('coursessa' + i),
-          description: localStorage.getItem('courseDescriptionsa' +localStorage.getItem('coursesidsa' + i)),
+          description: localStorage.getItem('courseDescriptionsa' + i),
           code: localStorage.getItem('coursecodesa' +i),
         });
       }
@@ -271,5 +304,23 @@ export default {
   position: absolute;
   width: 80%;
   left: 200px; /* 右移 50px，根据需要调整 */
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 </style>

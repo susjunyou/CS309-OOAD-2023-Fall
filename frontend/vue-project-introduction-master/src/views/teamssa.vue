@@ -3,19 +3,20 @@
     <!-- 你的其他内容 -->
     <shitshansa>
 
+      <div class="assign" style="width: 88%">
+        <div class="assignment-container">
+          <!-- ...之前的代码... -->
+          <el-row :gutter="20">
+            <el-col v-for="project in projects" :key="project.id" :span="6" >
+              <el-card  class="assignment-card" @click.native="join(project)">
+                <h3>{{ project.title }}</h3>
+                <p>截止日期：{{ project.ddl }}</p>
+              </el-card>
+            </el-col>
+          </el-row>
+          <!-- ...之后的代码... -->
 
-      <div class="assignment-container">
-        <!-- ...之前的代码... -->
-        <el-row :gutter="20">
-          <el-col v-for="project in projects" :key="project.id" :span="6" >
-            <el-card  class="assignment-card" @click.native="join(project)">
-              <h3>{{ project.title }}</h3>
-              <p>截止日期：{{ project.ddl }}</p>
-            </el-card>
-          </el-col>
-        </el-row>
-        <!-- ...之后的代码... -->
-
+        </div>
       </div>
     </shitshansa>
     <!-- 你的其他内容 -->
@@ -213,11 +214,11 @@ export default {
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
-      for (let i = 0; i < localStorage.getItem('length'); i++) {
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
         this.courses.push({
           id: localStorage.getItem('coursesidsa' + i),
           title: localStorage.getItem('coursessa' + i),
-          description: localStorage.getItem('courseDescriptionsa' + localStorage.getItem('coursesidsa' + i)),
+          description: localStorage.getItem('courseDescriptionsa' + i),
           code: localStorage.getItem('coursecodesa' +i),
         });
       }
@@ -283,13 +284,11 @@ export default {
 </script>
 
 <style scoped>
-.assignment-container {
+.assignment-container{
   margin: 20px;
-  padding-left: 200px;
-  width: 100%;
+  padding-left: 10px;
 }
-
-.assignment-card {
+.assignment-card{
   cursor: pointer;
   transition: box-shadow .3s;
   border: 1px solid gainsboro;
