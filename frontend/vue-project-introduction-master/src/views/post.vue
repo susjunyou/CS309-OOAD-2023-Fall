@@ -16,6 +16,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
+
       <el-col :span="4">
         <el-button type="text" v-popover:profilePopover class="profile-button">
           <i class="el-icon-user"></i> 个人资料
@@ -35,125 +36,124 @@
             </el-menu>
           </div>
         </el-popover>
+
       </el-col>
 
     </el-row>
 
-      <el-menu
-          class="course-navbar"
-          mode="vertical"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-        <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-        <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-        <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-        <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-        <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-        <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-        <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-      </el-menu>
+    <el-menu
+        class="course-navbar"
+        mode="vertical"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b">
+      <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+      <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
+      <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+      <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+      <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+      <el-menu-item index="7" @click="studentClick">members</el-menu-item>
+      <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+    </el-menu>
+
+
+
+
 
 
     <el-button type="primary" class="custom-button" @click="showPostForm"  >发表</el-button>
-      <div class="card-container" style="display: flex; flex-wrap: wrap">
-        <!-- ...之前的代码... -->
-        <el-row :gutter="20">
-          <el-col v-for="post in posts" :key="post.id" :span="24" >
-            <el-card  class="post-card" @click.native="showReplyForm(post)" >
-              <h3>{{ post.title }}</h3>
-              <p>发布者：{{ post.author }}</p>
-              <p>{{ post.content }}</p>
-            </el-card>
-          </el-col>
-        </el-row>
-        <!-- ...之后的代码... -->
+    <div class="assignment-container">
+      <!-- ...之前的代码... -->
+      <el-row :gutter="20">
+        <el-col v-for="post in posts" :key="post.id" :span="6" >
+          <el-card  class="assignment-card" @click.native="showReplyForm(post)">
+            <h3>{{ post.title }}</h3>
+            <p>发布者：{{ post.authorname }}</p>
+          </el-card>
+        </el-col>
+      </el-row>
+      <!-- ...之后的代码... -->
 
+    </div>
+
+
+
+    <!--      发布post-->
+    <el-dialog
+        :visible.sync="showForm"
+        title="release post"
+        width="50%"
+    >
+      <el-table :data="formData" style="width: 100%">
+        <el-table-column label="标题" prop="content"></el-table-column>
+      </el-table>
+      <el-input
+          v-model="formData.title"
+          placeholder="输入标题"
+          clearable
+      ></el-input>
+      <el-table :data="formData" style="width: 100%">
+        <el-table-column label="内容" prop="content"></el-table-column>
+      </el-table>
+      <el-input
+          v-model="formData.content"
+          placeholder="输入内容"
+          type="textarea"
+          :rows="10"
+          resize="none"
+      ></el-input>
+      <el-button type="primary" @click="submitForm">提交</el-button>
+      <el-button @click="cancelForm">取消</el-button>
+    </el-dialog>
+
+    <!--      回复post-->
+    <el-dialog
+        :visible.sync="showreplyForm"
+        title="release post"
+        width="50%"
+    >
+      <el-table :data="replyFormData" style="width: 100%">
+        <el-table-column label="标题" prop="content"></el-table-column>
+      </el-table>
+      <el-input
+          v-model="replyFormData.title"
+          placeholder="输入标题"
+          clearable
+          disabled="disabled"
+      ></el-input>
+      <el-table :data="replyFormData" style="width: 100%">
+        <el-table-column label="内容" prop="content"></el-table-column>
+      </el-table>
+      <el-input
+          v-model="replyFormData.content"
+          placeholder="输入内容"
+          type="textarea"
+          :rows="10"
+          resize="none"
+          disabled="disabled"
+      ></el-input>
+      <el-table :data="replyFormData" style="width: 100%">
+        <el-table-column label="回复" prop="reply"></el-table-column>
+      </el-table>
+      <el-input
+          v-model="replyFormData.reply"
+          placeholder="输入回复"
+          type="textarea"
+          :rows="10"
+          resize="none"
+      ></el-input>
+      <el-button type="primary" @click="submitreplyForm">提交</el-button>
+      <el-button @click="cancelreplyForm">取消</el-button>
+    </el-dialog>
+
+
+
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-content">
+        <p>提交成功！</p>
+        <button @click="returnTocourse">关闭</button>
       </div>
-<!--    <div>-->
-<!--    <el-col :span="17" class="posts-container">-->
-<!--    <div v-for="post in posts" :key="post.id" >-->
-<!--      <h3>{{ post.title }} 发布者: {{ post.author }}</h3>-->
-<!--      <p>{{ post.content }}</p>-->
-<!--    </div>-->
-<!--    </el-col>-->
-<!--    </div>-->
-      <!--      发布post-->
-      <el-dialog
-          :visible.sync="showForm"
-          title="release post"
-          width="50%"
-      >
-        <el-table :data="formData" style="width: 100%">
-          <el-table-column label="标题" prop="content"></el-table-column>
-        </el-table>
-        <el-input
-            v-model="formData.title"
-            placeholder="输入标题"
-            clearable
-        ></el-input>
-        <el-table :data="formData" style="width: 100%">
-          <el-table-column label="内容" prop="content"></el-table-column>
-        </el-table>
-        <el-input
-            v-model="formData.content"
-            placeholder="输入内容"
-            type="textarea"
-            :rows="10"
-            resize="none"
-        ></el-input>
-        <el-button type="primary" @click="submitForm">提交</el-button>
-        <el-button @click="cancelForm">取消</el-button>
-      </el-dialog>
-
-      <!--      回复post-->
-      <el-dialog
-          :visible.sync="showreplyForm"
-          title="release post"
-          width="50%"
-      >
-        <el-table :data="replyFormData" style="width: 100%">
-          <el-table-column label="标题" prop="content"></el-table-column>
-        </el-table>
-        <el-input
-            v-model="replyFormData.title"
-            placeholder="输入标题"
-            clearable
-            disabled="disabled"
-        ></el-input>
-        <el-table :data="replyFormData" style="width: 100%">
-          <el-table-column label="内容" prop="content"></el-table-column>
-        </el-table>
-        <el-input
-            v-model="replyFormData.content"
-            placeholder="输入内容"
-            type="textarea"
-            :rows="10"
-            resize="none"
-            disabled="disabled"
-        ></el-input>
-        <el-table :data="replyFormData" style="width: 100%">
-          <el-table-column label="回复" prop="reply"></el-table-column>
-        </el-table>
-        <el-input
-            v-model="replyFormData.reply"
-            placeholder="输入回复"
-            type="textarea"
-            :rows="10"
-            resize="none"
-        ></el-input>
-        <el-button type="primary" @click="submitreplyForm">提交</el-button>
-        <el-button @click="cancelreplyForm">取消</el-button>
-      </el-dialog>
-
-
-
-      <div v-if="isPopupVisible" class="popup">
-        <div class="popup-content">
-          <p>提交成功！</p>
-          <button @click="returnTocourse">关闭</button>
-        </div>
-      </div>
+    </div>
 
 
     <el-dialog title="SA信息" :visible.sync="showSaDialog" width="60%">
@@ -428,17 +428,10 @@ export default {
         console.error('Error loading sainfos:', error);
       });
       localStorage.setItem('currentpostid',post.id);
-      localStorage.setItem('currentauthor',post.author);
+      localStorage.setItem('currentauthor',post.authorname);
       localStorage.setItem('currenttitle',post.title);
       localStorage.setItem('currentcontent',post.content);
-      this.$router.push({path:'/postReply',
-      query:{
-        postid:post.id,
-        title:post.title,
-        content:post.content,
-        author:post.author,
-      }})
-
+      this.$router.push({path:'/postReply'})
     },
     submitreplyForm(){
       this.showreplyForm=false;
@@ -495,15 +488,43 @@ export default {
                 localStorage.setItem('posttitle' + localStorage.getItem('currentcourse') + i, res.data.data[i].postTitle);
                 localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
                 localStorage.setItem('postType'+localStorage.getItem('currentcourse') + i,res.data.data[i].postType);
-              if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='QUESTION'){
-                this.posts.push({
-                  course: localStorage.getItem('currentcourse'),
-                  id: res.data.data[i].postId,
-                  title: res.data.data[i].postTitle,
-                  content: res.data.data[i].postContent,
-                  author: res.data.data[i].postAuthor,
-                })
-              }
+                if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='QUESTION'){
+                  if (res.data.data[i].authorType==='TEACHER'){
+                    this.$axios.get('/teacher/getTeacherInfoById',{
+                      params:{
+                        id:res.data.data[i].postAuthor,
+                      }
+                    }).then(response=>{
+                      if(response.data.code==="0"){
+                        this.posts.push({
+                          course: localStorage.getItem('currentcourse'),
+                          id: res.data.data[i].postId,
+                          title: res.data.data[i].postTitle,
+                          content: res.data.data[i].postContent,
+                          author: res.data.data[i].postAuthor,
+                          authorname:response.data.data.name,
+                        })
+                      }
+                    })
+                  }else if(res.data.data[i].authorType==='STUDENT'){
+                    this.$axios.get('/student/getStudent',{
+                      params:{
+                        id:res.data.data[i].postAuthor,
+                      }
+                    }).then(response=>{
+                      if(response.data.code==="0"){
+                        this.posts.push({
+                          course: localStorage.getItem('currentcourse'),
+                          id: res.data.data[i].postId,
+                          title: res.data.data[i].postTitle,
+                          content: res.data.data[i].postContent,
+                          author: res.data.data[i].postAuthor,
+                          authorname:response.data.data.name,
+                        })
+                      }
+                    })
+                  }
+                }
               }
             }
           }).catch(error => {
@@ -610,16 +631,62 @@ export default {
         });
       }
       this.posts=[];
-      for (let i = localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse"))-1; i >=0; i--) {
-        if (localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) === 'QUESTION'){
-          this.posts.push({
-            id: localStorage.getItem('postid' + localStorage.getItem("currentcourse")+i),
-            content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
-            title: localStorage.getItem('posttitle' + localStorage.getItem("currentcourse")+i),
-            author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
-          });
+      this.$axios.get('/course/posts', {
+        params: {
+          courseId: localStorage.getItem('currentcourseid'),
         }
-      }
+      }).then((res) => {
+        if (res.data.code === "0") {
+          this.posts=[];
+          localStorage.setItem('coursePostLength'+localStorage.getItem('currentcourse'),res.data.data.length)
+          for(let i = localStorage.getItem('coursePostLength'+localStorage.getItem('currentcourse'))-1;i>=0;i--) {
+            localStorage.setItem('postid' + localStorage.getItem('currentcourse') + i, res.data.data[i].postId);
+            localStorage.setItem('post' + localStorage.getItem('currentcourse') + i, res.data.data[i].postContent);
+            localStorage.setItem('posttitle' + localStorage.getItem('currentcourse') + i, res.data.data[i].postTitle);
+            localStorage.setItem('postauthor' + localStorage.getItem('currentcourse') + i, res.data.data[i].postAuthor);
+            localStorage.setItem('postType'+localStorage.getItem('currentcourse') + i,res.data.data[i].postType);
+            if(localStorage.getItem('postType'+localStorage.getItem('currentcourse') + i) ==='QUESTION'){
+              if (res.data.data[i].authorType==='TEACHER'){
+                this.$axios.get('/teacher/getTeacherInfoById',{
+                  params:{
+                    id:res.data.data[i].postAuthor,
+                  }
+                }).then(response=>{
+                  if(response.data.code==="0"){
+                    this.posts.push({
+                      course: localStorage.getItem('currentcourse'),
+                      id: res.data.data[i].postId,
+                      title: res.data.data[i].postTitle,
+                      content: res.data.data[i].postContent,
+                      author: res.data.data[i].postAuthor,
+                      authorname:response.data.data.name,
+                    })
+                  }
+                })
+              }else if(res.data.data[i].authorType==='STUDENT'){
+                this.$axios.get('/student/getStudent',{
+                  params:{
+                    id:res.data.data[i].postAuthor,
+                  }
+                }).then(response=>{
+                  if(response.data.code==="0"){
+                    this.posts.push({
+                      course: localStorage.getItem('currentcourse'),
+                      id: res.data.data[i].postId,
+                      title: res.data.data[i].postTitle,
+                      content: res.data.data[i].postContent,
+                      author: res.data.data[i].postAuthor,
+                      authorname:response.data.data.name,
+                    })
+                  }
+                })
+              }
+            }
+          }
+        }
+      }).catch(error => {
+        console.error('Error loading course posts:', error);
+      });
       this.materials=[];
 
       for (let i = 0; i < localStorage.getItem('courseMaterialLength'+localStorage.getItem("currentcourse")); i++) {
@@ -771,7 +838,6 @@ export default {
   margin-top: 10px;
   width: 350px;
   height: 150px;
-
 }
 
 .assignment-card:hover {
@@ -804,27 +870,4 @@ export default {
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
-
-.card-container{
-  flex-wrap: wrap;
-  display: flex;
-  margin: 20px;
-  padding-left: 200px;
-  //border: 1px solid red;
-  height: auto;
-}
-.post-card{
-  cursor: pointer;
-  transition: box-shadow .3s;
-  //border: 1px solid gainsboro;
-  //margin-top: 10px;
-  width: 1200px;
-  height: 150px;
-  border:1px solid #000;
-}
-.post-card:hover {
-  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
-}
 </style>
-
-
