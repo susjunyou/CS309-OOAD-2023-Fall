@@ -16,7 +16,6 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
-
       <el-col :span="4">
         <el-button type="text" v-popover:profilePopover class="profile-button">
           <i class="el-icon-user"></i> 个人资料
@@ -36,7 +35,6 @@
             </el-menu>
           </div>
         </el-popover>
-
       </el-col>
 
     </el-row>
