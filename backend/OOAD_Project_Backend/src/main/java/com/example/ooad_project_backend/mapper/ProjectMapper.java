@@ -12,9 +12,9 @@ import java.util.List;
 @Mapper
 public interface ProjectMapper extends BaseMapper<ProjectInfo> {
 
-        @Insert("insert into project(project_title, project_description, project_deadline, project_status, max_score, proportion, releaser, releaser_type, course_id, project_start_date, max_people_in_team, file_id) values(#{projectTitle}, #{projectDescription}, #{projectDeadline}, #{projectStatus}, #{maxScore}, #{proportion}, #{releaser}, #{releaserType}, #{courseId}, #{projectStartDate}, #{maxPeopleInTeam}, #{fileId})")
+        @Insert("insert into project(project_title, project_description, project_deadline, project_status, max_score, proportion, releaser, releaser_type, course_id, project_start_date, max_people_in_team, file_id,team_deadline) values(#{projectTitle}, #{projectDescription}, #{projectDeadline}, #{projectStatus}, #{maxScore}, #{proportion}, #{releaser}, #{releaserType}, #{courseId}, #{projectStartDate}, #{maxPeopleInTeam}, #{fileId}), #{TeamDeadline}")
         boolean addProject(@Param("projectTitle") String projectTitle, @Param("projectDescription") String projectDescription, @Param("projectDeadline") Date projectDeadline, @Param("projectStatus") String projectStatus,
-                        @Param("maxScore") Integer maxScore, @Param("proportion") Double proportion, @Param("releaser") Integer releaser, @Param("releaserType") UserType releaserType, @Param("courseId") Integer courseId, @Param("projectStartDate") Date projectStartDate, @Param("maxPeopleInTeam") Integer maxPeopleInTeam, @Param("fileId") Integer fileId);
+                        @Param("maxScore") Integer maxScore, @Param("proportion") Double proportion, @Param("releaser") Integer releaser, @Param("releaserType") UserType releaserType, @Param("courseId") Integer courseId, @Param("projectStartDate") Date projectStartDate, @Param("maxPeopleInTeam") Integer maxPeopleInTeam, @Param("fileId") Integer fileId, @Param("TeamDeadline") Date TeamDeadline);
 
         @Delete("delete from project where id = #{projectId}")
         boolean deleteProject(@Param("projectId") Integer projectId);
@@ -25,9 +25,9 @@ public interface ProjectMapper extends BaseMapper<ProjectInfo> {
         @Select("select * from project where id = #{projectId}")
         ProjectInfo getProjectByProjectId(@Param("projectId") Integer projectId);
 
-        @Update("update project set project_title = #{projectTitle}, project_description = #{projectDescription}, project_deadline = #{projectDeadline}, project_status = #{projectStatus}, max_score = #{maxScore}, proportion = #{proportion}, releaser = #{releaser}, releaser_type = #{releaserType}, course_id = #{courseId}, project_start_date = #{projectStartDate}, max_people_in_team = #{maxPeopleInTeam},file_id = #{fileId} where id = #{projectId}")
+        @Update("update project set project_title = #{projectTitle}, project_description = #{projectDescription}, project_deadline = #{projectDeadline}, project_status = #{projectStatus}, max_score = #{maxScore}, proportion = #{proportion}, releaser = #{releaser}, releaser_type = #{releaserType}, course_id = #{courseId}, project_start_date = #{projectStartDate}, max_people_in_team = #{maxPeopleInTeam},file_id = #{fileId},team_deadline = #{TeamDeadline} where id = #{projectId}")
         boolean updateProject(@Param("projectId") Integer projectId, @Param("projectTitle") String projectTitle, @Param("projectDescription") String projectDescription, @Param("projectDeadline") Date projectDeadline, @Param("projectStatus") String projectStatus,
-                            @Param("maxScore") Integer maxScore, @Param("proportion") Double proportion, @Param("releaser") Integer releaser, @Param("releaserType") UserType releaserType, @Param("courseId") Integer courseId, @Param("projectStartDate") Date projectStartDate, @Param("maxPeopleInTeam") Integer maxPeopleInTeam, @Param("fileId") Integer fileId);
+                            @Param("maxScore") Integer maxScore, @Param("proportion") Double proportion, @Param("releaser") Integer releaser, @Param("releaserType") UserType releaserType, @Param("courseId") Integer courseId, @Param("projectStartDate") Date projectStartDate, @Param("maxPeopleInTeam") Integer maxPeopleInTeam, @Param("fileId") Integer fileId, @Param("TeamDeadline") Date TeamDeadline);
 
         @Select("select * from project where course_id = #{courseId}")
         List<ProjectInfo> getProjectByCourseId(@Param("courseId") Integer courseId);
