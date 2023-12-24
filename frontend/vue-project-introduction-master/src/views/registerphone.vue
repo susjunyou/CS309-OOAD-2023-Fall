@@ -4,64 +4,64 @@
       <p>Project helper register</p>
     </div>
     <div class="abcd">
-  <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="姓名" prop="name">
-      <el-input v-model="form.name"></el-input>
-    </el-form-item>
-    <el-form-item label="用户名" prop="username">
-      <el-input v-model="form.username"></el-input>
-    </el-form-item>
+      <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="form.username"></el-input>
+        </el-form-item>
+
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="form.phone"></el-input>
+        </el-form-item>
 
 
-    <el-form-item label="邮箱" prop="email">
-      <el-input v-model="form.email"></el-input>
-    </el-form-item>
 
-    <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="form.password"></el-input>
-    </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="form.password"></el-input>
+        </el-form-item>
 
-    <el-form-item label="确认密码" prop="confirmPassword">
-      <el-input type="password" v-model="form.confirmPassword"></el-input>
-    </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPassword">
+          <el-input type="password" v-model="form.confirmPassword"></el-input>
+        </el-form-item>
 
-    <el-form-item label="用户类型" prop="userType">
-      <input type="radio" id="student" value="STUDENT" v-model="form.userType">
-      <label for="student">学生</label>
+        <el-form-item label="用户类型" prop="userType">
+          <input type="radio" id="student" value="STUDENT" v-model="form.userType">
+          <label for="student">学生</label>
 
-      <input type="radio" id="teacher" value="TEACHER" v-model="form.userType">
-      <label for="teacher">老师</label>
+          <input type="radio" id="teacher" value="TEACHER" v-model="form.userType">
+          <label for="teacher">老师</label>
 
-    </el-form-item>
+        </el-form-item>
 
-    <el-form-item label="性别" prop="sex">
-      <input type="radio" id="nan" value="true" v-model="form.sex">
-      <label for="student">男</label>
+        <el-form-item label="性别" prop="sex">
+          <input type="radio" id="nan" value="true" v-model="form.sex">
+          <label for="student">男</label>
 
-      <input type="radio" id="nv" value="false" v-model="form.sex">
-      <label for="teacher">女</label>
-    </el-form-item>
-    <el-form-item v-if="form.userType === 'TEACHER'" label="部门" prop="department" :rules="departmentRules">
-      <el-select v-model="form.department" placeholder="请选择">
-        <el-option
-            v-for="department in departments"
-            :key="department.value"
-            :label="department.label"
-            :value="department.value">
-        </el-option>
-      </el-select>
-    </el-form-item>
+          <input type="radio" id="nv" value="false" v-model="form.sex">
+          <label for="teacher">女</label>
+        </el-form-item>
+        <el-form-item v-if="form.userType === 'TEACHER'" label="部门" prop="department" :rules="departmentRules">
+          <el-select v-model="form.department" placeholder="请选择">
+            <el-option
+                v-for="department in departments"
+                :key="department.value"
+                :label="department.label"
+                :value="department.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
 
-    <el-form-item>
-      <el-button type="primary" @click.prevent="submitForm()">注册</el-button>
-      <el-button @click="resetForm('form')">重置</el-button>
-      <el-button @click="registerbyphone()">使用手机注册</el-button>
-      <el-button @click="retunn()">返回</el-button>
+        <el-form-item>
+          <el-button type="primary" @click.prevent="submitForm()">注册</el-button>
+          <el-button @click="resetForm('form')">重置</el-button>
+          <el-button @click="retunn()">返回</el-button>
 
-    </el-form-item>
+        </el-form-item>
 
-  </el-form>
+      </el-form>
     </div>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
@@ -78,7 +78,7 @@ export default {
     return {
       form: {
         username: '',
-        email: '',
+        phone: '',
         password: '',
         confirmPassword: '',
         userType: '',
@@ -102,11 +102,11 @@ export default {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
-
-        email: [
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+        phone: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' },
+          { pattern: /^\d{11}$/, message: '请输入有效的手机号码', trigger: 'blur' }
         ],
+
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
@@ -122,7 +122,7 @@ export default {
           { required: true, message: 'Please choose sex', trigger: 'blur' },
         ],
         name: [
-          { required: true, message: 'Please input your name', trigger: 'blur' },
+          { required: true, message: 'Please input youer name', trigger: 'blur' },
         ],
       }
     };
@@ -140,9 +140,6 @@ export default {
   },
 
   methods: {
-    registerbyphone(){
-      this.$router.push('/registerphone');
-    },
     retunn(){
       this.$router.push('/login');
     },
@@ -155,7 +152,6 @@ export default {
 
         console.log(this.form.username)
         console.log(this.form.password)
-        console.log(this.form.email)
         console.log(this.form.userType)
         console.log(this.form.sex)
         this.$axios.get('/register/registerStudent', {
@@ -163,9 +159,9 @@ export default {
             name: this.form.name,
             account: this.form.username,
             password: this.form.password,
-            email: this.form.email,
             userType: this.form.userType,
             sex: this.form.sex,
+            phoneNumber:this.form.phone,
 
           }
         }).then(response => {
@@ -174,7 +170,7 @@ export default {
           console.log(response)
           if (response.data.code === "0") {
             console.log(response.data.data);
-this.isPopupVisible = true;
+            this.isPopupVisible = true;
           } else {
             console.log("error")
           }
@@ -186,7 +182,6 @@ this.isPopupVisible = true;
             name: this.form.name,
             account: this.form.username,
             password: this.form.password,
-            email: this.form.email,
             userType: this.form.userType,
             sex: this.form.sex,
             department: this.form.department,
