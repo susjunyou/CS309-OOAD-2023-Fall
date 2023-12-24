@@ -29,6 +29,9 @@ public class TeamController {
 
     @GetMapping("/updateTeamLeader")
     public Result updateTeamLeader(Integer teamId, Integer studentId) {
+        if (teamId == null || studentId == null) {
+            return Result.error();
+        }
         return teamInfoService.updateTeamLeader(teamId, studentId) ? Result.success() : Result.error();
     }
 
