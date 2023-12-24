@@ -132,6 +132,8 @@
           <button class="sumbitt" @click="() => leaveTeam()">离开小队</button>
           <button class="sumbitt" @click="() => submitproject()">提交project</button>
           <el-button class="sumbitt" @click="() => editRecruitment()" :disabled="id != myTeam[0].leader">修改招募信息</el-button>
+          <el-button class="sumbitt" @click="() => dabian()" >查看答辩信息</el-button>
+
         </div>
         </div>
         <div style="width: 100%; padding: 20px 10px;">
@@ -314,6 +316,19 @@
         <button @click="isPopupVisible4=false" class="sumbitt">关闭</button>
       </div>
     </div>
+
+    <el-dialog
+        title="答辩信息"
+        :visible.sync="dialogVisible3"
+        width="50%"
+    >
+      <p v-if="myTeam[0].presentationDate==null||myTeam[0].presentationDate==''||myTeam[0].presentationDate=='null'||myTeam[0].presentationDate==undefined">答辩时间：暂未确定，请等待老师安排</p>
+      <p v-else>答辩时间：{{myTeam[0].presentationDate}}</p>
+      <p v-if="myTeam[0].teachername==''||myTeam[0].teachername==null||myTeam[0].teachername==undefined||myTeam[0].teachername=='null'">答辩老师：暂未确定，请等待老师安排</p>
+      <p v-else>答辩老师：{{myTeam[0].teachername}}</p>
+      <el-button @click="dialogVisible3 = false">返回</el-button>
+    </el-dialog>
+
     <el-dialog
         title="修改招募信息"
         :visible.sync="recruitmentDialogVisible"
@@ -445,9 +460,11 @@ export default {
       technologystack:'',
       programmingskill:'',
       intendedteammate:'',
+      teamname:'',
       ratedteams:[],
       unratedteams:[],
       dialogVisible2:false,
+      dialogVisible3:false,
       message:'',
       recruitmentDialogVisible: false,
       editRecruitmentForm: {
@@ -493,6 +510,10 @@ export default {
   },
 
   methods: {
+    dabian(){
+
+      this.dialogVisible3=true;
+    },
     editRecruitment() {
       // 加载当前招募信息到表单
       this.editRecruitmentForm.recruitmentInformation = this.myTeam[0].recruitmentInformation;
@@ -1195,6 +1216,18 @@ this.dialogVisible2=true;
               const isMember = res1.data.data.some(member => member.id === Number(localStorage.getItem('id')));
               if (isMember) {
                 console.log(team.leader)
+                if(team.teacherId!=0&&team.teacherId!=null&&team.teacherId!=undefined&&team.teacherId!='null'){
+                  const res5 = await this.$axios.get('/teacher/getTeacherInfoById', {
+                    params: {
+                      id: team.teacherId,
+                    }
+                  });
+                  console.log(res5.data);
+                  if(res5.data.code==0){
+                    this.teachername=res5.data.data.name;
+                  }
+                }
+
 
                 this.myTeam.push({
                   id: team.teamId,
@@ -1206,7 +1239,11 @@ this.dialogVisible2=true;
                   teammembers: res1.data.data,
                   currentmembercount: res1.data.data ? res1.data.data.length : 0,
                   recruitmentInformation:team.recruitmentInformation,
+                  presentationDate:team.presentationDate,
+                  teachername:this.teachername,
                 });
+                console.log(team.presentationDate);
+                console.log(this.teachername);
                 this.teamcopy.push(team),
                 this.hasJoinedTeam = true;
                 console.log(isMember);

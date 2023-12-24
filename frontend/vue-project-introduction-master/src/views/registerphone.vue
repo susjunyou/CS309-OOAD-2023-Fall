@@ -104,7 +104,7 @@ export default {
         ],
         phone: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
-          { pattern: /^\d{11}$/, message: '请输入有效的手机号码', trigger: 'blur' }
+          { message: '请输入有效的手机号码', trigger: 'blur' }
         ],
 
         password: [
