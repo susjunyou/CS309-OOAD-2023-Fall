@@ -62,7 +62,7 @@ import postreplyofteacher from "@/views/postreplyofteacher.vue";
 import anouncementsa from "@/views/anouncementsa.vue";
 import postreplysa from "@/views/postreplysa.vue";
 import middle2 from "@/views/middle2.vue";
-import assignmentgradebooksa from "@/views/assimentgradebooksa"
+import assignmentgradebooksa from "@/views/assignmentgradebooksa.vue"
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
