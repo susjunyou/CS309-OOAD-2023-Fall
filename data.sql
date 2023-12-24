@@ -81,19 +81,41 @@ values ('student6', '10006', '123456', '10006@qq.com', 'self_Introduction', '181
 
 --! teacher data
 insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ('teacher1', '20001', '123456', '20001@qq.com', 'self_Introduction', '18120000001', true,
+values ('马可波罗', '20001', '123456', '20001@qq.com', 'I will teach Artificial Intelligence this year :)', '18120000001', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
 insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ('teacher2', '20002', '123456', '20002@qq.com', 'self_Introduction', '18120000002', true,
+values ('诸葛亮', '20002', '123456', '20002@qq.com', '我将给你下载元梦之星', '18120000002', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
 insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ('teacher3', '20003', '123456', '20003@qq.com', 'self_Introduction', '18120000003', true,
+values ('赵云', '20003', '123456', '20003@qq.com', 'Hello World', '18120000003', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
+
+insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
+values ('菲尼克斯', '20006', '123456', '20003@qq.com', '闹够了吗该结束了！', '18120000003', true,
+        'COMPUTER_SCIENCE',
+        'PROFESSOR');
+
+insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
+values ('蝰蛇', '20004', '123456', '20003@qq.com', '不要妨碍我！' '18120000003', true,
+        'COMPUTER_SCIENCE',
+        'PROFESSOR');
+
+insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
+values ('贤者', '20005', '123456', '20003@qq.com', '你的使命还没结束！', '18120000003', true,
+        'COMPUTER_SCIENCE',
+        'PROFESSOR');
+
+
+insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
+values ('钢索', '20007', '123456', '20003@qq.com', '我的D盘我说了算！', '18120000003', true,
+        'COMPUTER_SCIENCE',
+        'PROFESSOR');
+
 
 
 --! course data
