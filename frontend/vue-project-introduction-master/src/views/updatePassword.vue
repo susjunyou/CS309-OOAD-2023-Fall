@@ -117,6 +117,7 @@
               <input type="password" id="confirmPassword" v-model="confirmPassword" required>
             </div>
             <button type="submit" class="submit-btn">提交</button>
+            <button type="submit" class="submit-btn" @click="goback()">返回</button>
           </form>
           <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
           <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
@@ -230,6 +231,9 @@ export default {
   },
 
   methods: {
+    goback(){
+      this.$router.push('/StudentHomePage')
+    },
     close(){
       this.isPopupVisible = false;
       this.$router.push('/StudentHomePage')
@@ -597,7 +601,7 @@ export default {
 }
 
 .submit-btn {
-  width: 100%;
+  width: 30%;
   background: #4CAF50;
   color: white;
   padding: 10px;
@@ -605,6 +609,7 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin:20px;
 }
 
 .submit-btn:hover {

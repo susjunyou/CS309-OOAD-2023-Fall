@@ -134,6 +134,10 @@
         <el-table-column prop="name" label="Name"></el-table-column>
         <el-table-column prop="email" label="Email"></el-table-column>
         <el-table-column prop="major" label="Major"></el-table-column>
+        <el-table-column prop="technologyStack" label="TechnologyStack"></el-table-column>
+        <el-table-column prop="programmingSkill" label="ProgrammingSkill"></el-table-column>
+        <el-table-column prop="intendedTeammate" label="IntendedTeammate"></el-table-column>
+
       </el-table>
     </div>
     </div>
@@ -336,6 +340,9 @@ export default {
               id: res.data.data[i].id,
               major: res.data.data[i].major,
               selfIntroduction: res.data.data[i].selfIntroduction,
+              technologyStack:res.data.data[i].technologyStack,
+              programmingSkill:res.data.data[i].programmingSkill,
+              intendedTeammate:res.data.data[i].intendedTeammate,
             })
           }
         }

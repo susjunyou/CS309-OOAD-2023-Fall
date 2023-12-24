@@ -19,6 +19,9 @@
                 <input type="password" id="confirmPassword" v-model="confirmPassword" required>
               </div>
               <button type="submit" class="submit-btn">提交</button>
+              <button type="submit" class="submit-btn" @click="goback()">返回</button>
+
+
             </form>
             <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
             <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
@@ -93,6 +96,9 @@ export default {
     shitshangaimima
   },
   methods: {
+    goback(){
+      this.$router.push('/StudentHomePage')
+    },
     close(){
       this.isPopupVisible = false;
       this.$router.push('/teacherhomepage')
