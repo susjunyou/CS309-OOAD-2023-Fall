@@ -145,6 +145,32 @@
     <el-button type="primary" @click="updateTeamInfo">确定</el-button>
   </span>
     </el-dialog>
+
+    <el-dialog :visible.sync="dialogVisible3" title="批量添加小组">
+      <el-form ref="bulkTeamForm" :model="bulkTeamForm">
+        <el-form-item label="小组数量">
+          <el-input-number v-model="bulkTeamForm.numberOfTeams" :min="1"></el-input-number>
+        </el-form-item>
+        <!-- 其他表单项 -->
+        <el-form-item label="小组大小">
+          <el-input-number v-model="bulkTeamForm.teamsize" :min="1" :max="maxMembersLimit"></el-input-number>
+        </el-form-item>
+        <el-form-item label="小组名称">
+          <el-input v-model="bulkTeamForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="小组描述">
+          <el-input type="textarea" v-model="bulkTeamForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="项目 ID">
+          <el-input v-model="bulkTeamForm.projectid" disabled></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 对话框的其他内容 -->
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible3 = false">取消</el-button>
+    <el-button type="primary" @click="submitBulkTeams">确定</el-button>
+  </span>
+    </el-dialog>
     <el-dialog :visible.sync="dialogVisibleAddMember" title="添加成员">
       <el-table :data="studentsnotjointeam" style="width: 100%">
         <el-table-column prop="name" label="姓名"></el-table-column>

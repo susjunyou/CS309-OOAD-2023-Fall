@@ -61,6 +61,8 @@ import middle from "@/views/middle.vue";
 import postreplyofteacher from "@/views/postreplyofteacher.vue";
 import anouncementsa from "@/views/anouncementsa.vue";
 import postreplysa from "@/views/postreplysa.vue";
+import middle2 from "@/views/middle2.vue";
+import assignmentgradebooksa from "@/views/assignmentgradebooksa.vue"
 const routes = [
     {path: '/login', component: Login},
     {path: '/register', component: Register},
@@ -124,6 +126,8 @@ const routes = [
     {path: '/postreplyofteacher',component: postreplyofteacher},
     {path: '/anouncementsa',component: anouncementsa},
     {path: '/postreplysa',component: postreplysa},
+    {path: '/assignmentgradebooksa',component: assignmentgradebooksa},
+    {path: '/middle2',component: middle2},
     {path: '/', redirect: '/login'}
 
 

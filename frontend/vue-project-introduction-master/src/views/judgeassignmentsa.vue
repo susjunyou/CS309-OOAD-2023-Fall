@@ -328,7 +328,8 @@ export default {
 <style scoped>
 /* 其他样式保持不变 */
 .grading-interface {
-  width: 100%;
+  margin-left: 20px;
+  width: 90%;
   display: flex;
   flex-direction: row; /* 水平布局 */
   height: 100vh; /* 设置为视口高度 */

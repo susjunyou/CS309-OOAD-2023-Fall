@@ -9,7 +9,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="material in materials" :key="material.id" :span="6" >
-              <el-card class="assignment-card" >
+              <el-card class="assignment-card" style="min-height: 180px">
                 <h3>{{ material.name }}</h3>
                 <p>{{ material.description }}</p>
                 <a v-if="material.file.downloadUrl" :href="material.file.downloadUrl" :download="material.file.fileName">{{ material.file.fileName }}</a>
