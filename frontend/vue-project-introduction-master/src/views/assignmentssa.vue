@@ -9,7 +9,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="assignment in assignments" :key="assignment.id" :span="6" >
-              <el-card @click.native="submitassignment(assignment)" class="assignment-card">
+              <el-card @click.native="submitassignment(assignment)" class="assignment-card" style="min-height: 240px">
                 <h3>{{ assignment.title }}</h3>
                 <a v-if="assignment.file.downloadUrl"
                    :href="assignment.file.downloadUrl"

@@ -9,7 +9,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="attendance in attendances" :key="attendance.attendanceid" :span="6" >
-              <el-card  class="assignment-card" @click.native="gotoattendance(attendance)">
+              <el-card  class="assignment-card" @click.native="gotoattendance(attendance)" style="min-height: 200px">
                 <h3>{{ attendance.attendanceid }}</h3>
                 <p>日期：{{ attendance.attendanceDate }}</p>
               </el-card>
@@ -23,7 +23,7 @@
         <div class="assignment-container">
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
-            <el-col v-for="assignment in assignments" :key="assignment.id" :span="6" >
+            <el-col v-for="assignment in assignments" :key="assignment.id" :span="6"  style="min-height: 200px">
               <el-card @click.native="gotoassignment(assignment)" class="assignment-card">
                 <h3>{{ assignment.title }}</h3>
                 <p>截止日期：{{ assignment.ddl }}</p>
@@ -37,7 +37,7 @@
         <div class="assignment-container">
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
-            <el-col v-for="project in projects" :key="project.id" :span="6" >
+            <el-col v-for="project in projects" :key="project.id" :span="6" style="min-height: 200px">
               <el-card  class="assignment-card" @click.native="gotoproject(project)">
                 <h3>{{ project.title }}</h3>
                 <p>截止日期：{{ project.ddl }}</p>

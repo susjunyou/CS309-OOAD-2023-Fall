@@ -14,7 +14,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="anouncement in anouncements" :key="anouncement.id" :span="5" >
-              <el-card  class="assignment-card" @click.native="showanouncement(anouncement)">
+              <el-card  class="assignment-card" @click.native="showanouncement(anouncement)" style="min-height: 230px">
                 <h3>{{ anouncement.title }}</h3>
                 <p>发布者：{{ anouncement.authorname }}</p>
               </el-card>

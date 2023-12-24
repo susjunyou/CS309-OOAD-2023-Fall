@@ -10,7 +10,7 @@
 
       <el-row :gutter="20">
         <el-col v-for="post in posts" :key="post.id" :span="6" >
-          <el-card  class="assignment-card" @click.native="showReplyForm(post)" >
+          <el-card  class="assignment-card" @click.native="showReplyForm(post)" style="min-height: 200px">
             <h3>{{ post.title }}</h3>
             <p>发布者：{{ post.authorname }}</p>
           </el-card>

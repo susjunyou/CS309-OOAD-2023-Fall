@@ -117,7 +117,7 @@
         <!-- ...之前的代码... -->
         <el-row :gutter="20">
           <el-col v-for="project in projects" :key="project.id" :span="6" >
-            <el-card  class="assignment-card" @click.native="join(project)">
+            <el-card  class="assignment-card" @click.native="join(project)" style="min-height: 200px">
               <h3>{{ project.title }}</h3>
               <a v-if="project.file.downloadUrl"
                  :href="project.file.downloadUrl"
