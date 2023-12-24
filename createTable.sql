@@ -135,6 +135,7 @@ create table project
     max_score           integer          not null,
     proportion          double precision not null,
     file_id             integer
+    team_deadline       date
 );
 
 --! create table project_submission

@@ -27,7 +27,7 @@ public class ProjectController {
 
     @PostMapping("/addProject")
     public Result addProject(String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                             Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Date projectStartDate, Integer maxPeopleInTeam, Integer courseId,  MultipartFile file) {
+                             Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Date projectStartDate, Integer maxPeopleInTeam, Integer courseId, MultipartFile file, Date TeamDeadline) {
 
         FileInfo fileInfo = new FileInfo();
         try {
@@ -41,7 +41,7 @@ public class ProjectController {
             throw new RuntimeException(e);
         }
         boolean flag = projectInfoService.addProject(projectTitle, projectDescription, projectDeadline, projectStatus,
-                maxScore, proportion, releaser, releaserType, courseId,projectStartDate,maxPeopleInTeam,fileInfo.getId());
+                maxScore, proportion, releaser, releaserType, courseId,projectStartDate,maxPeopleInTeam,fileInfo.getId(), (Date) TeamDeadline);
         if (flag) {
             return Result.success();
         } else {
@@ -62,7 +62,7 @@ public class ProjectController {
 
     @PostMapping("/updateProject")
     public Result updateProject(Integer projectId, String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                                Integer maxScore, Double proportion, Integer releaser, UserType releaserType,Date projectStartDate,Integer maxPeopleInTeam, Integer courseId, MultipartFile file) {
+                                Integer maxScore, Double proportion, Integer releaser, UserType releaserType,Date projectStartDate,Integer maxPeopleInTeam, Integer courseId, MultipartFile file, Date TeamDeadline) {
 
         FileInfo fileInfo = new FileInfo();
         try {
@@ -76,7 +76,7 @@ public class ProjectController {
             throw new RuntimeException(e);
         }
         boolean flag = projectInfoService.updateProject(projectId, projectTitle, projectDescription, projectDeadline, projectStatus,
-                maxScore, proportion, releaser, releaserType, courseId,projectStartDate,maxPeopleInTeam,fileInfo.getId());
+                maxScore, proportion, releaser, releaserType, courseId,projectStartDate,maxPeopleInTeam,fileInfo.getId(),TeamDeadline);
         if (flag) {
             return Result.success();
         } else {
