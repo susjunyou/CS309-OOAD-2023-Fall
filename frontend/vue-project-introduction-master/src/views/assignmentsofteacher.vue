@@ -3,11 +3,12 @@
     <!-- 你的其他内容 -->
     <shitshan>
 
+      <!--      <div class="assign" style="width: 88%">-->
       <div class="assign" style="width: 88%">
         <div class="assignment-container">
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
-            <el-col v-for="assignment in assignments" :key="assignment.id" :span="8" >
+            <el-col v-for="assignment in assignments" :key="assignment.id" :span="6" >
               <el-card @click.native="submitassignment(assignment)" class="assignment-card">
                 <h3>{{ assignment.title }}</h3>
                 <a v-if="assignment.file.downloadUrl"
@@ -48,8 +49,8 @@
         <el-form-item label="最高分数">
           <el-input-number v-model="assignmentForm.maxScore"></el-input-number>
         </el-form-item>
-        <el-form-item label="占比">
-          <el-input-number v-model="assignmentForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
+        <el-form-item label="占比" label-width="70px">
+          <el-input-number v-model="assignmentForm.proportion" :min="0" :max="100" step="0.01" ></el-input-number>
         </el-form-item>
         <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
         <el-input type="hidden" v-model="assignmentForm.courseId"></el-input>
@@ -147,9 +148,9 @@ export default {
     };
   },
   async created(){
-   await this.loadLocalStorageData();
-   await this.loadAllCoursesinfo();
-   await this.loadLocalStorageData()
+    await this.loadLocalStorageData();
+    await this.loadAllCoursesinfo();
+    await this.loadLocalStorageData()
   },
   components: {
     shitshan
@@ -454,7 +455,7 @@ export default {
       this.editAssignmentForm.releaser = localStorage.getItem('id');
       this.editAssignmentForm. releaserType = 'TEACHER';
       this.editAssignmentForm. courseId = localStorage.getItem('currentcourseid');
-console.log(this.editAssignmentForm.status )
+      console.log(this.editAssignmentForm.status )
       console.log(this.editAssignmentForm.releaser )
       console.log(this.editAssignmentForm.releaserType )
 
@@ -570,12 +571,12 @@ console.log(this.editAssignmentForm.status )
             });
           }
         }else{
-            this.assignments.push({
-              id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
-              status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
-              title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
-              description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
-              ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+          this.assignments.push({
+            id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
+            status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
+            title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+            description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+            ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
             file: "无文件",
           });
         }
@@ -620,19 +621,20 @@ console.log(this.editAssignmentForm.status )
   margin-left: 50px;
 }
 .assignment-container{
-  margin-top: 50px;
-  margin-left: 0px;
-  margin-right: 70px;
+//margin-top: 50px;
+//margin-left: 0px;
+//margin-right: 70px;
+  margin: 20px;
+  padding-left: 10px;
+
 }
 .assignment-card{
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-
-  background-color: #f5f5f5;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px 0
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+}
+.assignment-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
 .publish-button-container {
   margin-top: 20px;
@@ -678,4 +680,6 @@ console.log(this.editAssignmentForm.status )
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
+
+
 </style>

@@ -3,7 +3,7 @@
     <!-- 你的其他内容 -->
     <shitshansa>
 
-      <div class="assignments-wrapper">
+      <div class="assignments-wrapper" style="width: 88%">
         <!-- 左侧部分 -->
         <div class="left-panel">
           <!-- 已提交学生信息 -->
@@ -293,11 +293,11 @@ export default {
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
-      for (let i = 0; i < localStorage.getItem('length'); i++) {
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
         this.courses.push({
           id: localStorage.getItem('coursesidsa' + i),
           title: localStorage.getItem('coursessa' + i),
-          description: localStorage.getItem('courseDescriptionsa' + localStorage.getItem('coursesidsa' + i)),
+          description: localStorage.getItem('courseDescriptionsa' + i),
           code: localStorage.getItem('coursecodesa' +i),
         });
       }
@@ -368,6 +368,7 @@ export default {
   width: 100%;
   height: 100vh; /* Use the full height of the viewport */
   margin: 0; /* Remove default margins */
+
 }
 
 .left-panel {

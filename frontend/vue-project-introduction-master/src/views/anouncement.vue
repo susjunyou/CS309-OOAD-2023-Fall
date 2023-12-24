@@ -527,6 +527,11 @@ export default {
   border-top: 2px solid #ccc; /* 分隔线样式 */
   margin: 20px 0; /* 上下边距 */
 }
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 </style>
 
 

@@ -3,17 +3,17 @@
     <!-- 你的其他内容 -->
     <shitshan>
 
-      <div>
-        <h1>{{currentCourse}}</h1>
-        <div class="post">
-          <h3>CourseDescription: {{currentCourseDescription}}</h3>
+      <div >
+        <h1 style="padding-left: 100px">{{currentCourse}}</h1>
+        <div class="post" style="padding-right: 200px">
+          <h3 style="right: 500px">CourseDescription: {{currentCourseDescription}}</h3>
         </div>
         <h2>Announcements</h2>
         <el-button type="primary" class="custom-button" @click="showPostForm  ">发布通知</el-button>
-        <div class="assignment-container">
+        <div class="assignment-container" style="padding-left: 200px">
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
-            <el-col v-for="anouncement in anouncements" :key="anouncement.id" :span="6" >
+            <el-col v-for="anouncement in anouncements" :key="anouncement.id" :span="5" >
               <el-card  class="assignment-card" @click.native="showanouncement(anouncement)">
                 <h3>{{ anouncement.title }}</h3>
                 <p>发布者：{{ anouncement.authorname }}</p>
@@ -49,6 +49,7 @@
           <el-button type="primary" @click="submitForm">提交</el-button>
           <el-button @click="cancelForm">取消</el-button>
         </el-dialog>
+
       </div>
 
       <div v-if="isPopupVisible" class="popup">
@@ -349,11 +350,14 @@ export default {
   padding: 10px;
   margin-left:400px;
   margin-right: 200px;
+  //position: absolute;
+  //right: 800px;
 
 }
+
 .assignment-container {
   //margin: 20px;
-  padding-left: 200px;
+  padding-left: 20px;
 }
 
 .assignment-card {
@@ -361,11 +365,19 @@ export default {
   transition: box-shadow .3s;
   border: 1px solid gainsboro;
   margin-top: 10px;
-  width: 200px;
+  width: 250px;
   height: 150px;
 }
 
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+}
+.header{
+  padding-left: 200px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 200px;
+  bottom: 0;
 }
 </style>

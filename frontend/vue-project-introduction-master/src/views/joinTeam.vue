@@ -1385,7 +1385,11 @@ this.dialogVisible2=true;
   margin-bottom: 10px; /* 头像与姓名之间的间距 */
 }
 
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 
 
 /* 自定义profile按钮样式 */

@@ -10,7 +10,7 @@
             课程列表<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="course in courses" :key="course.id" @click.native="goTo(course)">
+            <el-dropdown-item v-for="course in coursessa" :key="course.id" @click.native="goTo(course)">
               {{ course.title }}
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -163,6 +163,7 @@ export default {
       attrs: [],
       // 初始化组件数据属性
       courses: [],
+      coursessa:[],
       posts: [],
       assignments: [],
       projects: [],
@@ -196,13 +197,221 @@ export default {
     this.name = localStorage.getItem('name');
     this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
-    await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    await this.loadStudentsAndSA();
+    await this.getSacourse();
+    // await this.getCourses();
+    await this.loadLocalStorageDataforsa()
+    // await this.loadAllsaCoursesinfo();
+    // await this.loadLocalStorageDataforsa()
+    // await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
+    // await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
 
   },
   methods: {
+    async loadLocalStorageDataforsa() {
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.coursessa=[];
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+        this.coursessa.push({
+          id: localStorage.getItem('coursesidsa' + i),
+          title: localStorage.getItem('coursessa' + i),
+          description: localStorage.getItem('courseDescriptionsa' + i),
+          code: localStorage.getItem('coursecodesa' +i),
+        });
+      }
+      console.log(this.coursessa)
+    },
+
+    async loadAllsaCoursesinfo() {
+      for (let course of this.coursessa) {
+        //加载posts
+        await this.$axios.get('/course/posts', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('coursePostLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
+              localStorage.setItem('postid'+course.title+i,res.data.data[i].postId);
+              localStorage.setItem('post'+course.title+i,res.data.data[i].postContent);
+              localStorage.setItem('posttitle'+course.title+i,res.data.data[i].postTitle);
+              localStorage.setItem('postauthor'+course.title+i,res.data.data[i].postAuthor);
+              localStorage.setItem('postType'+course.title+i,res.data.data[i].postType);
+              this.postssa.push({
+                course:course.title,
+                id:res.data.data[i].postId,
+                title:res.data.data[i].postTitle,
+                content:res.data.data[i].postContent,
+                author:res.data.data[i].postAuthor,
+              })
+            }
+
+          }
+        }).catch(error => {
+          console.error('Error loading course posts:', error);
+        });
+        //加载材料
+        await this.$axios.get('/course/materials', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('courseMaterialLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseMaterialLength'+course.title); i++) {
+              localStorage.setItem('materialid'+course.title+i,res.data.data[i].materialId);
+              localStorage.setItem('materialname' + course.title + i, res.data.data[i].materialName);
+              localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].materialDescription);
+              localStorage.setItem('materialfileid'+course.title+i,res.data.data[i].fileId);
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course materials:', error);
+        });
+        //加载assignments
+        await this.$axios.get('/course/assignments', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
+              localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].id);
+              localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);/////////////////////////////////////////////////////////////////////////////
+              localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
+              localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
+              localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
+              // this.ddls.push({
+              //   date : res.data.data[i].assignmentDeadline,
+              //   title : course.title+"   "+res.data.data[i].assignmentTitle,
+              // })
+
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course assignments:', error);
+        });
+        //加载projects
+        await this.$axios.get('/course/projects', {
+          params: {
+            courseId: course.id
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('projectsLength'+course.title,res.data.data.length)
+            console.log(localStorage.getItem('projectsLength'+course.title))
+            for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
+              localStorage.setItem('projectid'+course.title+i,res.data.data[i].id);
+              localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
+              localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
+              localStorage.setItem('projectstartdate'+course.title+i,res.data.data[i].projectStartDate);
+              localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
+              localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
+              localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
+              // this.ddls.push({
+              //   date : res.data.data[i].projectDeadline,
+              //   title : course.title+"   "+res.data.data[i].projectTitle,
+              // })
+
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course projects:', error);
+        });
+        //加载attendances
+        await this.$axios.get('/grade/getAttendanceGradeByCourseIdAndStudentId', {
+          params: {
+            courseId: course.id,
+            studentId: localStorage.getItem('id')
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
+              localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
+              localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
+              if (res.data.data[i].attended) {
+                localStorage.setItem('attendancegrade'+course.title+i,100);
+              }else {
+                localStorage.setItem('attendancegrade'+course.title+i,0);
+              }
+              localStorage.setItem('attendancemaxScore'+course.title+i,res.data.data[i].maxScore);
+            }
+          }
+        }).catch(error => {
+          console.error('Error loading course attendances:', error);
+        });
+        //加载assignment成绩
+        for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
+          await this.$axios.get('/grade/getAssignmentGrade', {
+            params: {
+              studentId: localStorage.getItem('id'),
+              assignmentId: localStorage.getItem('assignmentid'+course.title+i)
+            }
+          }).then((res) => {
+            if (res.data.code === "0") {
+              localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
+              localStorage.setItem('assignmentmaxScore' + course.title + i, res.data.data[0].maxScore);
+              localStorage.setItem('assignmentproportion' + course.title + i, res.data.data[0].proportion);
+              localStorage.setItem('assignmentgradeDescription' + course.title + i, res.data.data[0].gradeDescription)
+            }
+          }).catch(error => {
+            console.error('Error loading assignment grade:', error);
+          });
+        }
+        //加载project成绩
+        for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
+          await this.$axios.get('/grade/getProjectGrade', {
+            params: {
+              studentId: localStorage.getItem('id'),
+              projectId: localStorage.getItem('projectid'+course.title+i)
+            }
+          }).then((res) => {
+            if (res.data.code === "0") {
+              localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
+              localStorage.setItem('projectmaxScore' + course.title + i, res.data.data[0].maxScore);
+              localStorage.setItem('projectproportion' + course.title + i, res.data.data[0].proportion);
+              localStorage.setItem('projectgradeDescription' + course.title + i, res.data.data[0].gradeDescription);
+            }
+          }).catch(error => {
+            console.error('Error loading project grade:', error);
+          });
+        }
+      }
+    },
+    async getSacourse(){
+
+      const res= await this.$axios.get('/SA/getMySACourses',{
+        params:{
+          studentId:localStorage.getItem('id')
+        }
+      })
+      console.log(res.data.data);
+      if (res.data.code === "0") {
+
+        localStorage.setItem('lengthsa',res.data.data.length);
+        console.log(localStorage.getItem('lengthsa'));
+        for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+          localStorage.setItem('coursesidsa'+i,res.data.data[i].courseId);
+          localStorage.setItem('coursessa'+i,res.data.data[i].courseName);
+          localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+          localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+          localStorage.setItem('coursecodesa'+i,res.data.data[i].courseCode);
+          localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+          localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+        }
+        console.log(localStorage.getItem('courses0'));
+
+      }else {
+        localStorage.setItem('lengthsa',0);
+      }
+
+
+
+    },
     update(){
       this.dialogVisible=true;
       this.edit.e_id = this.id;
@@ -303,8 +512,7 @@ export default {
       localStorage.setItem("currentcourseid",route.id);
       localStorage.setItem("currentcourse",route.title);
       this.myValue=route.title;
-      this.loadLocalStorageData();
-      this.loadStudentsAndSA();
+      this.$router.push('/middle2');
     },
     go(route) {
       this.$router.push(route);

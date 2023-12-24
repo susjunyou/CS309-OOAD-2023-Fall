@@ -3,7 +3,7 @@
     <!-- 你的其他内容 -->
     <shitshan>
 
-      <div class="assignments-wrapper">
+      <div class="assignments-wrapper" style="width: 88%">
         <!-- 左侧部分 -->
         <div class="left-panel">
           <!-- 已提交学生信息 -->
@@ -124,9 +124,9 @@ export default {
     };
   },
   async created(){
-   await this.loadLocalStorageData();
-   await this.loadStudentsAndSA();
-   await this.loadungradedAssignments();
+    await this.loadLocalStorageData();
+    await this.loadStudentsAndSA();
+    await this.loadungradedAssignments();
   },
   components: {
     shitshan
@@ -368,6 +368,7 @@ export default {
   width: 100%;
   height: 100vh; /* Use the full height of the viewport */
   margin: 0; /* Remove default margins */
+
 }
 
 .left-panel {

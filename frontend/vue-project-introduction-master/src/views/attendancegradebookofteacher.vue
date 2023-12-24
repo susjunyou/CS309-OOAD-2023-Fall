@@ -68,7 +68,7 @@ export default {
     this.currentattendanceid =localStorage.getItem('currentattendanceid');
     this.currentattendanceData=localStorage.getItem('currentattendanceDate');
     await this.loadLocalStorageData();
-    // await this.getClass();
+    await this.getClass();
   },
   components: {
     shitshan
@@ -96,46 +96,46 @@ export default {
       this.isPopupVisible=false;
       this.$router.push('/gradebookofteacher')
     },
-    // getClass(){
-    //   // var echarts=require('echarts');
-    //   // var myChart = echarts.init(document.getElementById('main123'));
-    //   var option={
-    //     title:{
-    //       text:'成绩',
-    //       x:'center',
-    //     },
-    //     legend:{
-    //       orient:"vertical",
-    //       top:'20',
-    //       right:'100',
-    //       data:['人数'],
-    //     },
-    //     tooltip:{},
-    //     xAxis:{
-    //       data:['已签','未签'],
-    //       axisTick:{
-    //         alignWithLabel:true,
-    //         show:true,
-    //         interval:0
-    //       }
-    //     },
-    //     yAxis:{},
-    //     series:[{
-    //       name:'人数',
-    //       type:'bar',
-    //       data:[this.numyi,this.numwei],
-    //       label:{
-    //         show: true,
-    //         position:'outside',
-    //         color: 'black'
-    //       }
-    //     }],
-    //     itemStyle:{
-    //       color: 'black'
-    //     }
-    //   };
-    //   // myChart.setOption(option);
-    // },
+    getClass(){
+      var echarts=require('echarts');
+      var myChart = echarts.init(document.getElementById('main123'));
+      var option={
+        title:{
+          text:'成绩',
+          x:'center',
+        },
+        legend:{
+          orient:"vertical",
+          top:'20',
+          right:'100',
+          data:['人数'],
+        },
+        tooltip:{},
+        xAxis:{
+          data:['已签','未签'],
+          axisTick:{
+            alignWithLabel:true,
+            show:true,
+            interval:0
+          }
+        },
+        yAxis:{},
+        series:[{
+          name:'人数',
+          type:'bar',
+          data:[this.numyi,this.numwei],
+          label:{
+            show: true,
+            position:'outside',
+            color: 'black'
+          }
+        }],
+        itemStyle:{
+          color: 'black'
+        }
+      };
+      myChart.setOption(option);
+    },
     async loadLocalStorageData() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];

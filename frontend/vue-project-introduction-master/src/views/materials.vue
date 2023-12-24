@@ -92,38 +92,43 @@
       </el-dialog>
 
 
+
+
+
       <!--  <div>-->
+        <el-menu
+            class="course-navbar"
+            mode="vertical"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b">
+          <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
+          <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
+          <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
+          <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
+          <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
+          <el-menu-item index="7" @click="studentClick">members</el-menu-item>
+          <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
+        </el-menu>
 
 
-      <el-row >
 
-<div>
-          <el-menu
-              class="course-navbar"
-              mode="vertical"
-              background-color="#545c64"
-              text-color="#fff"
-              active-text-color="#ffd04b">
-            <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-            <el-menu-item index="2" @click="go('post')">Post</el-menu-item>
-            <el-menu-item index="3" @click="go('materials')">Materials</el-menu-item>
-            <el-menu-item index="4" @click="go('assignments')">Assignments</el-menu-item>
-            <el-menu-item index="5" @click="go('projects')">Projects</el-menu-item>
-            <el-menu-item index="7" @click="studentClick">members</el-menu-item>
-            <el-menu-item index="6" @click="go('gradebook')">Gradebook</el-menu-item>
-          </el-menu>
-</div>
-        <el-col v-for="material in materials" :key="material.id" :span="6" >
-          <el-card class="assignment-card" >
-            <h3>{{ material.name }}</h3>
-            <p>{{ material.description }}</p>
-            <a v-if="material.file.downloadUrl" :href="material.file.downloadUrl" :download="material.file.fileName">{{ material.file.fileName }}</a>
-            <p v-else class="placeholder">没有文件</p>
+        <div class="assignment-container">
+          <!--          <el-row :gutter="20">-->
+          <el-row :gutter="20">
+          <el-col v-for="material in materials" :key="material.id" :span="6" >
+            <el-card class="assignment-card"  style="min-height: 180px">
+              <h3>{{ material.name }}</h3>
+              <p>{{ material.description }}</p>
+              <a v-if="material.file.downloadUrl" :href="material.file.downloadUrl" :download="material.file.fileName">{{ material.file.fileName }}</a>
+              <p v-else class="placeholder">没有文件</p>
 
-          </el-card>
-        </el-col>
-
+            </el-card>
+          </el-col>
+          <!--          </el-row>-->
       </el-row>
+        </div>
+
 
     </div>
 
@@ -696,13 +701,25 @@ export default {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
 }
+
+.assignment-container {
+  margin-left: 20px;
+  padding-left: 200px;
+}
+
 .assignment-card {
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-  margin-left: 115px;
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
+
 }
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+}
+
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
 }
 </style>

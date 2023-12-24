@@ -104,6 +104,9 @@ export default {
               id: res.data.data[i].id,
               major: res.data.data[i].major,
               selfIntroduction: res.data.data[i].selfIntroduction,
+              technologystack: res.data.data[i].technologyStack,
+              programmingskill: res.data.data[i].programmingSkill,
+              intendedteammate: res.data.data[i].intendedTeammate,
             })
           }
         }
@@ -240,6 +243,9 @@ export default {
             <el-table-column prop="name" label="Name"></el-table-column>
             <el-table-column prop="email" label="Email"></el-table-column>
             <el-table-column prop="major" label="Major"></el-table-column>
+            <el-table-column prop="technologystack" label="TechnologyStack"></el-table-column>
+            <el-table-column prop="programmingskill" label="ProgrammingSkill"></el-table-column>
+            <el-table-column prop="intendedteammate" label="IntendedTeammate"></el-table-column>
           </el-table>
         </div>
 

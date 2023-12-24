@@ -515,6 +515,10 @@ el-button{
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */
 }
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 </style>
 

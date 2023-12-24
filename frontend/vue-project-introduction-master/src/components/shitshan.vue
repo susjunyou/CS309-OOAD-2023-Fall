@@ -341,14 +341,14 @@ export default {
       this.$router.push('/Login');
       localStorage.clear();
     },
-    goTo(route) {
+   async goTo(route) {
 // 假设使用 Vue Router 进行导航    goTo(route) {
 // 假设使用 Vue Router 进行导航
       localStorage.setItem("currentcourseid",route.id);
       localStorage.setItem("currentcourse",route.title);
       this.myValue=route.title;
-      this.$router.push('/courseofteacher');
-      this.loadLocalStorageData();
+      await this.loadLocalStorageData();
+      this.$router.push('/middle');
     },
     go(route) {
       this.$router.push(route+"ofteacher");
@@ -510,7 +510,11 @@ export default {
 
 /* 自定义profile按钮样式 */
 
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 .profile-button {
   color: #fff; /* 文本颜色 */
   /* 其他需要的样式 */

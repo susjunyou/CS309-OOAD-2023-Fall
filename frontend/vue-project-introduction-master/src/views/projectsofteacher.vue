@@ -7,7 +7,7 @@
         <div class="assignment-container" >
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
-            <el-col v-for="project in projects" :key="project.id" :span="8" >
+            <el-col v-for="project in projects" :key="project.id" :span="6" >
               <el-card  class="assignment-card" @click.native="join(project)">
                 <h3>{{ project.title }}</h3>
                 <a v-if="project.file.downloadUrl"
@@ -40,16 +40,16 @@
         <el-form-item label="Project描述">
           <el-input type="textarea" v-model="projectForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="作业文件" >
+        <el-form-item label="作业文件" label-width="93px">
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
-        <el-form-item label="截止日期">
+        <el-form-item label="截止日期" label-width="93px">
           <el-date-picker v-model="projectForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
         </el-form-item>
-        <el-form-item label="最高分数">
+        <el-form-item label="最高分数" label-width="93px">
           <el-input-number v-model="projectForm.maxScore"></el-input-number>
         </el-form-item>
-        <el-form-item label="占比">
+        <el-form-item label="占比" label-width="93px">
           <el-input-number v-model="projectForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
         </el-form-item>
 
@@ -667,21 +667,18 @@ export default {
 
 <style scoped>
 .assignment-container{
-  margin-top: 50px;
-  margin-left: 0px;
-  margin-right: 70px;
+//margin-top: 50px;
+//margin-left: 0px;
+//margin-right: 70px;
+  margin: 20px;
+  padding-left: 10px;
+
 }
 
 .assignment-card{
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-
-
-  background-color: #f5f5f5;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px 0
+  cursor: pointer;
+  transition: box-shadow .3s;
+  border: 1px solid gainsboro;
 }
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);

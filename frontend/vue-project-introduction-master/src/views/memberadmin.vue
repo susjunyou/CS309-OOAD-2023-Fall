@@ -60,6 +60,9 @@
 
         <!-- 添加学习助手按钮 -->
         <el-button class="sumbitt" type="primary" @click="showSADialog = true">添加SA</el-button>
+
+          <el-button class="sumbitt" type="primary" @click="goback()">返回主页</el-button>
+
         </el-row>
         <!-- 老师信息弹窗 -->
         <el-dialog title="添加老师" :visible.sync="showTeacherDialog">
@@ -160,6 +163,9 @@ export default {
     shitshanadmin
   },
   methods: {
+    goback() {
+this.$router.push('/adminhomepage');
+},
    async loadnotin() {
      await this.loadStudentsAndSA();
      this.studentsnotin = [];

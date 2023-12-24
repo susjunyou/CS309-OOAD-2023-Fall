@@ -696,7 +696,11 @@ export default {
 .assignment-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.8);
 }
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 </style>
 
 

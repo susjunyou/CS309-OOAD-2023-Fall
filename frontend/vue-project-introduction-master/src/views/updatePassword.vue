@@ -100,25 +100,28 @@
 
       </el-aside>
 
-      <div class="change-password-form">
-        <h2>修改密码</h2>
-        <form @submit.prevent="changePassword">
-          <div>
-            <label for="currentPassword">当前密码:</label>
-            <input type="password" id="currentPassword" v-model="currentPassword" required>
-          </div>
-          <div>
-            <label for="newPassword">新密码:</label>
-            <input type="password" id="newPassword" v-model="newPassword" required>
-          </div>
-          <div>
-            <label for="confirmPassword">确认新密码:</label>
-            <input type="password" id="confirmPassword" v-model="confirmPassword" required>
-          </div>
-          <button type="submit">提交</button>
-        </form>
-        <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
-        <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
+      <div class="change-password-container">
+        <div class="change-password-form">
+          <h2>修改密码</h2>
+          <form @submit.prevent="changePassword">
+            <div class="form-group">
+              <label for="currentPassword">当前密码:</label>
+              <input type="password" id="currentPassword" v-model="currentPassword" required>
+            </div>
+            <div class="form-group">
+              <label for="newPassword">新密码:</label>
+              <input type="password" id="newPassword" v-model="newPassword" required>
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">确认新密码:</label>
+              <input type="password" id="confirmPassword" v-model="confirmPassword" required>
+            </div>
+            <button type="submit" class="submit-btn">提交</button>
+            <button type="submit" class="submit-btn" @click="goback()">返回</button>
+          </form>
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+          <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+        </div>
       </div>
     </el-row>
     <div v-if="isPopupVisible" class="popup">
@@ -228,6 +231,9 @@ export default {
   },
 
   methods: {
+    goback(){
+      this.$router.push('/StudentHomePage')
+    },
     close(){
       this.isPopupVisible = false;
       this.$router.push('/StudentHomePage')
@@ -558,6 +564,67 @@ export default {
 </script>
 
 <style>
+.app-container {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.change-password-container {
+  margin-top:80px;
+  margin-left: 450px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1000px;
+}
+.change-password-form h2 {
+  text-align: center;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  width: 30%;
+  background: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin:20px;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+.error-message {
+  color: #ff3860;
+  text-align: center;
+}
+
+.success-message {
+  color: #23d160;
+  text-align: center;
+}
 .clickable-text{
   text-decoration: underline; /* 添加下划线 */
   color: blue; /* 设置为蓝色或其他突出的颜色 */
@@ -618,8 +685,8 @@ export default {
 
 .change-password-form {
   max-width: 500px;
-  margin-top:200px;
-  margin-left:550px;
+  margin-top:100px;
+  margin-left:220px;
   padding: 20px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
   background-color: white;
@@ -641,7 +708,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 .popup-content {
   background-color: white;
   padding: 20px;

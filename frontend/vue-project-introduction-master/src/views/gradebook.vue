@@ -180,7 +180,6 @@
         </li>
       </ul>
       <div id="main123" style="width: 100%; height:400px"></div>
-      <h1>底部</h1>
     </div>
 
 
@@ -240,9 +239,9 @@ export default {
         intendedteammate:'',
       },
       // 假设每个DDL是一个对象，包含日期和标题
-      ddls: [
-        // ...其他DDL
-      ],
+      // ddls: [
+      //   // ...其他DDL
+      // ],
       attrs: [],
       // 初始化组件数据属性
       courses: [],
@@ -291,39 +290,39 @@ export default {
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));  },
   methods: {
     getClass(){
-      // var echarts=require('echarts');
-      // var myChart = echarts.init(document.getElementById('main123'));
-      // var option={
-      //   color:['red','yellow','blue','black'],
-      //   title:{
-      //     text:'成绩',
-      //     x:'center',
-      //   },
-      //   legend:{
-      //     orient:"vertical",
-      //     bottom:"bottom",
-      //     data:['attendance','assignment','project'],
-      //   },
-      //   tooltip:{},
-      //   series:[{
-      //     type:'pie',
-      //     data:[{
-      //       value:this.attendancegrade,
-      //       name:"attendance",
-      //     },{
-      //       value:this.assignmentgrade,
-      //       name:"assignment",
-      //     },{
-      //       value:this.projectgrade,
-      //       name:"project",
-      //     },
-      //     ],
-      //     label:{
-      //       fontSize:"16"
-      //     },
-      //   }],
-      // };
-      // myChart.setOption(option);
+      var echarts=require('echarts');
+      var myChart = echarts.init(document.getElementById('main123'));
+      var option={
+        color:['red','yellow','blue','black'],
+        title:{
+          text:'成绩',
+          x:'center',
+        },
+        legend:{
+          orient:"vertical",
+          bottom:"bottom",
+          data:['attendance','assignment','project'],
+        },
+        tooltip:{},
+        series:[{
+          type:'pie',
+          data:[{
+            value:this.attendancegrade,
+            name:"attendance",
+          },{
+            value:this.assignmentgrade,
+            name:"assignment",
+          },{
+            value:this.projectgrade,
+            name:"project",
+          },
+          ],
+          label:{
+            fontSize:"16"
+          },
+        }],
+      };
+      myChart.setOption(option);
     },
     logoutClick() {
       this.$router.push('/Login');
@@ -538,7 +537,7 @@ export default {
             status: localStorage.getItem('assignmentname' + localStorage.getItem("currentcourse")+i),
             title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
             description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
-            ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+            // ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
             assignmentsgrade: localStorage.getItem('assignmentgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('assignmentmaxScore' + localStorage.getItem('currentcourse') + i),
             proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
             gardedescription: localStorage.getItem('assignmentgradeDescription' + localStorage.getItem("currentcourse")+i)
@@ -555,7 +554,7 @@ export default {
             title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
             description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
             startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-            ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+            // ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
             status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
             maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
             projectsgrade: localStorage.getItem('projectgrade' + localStorage.getItem("currentcourse")+i)+"/"+localStorage.getItem('projectmaxScore' + localStorage.getItem("currentcourse") + i),
@@ -564,11 +563,11 @@ export default {
           });
           this.projectgrade+=Number(localStorage.getItem('projectgrade'+localStorage.getItem("currentcourse")+i));
         }
-        this.ddls =[]
-        this.ddls.push({
-          date: this.projects[i].ddl,
-          title: this.projects[i].title,
-        });
+        // this.ddls =[]
+        // this.ddls.push({
+        //   date: this.projects[i].ddl,
+        //   title: this.projects[i].title,
+        // });
       }
       this.attendances=[];
       this.attendancegrade=0;
@@ -584,7 +583,7 @@ export default {
       console.log("course name="+this.myValue)
       console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
       console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
-
+      console.log(localStorage.getItem('currentcourseid'))
     },
   },
 }
@@ -687,7 +686,11 @@ export default {
 }
 
 
-
+.el-dropdown-link {
+  cursor: pointer;
+  color: #fff; /* 链接颜色 */
+  font-weight: bold;
+}
 
 /* 自定义profile按钮样式 */
 

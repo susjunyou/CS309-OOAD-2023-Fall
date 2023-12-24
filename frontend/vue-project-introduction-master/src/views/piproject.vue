@@ -3,7 +3,7 @@
     <!-- 你的其他内容 -->
     <shitshan>
 
-      <div class="assignments-wrapper">
+      <div class="assignments-wrapper" style="width: 88%">
         <!-- 左侧部分 -->
         <div class="left-panel">
           <!-- 已提交学生信息 -->
@@ -145,47 +145,47 @@ export default {
     };
   },
   async created(){
-   await this.loadLocalStorageData();
-   await this.loadStudentsAndSA();
-   await this.getTeam();
+    await this.loadLocalStorageData();
+    await this.loadStudentsAndSA();
+    await this.getTeam();
   },
   components: {
     shitshan
   },
   methods: {
-   async search(){
-const res=await this.$axios.get('/team/getOtherTeamGrade', {
+    async search(){
+      const res=await this.$axios.get('/team/getOtherTeamGrade', {
         params: {
           teamId: this.selectedTeamId,
           projectId: Number(localStorage.getItem("currentprojectid")),
         },
       })
-     console.log(res.data)
+      console.log(res.data)
 
-     if(res.data.code==="0"){
-      this.corate=[]
-for (let i=0;i<res.data.data.length;i++){
-  const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
-    params: {
-      teamId: res.data.data[i].team2,
-    }
-  });
+      if(res.data.code==="0"){
+        this.corate=[]
+        for (let i=0;i<res.data.data.length;i++){
+          const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
+            params: {
+              teamId: res.data.data[i].team2,
+            }
+          });
 
-  this.corate.push({
-    grade:res.data.data[i].grade,
-    comment:res.data.data[i].comment,
-    id:res1.data.data.teamName
-  })
-}
-       this.showDialog = true;
-      this.noCorateMessage = '';
-      console.log(this.corate)
+          this.corate.push({
+            grade:res.data.data[i].grade,
+            comment:res.data.data[i].comment,
+            id:res1.data.data.teamName
+          })
+        }
+        this.showDialog = true;
+        this.noCorateMessage = '';
+        console.log(this.corate)
       }else{
         this.noCorateMessage = '没有互评成绩';
         console.log(this.noCorateMessage)
-       console.log(this.corate.length)
+        console.log(this.corate.length)
       }
-   },
+    },
     pigai(a){
       localStorage.setItem("currentteamid", a.teamid);
       localStorage.setItem("currentteammembers", a.teammembers);
@@ -325,7 +325,7 @@ for (let i=0;i<res.data.data.length;i++){
               });
             }
 
-          const res2=  await this.$axios.get('/submission/getProjectSubmissionHistory', {
+            const res2=  await this.$axios.get('/submission/getProjectSubmissionHistory', {
               params: {
                 studentId: this.teams[i].studentid,
                 projectId: Number(localStorage.getItem("currentprojectid")),

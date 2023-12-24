@@ -1,30 +1,34 @@
 <template>
-  <div>
-    <!-- 你的其他内容 -->
-    <shitshangaimima>
 
-      <div>
-        <div class="change-password-form">
-          <h2>修改密码</h2>
-          <form @submit.prevent="changePassword">
-            <div>
-              <label for="currentPassword">当前密码:</label>
-              <input type="password" id="currentPassword" v-model="currentPassword" required>
-            </div>
-            <div>
-              <label for="newPassword">新密码:</label>
-              <input type="password" id="newPassword" v-model="newPassword" required>
-            </div>
-            <div>
-              <label for="confirmPassword">确认新密码:</label>
-              <input type="password" id="confirmPassword" v-model="confirmPassword" required>
-            </div>
-            <button type="submit">提交</button>
-          </form>
-          <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
-          <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
+    <div class="app-container">
+      <shitshangaimima>
+        <div class="change-password-container">
+          <div class="change-password-form">
+            <h2>修改密码</h2>
+            <form @submit.prevent="changePassword">
+              <div class="form-group">
+                <label for="currentPassword">当前密码:</label>
+                <input type="password" id="currentPassword" v-model="currentPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">新密码:</label>
+                <input type="password" id="newPassword" v-model="newPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">确认新密码:</label>
+                <input type="password" id="confirmPassword" v-model="confirmPassword" required>
+              </div>
+              <button type="submit" class="submit-btn">提交</button>
+              <button type="submit" class="submit-btn" @click="goback()">返回</button>
+
+
+            </form>
+            <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+            <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+          </div>
         </div>
-      </div>
+
+
     </shitshangaimima>
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
@@ -92,6 +96,9 @@ export default {
     shitshangaimima
   },
   methods: {
+    goback(){
+      this.$router.push('/StudentHomePage')
+    },
     close(){
       this.isPopupVisible = false;
       this.$router.push('/teacherhomepage')
@@ -249,4 +256,64 @@ export default {
 
 <style scoped>
 
+.app-container {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.change-password-container {
+  margin-top:80px;
+  margin-left: 450px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1000px;
+}
+.change-password-form h2 {
+  text-align: center;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  width: 100%;
+  background: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+.error-message {
+  color: #ff3860;
+  text-align: center;
+}
+
+.success-message {
+  color: #23d160;
+  text-align: center;
+}
 </style>
