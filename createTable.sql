@@ -45,7 +45,7 @@ create table student
     phone_number      varchar(255) unique,
     sex               bool,
     major             varchar(255),
-    level             varchar(255)          not null,
+    level             varchar(255)
     isSA              boolean default false not null,
     department        varchar(255)
 );
