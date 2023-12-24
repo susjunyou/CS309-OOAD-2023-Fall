@@ -88,7 +88,7 @@
           text-color="#fff"
           active-text-color="#ffd04b">
         <el-menu-item index="1" @click="go('StudentHomePage')">Home</el-menu-item>
-        <el-menu-item index="2" @click="go('sacourse')">Post</el-menu-item>
+        <el-menu-item index="2" @click="go('postsa')">Post</el-menu-item>
         <el-menu-item index="3" @click="go('materialssa')">Materials</el-menu-item>
         <el-menu-item index="4" @click="go('assignmentssa')">Assignments</el-menu-item>
         <el-menu-item index="5" @click="go('projectssa')">Projects</el-menu-item>
