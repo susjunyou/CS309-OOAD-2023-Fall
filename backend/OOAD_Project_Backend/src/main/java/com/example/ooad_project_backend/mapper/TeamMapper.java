@@ -114,4 +114,7 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
 
     @Update("update team set presentation_date = null where team_id = #{teamId}")
     void deletePresentation(Integer teamId);
+
+    @Update("update team set is_public = #{isPublic} where team_id = #{teamId}")
+    void modifyIsPublic(Integer teamId, boolean isPublic);
 }

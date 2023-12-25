@@ -58,4 +58,6 @@ public interface TeamInfoService extends IService<TeamInfo> {
     List<TeamInfo> findAlreadyPeerGradeTeam(Integer teamId, Integer projectId);
 
     List<TeamInfo> findNotYetPeerGradeTeam(Integer teamId, Integer projectId);
+
+    boolean modifyIsPublic(Integer teamId, boolean isPublic);
 }

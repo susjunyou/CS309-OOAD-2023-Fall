@@ -36,6 +36,15 @@ public class TeamController {
         return teamInfoService.updateTeamLeader(teamId, studentId) ? Result.success() : Result.error();
     }
 
+    @GetMapping("/modifyIsPublic")
+    public Result modifyIsPublic(Integer teamId, boolean isPublic) {
+        if (teamId == null) {
+            return Result.error();
+        }
+
+        return teamInfoService.modifyIsPublic(teamId, isPublic) ? Result.success() : Result.error();
+    }
+
     @GetMapping("/create")
     public Result create(TeamInfo teamInfo) {
         System.out.println(teamInfo.toString());
