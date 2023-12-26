@@ -175,7 +175,7 @@ create table team
     recruitment_information varchar(255),
     team_size               integer      not null,
     project_id              integer      not null,
-    privacyTeam             boolean default false not null
+    privacy_team             boolean default false not null
 );
 
 --! create team_peer_revision
