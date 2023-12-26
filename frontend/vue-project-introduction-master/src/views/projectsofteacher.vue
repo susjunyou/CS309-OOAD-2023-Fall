@@ -8,7 +8,7 @@
           <!-- ...之前的代码... -->
           <el-row :gutter="20">
             <el-col v-for="project in projects" :key="project.id" :span="6" >
-              <el-card  class="assignment-card" @click.native="join(project)" style="min-height: 240px">
+              <el-card  class="assignment-card" @click.native="join(project)" style="min-height: 275px">
                 <h3>{{ project.title }}</h3>
                 <a v-if="project.file.downloadUrl"
                    :href="project.file.downloadUrl"
@@ -17,6 +17,7 @@
                   {{ project.file.fileName }}
                 </a>                <p v-else class="placeholder">没有文件</p>
                 <p>截止日期：{{ project.ddl }}</p>
+                <p>组队截止时间：{{ project.teamddl }}</p>
                 <el-button type="danger" size="small" @click.stop="deleteProject(project)">删除工程</el-button>
                 <el-button type="primary" size="small" @click.stop="editProject(project)">修改信息</el-button>
               </el-card>
@@ -52,6 +53,9 @@
         <el-form-item label="占比" label-width="93px">
           <el-input-number v-model="projectForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
         </el-form-item>
+        <el-form-item label="组队截止日期" label-width="93px">
+          <el-date-picker v-model="projectForm.teamdeadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+        </el-form-item>
 
         <el-form-item label="队伍最大人数">
           <el-input-number v-model="projectForm.maxPeopleInTeam" :min="1" :max="100" step="1"></el-input-number>
@@ -85,7 +89,9 @@
         <el-form-item label="占比">
           <el-input-number v-model="editProjectForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
         </el-form-item>
-
+        <el-form-item label="组队截止日期" label-width="93px">
+          <el-date-picker v-model="editProjectForm.teamdeadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+        </el-form-item>
         <el-form-item label="队伍最大人数">
           <el-input-number v-model="editProjectForm.maxPeopleInTeam" :min="1" :max="100" step="1"></el-input-number>
         </el-form-item>
@@ -133,6 +139,7 @@ export default {
         releaser: '',
         releaserType: '',
         maxPeopleInTeam:'',
+        teamdeadline:'',
         courseId: '',
       },
       editProjectForm:{
@@ -146,11 +153,13 @@ export default {
         releaserType: '',
         maxPeopleInTeam:'',
         courseId: '',
+        teamdeadline:''
       },
       isPopupVisible: false,
       file:'',
       file2:'',
       fileDownloadUrl: '',
+      curteamddl:'',
     };
   },
   async created(){
@@ -286,12 +295,13 @@ export default {
               localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
               localStorage.setItem('projectfileid'+course.title+i,res.data.data[i].fileId);
-
+              localStorage.setItem('teamddl' + course.title+i,res.data.data[i].teamDeadline);
               this.ddls.push({
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,
               })
-
+              console.log(res.data.data.length)
+            console.log(res.data.data[i])
             }
           }else {
             localStorage.setItem('projectsLength'+course.title,0)
@@ -388,6 +398,8 @@ export default {
     async addProject(){///问题：后端这个releaser是个string，而给的东西是个int
       let date = new Date(this.projectForm.deadline);
       let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let date2=new Date(this.projectForm.teamdeadline);
+      let formattedDate2 = date2.toISOString().split('T')[0];
       let formData=new FormData();
       formData.append('projectTitle',this.projectForm.title);
       formData.append('projectDescription',this.projectForm.description);
@@ -399,6 +411,7 @@ export default {
       formData.append('releaserType','TEACHER');
       formData.append('maxPeopleInTeam',this.projectForm.maxPeopleInTeam);
       formData.append('courseId',localStorage.getItem('currentcourseid'));
+      formData.append('teamDeadline',formattedDate2);
       if (this.file2) {
         formData.append('file', this.file2);
       }
@@ -464,6 +477,8 @@ export default {
       this.editProjectForm. releaserType = 'TEACHER';
       this.editProjectForm.maxPeopleInTeam = project.maxPeopleInTeam;
       this.editProjectForm. courseId = localStorage.getItem('currentcourseid');
+      this.editProjectForm.teamdeadline = project.teamdeadline;
+      this.curteamddl=project.teamdeadline
       // console.log(this.editProjectForm.status )
       // console.log(this.editProjectForm.releaser )
       // console.log(this.editProjectForm.releaserType )
@@ -480,8 +495,8 @@ export default {
       //console.log('format:'+formattedDate)
       //let tit = localStorage.getItem('currentassignmenttitle')
       //console.log('tit:'+tit)
-
-
+      let date2=new Date(this.editProjectForm.teamdeadline);
+      let formattedDate2 = date2.toISOString().split('T')[0];
       let formData=new FormData();
       formData.append('projectId',localStorage.getItem('currentprojectid'));
       formData.append('projectTitle',this.editProjectForm.title);
@@ -494,6 +509,7 @@ export default {
       formData.append('releaserType', this.editProjectForm.releaserType);
       formData.append('maxPeopleInTeam',this.editProjectForm.maxPeopleInTeam);
       formData.append('courseId',localStorage.getItem('currentcourseid'));
+      formData.append('teamDeadline',formattedDate2);
       if (this.file2) {
         formData.append('file', this.file2);
       }
@@ -620,6 +636,7 @@ export default {
               ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
               file:this.file,
             });
           }else {
@@ -631,6 +648,7 @@ export default {
               ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
               file: "无文件",
             });
           }
@@ -643,6 +661,7 @@ export default {
             ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
             status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
             maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+            teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
             file: "无文件",
           });
         }

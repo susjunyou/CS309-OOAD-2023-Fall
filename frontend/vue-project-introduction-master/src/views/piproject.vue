@@ -301,6 +301,7 @@ export default {
             projectId: localStorage.getItem("currentprojectid")
           }
         });
+        console.log(res.data)
         if (res.data.code === "0") {
           localStorage.setItem(localStorage.getItem("currentcourse")+" "+localStorage.getItem("currentprojectid")+" "+"teamcount", res.data.data.length);
           this.teamcount = res.data.data.length;
@@ -311,6 +312,7 @@ export default {
                 teamId: team.teamId
               }
             });
+            console.log(res1.data)
             if (res1.data.code === "0") {
               this.teams.push({
                 id: team.teamId,
@@ -331,6 +333,9 @@ export default {
                 projectId: Number(localStorage.getItem("currentprojectid")),
               }
             })
+            console.log( Number(localStorage.getItem("currentprojectid")),)
+            console.log(res2.data)
+
             if(res2.data.code === "0"){
 
               if(res2.data.data&&res2.data.data.length>0){
@@ -348,7 +353,10 @@ export default {
                 this.unsubmittedTeams.push(this.teams[i]);
               }
 
+            }else{
+              this.unsubmittedTeams.push(this.teams[i]);
             }
+            console.log(this.ungradedteams)
 
 
 

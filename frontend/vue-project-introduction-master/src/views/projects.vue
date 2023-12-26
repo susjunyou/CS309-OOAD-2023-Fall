@@ -117,7 +117,7 @@
         <!-- ...之前的代码... -->
         <el-row :gutter="20">
           <el-col v-for="project in projects" :key="project.id" :span="6" >
-            <el-card  class="assignment-card" @click.native="join(project)" style="min-height: 200px">
+            <el-card  class="assignment-card" @click.native="join(project)" style="min-height: 225px">
               <h3>{{ project.title }}</h3>
               <a v-if="project.file.downloadUrl"
                  :href="project.file.downloadUrl"
@@ -126,7 +126,8 @@
                 {{ project.file.fileName }}
               </a>                <p v-else class="placeholder">没有文件</p>
               <p>截止日期：{{ project.ddl }}</p>
-              <el-button type="text" @click.stop="descrip(project)">查看project信息</el-button>
+              <p>组队截止时间：{{ project.teamddl }}</p>
+
             </el-card>
           </el-col>
         </el-row>
@@ -396,6 +397,7 @@ export default {
     join(route) {
       localStorage.setItem("currentprojectid",route.id)
       localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
+      localStorage.setItem("currentteamddl",route.teamddl)
       // localStorage.setItem('cru_project_ddl',this.projects.get(route.id).ddl)
       // localStorage.setItem('cru_project_status',this.projects.get(route.id).status)
       this.$router.push('joinTeam');
@@ -499,11 +501,14 @@ export default {
               localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
               localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
+              localStorage.setItem('projectfileid'+course.title+i,res.data.data[i].fileId);
+              localStorage.setItem('teamddl' + course.title+i,res.data.data[i].teamDeadline);
               this.ddls.push({
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,
               })
-
+              console.log(res.data.data.length)
+              console.log(res.data.data[i])
             }
           }else {
             localStorage.setItem('projectsLength'+course.title,0)
@@ -677,6 +682,7 @@ export default {
               ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
               file:this.file,
             });
           }else {
@@ -688,6 +694,7 @@ export default {
               ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
               file: "无文件",
             });
           }
@@ -700,6 +707,7 @@ export default {
             ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
             status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
             maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+            teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
             file: "无文件",
           });
         }
