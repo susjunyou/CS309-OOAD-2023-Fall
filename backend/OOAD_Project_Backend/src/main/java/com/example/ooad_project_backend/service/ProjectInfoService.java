@@ -11,7 +11,7 @@ public interface ProjectInfoService {
                        Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId,Date projectStartDate,Integer maxPeopleInTeam,Integer fileId,Date TeamDeadline);
     boolean deleteProject(Integer projectId);
     boolean updateProject(Integer projectId, String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                          Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam,Integer fileId,Date TeamDeadline);
+                          Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam,Integer fileId,Date teamDeadline);
     List<ProjectInfo> getProjectByCourseId(Integer courseId);
 
 }

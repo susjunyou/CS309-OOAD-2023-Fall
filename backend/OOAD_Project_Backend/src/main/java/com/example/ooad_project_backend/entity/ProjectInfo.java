@@ -30,6 +30,6 @@ public class ProjectInfo extends GradeInfo {
 
     private Integer fileId;
 
-    private Date TeamDeadline;
+    private Date teamDeadline;
 
 }
