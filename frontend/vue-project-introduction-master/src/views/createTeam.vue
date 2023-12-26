@@ -321,6 +321,7 @@ export default {
           projectId:Number(this.projectid),
           recruitmentInformation:this.team.recruitmentInformation,
           leader:Number(this.sid),
+          privacyTeam:true,
         }
       }).then((res) => {
         console.log("code====================================="+res.data.code)

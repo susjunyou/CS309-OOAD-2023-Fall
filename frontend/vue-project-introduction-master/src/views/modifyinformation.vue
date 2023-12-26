@@ -401,7 +401,7 @@ export default {
 
           presentationDate:team.presentationDate,
 
-
+          privacyTeam:team.privacyTeam,
 
           // teamMembers: this.currentteam.teammembers,
         }

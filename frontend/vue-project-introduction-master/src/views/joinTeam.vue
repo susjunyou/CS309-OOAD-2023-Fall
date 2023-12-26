@@ -134,6 +134,17 @@
           <el-button class="sumbitt" @click="() => editRecruitment()" :disabled="id != myTeam[0].leader">修改招募信息</el-button>
           <el-button class="sumbitt" @click="() => dabian()" >查看答辩信息</el-button>
 
+            <el-switch
+                v-model="myTeam[0].public"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="公开"
+                inactive-text="隐藏"
+                :disabled="id != myTeam[0].leader"
+                @change="handleIsPublicChange(myTeam[0])"
+                style="margin-top: 30px"
+            ></el-switch>
+
         </div>
         </div>
         <div style="width: 100%; padding: 20px 10px;">
@@ -144,11 +155,12 @@
               <el-table-column prop="description" label="队伍描述"></el-table-column>
               <el-table-column prop="teammembers" label="团队成员">
                 <template slot-scope="scope">
-                  <ul>
+                  <ul v-if="scope.row.public">
                     <li v-for="member in scope.row.teammembers" :key="member.id">
                       {{ member.name }}
                     </li>
                   </ul>
+                  <span v-else>信息不公开</span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="180">
@@ -169,11 +181,12 @@
               <el-table-column prop="description" label="队伍描述"></el-table-column>
               <el-table-column prop="teammembers" label="团队成员">
                 <template slot-scope="scope">
-                  <ul>
+                  <ul v-if="scope.row.public">
                     <li v-for="member in scope.row.teammembers" :key="member.id">
                       {{ member.name }}
                     </li>
                   </ul>
+                  <span v-else>信息不公开</span>
                 </template>
               </el-table-column>
               <!-- 添加更多列来显示团队信息 -->
@@ -237,12 +250,14 @@
         <p>{{ team.description }}</p>
         <p>当前人数: {{ team.currentmembercount}} / 最多人数: {{ team.teamsize }}</p>
         <!-- 显示成员列表 -->
-        <ul>
+        <ul v-if="team.public">
           <li v-for="(member, index) in team.teammembers" :key="member.id">
-            成员{{ index + 1 }}     姓名: {{ member.name }}     id：{{member.id}}
+            成员{{ index + 1 }} 姓名: {{ member.name }} id：{{ member.id }}
           </li>
         </ul>
-        <el-button class="sumbitt" @click.stop="descrip(team)">查看招募信息</el-button>
+        <p v-else>信息不公开</p>
+
+        <el-button class="sumbitt" @click.stop="descrip(team)" v-if="team.public">查看招募信息</el-button>
         <button class="sumbitt" @click="requestTeam(team)">申请加入队伍</button>
 
 
@@ -322,11 +337,22 @@
         :visible.sync="dialogVisible3"
         width="50%"
     >
-      <p v-if="myTeam[0].presentationDate==null||myTeam[0].presentationDate==''||myTeam[0].presentationDate=='null'||myTeam[0].presentationDate==undefined">答辩时间：暂未确定，请等待老师安排</p>
-      <p v-else>答辩时间：{{myTeam[0].presentationDate}}</p>
-      <p v-if="myTeam[0].teachername==''||myTeam[0].teachername==null||myTeam[0].teachername==undefined||myTeam[0].teachername=='null'">答辩老师：暂未确定，请等待老师安排</p>
-      <p v-else>答辩老师：{{myTeam[0].teachername}}</p>
+
+      <p v-if="myTeam.length && (myTeam[0].presentationDate == null || myTeam[0].presentationDate == '' || myTeam[0].presentationDate == 'null' || myTeam[0].presentationDate == undefined)">
+        答辩时间：暂未确定，请等待老师安排
+      </p>
+      <p v-else-if="myTeam.length">
+        答辩时间：{{ myTeam[0].presentationDate }}
+      </p>
+      <p v-if="myTeam.length && (myTeam[0].teachername == '' || myTeam[0].teachername == null || myTeam[0].teachername == undefined || myTeam[0].teachername == 'null')">
+        答辩老师：暂未确定，请等待老师安排
+      </p>
+      <p v-else-if="myTeam.length">
+        答辩老师：{{ myTeam[0].teachername }}
+      </p>
       <el-button @click="dialogVisible3 = false">返回</el-button>
+
+
     </el-dialog>
 
     <el-dialog
@@ -367,6 +393,7 @@
 </template>
 
 <script >
+
 export default {
 
   data() {
@@ -505,11 +532,21 @@ export default {
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
     console.log(this.requeststudent);
     console.log(this.id)
-    console.log(this.myTeam[0].leader)
-    console.log(this.teamcopy[0])
+    console.log(this.myTeam.length)
+    console.log(this.teams)
   },
 
   methods: {
+  async   handleIsPublicChange(myteam){
+       await this.$axios.get('/team/modifyPrivacy',{
+        params: {
+          teamId:myteam.id,
+          privacyTeam:myteam.public,
+        },
+
+      })
+    console.log(this.myTeam[0].public)
+    },
     dabian(){
 
       this.dialogVisible3=true;
@@ -602,6 +639,7 @@ this.dialogVisible2=true;
              teamsize: team.teamSize,
              teammembers: res1.data.data,
              currentmembercount: res1.data.data ? res1.data.data.length : 0,
+             public: team.privacyTeam,
            });
          }
        }
@@ -638,6 +676,7 @@ this.dialogVisible2=true;
               teamsize: team.teamSize,
               teammembers: res1.data.data,
               currentmembercount: res1.data.data ? res1.data.data.length : 0,
+              public:team.privacyTeam,
             });
           }
         }
@@ -1227,7 +1266,7 @@ this.dialogVisible2=true;
                     this.teachername=res5.data.data.name;
                   }
                 }
-
+                console.log(team)
 
                 this.myTeam.push({
                   id: team.teamId,
@@ -1241,8 +1280,8 @@ this.dialogVisible2=true;
                   recruitmentInformation:team.recruitmentInformation,
                   presentationDate:team.presentationDate,
                   teachername:this.teachername,
+                  public:team.privacyTeam,
                 });
-                console.log(team.presentationDate);
                 console.log(this.teachername);
                 this.teamcopy.push(team),
                 this.hasJoinedTeam = true;
@@ -1266,6 +1305,7 @@ this.dialogVisible2=true;
                 teammembers: res1.data.data,
                 currentmembercount: res1.data.data ? res1.data.data.length : 0,
                 recruitmentInformation:team.recruitmentInformation,
+                public:team.privacyTeam,
 
               });
             }else {
@@ -1279,6 +1319,7 @@ this.dialogVisible2=true;
                 teammembers:null,
                 currentmembercount:  0,
                 recruitmentInformation:team.recruitmentInformation,
+                public:team.privacyTeam,
 
               });
             }

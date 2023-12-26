@@ -397,7 +397,7 @@ export default {
           teamMembers:team.teamMembers,
 
           teacherId:team.teacherId,
-
+          privacyTeam:team.privacyTeam,
           presentationDate:team.presentationDate,
 
 
