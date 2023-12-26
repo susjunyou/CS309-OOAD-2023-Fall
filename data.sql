@@ -1,3 +1,4 @@
+
 delete
 from admin;
 delete
@@ -98,23 +99,23 @@ values ('赵云', '20003', '123456', '20003@qq.com', 'Hello World', '18120000003
         'PROFESSOR');
 
 insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ('菲尼克斯', '20006', '123456', '20003@qq.com', '闹够了吗该结束了！', '18120000003', true,
+values ('菲尼克斯', '20006', '123456', '20006@qq.com', '闹够了吗该结束了！', '18120000006', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
 insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ('蝰蛇', '20004', '123456', '20003@qq.com', '不要妨碍我！', '18120000003', true,
+values ('蝰蛇', '20004', '123456', '20004@qq.com', '不要妨碍我！', '18120000004', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
 insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ('贤者', '20005', '123456', '20003@qq.com', '你的使命还没结束！', '18120000003', true,
+values ('贤者', '20005', '123456', '20005@qq.com', '你的使命还没结束！', '18120000005', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
 
 insert into teacher (name, account, password, email, self_Introduction, phone_number, sex, department, tenure)
-values ('钢索', '20007', '123456', '20003@qq.com', '我的D盘我说了算！', '18120000003', true,
+values ('钢索', '20007', '123456', '20007@qq.com', '我的D盘我说了算！', '18120000007', true,
         'COMPUTER_SCIENCE',
         'PROFESSOR');
 
