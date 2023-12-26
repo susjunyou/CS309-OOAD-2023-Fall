@@ -112,21 +112,22 @@
         <el-row :gutter="20">
 
           <el-col span="8">
-              <el-card class="assignment-card">
+              <el-card class="assignment-card" v-bind:style="color_mode">
                 <h3>分数</h3>
                 <p>{{finial_grade}}</p>
               </el-card>
           </el-col>
 
         <el-col span="8">
-            <el-card class="assignment-card">
+            <el-card class="assignment-card" v-bind:style="color_mode">
               <h3>Due</h3>
              <p>截止日期：{{in_ddl}}</p>
             </el-card>
         </el-col>
 
           <el-col span="8">
-            <el-card class="assignment-card">
+            <el-card class="assignment-card"  v-bind:style="color_mode">
+
               <h3>状态</h3>
               <p>{{status}}</p>
             </el-card>
@@ -198,6 +199,7 @@
 export default {
 
   data() {
+
     const e_idValidator = (rule, value, callback) => {///^[A-Za-z0-9]+/
       const re = /^[0-9]/;
       if (!value) {
@@ -284,6 +286,10 @@ export default {
       technologystack:'',
       programmingskill:'',
       intendedteammate:'',
+      disable_submit:'',
+      color_mode:{
+        background:''
+      },
     };
   },
 
@@ -303,7 +309,10 @@ export default {
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
   },
+
   methods: {
+
+
 
     update(){
       this.dialogVisible=true;
@@ -450,9 +459,56 @@ export default {
         console.log(res.data)
          let dd = localStorage.getItem('in_ddl');
         let n_data = new Date()
-        localStorage.setItem('com_as_data',(Number(dd.slice(0,4)) * 400) + (Number(dd.slice(5,7)) * 20) + (Number(dd.slice(8))))
-        localStorage.setItem('com_cru_data',(n_data.getFullYear() * 400) + ((n_data.getMonth() + 1) * 20) + (n_data.getDate()))
-        this.disable_submit = localStorage.getItem('com_as_data') < localStorage.getItem('com_cru_data');
+        let ddl_year=Number(dd.slice(0,4))
+        let ddl_mount=Number(dd.slice(5,7))
+        let ddl_day=Number(dd.slice(8))
+        let cru_year=n_data.getFullYear()
+        let cru_mount=n_data.getMonth()+1
+        let cru_day=n_data.getDate()
+        let ddl_year_number=0
+        let ddl_mount_number=0
+        let cru_year_number=0
+        let cru_mount_number=0
+        if (cru_year%4===0){
+          cru_year_number=366;
+          if (cru_mount ===1 || cru_mount===3 || cru_mount===5 || cru_mount===7 || cru_mount===8 || cru_mount===10 || cru_mount===12 ){
+            cru_mount_number =31
+          } else if (cru_mount===2){
+            cru_mount_number=29
+          } else cru_mount_number=30
+        } else {
+          cru_year_number = 365
+          if (cru_mount ===1 || cru_mount===3 || cru_mount===5 || cru_mount===7 || cru_mount===8 || cru_mount===10 || cru_mount===12 ){
+            cru_mount_number =31
+          } else if (cru_mount===2){
+            cru_mount_number=28
+          } else cru_mount_number=30
+        }
+        if (ddl_year%4===0){
+          ddl_year_number=366;
+          if (ddl_mount ===1 || ddl_mount===3 || ddl_mount===5 || ddl_mount===7 || ddl_mount===8 || ddl_mount===10 || ddl_mount===12 ){
+            ddl_mount_number =31
+          } else if (ddl_mount===2){
+            ddl_mount_number=29
+          } else ddl_mount_number=30
+        } else {
+          ddl_year_number = 365
+          if (ddl_mount ===1 || ddl_mount===3 || ddl_mount===5 || ddl_mount===7 || ddl_mount===8 || ddl_mount===10 || ddl_mount===12 ){
+            ddl_mount_number =31
+          } else if (ddl_mount===2){
+            ddl_mount_number=28
+          } else ddl_mount_number=30
+        }
+        localStorage.setItem('com_cru_data',(cru_year * cru_year_number) + (cru_mount * cru_mount_number) + (cru_day))
+        localStorage.setItem('com_ddl_data',(ddl_year * ddl_year_number) + (ddl_mount * ddl_mount_number) + (ddl_day))
+        let different = localStorage.getItem('com_ddl_data') - localStorage.getItem('com_cru_data')
+        this.disable_submit = (different < 0);
+        if (this.disable_submit){
+          this.color_mode.background='#dc3005';
+        } else if(different<=3 && different >=0){
+          this.color_mode.background='#ffff00'
+        } else this.color_mode.background='#00d897'
+        console.log('color:'+ this.color_mode.background)
         if (res.data.code === "0") {
           localStorage.setItem('history_length',res.data.data.length)
           for (let i = 0; i < localStorage.getItem('history_length'); i++) {
@@ -699,6 +755,7 @@ h1 {
   height: 150px;
   width: 200px;
   background-color: #00d897;
+
 
 }
 
