@@ -35,8 +35,6 @@ public class ProjectInfoServiceImp implements ProjectInfoService {
     @Override
     public boolean updateProject(Integer projectId, String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
                                  Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Integer courseId, Date projectStartDate, Integer maxPeopleInTeam, Integer fileId, Date teamDeadline) {
-//        return projectMapper.updateProject(projectId, projectTitle, projectDescription, projectDeadline, projectStatus,
-//                maxScore, proportion, releaser, releaserType, courseId, projectStartDate, maxPeopleInTeam);
         Integer oldFileId = projectMapper.getProjectByProjectId(projectId).getFileId();
         if (oldFileId != null) {
             projectMapper.deleteFileById(oldFileId);

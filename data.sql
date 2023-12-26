@@ -139,16 +139,16 @@ insert into course_teacher(course_id, teacher_id)
 values (1, 2);
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-Values ('project1', 'project_description1', 1, 1, 'Finished', '2023-09-30', '2023-12-25', 3, 100, 15, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+Values ('project1', 'project_description1', 1, 1, 'Finished', '2023-09-30', '2023-12-25', 3, 100, 15, 'TEACHER', '2023-12-15');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-Values ('project2', 'project_description2', 2, 1, 'Started', '2023-09-01', '2024-01-01', 3, 100, 15, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+Values ('project2', 'project_description2', 2, 1, 'Started', '2023-09-01', '2024-01-01', 3, 100, 15, 'TEACHER','2023-12-15');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project3', 'project_description3', 1, 1, 'Started', '2023-10-01', '2023-12-15', 4, 80, 20, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+values ('project3', 'project_description3', 1, 1, 'Started', '2023-10-01', '2023-12-15', 4, 80, 20, 'TEACHER','2023-12-15');
 
 
 -- Assignment for Course 1
@@ -188,12 +188,12 @@ insert into course_teacher(course_id, teacher_id)
 values (2, 3);
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-Values ('project4', 'project_description4', 1, 2, 'Started', '2023-09-01', '2024-01-01', 3, 100, 15, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+Values ('project4', 'project_description4', 1, 2, 'Started', '2023-09-01', '2024-01-01', 3, 100, 15, 'TEACHER','2023-12-15');
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project5', 'project_description5', 3, 2, 'UNStart', '2024-1-1', '2024-1-30', 3, 90, 30, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+values ('project5', 'project_description5', 3, 2, 'UNStart', '2024-1-1', '2024-1-30', 3, 90, 30, 'TEACHER','2024-1-15');
 
 
 -- Assignment for Course 2
@@ -235,8 +235,8 @@ values (3, 2);
 
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project6', 'project_description6', 1, 3, 'Started', '2023-11-01', '2023-1-14', 5, 120, 15, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+values ('project6', 'project_description6', 1, 3, 'Started', '2023-11-01', '2023-1-14', 5, 120, 15, 'TEACHER','2023-12-15');
 
 
 -- Assignment for Course 3
@@ -279,8 +279,8 @@ values (4, 3);
 
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project7', 'project_description7', 2, 4, 'Started', '2023-11-15', '2023-12-31', 4, 100, 15, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+values ('project7', 'project_description7', 2, 4, 'Started', '2023-11-15', '2023-12-31', 4, 100, 15, 'TEACHER','2023-12-15');
 
 
 -- Assignment for Course 4
@@ -316,8 +316,8 @@ values (5, 2);
 
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project8', 'project_description8', 2, 5, 'UNStart', '2023-12-21', '2024-01-15', 3, 80, 20, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+values ('project8', 'project_description8', 2, 5, 'UNStart', '2023-12-21', '2024-01-15', 3, 80, 20, 'TEACHER','2023-12-15');
 
 
 -- Assignment for Course 5
@@ -350,8 +350,8 @@ values (6, 3);
 
 
 insert into project(project_title, project_description, releaser, course_id, project_status,
-                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type)
-values ('project9', 'project_description9', 3, 6, 'Finished', '2023-01-01', '2023-02-15', 5, 90, 30, 'TEACHER');
+                    project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,team_deadline)
+values ('project9', 'project_description9', 3, 6, 'Finished', '2023-01-01', '2023-02-15', 5, 90, 30, 'TEACHER','2023-12-15');
 
 
 -- Assignment for Course 6
