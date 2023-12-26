@@ -296,8 +296,8 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
     }
 
     @Override
-    public boolean modifyIsPublic(Integer teamId, boolean isPublic) {
-        teamMapper.modifyIsPublic(teamId, isPublic);
+    public boolean modifyIsPublic(Integer teamId, boolean privacyTeam) {
+        teamMapper.modifyIsPublic(teamId, privacyTeam);
         return true;
     }
 

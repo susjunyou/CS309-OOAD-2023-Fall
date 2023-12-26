@@ -36,13 +36,13 @@ public class TeamController {
         return teamInfoService.updateTeamLeader(teamId, studentId) ? Result.success() : Result.error();
     }
 
-    @GetMapping("/modifyIsPublic")
-    public Result modifyIsPublic(Integer teamId, boolean isPublic) {
+    @GetMapping("/modifyPrivacy")
+    public Result modifyIsPublic(Integer teamId, boolean privacyTeam) {
         if (teamId == null) {
             return Result.error();
         }
 
-        return teamInfoService.modifyIsPublic(teamId, isPublic) ? Result.success() : Result.error();
+        return teamInfoService.modifyIsPublic(teamId, privacyTeam) ? Result.success() : Result.error();
     }
 
     @GetMapping("/create")

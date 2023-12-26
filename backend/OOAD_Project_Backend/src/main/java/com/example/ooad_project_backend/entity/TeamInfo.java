@@ -37,7 +37,7 @@ public class TeamInfo implements Serializable {
 
     private Date presentationDate;
 
-    private boolean isPublic;
+    private boolean privacyTeam;
 
 
 }

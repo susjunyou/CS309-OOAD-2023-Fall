@@ -12,14 +12,14 @@ import java.util.List;
 public interface TeamMapper extends BaseMapper<TeamInfo> {
 
 
-    @Update("update team set team_name = #{teamName}, leader = #{leader}, team_description = #{teamDescription}, team_size = #{teamSize},recruitment_information = #{recruitmentInformation} where team_id = #{teamId}")
+    @Update("update team set team_name = #{teamName}, leader = #{leader}, team_description = #{teamDescription}, team_size = #{teamSize},recruitment_information = #{recruitmentInformation}, privacy_team = #{privacyTeam} where team_id = #{teamId}")
     void updateTeamInfo(TeamInfo teamInfo);
 
     @Update("update team set leader = #{studentId} where team_id = #{teamId}")
     void updateTeamLeader(Integer teamId, Integer studentId);
 
-    @Insert("insert into team(team_name, leader, team_description, team_size, project_id,recruitment_information)" +
-            " VALUES (#{teamName}, #{leader}, #{teamDescription}, #{teamSize}, #{projectId},#{recruitmentInformation})")
+    @Insert("insert into team(team_name, leader, team_description, team_size, project_id,recruitment_information,privacy_team)" +
+            " VALUES (#{teamName}, #{leader}, #{teamDescription}, #{teamSize}, #{projectId},#{recruitmentInformation},#{privacyTeam})")
     void createTeam(TeamInfo teamInfo);
 
 
@@ -115,6 +115,6 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
     @Update("update team set presentation_date = null where team_id = #{teamId}")
     void deletePresentation(Integer teamId);
 
-    @Update("update team set is_public = #{isPublic} where team_id = #{teamId}")
-    void modifyIsPublic(Integer teamId, boolean isPublic);
+    @Update("update team set privacy_team = #{privacyTeam} where team_id = #{teamId}")
+    void modifyIsPublic(Integer teamId, boolean privacyTeam);
 }
