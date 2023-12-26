@@ -45,7 +45,7 @@ create table student
     phone_number      varchar(255) unique,
     sex               bool,
     major             varchar(255),
-    level             varchar(255)
+    level             varchar(255),
     isSA              boolean default false not null,
     department        varchar(255)
 );
@@ -134,7 +134,7 @@ create table project
     max_people_in_team  integer          not null,
     max_score           integer          not null,
     proportion          double precision not null,
-    file_id             integer
+    file_id             integer,
     team_deadline       date
 );
 
@@ -174,7 +174,7 @@ create table team
     team_description        varchar(255),
     recruitment_information varchar(255),
     team_size               integer      not null,
-    project_id              integer      not null
+    project_id              integer      not null,
     is_public               boolean default false not null
 );
 
