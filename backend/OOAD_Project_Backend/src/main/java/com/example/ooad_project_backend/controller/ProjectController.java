@@ -27,7 +27,7 @@ public class ProjectController {
 
     @PostMapping("/addProject")
     public Result addProject(String projectTitle, String projectDescription, Date projectDeadline, String projectStatus,
-                             Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Date projectStartDate, Integer maxPeopleInTeam, Integer courseId, MultipartFile file, Date TeamDeadline) {
+                             Integer maxScore, Double proportion, Integer releaser, UserType releaserType, Date projectStartDate, Integer maxPeopleInTeam, Integer courseId, MultipartFile file, Date teamDeadline) {
 
         FileInfo fileInfo = new FileInfo();
         try {
@@ -41,7 +41,7 @@ public class ProjectController {
             throw new RuntimeException(e);
         }
         boolean flag = projectInfoService.addProject(projectTitle, projectDescription, projectDeadline, projectStatus,
-                maxScore, proportion, releaser, releaserType, courseId,projectStartDate,maxPeopleInTeam,fileInfo.getId(), (Date) TeamDeadline);
+                maxScore, proportion, releaser, releaserType, courseId,projectStartDate,maxPeopleInTeam,fileInfo.getId(), (Date) teamDeadline);
         if (flag) {
             return Result.success();
         } else {
