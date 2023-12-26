@@ -295,7 +295,7 @@ export default {
       var option={
         color:['red','yellow','blue','black'],
         title:{
-          text:'成绩',
+          text:'成绩占比',
           x:'center',
         },
         legend:{
@@ -542,7 +542,7 @@ export default {
             proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
             gardedescription: localStorage.getItem('assignmentgradeDescription' + localStorage.getItem("currentcourse")+i)
           });
-          this.assignmentgrade= Number(localStorage.getItem('assignmentgrade'+localStorage.getItem('currentcourse')+i));
+          this.assignmentgrade+= Number(localStorage.getItem('assignmentproportion'+localStorage.getItem('currentcourse')+i));
         }
       }
       this.projects=[];
@@ -561,7 +561,7 @@ export default {
             proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
             gardedescription: localStorage.getItem('projectgradeDescription' + localStorage.getItem("currentcourse")+i)
           });
-          this.projectgrade+=Number(localStorage.getItem('projectgrade'+localStorage.getItem("currentcourse")+i));
+          this.projectgrade+=Number(localStorage.getItem('projectproportion'+localStorage.getItem("currentcourse")+i));
         }
         // this.ddls =[]
         // this.ddls.push({
@@ -577,7 +577,7 @@ export default {
           attendancesgrade: localStorage.getItem('attendancegrade' + localStorage.getItem("currentcourse")+i)+'/'+localStorage.getItem('attendancemaxScore' + localStorage.getItem("currentcourse") + i),
           proportion:localStorage.getItem('attendanceproportion' + localStorage.getItem("currentcourse")+i)
         })
-        this.attendancegrade+=Number(localStorage.getItem('attendancegrade' + localStorage.getItem("currentcourse")+i));
+        this.attendancegrade+=Number(localStorage.getItem('attendanceproportion' + localStorage.getItem("currentcourse")+i));
       }
 
       console.log("course name="+this.myValue)
