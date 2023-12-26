@@ -117,4 +117,10 @@ public interface TeamMapper extends BaseMapper<TeamInfo> {
 
     @Update("update team set privacy_team = #{privacyTeam} where team_id = #{teamId}")
     void modifyIsPublic(Integer teamId, boolean privacyTeam);
+
+    @Delete("delete from invite_join_team where student_id = #{studentId}")
+    void deleteInviteByStudentId(Integer studentId);
+
+    @Delete("delete from request_join_team where student_id = #{studentId}")
+    void deleteRequestByStudentId(Integer studentId);
 }

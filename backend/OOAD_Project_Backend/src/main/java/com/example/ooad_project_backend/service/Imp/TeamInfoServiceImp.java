@@ -178,6 +178,9 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
             Integer teamId = teamMapper.findTeamIdByRequestId(requestId);
             teamMapper.joinTeam(teamId, studentId, teamMapper.findProjectIdByTeamId(teamId));
             teamMapper.deleteRequest(requestId);
+            //同时删掉邀请
+            teamMapper.deleteInviteByStudentId(studentId);
+            teamMapper.deleteRequestByStudentId(studentId);
         } else {
             teamMapper.deleteRequest(requestId);
         }
@@ -191,6 +194,9 @@ public class TeamInfoServiceImp extends ServiceImpl<TeamMapper, TeamInfo> implem
             Integer teamId = teamMapper.findTeamIdByInviteId(id);
             teamMapper.joinTeam(teamId, studentId, teamMapper.findProjectIdByTeamId(teamId));
             teamMapper.deleteInvite(id);
+            //同时删掉申请
+            teamMapper.deleteInviteByStudentId(studentId);
+            teamMapper.deleteRequestByStudentId(studentId);
         } else {
             teamMapper.deleteInvite(id);
         }
