@@ -540,6 +540,20 @@ export default {
   },
 
   methods: {
+    createDownloadUrl(base64, fileName, mimeType) {
+      const blob = this.base64ToBlob(base64, mimeType);
+      const downloadUrl = URL.createObjectURL(blob);
+      return downloadUrl;
+    },
+    base64ToBlob(base64, mimeType) {
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      return new Blob([byteArray], {type: mimeType});
+    },
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
         //加载posts
@@ -1565,6 +1579,8 @@ this.dialogVisible2=true;
             projectId: localStorage.getItem("currentprojectid")
           }
         });
+        console.log(res.data.data)
+
         if (res.data.code === "0") {
           localStorage.setItem(localStorage.getItem("currentcourse")+" "+localStorage.getItem("currentprojectid")+" "+"teamcount", res.data.data.length);
           this.teamcount = res.data.data.length;
@@ -1575,6 +1591,7 @@ this.dialogVisible2=true;
                 teamId: team.teamId
               }
             });
+            console.log(res1.data.data)
 
             if (res1.data.code === "0" && Array.isArray(res1.data.data)) {
               const isMember = res1.data.data.some(member => member.id === Number(localStorage.getItem('id')));

@@ -474,36 +474,29 @@ export default {
   height: 100vh; /* 使容器占满整个视口高度 */
 }
 
-.form-container {
-  height: 50%;
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 200px;
-  background-color: #f5f5f5; /* 浅灰色背景 */
-  box-shadow: 0 4px 8px rgba(0.2, 0.5, 0.5, 0.3); /* 可选：为表单添加阴影效果 */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif; /* 统一字体 */
+  color: #333; /* 主要文字颜色 */
+  background-color: #f4f4f4; /* 页面背景色 */
 }
 
-.form-group {
-  margin-bottom: 15px;
+/* 表单样式调整 */
+.form-container {
+  background-color: white; /* 更换背景色 */
+  border: 1px solid #ddd; /* 边框颜色 */
+  border-radius: 8px; /* 圆角 */
+  padding: 40px; /* 内边距调整 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微阴影效果 */
 }
 
 .form-control {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #ccc; /* 轻微边框 */
+  border-radius: 4px; /* 输入框圆角 */
+  padding: 8px 12px; /* 内边距调整 */
 }
 
-.submit-btn {
-  padding: 10px 15px;
-  font-size: 16px;
-  color: white;
-  background-color: cornflowerblue;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+
+
 .popup {
   position: fixed;
   top: 0;

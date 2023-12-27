@@ -66,7 +66,7 @@
       <!-- ...之前的代码... -->
       <el-row :gutter="20">
         <el-col v-for="post in posts" :key="post.id" :span="6" >
-          <el-card  class="assignment-card" @click.native="showReplyForm(post)" style="min-height: 200px">
+          <el-card  class="assignment-card" @click.native="showReplyForm(post)" style="min-height: 170px">
             <h3>{{ post.title }}</h3>
             <p>发布者：{{ post.authorname }}</p>
           </el-card>

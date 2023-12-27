@@ -6,8 +6,8 @@
       <div class="coursecontainer">
 
         <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" :span="7" style="min-height: 180px">
-            <el-card class="course-card" @click.native="goTo(course)" style="min-height: 220px">
+          <el-col v-for="course in courses" :key="course.id" :span="7" >
+            <el-card class="course-card" @click.native="goTo(course)" style="min-height: 180px">
               <h3>{{ course.code }}</h3>
               <h3>{{ course.title }}</h3>
             </el-card>
@@ -33,15 +33,49 @@ export default {
     };
   },
   async created(){
-    // await this.loadAllCoursesinfo,
+    await this.getCoursesofteacher(),
+    await this.loadLocalStorageData(),
+    await this.loadAllCoursesinfo,
     await this.loadLocalStorageData();
-    await this.loadAllCoursesinfo();
-
+    console.log(this.courses)
   },
   components: {
     shitshan2
   },
   methods: {
+    async   getCoursesofteacher() {
+      await  this.$axios.get('/teacher/getCourseInfo',{
+        params:{
+          teacherId:localStorage.getItem('id')
+        }
+      })
+          .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            localStorage.setItem('length',res.data.data.length);
+            console.log(localStorage.getItem('length'));
+            for (let i = 0; i < localStorage.getItem('length'); i++) {
+              console.log(res.data.data[i]);
+              console.log(res.data.data[i].courseId);
+              console.log(res.data.data[i].courseName);
+              console.log(res.data.data[i].courseCode);
+              console.log(res.data.data[i].courseDescription);
+
+              localStorage.setItem('coursesid'+i,res.data.data[i].courseId);
+              localStorage.setItem('courses'+i,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseId,res.data.data[i].courseName);
+              localStorage.setItem(res.data.data[i].courseName,res.data.data[i].courseId);
+              localStorage.setItem('coursecode'+i,res.data.data[i].courseCode);
+              localStorage.setItem('courseDescription'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+              localStorage.setItem('getdescriptionbyid'+res.data.data[i].courseId,res.data.data[i].courseDescription);
+            }
+            console.log(localStorage.getItem('courses0'));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    },
+
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
         //加载posts

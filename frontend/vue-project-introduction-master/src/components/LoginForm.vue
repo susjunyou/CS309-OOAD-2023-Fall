@@ -35,22 +35,12 @@ export default {
   name: "LoginForm",
   props: ['form'],
   data() {
-    const UserNameValidator = (rule, value, callback) => {
-      const re = /^[0-9]+$/;
-      if (!value) {
-        return callback(new Error('Please input userName'));
-      }
-      if (!re.test(value)) {
-        return callback(new Error('Invalid userName'));
-      }
-      callback();
-    };
+
     return {
       isLoginClick: false,
       rules: {
         username: [
-          {validator: UserNameValidator, trigger: 'blur'},
-          {required: true, trigger: true}
+          { required: true, message: 'Please input username', trigger: 'blur' },
         ],
         password: [
           { required: true, message: 'Please input password', trigger: 'blur' },
@@ -60,7 +50,7 @@ export default {
     }
   },
   methods: {
-    loginClick() {
+   loginClick() {
       let _this = this;
       // _this.isLoginClick = true;
       console.log(_this.form.userType);
@@ -250,8 +240,8 @@ export default {
 
     },
 
-    getCoursesofteacher() {
-      this.$axios.get('/teacher/getCourseInfo',{
+  async   getCoursesofteacher() {
+     await this.$axios.get('/teacher/getCourseInfo',{
         params:{
           teacherId:localStorage.getItem('id')
         }
