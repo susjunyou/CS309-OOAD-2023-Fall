@@ -79,7 +79,7 @@ export default {
     };
   },
   async created(){
-    await  this.loadLocalStorageData();
+    await  this.loadLocalStorageData2();
     await this.loadAllCoursesinfo();
     await this.loadLocalStorageData();
   },
@@ -87,6 +87,17 @@ export default {
     shitshansa
   },
   methods: {
+    async loadLocalStorageData2() {
+      this.courses=[];
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+        this.courses.push({
+          id: localStorage.getItem('coursesidsa' + i),
+          title: localStorage.getItem('coursessa' + i),
+          description: localStorage.getItem('courseDescriptionsa' + i),
+          code: localStorage.getItem('coursecodesa' +i),
+        });
+      }
+    },
     async  returnToassignments(){
       await  this.loadLocalStorageData();
       await this.loadAllCoursesinfo();

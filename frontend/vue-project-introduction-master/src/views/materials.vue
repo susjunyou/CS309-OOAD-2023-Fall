@@ -234,7 +234,7 @@ export default {
     this.name = localStorage.getItem('name');
     this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
-    await this.loadLocalStorageData() ;
+    await this.loadLocalStorageData2() ;
     await this.loadAllCoursesinfo()
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
 
@@ -244,6 +244,17 @@ export default {
 
   },
   methods: {
+    async loadLocalStorageData2() {
+      this.courses=[];
+      for (let i = 0; i < localStorage.getItem('length'); i++) {
+        this.courses.push({
+          id: localStorage.getItem('coursesid' + i),
+          title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
+        });
+      }
+    },
     downloadFile(file) {
       // 实现文件下载的逻辑
       const link = document.createElement('a');

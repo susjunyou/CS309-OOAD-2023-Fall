@@ -63,15 +63,15 @@
         </el-form-item>
 
         <el-form-item label="technologystack" prop="technologystack">
-          <el-input v-model="technologystack"/>
+          <el-input v-model="edit.technologystack"/>
         </el-form-item>
 
         <el-form-item label="programmingskill" prop="programmingskill">
-          <el-input v-model="programmingskill"/>
+          <el-input v-model="edit.programmingskill"/>
         </el-form-item>
 
         <el-form-item label="intendedteammate" prop="intendedteammate">
-          <el-input v-model="intendedteammate"/>
+          <el-input v-model="edit.intendedteammate"/>
         </el-form-item>
 
         <el-form-item>
@@ -226,7 +226,7 @@ export default {
           selfIntroduction:localStorage.getItem('selfIntroduction'),
           technologyStack:localStorage.getItem('technologystack'),
           programmingSkill:localStorage.getItem('programmingskill'),
-          intendedTeammate:localStorage.getItem('intendedteammate'),
+          intendedTeammate:localStorage.getItem('intendedteammate')+'',
         }
       }).then(res => {
         console.log('dd');
