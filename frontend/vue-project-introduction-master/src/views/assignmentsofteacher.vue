@@ -18,7 +18,7 @@
                   {{ assignment.file.fileName }}
                 </a>                <p v-else class="placeholder">没有文件</p>
                 <p>截止日期：{{ assignment.ddl }}</p>
-                <el-button type="danger" size="small" @click.stop="deleteAssignment11(assignment)">删除课程</el-button>
+                <el-button type="danger" size="small" @click.stop="deleteAssignment11(assignment)">删除作业</el-button>
                 <el-button type="primary" size="small" @click.stop="editAssignment(assignment)">修改信息</el-button>
               </el-card>
             </el-col>

@@ -34,18 +34,38 @@ export default {
       assignments: [],
       projects: [],
       ddls: [],
+      file:'',
+      file2:'',
+      fileDownloadUrl: '',
+      curteamddl:'',
+
     };
   },
   async created(){
+    await this.loadLocalStorageData2();
     await this.loadAllCoursesinfo();
     await this.loadLocalStorageData();
-    await this.loadAllCoursesinfo();
+
 
   },
   components: {
     shitshan
   },
   methods: {
+    createDownloadUrl(base64, fileName, mimeType) {
+      const blob = this.base64ToBlob(base64, mimeType);
+      const downloadUrl = URL.createObjectURL(blob);
+      return downloadUrl;
+    },
+    base64ToBlob(base64, mimeType) {
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      return new Blob([byteArray], {type: mimeType});
+    },
     join(route) {
       localStorage.setItem("currentprojectid",route.id)
       localStorage.setItem("currentprojectmaxpeopleinteam",route.maxpeopleinteam);
@@ -84,6 +104,166 @@ export default {
           });
     },
 
+    async loadLocalStorageData() {
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.courses=[];
+      for (let i = 0; i < localStorage.getItem('length'); i++) {
+        this.courses.push({
+          id: localStorage.getItem('coursesid' + i),
+          title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
+        });
+      }
+      this.posts=[];
+      for (let i = 0; i < localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse")); i++) {
+        this.posts.push({
+          id: localStorage.getItem('postid' + localStorage.getItem("currentcourse")+i),
+          content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
+          title: localStorage.getItem('posttitle' + localStorage.getItem("currentcourse")+i),
+          author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
+        });
+      }
+      this.materials=[];
+
+      for (let i = 0; i < localStorage.getItem('courseMaterialLength'+localStorage.getItem("currentcourse")); i++) {
+        this.materials.push({
+          id:localStorage.getItem('materialid' + localStorage.getItem("currentcourse")+i),
+          name: localStorage.getItem('materialname' + localStorage.getItem("currentcourse")+i),
+          description: localStorage.getItem('materialdescription' + localStorage.getItem("currentcourse")+i),
+        });
+      }
+      this.assignments=[];
+      console.log(localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      // for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
+      //
+      //   if(localStorage.getItem('assignmentfileid' + localStorage.getItem("currentcourse")+i)!=null&&localStorage.getItem('assignmentfileid' + localStorage.getItem("currentcourse")+i)!="null"){
+      //     const response = await this.$axios.get('/course/file', {
+      //       params: {
+      //         id: localStorage.getItem('assignmentfileid' + localStorage.getItem("currentcourse")+i)
+      //       }
+      //     });
+      //     if (response.data.code === "0") {
+      //       this.file = response.data.data;
+      //       this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
+      //       this.file.downloadUrl = this.fileDownloadUrl;
+      //       this.assignments.push({
+      //         id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
+      //         status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
+      //         title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+      //         description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+      //         ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+      //         file:this.file,
+      //       });
+      //     }else {
+      //       this.assignments.push({
+      //         id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
+      //         status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
+      //         title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+      //         description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+      //         ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+      //         file: "无文件",
+      //       });
+      //     }
+      //   }else{
+      //     this.assignments.push({
+      //       id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
+      //       status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
+      //       title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
+      //       description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
+      //       ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+      //       file: "无文件",
+      //     });
+      //   }
+      //
+      //   this.ddls.push({
+      //     date: this.assignments[i].ddl,
+      //     title: this.assignments[i].title,
+      //   });
+      // }
+      this.projects=[];
+      console.log(localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+      for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
+        if(localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!=null&&localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!="null"){
+          const response = await this.$axios.get('/course/file', {
+            params: {
+              id: localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)
+            }
+          });
+          if (response.data.code === "0") {
+            this.file = response.data.data;
+            this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
+            this.file.downloadUrl = this.fileDownloadUrl;
+            this.projects.push({
+              id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
+              title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+              description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+              startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+              ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+              status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+              maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+              file:this.file,
+            });
+          }else {
+            this.projects.push({
+              id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
+              title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+              description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+              startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+              ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+              status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+              maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+              file: "无文件",
+            });
+          }
+        }else{
+          this.projects.push({
+            id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
+            title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+            description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+            startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+            ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+            status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+            maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+            teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+            file: "无文件",
+          });
+        }
+        console.log(this.projects)
+        this.ddls.push({
+          date: this.projects[i].ddl,
+          title: this.projects[i].title,
+        });
+      }
+      // console.log(this.projects[0])
+      // console.log(this.projects[1])
+      // console.log("course name="+this.myValue)
+      // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      // console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+
+    },
+    async loadLocalStorageData2() {
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.courses=[];
+      for (let i = 0; i < localStorage.getItem('length'); i++) {
+        this.courses.push({
+          id: localStorage.getItem('coursesid' + i),
+          title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
+        });
+      }
+
+
+
+      // console.log(this.projects[1])
+      // console.log("course name="+this.myValue)
+      // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      // console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+
+    },
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
         //加载posts
@@ -171,7 +351,7 @@ export default {
           }
         }).then((res) => {
           if (res.data.code === "0") {
-            console.log("project"+course.title+res.data.data)
+            console.log(res.data.data)
 
             localStorage.setItem('projectsLength'+course.title,res.data.data.length)
             console.log(localStorage.getItem('projectsLength'+course.title))
@@ -266,147 +446,6 @@ export default {
           });
         }
       }
-    },
-
-
-    async loadLocalStorageData() {
-      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
-      this.courses=[];
-      for (let i = 0; i < localStorage.getItem('length'); i++) {
-        this.courses.push({
-          id: localStorage.getItem('coursesid' + i),
-          title: localStorage.getItem('courses' + i),
-          description: localStorage.getItem('courseDescription' + i),
-          code: localStorage.getItem('coursecode' +i),
-        });
-      }
-      this.posts=[];
-      for (let i = 0; i < localStorage.getItem('coursePostLength'+localStorage.getItem("currentcourse")); i++) {
-        this.posts.push({
-          id: localStorage.getItem('postid' + localStorage.getItem("currentcourse")+i),
-          content: localStorage.getItem('post' + localStorage.getItem("currentcourse")+i),
-          title: localStorage.getItem('posttitle' + localStorage.getItem("currentcourse")+i),
-          author: localStorage.getItem('postauthor' + localStorage.getItem("currentcourse")+i),
-        });
-      }
-      this.materials=[];
-
-      for (let i = 0; i < localStorage.getItem('courseMaterialLength'+localStorage.getItem("currentcourse")); i++) {
-        this.materials.push({
-          id:localStorage.getItem('materialid' + localStorage.getItem("currentcourse")+i),
-          name: localStorage.getItem('materialname' + localStorage.getItem("currentcourse")+i),
-          description: localStorage.getItem('materialdescription' + localStorage.getItem("currentcourse")+i),
-        });
-      }
-      this.assignments=[];
-      console.log(localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      // for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")); i++) {
-      //
-      //   if(localStorage.getItem('assignmentfileid' + localStorage.getItem("currentcourse")+i)!=null&&localStorage.getItem('assignmentfileid' + localStorage.getItem("currentcourse")+i)!="null"){
-      //     const response = await this.$axios.get('/course/file', {
-      //       params: {
-      //         id: localStorage.getItem('assignmentfileid' + localStorage.getItem("currentcourse")+i)
-      //       }
-      //     });
-      //     if (response.data.code === "0") {
-      //       this.file = response.data.data;
-      //       this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
-      //       this.file.downloadUrl = this.fileDownloadUrl;
-      //       this.assignments.push({
-      //         id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
-      //         status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
-      //         title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
-      //         description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
-      //         ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
-      //         file:this.file,
-      //       });
-      //     }else {
-      //       this.assignments.push({
-      //         id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
-      //         status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
-      //         title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
-      //         description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
-      //         ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
-      //         file: "无文件",
-      //       });
-      //     }
-      //   }else{
-      //     this.assignments.push({
-      //       id: localStorage.getItem('assignmentid' + localStorage.getItem("currentcourse")+i),
-      //       status: localStorage.getItem('assignmentstatus' + localStorage.getItem("currentcourse")+i),//assignmentname
-      //       title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
-      //       description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
-      //       ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
-      //       file: "无文件",
-      //     });
-      //   }
-      //
-      //   this.ddls.push({
-      //     date: this.assignments[i].ddl,
-      //     title: this.assignments[i].title,
-      //   });
-      // }
-      this.projects=[];
-      for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
-        if(localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!=null&&localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!="null"){
-          const response = await this.$axios.get('/course/file', {
-            params: {
-              id: localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)
-            }
-          });
-          if (response.data.code === "0") {
-            this.file = response.data.data;
-            this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
-            this.file.downloadUrl = this.fileDownloadUrl;
-            this.projects.push({
-              id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
-              title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
-              description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
-              startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-              ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
-              status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
-              maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
-              file:this.file,
-            });
-          }else {
-            this.projects.push({
-              id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
-              title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
-              description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
-              startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-              ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
-              status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
-              maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
-              file: "无文件",
-            });
-          }
-        }else{
-          this.projects.push({
-            id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
-            title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
-            description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
-            startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-            ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
-            status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
-            maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-            teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
-            file: "无文件",
-          });
-        }
-
-        this.ddls.push({
-          date: this.projects[i].ddl,
-          title: this.projects[i].title,
-        });
-      }
-      // console.log(this.projects[0])
-      // console.log(this.projects[1])
-      // console.log("course name="+this.myValue)
-      // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
-      // console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
-
     },
 
   }

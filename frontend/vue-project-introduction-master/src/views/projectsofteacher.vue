@@ -77,22 +77,22 @@
         <el-form-item label="Project描述">
           <el-input type="textarea" v-model="editProjectForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="作业文件" >
+        <el-form-item label="作业文件" label-width="93px">
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
-        <el-form-item label="截止日期">
+        <el-form-item label="截止日期" label-width="93px">
           <el-date-picker v-model="editProjectForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
         </el-form-item>
-        <el-form-item label="最高分数">
+        <el-form-item label="最高分数" label-width="93px">
           <el-input-number v-model="editProjectForm.maxScore"></el-input-number>
         </el-form-item>
-        <el-form-item label="占比">
+        <el-form-item label="占比" label-width="93px">
           <el-input-number v-model="editProjectForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
         </el-form-item>
         <el-form-item label="组队截止日期" label-width="93px">
           <el-date-picker v-model="editProjectForm.teamdeadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
         </el-form-item>
-        <el-form-item label="队伍最大人数">
+        <el-form-item label="队伍最大人数" label-width="93px">
           <el-input-number v-model="editProjectForm.maxPeopleInTeam" :min="1" :max="100" step="1"></el-input-number>
         </el-form-item>
         <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
