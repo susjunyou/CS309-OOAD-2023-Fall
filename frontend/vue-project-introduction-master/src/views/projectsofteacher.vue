@@ -163,7 +163,7 @@ export default {
     };
   },
   async created(){
-    await this.loadLocalStorageData();
+    await this.loadLocalStorageData2();
     await this.loadAllCoursesinfo();
     await this.loadLocalStorageData()
   },
@@ -672,6 +672,26 @@ export default {
         });
       }
       // console.log(this.projects[0])
+      // console.log(this.projects[1])
+      // console.log("course name="+this.myValue)
+      // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))
+      // console.log("projectleng="+localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")))
+
+    },
+    async loadLocalStorageData2() {
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.courses=[];
+      for (let i = 0; i < localStorage.getItem('length'); i++) {
+        this.courses.push({
+          id: localStorage.getItem('coursesid' + i),
+          title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
+        });
+      }
+
+
+
       // console.log(this.projects[1])
       // console.log("course name="+this.myValue)
       // console.log("assleng="+localStorage.getItem('courseAssignmentLength'+localStorage.getItem("currentcourse")))

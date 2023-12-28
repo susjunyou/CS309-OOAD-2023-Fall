@@ -148,7 +148,7 @@ export default {
     };
   },
   async created(){
-    await this.loadLocalStorageData();
+    await this.loadLocalStorageData2();
     await this.loadAllCoursesinfo();
     await this.loadLocalStorageData()
   },
@@ -156,6 +156,18 @@ export default {
     shitshansa
   },
   methods: {
+    async loadLocalStorageData2() {
+      await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
+      this.courses=[];
+      for (let i = 0; i < localStorage.getItem('lengthsa'); i++) {
+        this.courses.push({
+          id: localStorage.getItem('coursesidsa' + i),
+          title: localStorage.getItem('coursessa' + i),
+          description: localStorage.getItem('courseDescriptionsa' + i),
+          code: localStorage.getItem('coursecodesa' +i),
+        });
+      }
+    },
     handleDownload(assignment){
       console.log("阻止进入"+assignment.title)
     },
@@ -362,7 +374,7 @@ export default {
     },
 
     async returnToprotects(){
-      await this.loadLocalStorageData()
+      await this.loadLocalStorageData2()
       await this.loadAllCoursesinfo()
       await this.loadLocalStorageData()
       this.dialogVisible = false;
