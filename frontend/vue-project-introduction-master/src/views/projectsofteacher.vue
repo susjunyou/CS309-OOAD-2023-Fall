@@ -380,7 +380,7 @@ export default {
     },
 
     async returnToprotects(){
-      await this.loadLocalStorageData()
+      await this.loadLocalStorageData2()
       await this.loadAllCoursesinfo()
       await this.loadLocalStorageData()
       this.dialogVisible = false;
