@@ -97,6 +97,9 @@ public class GradeController {
 
     @PostMapping("/uploadAssignmentGradeCSV")
     public Result uploadAssignmentGradeCSV(Integer assignmentId, MultipartFile file) {
+        if (file == null) {
+            return Result.error("1", "No file");
+        }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -114,13 +117,16 @@ public class GradeController {
 
     @PostMapping("/uploadProjectGradeCSV")
     public Result uploadProjectGradeCSV(Integer projectId, MultipartFile file) {
+        if (file == null) {
+            return Result.error("1", "No file");
+        }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
                 String studentId = fields[0];
                 String grade = fields[1];
-                if (!gradeService.uploadProjectGradeCSV( projectId, Integer.parseInt(studentId),Integer.parseInt(grade)))
+                if (!gradeService.uploadProjectGradeCSV(projectId, Integer.parseInt(studentId), Integer.parseInt(grade)))
                     return Result.error();
             }
         } catch (IOException e) {
@@ -131,6 +137,9 @@ public class GradeController {
 
     @PostMapping("/uploadAttendanceGradeCSV")
     public Result uploadAttendanceGradeCSV(Integer attendanceId, MultipartFile file) {
+        if (file == null) {
+            return Result.error("1", "No file");
+        }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {

@@ -34,7 +34,7 @@ public class FileController {
         return Result.success(result);
     }
 
-    @GetMapping("/addMaterial")
+    @PostMapping("/addMaterial")
     public Result addMaterial(Integer courseId, String name, String description, MultipartFile file) {
         FileInfo fileInfo = new FileInfo();
         try {

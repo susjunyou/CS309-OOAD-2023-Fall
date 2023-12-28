@@ -13,7 +13,7 @@ import java.util.List;
 public interface TeamPeerRevisionMapper extends BaseMapper<TeamPeerRevisionInfo> {
 
 
-    @Select("select * from team_peer_revision where team1 = #{teamId} and project_id = #{projectId}")
+    @Select("select * from team_peer_revision where team2 = #{teamId} and project_id = #{projectId}")
     List<TeamPeerRevisionInfo> findOtherTeamGrade(Integer teamId, Integer projectId);
 
     @Insert("insert into team_peer_revision (team1, team2, project_id, grade, comment) values (#{team1}, #{team2}, #{projectId}, #{grade}, #{comment})")
