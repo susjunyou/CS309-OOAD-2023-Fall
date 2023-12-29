@@ -44,7 +44,17 @@
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
         <el-form-item label="截止日期">
-          <el-date-picker v-model="assignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="assignmentForm.deadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="最高分数">
           <el-input-number v-model="assignmentForm.maxScore"></el-input-number>
@@ -73,7 +83,16 @@
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
         <el-form-item label="截止日期">
-          <el-date-picker v-model="editAssignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="editAssignmentForm.deadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="最高分数">
           <el-input-number v-model="editAssignmentForm.maxScore"></el-input-number>
@@ -110,6 +129,34 @@ import shitshan from "@/components/shitshan.vue";
 export default {
   data() {
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
+        shortcuts: [{
+          text: '明天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '后天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周后',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+
       courses: [],
       posts: [],
       materials: [],
@@ -156,6 +203,12 @@ export default {
     shitshan
   },
   methods: {
+    formatDateToISOWithoutTimezone(date) {
+      const offset = date.getTimezoneOffset(); // 获取本地时间和 UTC 时间的分钟差
+      const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000)); // 调整日期
+      return adjustedDate.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+    },
+
     async loadLocalStorageData2() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
@@ -392,7 +445,7 @@ export default {
     async addAssignment(){
       console.log(localStorage.getItem('id'))
       let date = new Date(this.assignmentForm.deadline);
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate = this.formatDateToISOWithoutTimezone(date); // 转换为 YYYY-MM-DD 格式
       let formData=new FormData();
       formData.append('assignmentTitle', this.assignmentForm.title);
       formData.append('assignmentDescription', this.assignmentForm.description);
@@ -479,7 +532,7 @@ export default {
       console.log('this.form:'+this.editAssignmentForm.deadline)
       let date = new Date(this.editAssignmentForm.deadline);
       console.log('date:'+date)
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate = this.formatDateToISOWithoutTimezone(date); // 转换为 YYYY-MM-DD 格式
       console.log('format:'+formattedDate)
       let tit = localStorage.getItem('currentassignmenttitle')
       console.log('tit:'+tit)

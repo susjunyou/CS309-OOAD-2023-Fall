@@ -167,7 +167,7 @@ export default {
         for (let i=0;i<res.data.data.length;i++){
           const res1 = await this.$axios.get('/team/findTeamInfoByTeamId', {
             params: {
-              teamId: res.data.data[i].team2,
+              teamId: res.data.data[i].team1,
             }
           });
 
