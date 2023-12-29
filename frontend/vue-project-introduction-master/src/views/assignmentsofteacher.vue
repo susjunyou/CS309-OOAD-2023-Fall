@@ -311,7 +311,8 @@ export default {
               localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
               localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
-              localStorage.setItem('assignmentfileid'+course.title+i,res.data.data[i].fileId);
+              localStorage.setItem('assignmentproportion'+course.title+i,res.data.data[i].proportion);
+              localStorage.setItem('assignmentmaxscore'+course.title+i,res.data.data[i].maxScore);
               this.ddls.push({
                 date : res.data.data[i].assignmentDeadline,
                 title : course.title+"   "+res.data.data[i].assignmentTitle,
@@ -504,7 +505,7 @@ export default {
     editAssignment(assignment) {
 
       // 打开编辑对话框并填充表单数据
-      this.dialogVisible2 = true;//在这里出问题
+      this.dialogVisible2 = true;
       console.log(this.dialogVisible2)
       console.log('设置可视化')
       console.log(assignment)
@@ -513,7 +514,8 @@ export default {
       console.log('ceshi:'+localStorage.getItem('status'+assignment.title))
       this.editAssignmentForm.title = assignment.title;
       this.editAssignmentForm. description = assignment.description;
-      this.editAssignmentForm.deadline = assignment.deadline;
+       this.editAssignmentForm.deadline = new Date(assignment.ddl);
+
       this.editAssignmentForm.status = assignment.status;
       this.editAssignmentForm. maxScore = assignment.maxScore;
       this.editAssignmentForm.proportion = assignment.proportion;
@@ -623,6 +625,8 @@ export default {
               title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
               description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
               ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('assignmentmaxscore' + localStorage.getItem("currentcourse")+i),
               file:this.file,
             });
           }else {
@@ -632,6 +636,8 @@ export default {
               title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
               description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
               ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('assignmentmaxscore' + localStorage.getItem("currentcourse")+i),
               file: "无文件",
             });
           }
@@ -642,6 +648,8 @@ export default {
             title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
             description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
             ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+            proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+            maxScore: localStorage.getItem('assignmentmaxscore' + localStorage.getItem("currentcourse")+i),
             file: "无文件",
           });
         }

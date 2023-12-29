@@ -219,7 +219,8 @@ export default {
         releaserType: '',
         maxPeopleInTeam:'',
         courseId: '',
-        teamdeadline:''
+        teamdeadline:'',
+        file:'',
       },
       isPopupVisible: false,
       file:'',
@@ -368,6 +369,8 @@ export default {
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
               localStorage.setItem('projectfileid'+course.title+i,res.data.data[i].fileId);
               localStorage.setItem('teamddl' + course.title+i,res.data.data[i].teamDeadline);
+              localStorage.setItem('projectproportion' + course.title+i,res.data.data[i].proportion);
+              localStorage.setItem('projectmaxscore' + course.title+i,res.data.data[i].maxScore);
               this.ddls.push({
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,
@@ -540,16 +543,17 @@ export default {
       // console.log('ceshi:'+localStorage.getItem('status'+project.title))
       this.editProjectForm.title = project.title;
       this.editProjectForm. description = project.description;
-      this.editProjectForm.deadline = project.deadline;
+      this.editProjectForm.deadline = new Date(project.ddl);
       this.editProjectForm.status = project.status;
       this.editProjectForm.maxScore = project.maxScore;
       this.editProjectForm.proportion =project.proportion;
       this.editProjectForm.releaser = localStorage.getItem('id').toString();
       this.editProjectForm. releaserType = 'TEACHER';
-      this.editProjectForm.maxPeopleInTeam = project.maxPeopleInTeam;
+      this.editProjectForm.maxPeopleInTeam = project.maxpeopleinteam;
       this.editProjectForm. courseId = localStorage.getItem('currentcourseid');
-      this.editProjectForm.teamdeadline = project.teamdeadline;
+      this.editProjectForm.teamdeadline = new Date(project.teamddl);
       this.curteamddl=project.teamdeadline
+      this.editProjectForm.file=project.file
       this.dialogVisible2 = true;//在这里出问题
 
       // console.log(this.editProjectForm.status )
@@ -710,6 +714,8 @@ export default {
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
               teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('projectmaxscore' + localStorage.getItem("currentcourse")+i),
               file:this.file,
             });
           }else {
@@ -722,6 +728,8 @@ export default {
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
               teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('projectmaxscore' + localStorage.getItem("currentcourse")+i),
               file: "无文件",
             });
           }
@@ -735,6 +743,8 @@ export default {
             status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
             maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
             teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+            proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+            maxScore: localStorage.getItem('projectmaxscore' + localStorage.getItem("currentcourse")+i),
             file: "无文件",
           });
         }
