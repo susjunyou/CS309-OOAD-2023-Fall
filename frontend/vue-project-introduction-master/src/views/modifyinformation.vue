@@ -362,8 +362,8 @@ export default {
       });
     },
     update1(row){
-      this.dialogForm.teacherId = row.teacherId;
-      this.dialogForm.presentationDate = row.presentationDate;
+      this.dialogForm.teacherId = row.teacherid;
+      this.dialogForm.presentationDate = new Date(row.presentationdate);
       this.dialogForm.presentationTime = row.presentationTime;
       localStorage.setItem('currentteamid', row.id);
       this.dialogVisible = true;

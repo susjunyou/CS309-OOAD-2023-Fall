@@ -542,15 +542,15 @@ export default {
       localStorage.setItem('currentprojecttitle',project.title);
       // console.log('ceshi:'+localStorage.getItem('status'+project.title))
       this.editProjectForm.title = project.title;
-      this.editProjectForm. description = project.description;
+      this.editProjectForm.description = project.description;
       this.editProjectForm.deadline = new Date(project.ddl);
       this.editProjectForm.status = project.status;
       this.editProjectForm.maxScore = project.maxScore;
       this.editProjectForm.proportion =project.proportion;
       this.editProjectForm.releaser = localStorage.getItem('id').toString();
-      this.editProjectForm. releaserType = 'TEACHER';
+      this.editProjectForm.releaserType = 'TEACHER';
       this.editProjectForm.maxPeopleInTeam = project.maxpeopleinteam;
-      this.editProjectForm. courseId = localStorage.getItem('currentcourseid');
+      this.editProjectForm.courseId = localStorage.getItem('currentcourseid');
       this.editProjectForm.teamdeadline = new Date(project.teamddl);
       this.curteamddl=project.teamdeadline
       this.editProjectForm.file=project.file
