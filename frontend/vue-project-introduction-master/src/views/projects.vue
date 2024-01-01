@@ -124,7 +124,10 @@
                  :download="project.file.fileName"
                  @click.stop="handleDownload(project)">
                 {{ project.file.fileName }}
+
               </a>                <p v-else class="placeholder">没有文件</p>
+              <a class="clickable-text" @click.stop="descrip(project)">查看工程描述</a>
+
               <p>截止日期：{{ project.ddl }}</p>
               <p>组队截止时间：{{ project.teamddl }}</p>
 

@@ -114,6 +114,7 @@
       <el-row :gutter="20">
         <el-col v-for="assignment in assignments" :key="assignment.id" :span="6" >
           <el-card @click.native="submitassignment(assignment)" class="assignment-card" style="min-height: 200px">
+
             <h3>{{ assignment.title }}</h3>
             <a v-if="assignment.file.downloadUrl"
                :href="assignment.file.downloadUrl"
@@ -121,6 +122,7 @@
                @click.stop="handleDownload(assignment)">
               {{ assignment.file.fileName }}
             </a>                <p v-else class="placeholder">没有文件</p>
+            <a class="clickable-text" @click.stop="descrip(assignment)">查看作业描述</a>
             <p>截止日期：{{ assignment.ddl }}</p>
 
           </el-card>
@@ -128,6 +130,12 @@
       </el-row>
       <!-- ...之后的代码... -->
 
+    </div>
+    <div v-if="isPopupVisible2" class="popup">
+      <div class="popup-content">
+        <p>{{ this.message }}</p>
+        <button @click="returnToprotects" class="sumbitt">关闭</button>
+      </div>
     </div>
     <!--    <p>welcome to {{myValue}}</p>-->
     <!--  </div>-->
@@ -218,6 +226,8 @@ export default {
       technologystack:'',
       programmingskill:'',
       intendedteammate:'',
+      isPopupVisible2:'',
+      message:'',
     };
   },
 
@@ -234,6 +244,13 @@ export default {
     this.myValue=localStorage.getItem("currentcourse")
   },
   methods: {
+    descrip(assignment){
+      this.message=assignment.description,
+          this.isPopupVisible2=true;
+    },
+    returnToprotects(){
+      this.isPopupVisible2=false;
+    },
     async loadLocalStorageData2() {
       this.courses=[];
       for (let i = 0; i < localStorage.getItem('length'); i++) {
