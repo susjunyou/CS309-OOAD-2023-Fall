@@ -332,7 +332,6 @@ export default {
     this.name = localStorage.getItem('name');
     this.major = localStorage.getItem('major');
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
     this.attrs = this.ddls.map(ddl => ({

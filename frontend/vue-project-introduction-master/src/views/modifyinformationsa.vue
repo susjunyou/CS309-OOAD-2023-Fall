@@ -268,6 +268,11 @@ export default {
     shitshansa
   },
   methods: {
+    formatDateToISOWithoutTimezone(date) {
+      const offset = date.getTimezoneOffset(); // 获取本地时间和 UTC 时间的分钟差
+      const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000)); // 调整日期
+      return adjustedDate.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+    },
     showAddMemberDialog(team) {
       this.dialogVisibleAddMember = true;
       this.currentteamid=team.id;
@@ -362,7 +367,10 @@ export default {
     },
     update1(row){
       this.dialogForm.teacherId = row.teacherid;
-      this.dialogForm.presentationDate = new Date(row.presentationdate);
+
+      if(row.presentationdate!=null&&row.presentationdate!=undefined&&row.presentationdate!=''&&row.presentationdate!=null){
+        this.dialogForm.presentationDate = new Date(row.presentationdate);
+      }
       this.dialogForm.presentationTime = row.presentationTime;
       localStorage.setItem('currentteamid', row.id);
       this.dialogVisible = true;
@@ -417,7 +425,7 @@ export default {
     updateDefenseInfo() {
       console.log(this.dialogForm.teacherId);
       let date = new Date(this.dialogForm.presentationDate);
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate = this.formatDateToISOWithoutTimezone(date);
       this.dialogForm.presentationDate = formattedDate;
       this.$axios.get('/presentation/addPresentation', {
         params: {

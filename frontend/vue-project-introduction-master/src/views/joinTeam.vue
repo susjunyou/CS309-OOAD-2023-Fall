@@ -519,10 +519,9 @@ export default {
     this.major = localStorage.getItem('major');
     this.email = localStorage.getItem('email');
     console.log(this.teamddl)
-    await this.loadLocalStorageData();
+    await this.loadLocalStorageData2();
     await this.loadAllCoursesinfo();
     await this.loadLocalStorageData();
-    await this.loadStudentsAndSA();
     await this.loadstudentnotjointeam();
     await this.getTeam();
     await this.loaddisplay();
@@ -540,6 +539,18 @@ export default {
   },
 
   methods: {
+    async loadLocalStorageData2() {
+      this.courses=[];
+      for (let i = 0; i < localStorage.getItem('length'); i++) {
+        this.courses.push({
+          id: localStorage.getItem('coursesid' + i),
+          title: localStorage.getItem('courses' + i),
+          description: localStorage.getItem('courseDescription' + i),
+          code: localStorage.getItem('coursecode' +i),
+        });
+      }
+    },
+
     createDownloadUrl(base64, fileName, mimeType) {
       const blob = this.base64ToBlob(base64, mimeType);
       const downloadUrl = URL.createObjectURL(blob);
@@ -1333,20 +1344,36 @@ this.dialogVisible2=true;
       this.$router.push('/projects');
     },
     leaveTeam() {
-      this.$axios.get('/team/leave', {
-        params: {
-          studentId: Number(localStorage.getItem("id")),
-          teamId: Number(localStorage.getItem("myteamid")),
-        },
-      }).then((res) => {
-        if (res.data.code === "0") {
-          this.wenzi="离开";
-          this.isPopupVisible = true;
+      if(this.isleader){
+        this.$axios.get('/team/delete', {
+          params: {
+           teamId:Number(localStorage.getItem("myteamid"))
+          }
+        }).then((res) => {
+          if (res.data.code === "0") {
+            this.wenzi = "删除";
+            this.isPopupVisible = true;
+          }
+        });
+      }
+      else
+      {
+        this.$axios.get('/team/leave', {
+          params: {
+            studentId: Number(localStorage.getItem("id")),
+            teamId: Number(localStorage.getItem("myteamid")),
+          },
+        }).then((res) => {
+          if (res.data.code === "0") {
+            this.wenzi = "离开";
+            this.isPopupVisible = true;
 
-        }
-      }).catch(error => {
-        console.error('Error loading course assignments:', error);
-      });
+          }
+        }).catch(error => {
+          console.error('Error loading course assignments:', error);
+        });
+      }
+
     },
     joinTeam(team) {
       // console.log("Number(localStorage.getItem(\"id\"))="+Number(localStorage.getItem("id")));
@@ -1474,70 +1501,70 @@ this.dialogVisible2=true;
       //     title: this.assignments[i].title,
       //   });
       // }
-      this.projects=[];
-      for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
-        if(localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i)==localStorage.getItem("currentprojectid")){
-          this.teamddl= localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i);
-        }
-
-
-
-        if(localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!=null&&localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!="null"){
-          const response = await this.$axios.get('/course/file', {
-            params: {
-              id: localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)
-            }
-          });
-          if (response.data.code === "0") {
-
-
-
-            this.file = response.data.data;
-            this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
-            this.file.downloadUrl = this.fileDownloadUrl;
-            this.projects.push({
-              id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
-              title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
-              description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
-              startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-              ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
-              status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
-              maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
-              file:this.file,
-            });
-          }else {
-            this.projects.push({
-              id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
-              title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
-              description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
-              startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-              ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
-              status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
-              maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-              teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
-              file: "无文件",
-            });
-          }
-        }else{
-          this.projects.push({
-            id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
-            title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
-            description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
-            startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
-            ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
-            status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
-            maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
-            teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
-            file: "无文件",
-          });
-        }
-
-        this.ddls.push({
-          date: this.projects[i].ddl,
-          title: this.projects[i].title,
-        });
-      }
+      // this.projects=[];
+      // for (let i = 0; i < localStorage.getItem('projectsLength'+localStorage.getItem("currentcourse")); i++) {
+      //   if(localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i)==localStorage.getItem("currentprojectid")){
+      //     this.teamddl= localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i);
+      //   }
+      //
+      //
+      //
+      //   if(localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!=null&&localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)!="null"){
+      //     const response = await this.$axios.get('/course/file', {
+      //       params: {
+      //         id: localStorage.getItem('projectfileid' + localStorage.getItem("currentcourse")+i)
+      //       }
+      //     });
+      //     if (response.data.code === "0") {
+      //
+      //
+      //
+      //       this.file = response.data.data;
+      //       this.fileDownloadUrl = this.createDownloadUrl(this.file.fileData, this.file.fileName, this.file.fileType);
+      //       this.file.downloadUrl = this.fileDownloadUrl;
+      //       this.projects.push({
+      //         id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
+      //         title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+      //         description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+      //         startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+      //         ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+      //         status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+      //         maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+      //         teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+      //         file:this.file,
+      //       });
+      //     }else {
+      //       this.projects.push({
+      //         id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
+      //         title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+      //         description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+      //         startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+      //         ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+      //         status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+      //         maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+      //         teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+      //         file: "无文件",
+      //       });
+      //     }
+      //   }else{
+      //     this.projects.push({
+      //       id: localStorage.getItem('projectid' + localStorage.getItem("currentcourse")+i),
+      //       title: localStorage.getItem('projecttitle' + localStorage.getItem("currentcourse")+i),
+      //       description: localStorage.getItem('projectdescription' + localStorage.getItem("currentcourse")+i),
+      //       startdate: localStorage.getItem('projectstartdate' + localStorage.getItem("currentcourse")+i),
+      //       ddl: localStorage.getItem('projectddl' + localStorage.getItem("currentcourse")+i),
+      //       status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
+      //       maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
+      //       teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+      //       file: "无文件",
+      //     });
+      //   }
+      //
+      //   this.ddls.push({
+      //     date: this.projects[i].ddl,
+      //     title: this.projects[i].title,
+      //   });
+      // }
       // console.log(this.projects[0])
       // console.log(this.projects[1])
       // console.log("course name="+this.myValue)
