@@ -459,7 +459,7 @@ console.log(formattedDate);
         // console.log('teamiD:')
         // console.log(localStorage.getItem('myteamid'))
         console.log(res.data)
-        let dd = localStorage.getItem('in_ddl');
+        let dd = this.in_ddl;
         let n_data = new Date()
         let ddl_year=Number(dd.slice(0,4))
         let ddl_mount=Number(dd.slice(5,7))
@@ -763,7 +763,6 @@ h1 {
   border: 1px solid gainsboro;
   height: 150px;
   width: 200px;
-  background-color: #00d897;
 
 }
 
@@ -783,7 +782,6 @@ h1 {
   border: 1px solid gainsboro;
   height: 150px;
   width: 300px;
-  background-color: #00d804;
 
 }
 
