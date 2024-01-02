@@ -1392,7 +1392,7 @@ this.dialogVisible2=true;
 
     go2(route) {
       if (new Date() > new Date(this.teamddl)) {
-        alert('已过团队加入截止日期，不能申请加入队伍。');
+        alert('已过团队加入截止日期，不能创建队伍。');
         return;
       }else{this.$router.push(route);}
     },
