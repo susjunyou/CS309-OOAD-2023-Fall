@@ -110,7 +110,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="答辩日期">
-          <el-date-picker v-model="dialogForm.presentationDate" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="dialogForm.presentationDate"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 22%"
+          />
         </el-form-item>
         <!--        <el-form-item label="答辩时间">-->
         <!--          <el-time-picker-->
@@ -202,6 +211,34 @@ import shitshan from "@/components/shitshan.vue";
 export default {
   data() {
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
+        shortcuts: [{
+          text: '明天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '后天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周后',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+
       courses: [],
       posts: [],
       materials: [],

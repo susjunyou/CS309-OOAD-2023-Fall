@@ -116,12 +116,15 @@
           <el-card @click.native="submitassignment(assignment)" class="assignment-card" style="min-height: 200px">
 
             <h3>{{ assignment.title }}</h3>
+
             <a v-if="assignment.file.downloadUrl"
                :href="assignment.file.downloadUrl"
                :download="assignment.file.fileName"
                @click.stop="handleDownload(assignment)">
-              {{ assignment.file.fileName }}
-            </a>                <p v-else class="placeholder">没有文件</p>
+              <p>  {{ assignment.file.fileName }}</p>
+            </a>
+
+            <p v-else class="placeholder">没有文件</p>
             <a class="clickable-text" @click.stop="descrip(assignment)">查看作业描述</a>
             <p>截止日期：{{ assignment.ddl }}</p>
 

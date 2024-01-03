@@ -311,6 +311,7 @@ export default {
               localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
               localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
+              localStorage.setItem('assignmentfileid' + course.title + i, res.data.data[i].fileId);
               localStorage.setItem('assignmentproportion'+course.title+i,res.data.data[i].proportion);
               localStorage.setItem('assignmentmaxscore'+course.title+i,res.data.data[i].maxScore);
               this.ddls.push({

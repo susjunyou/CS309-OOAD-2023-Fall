@@ -129,7 +129,8 @@
           <!-- 添加更多列来显示团队信息 -->
         </el-table>
         <div class="button-container">
-          <button class="sumbitt" @click="() => leaveTeam()">离开小队</button>
+          <button v-if="isleader" class="sumbitt" @click="() => leaveTeam()">解散小队</button>
+          <button v-else class="sumbitt" @click="() => leaveTeam()">离开小队</button>
           <button class="sumbitt" @click="() => submitproject()">提交project</button>
           <el-button class="sumbitt" @click="() => editRecruitment()" :disabled="id != myTeam[0].leader">修改招募信息</el-button>
           <el-button class="sumbitt" @click="() => dabian()" >查看答辩信息</el-button>
@@ -435,6 +436,7 @@ export default {
         ],
       },
       dialogVisible: false,
+      crtddl:'',
       edit: {
         e_id: "",
         e_email:"",
@@ -528,6 +530,7 @@ export default {
     await this.loadbeinvited();
     await this.getunratedteams();
     await this.getratedteams();
+    await this.getddl();
     console.log(this.isleader)
     this.myValue=localStorage.getItem("currentcourse")
     this.myValue=localStorage.getItem("currentcourse");
@@ -756,10 +759,13 @@ export default {
         },
 
       })
+      console.log(res.data)
       if(res.data.code==0){
         for(let i=0;i<res.data.data.length;i++){
           if(res.data.data[i].id==localStorage.getItem("currentprojectid")){
-            this.teamddl=res.data.data[i].TeamDeadline;
+            this.teamddl=res.data.data[i].teamDeadline;
+            console.log(res.data.data[i].teamDeadline)
+            this.crtddl=res.data.data[i].projectDeadline;
           }
         }
       }
@@ -1344,6 +1350,10 @@ this.dialogVisible2=true;
       this.$router.push('/projects');
     },
     leaveTeam() {
+      if (new Date() > new Date(this.crtddl)) {
+        alert('已过提交截止日期，不能离开/解散队伍。');
+        return;
+      }
       if(this.isleader){
         this.$axios.get('/team/delete', {
           params: {
@@ -1418,6 +1428,8 @@ this.dialogVisible2=true;
     },
 
     go2(route) {
+      console.log(new Date())
+      console.log(new Date(this.teamddl))
       if (new Date() > new Date(this.teamddl)) {
         alert('已过团队加入截止日期，不能创建队伍。');
         return;
