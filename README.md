@@ -1,3 +1,5 @@
 # CS309-OOAD Project Helper #
 
-**database name: OOAD_Project**
+**backend: springboot**
+**database: postgresql**
+**frontend: vue**
