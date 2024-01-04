@@ -601,7 +601,7 @@ values (1, 2);
 insert into project(project_title, project_description, releaser, course_id, project_status,
                     project_start_date, project_deadline, max_people_in_team, max_score, proportion, releaser_type,
                     team_deadline)
-Values ('project1', 'project_description1', 1, 1, 'Finished', '2023-09-30', '2024-1-2', 1, 100, 15, 'TEACHER',
+Values ('project1', 'project_description1', 1, 1, 'Finished', '2023-09-30', '2024-1-1', 1, 100, 15, 'TEACHER',
         '2023-12-15');
 
 --! team data
@@ -690,15 +690,15 @@ values (1, 1, '2023-12-18', 'hello world', 80, '6666666', NULL);
 
 insert into assignment_submission(assignment_id, student_id, submission_date, content, grade,
                                   grade_description, file_id)
-values (1, 1, '2023-12-19', 'hello world1', 86, '77777', NULL);
+values (1, 3, '2023-12-19', 'hello world1', 86, '77777', NULL);
 
 insert into assignment_submission(assignment_id, student_id, submission_date, content, grade,
                                   grade_description, file_id)
-values (1, 1, '2023-12-16', 'hello world2', 99, '8888888', NULL);
+values (1, 6, '2023-12-16', 'hello world2', 99, '8888888', NULL);
 
 insert into assignment (assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
                         proportion, releaser, course_id, releaser_type)
-values ('assignment7', 'assignment_description7', '2024-01-10', 'Started', 95, 15, 5, 1, 'SA');
+values ('assignment7', 'assignment_description7', '2024-01-6', 'Started', 95, 15, 5, 1, 'SA');
 
 insert into assignment(assignment_title, assignment_description, assignment_deadline, assignment_status, max_score,
                        proportion, releaser, course_id, releaser_type)
@@ -927,15 +927,15 @@ values ('CS302', 'Software Engineering', 'This course explores principles and pr
 
 
 --! assignment submission data
-
-insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
-VALUES (1, 1, '2023-11-01', 90, 'grade_description', 'ass');
-
-insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
-VALUES (1, 2, '2023-11-12', 80, 'grade_description2', 'bss');
-
-insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
-VALUES (1, 3, '2023-11-21', NULL, NULL, NULL);
+--
+-- insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
+-- VALUES (1, 1, '2023-11-01', 90, 'grade_description', 'ass');
+--
+-- insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
+-- VALUES (1, 2, '2023-11-12', 80, 'grade_description2', 'bss');
+--
+-- insert into assignment_submission(assignment_id, student_id, submission_date, grade, grade_description, content)
+-- VALUES (1, 3, '2023-11-21', NULL, NULL, NULL);
 
 
 --! Attendance data
