@@ -864,12 +864,12 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/runtime@^7.11.0", "@babel/runtime@^7.8.4":
-  version "7.15.4"
-  resolved "https://registry.nlark.com/@babel/runtime/download/@babel/runtime-7.15.4.tgz?cache=0&sync_timestamp=1630618785994&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40babel%2Fruntime%2Fdownload%2F%40babel%2Fruntime-7.15.4.tgz"
-  integrity sha1-/RfRa/34eObdAtGXU6OfqKjZyEo=
+"@babel/runtime@^7.11.0", "@babel/runtime@^7.21.0", "@babel/runtime@^7.8.4":
+  version "7.23.5"
+  resolved "https://registry.npmmirror.com/@babel/runtime/-/runtime-7.23.5.tgz"
+  integrity sha512-NdUTHcPe4C99WxPub+K9l9tK5/lV4UXIoaHSYgzco9BCyjKAAwzdBI+wWtYqHt7LJdbo74ZjRPJgzVweq1sz0w==
   dependencies:
-    regenerator-runtime "^0.13.4"
+    regenerator-runtime "^0.14.0"
 
 "@babel/template@^7.0.0", "@babel/template@^7.15.4":
   version "7.15.4"
@@ -2719,7 +2719,7 @@ core-js@^2.4.0:
   resolved "https://registry.npmmirror.com/core-js/-/core-js-2.6.12.tgz"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
-core-js@^3.6.5:
+core-js@^3.15.2, core-js@^3.6.5:
   version "3.19.0"
   resolved "https://registry.npmmirror.com/core-js/download/core-js-3.19.0.tgz?cache=0&sync_timestamp=1635142915013&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcore-js%2Fdownload%2Fcore-js-3.19.0.tgz"
   integrity sha1-nkAJipvDJsfoG0hqu9XhK50nUXY=
@@ -2996,6 +2996,18 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
+
+date-fns-tz@^1.3.7:
+  version "1.3.8"
+  resolved "https://registry.npmmirror.com/date-fns-tz/-/date-fns-tz-1.3.8.tgz"
+  integrity sha512-qwNXUFtMHTTU6CFSFjoJ80W8Fzzp24LntbjFFBgL/faqds4e5mo9mftoRLgr3Vi1trISsg4awSpYVsOQCRnapQ==
+
+date-fns@^2.22.1:
+  version "2.30.0"
+  resolved "https://registry.npmmirror.com/date-fns/-/date-fns-2.30.0.tgz"
+  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
 
 de-indent@^1.0.2:
   version "1.0.2"
@@ -3297,6 +3309,14 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+echarts@^5.4.3:
+  version "5.4.3"
+  resolved "https://registry.npmmirror.com/echarts/-/echarts-5.4.3.tgz"
+  integrity sha512-mYKxLxhzy6zyTi/FaEbJMOZU1ULGEQHaeIeuMR5L+JnJTpz+YR03mnnpBhbR4+UYJAgiXgpyTVLffPAjOTLkZA==
+  dependencies:
+    tslib "2.3.0"
+    zrender "5.4.4"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -5205,7 +5225,7 @@ loader-utils@^0.2.16:
     json5 "^0.5.0"
     object-assign "^4.0.1"
 
-loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4.0:
+loader-utils@^1.0.0, loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmmirror.com/loader-utils/download/loader-utils-1.4.0.tgz?cache=0&sync_timestamp=1634740704238&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Floader-utils%2Fdownload%2Floader-utils-1.4.0.tgz"
   integrity sha1-xXm140yzSxp07cbB+za/o3HVphM=
@@ -5643,6 +5663,11 @@ no-case@^2.2.0:
   integrity sha1-YLgTOWvjmz8SiKTB7V0efSi0ZKw=
   dependencies:
     lower-case "^1.1.1"
+
+node-ensure@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.npmmirror.com/node-ensure/-/node-ensure-0.0.0.tgz"
+  integrity sha512-DRI60hzo2oKN1ma0ckc6nQWlHU69RH6xN0sjQTjMpChPfTYvKZdcQFfdYK2RWbJcKyUizSIy/l8OTGxMAM1QDw==
 
 node-forge@^0.10.0:
   version "0.10.0"
@@ -6165,6 +6190,14 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+pdfjs-dist@^2.0.943:
+  version "2.0.943"
+  resolved "https://registry.npmmirror.com/pdfjs-dist/-/pdfjs-dist-2.0.943.tgz"
+  integrity sha512-iLhNcm4XceTHRaSU5o22ZGCm4YpuW5+rf4+BJFH/feBhMQLbCGBry+Jet8Q419QDI4qgARaIQzXuiNrsNWS8Yw==
+  dependencies:
+    node-ensure "^0.0.0"
+    worker-loader "^2.0.0"
 
 performance-now@^2.1.0:
   version "2.1.0"
@@ -6843,10 +6876,10 @@ regenerator-runtime@^0.11.0:
   resolved "https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz"
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
-regenerator-runtime@^0.13.4:
-  version "0.13.9"
-  resolved "https://registry.nlark.com/regenerator-runtime/download/regenerator-runtime-0.13.9.tgz?cache=0&sync_timestamp=1626993001371&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fregenerator-runtime%2Fdownload%2Fregenerator-runtime-0.13.9.tgz"
-  integrity sha1-iSV0Kpj/2QgUmI11Zq0wyjsmO1I=
+regenerator-runtime@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz"
+  integrity sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==
 
 regenerator-transform@^0.14.2:
   version "0.14.5"
@@ -7110,6 +7143,14 @@ sax@~1.2.4:
   version "1.2.4"
   resolved "https://registry.npm.taobao.org/sax/download/sax-1.2.4.tgz"
   integrity sha1-KBYjTiN4vdxOU1T6tcqold9xANk=
+
+schema-utils@^0.4.0:
+  version "0.4.7"
+  resolved "https://registry.npmmirror.com/schema-utils/-/schema-utils-0.4.7.tgz"
+  integrity sha512-v/iwU6wvwGK8HbU9yi3/nhGzP0yGSuhQMzL6ySiec1FSrZZDkhm4noOSWzrNFo/jEc+SJY6jRTwuwbSXJPDUnQ==
+  dependencies:
+    ajv "^6.1.0"
+    ajv-keywords "^3.1.0"
 
 schema-utils@^1.0.0:
   version "1.0.0"
@@ -7894,6 +7935,11 @@ ts-pnp@^1.1.6:
   resolved "https://registry.npm.taobao.org/ts-pnp/download/ts-pnp-1.2.0.tgz"
   integrity sha1-pQCtCEsHmPHDBxrzkeZZEshrypI=
 
+tslib@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.npmmirror.com/tslib/-/tslib-2.3.0.tgz"
+  integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
+
 tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.nlark.com/tslib/download/tslib-1.14.1.tgz?cache=0&sync_timestamp=1628722556410&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftslib%2Fdownload%2Ftslib-1.14.1.tgz"
@@ -8142,6 +8188,16 @@ uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.nlark.com/uuid/download/uuid-3.4.0.tgz?cache=0&sync_timestamp=1622213136953&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fuuid%2Fdownload%2Fuuid-3.4.0.tgz"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
+
+v-calendar@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.npmmirror.com/v-calendar/-/v-calendar-2.4.2.tgz"
+  integrity sha512-j61sfrjnaTqG0mkxA9GE0SWPkKooSaFad0krhk3BCBv5YnEaivrpfI/Rh+KQUTOh/tUFG86hdvhElcSF3JyyWw==
+  dependencies:
+    core-js "^3.15.2"
+    date-fns "^2.22.1"
+    date-fns-tz "^1.3.7"
+    lodash "^4.17.21"
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"
@@ -8471,6 +8527,14 @@ worker-farm@^1.7.0:
   dependencies:
     errno "~0.1.7"
 
+worker-loader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/worker-loader/-/worker-loader-2.0.0.tgz"
+  integrity sha512-tnvNp4K3KQOpfRnD20m8xltE3eWh89Ye+5oj7wXEEHKac1P4oZ6p9oTj8/8ExqoSBnk9nu5Pr4nKfQ1hn2APJw==
+  dependencies:
+    loader-utils "^1.0.0"
+    schema-utils "^0.4.0"
+
 wrap-ansi@^5.1.0:
   version "5.1.0"
   resolved "https://registry.nlark.com/wrap-ansi/download/wrap-ansi-5.1.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fwrap-ansi%2Fdownload%2Fwrap-ansi-5.1.0.tgz"
@@ -8598,3 +8662,10 @@ yorkie@^2.0.0:
     is-ci "^1.0.10"
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
+
+zrender@5.4.4:
+  version "5.4.4"
+  resolved "https://registry.npmmirror.com/zrender/-/zrender-5.4.4.tgz"
+  integrity sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==
+  dependencies:
+    tslib "2.3.0"
