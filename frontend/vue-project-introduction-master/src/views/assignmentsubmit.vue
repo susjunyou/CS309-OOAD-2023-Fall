@@ -109,29 +109,22 @@
     <div class="assignment-submission">
       <h1>Assignment Submission</h1>
       <div class="assignment-container">
-        <el-row :gutter="20">
+        <el-row :gutter="100">
 
-          <el-col span="8">
+          <el-col span="11">
               <el-card class="assignment-card" v-bind:style="color_mode">
                 <h3>分数</h3>
                 <p>{{finial_grade}}</p>
               </el-card>
           </el-col>
 
-        <el-col span="8">
+        <el-col span="11">
             <el-card class="assignment-card" v-bind:style="color_mode">
               <h3>Due</h3>
              <p>截止日期：{{in_ddl}}</p>
             </el-card>
         </el-col>
 
-          <el-col span="8">
-            <el-card class="assignment-card"  v-bind:style="color_mode">
-
-              <h3>状态</h3>
-              <p>{{status}}</p>
-            </el-card>
-          </el-col>
         </el-row>
       </div>
       <div>

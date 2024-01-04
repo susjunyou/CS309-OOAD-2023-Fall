@@ -117,14 +117,17 @@
         <!-- ...之前的代码... -->
         <el-row :gutter="20">
           <el-col v-for="project in projects" :key="project.id" :span="6" >
-            <el-card  class="assignment-card" @click.native="join(project)" style="min-height: 225px">
+            <el-card  class="assignment-card" @click.native="join(project)" style="min-height: 275px">
               <h3>{{ project.title }}</h3>
               <a v-if="project.file.downloadUrl"
                  :href="project.file.downloadUrl"
                  :download="project.file.fileName"
                  @click.stop="handleDownload(project)">
                 {{ project.file.fileName }}
+
               </a>                <p v-else class="placeholder">没有文件</p>
+              <p class="clickable-text" @click.stop="descrip(project)">查看工程描述</p>
+
               <p>截止日期：{{ project.ddl }}</p>
               <p>组队截止时间：{{ project.teamddl }}</p>
 
@@ -243,7 +246,6 @@ export default {
     await this.loadLocalStorageData2(); // 使用 async/await 等待数据加载完成
     await this.loadAllCoursesinfo();
     await this.loadLocalStorageData(); // 使用 async/await 等待数据加载完成
-    await this.loadStudentsAndSA();
     this.myValue=localStorage.getItem("currentcourse");
     this.courseDescription=localStorage.getItem("getdescriptionbyid"+localStorage.getItem("currentcourseid"));
 
@@ -415,27 +417,28 @@ export default {
     },
     async loadAllCoursesinfo() {
       for (let course of this.courses) {
+      if(course.title==localStorage.getItem('currentcourse')){
         //加载posts
         await this.$axios.get('/course/posts', {
           params: {
             courseId: course.id
           }
         }).then((res) => {
-          console.log("post"+course.title+res.data.data)
+          console.log("post" + course.title + res.data.data)
           if (res.data.code === "0") {
-            localStorage.setItem('coursePostLength'+course.title,res.data.data.length)
-            for (let i = 0; i < localStorage.getItem('coursePostLength'+course.title); i++) {
-              localStorage.setItem('postid'+course.title+i,res.data.data[i].postId);
-              localStorage.setItem('post'+course.title+i,res.data.data[i].postContent);
-              localStorage.setItem('posttitle'+course.title+i,res.data.data[i].postTitle);
-              localStorage.setItem('postauthor'+course.title+i,res.data.data[i].postAuthor);
-              localStorage.setItem('postType'+course.title+i,res.data.data[i].postType);
+            localStorage.setItem('coursePostLength' + course.title, res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('coursePostLength' + course.title); i++) {
+              localStorage.setItem('postid' + course.title + i, res.data.data[i].postId);
+              localStorage.setItem('post' + course.title + i, res.data.data[i].postContent);
+              localStorage.setItem('posttitle' + course.title + i, res.data.data[i].postTitle);
+              localStorage.setItem('postauthor' + course.title + i, res.data.data[i].postAuthor);
+              localStorage.setItem('postType' + course.title + i, res.data.data[i].postType);
               this.posts.push({
-                course:course.title,
-                id:res.data.data[i].postId,
-                title:res.data.data[i].postTitle,
-                content:res.data.data[i].postContent,
-                author:res.data.data[i].postAuthor,
+                course: course.title,
+                id: res.data.data[i].postId,
+                title: res.data.data[i].postTitle,
+                content: res.data.data[i].postContent,
+                author: res.data.data[i].postAuthor,
               })
             }
 
@@ -449,15 +452,15 @@ export default {
             courseId: course.id
           }
         }).then((res) => {
-          console.log("materials"+course.title+res.data.data)
+          console.log("materials" + course.title + res.data.data)
           console.log(res.data)
           if (res.data.code === "0") {
-            localStorage.setItem('courseMaterialLength'+course.title,res.data.data.length)
-            for (let i = 0; i < localStorage.getItem('courseMaterialLength'+course.title); i++) {
-              localStorage.setItem('materialid'+course.title+i,res.data.data[i].id);
+            localStorage.setItem('courseMaterialLength' + course.title, res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseMaterialLength' + course.title); i++) {
+              localStorage.setItem('materialid' + course.title + i, res.data.data[i].id);
               localStorage.setItem('materialname' + course.title + i, res.data.data[i].name);
               localStorage.setItem('materialdescription' + course.title + i, res.data.data[i].description);
-              localStorage.setItem('materialfileid'+course.title+i,res.data.data[i].fileId);
+              localStorage.setItem('materialfileid' + course.title + i, res.data.data[i].fileId);
             }
           }
         }).catch(error => {
@@ -469,25 +472,25 @@ export default {
             courseId: course.id
           }
         }).then((res) => {
-          console.log("assignments"+course.title+res.data.data)
+          console.log("assignments" + course.title + res.data.data)
 
           if (res.data.code === "0") {
-            localStorage.setItem('courseAssignmentLength'+course.title,res.data.data.length)
-            for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+course.title); i++) {
-              localStorage.setItem('assignmentid'+course.title+i,res.data.data[i].id);
-              localStorage.setItem('assignmentstatus'+course.title+i,res.data.data[i].assignmentStatus);
-              localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
-              localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
-              localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
-              localStorage.setItem('assignmentfileid'+course.title+i,res.data.data[i].fileId);
+            localStorage.setItem('courseAssignmentLength' + course.title, res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('courseAssignmentLength' + course.title); i++) {
+              localStorage.setItem('assignmentid' + course.title + i, res.data.data[i].id);
+              localStorage.setItem('assignmentstatus' + course.title + i, res.data.data[i].assignmentStatus);
+              localStorage.setItem('assignmenttitle' + course.title + i, res.data.data[i].assignmentTitle);
+              localStorage.setItem('assignmentdescription' + course.title + i, res.data.data[i].assignmentDescription);
+              localStorage.setItem('assignmentddl' + course.title + i, res.data.data[i].assignmentDeadline);
+              localStorage.setItem('assignmentfileid' + course.title + i, res.data.data[i].fileId);
               this.ddls.push({
-                date : res.data.data[i].assignmentDeadline,
-                title : course.title+"   "+res.data.data[i].assignmentTitle,
+                date: res.data.data[i].assignmentDeadline,
+                title: course.title + "   " + res.data.data[i].assignmentTitle,
               })
 
             }
-          }else{
-            localStorage.setItem('courseAssignmentLength'+course.title,0)
+          } else {
+            localStorage.setItem('courseAssignmentLength' + course.title, 0)
 
           }
         }).catch(error => {
@@ -500,29 +503,29 @@ export default {
           }
         }).then((res) => {
           if (res.data.code === "0") {
-            console.log("project"+course.title+res.data.data)
+            console.log("project" + course.title + res.data.data)
 
-            localStorage.setItem('projectsLength'+course.title,res.data.data.length)
-            console.log(localStorage.getItem('projectsLength'+course.title))
-            for (let i = 0; i < localStorage.getItem('projectsLength'+course.title); i++) {
-              localStorage.setItem('projectid'+course.title+i,res.data.data[i].id);
-              localStorage.setItem('projecttitle'+course.title+i,res.data.data[i].projectTitle);
-              localStorage.setItem('projectdescription'+course.title+i,res.data.data[i].projectDescription);
-              localStorage.setItem('projectstartdate'+course.title+i,res.data.data[i].projectStartDate);
-              localStorage.setItem('projectddl'+course.title+i,res.data.data[i].projectDeadline);
-              localStorage.setItem('projectstatus'+course.title+i,res.data.data[i].projectStatus);
-              localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
-              localStorage.setItem('projectfileid'+course.title+i,res.data.data[i].fileId);
-              localStorage.setItem('teamddl' + course.title+i,res.data.data[i].teamDeadline);
+            localStorage.setItem('projectsLength' + course.title, res.data.data.length)
+            console.log(localStorage.getItem('projectsLength' + course.title))
+            for (let i = 0; i < localStorage.getItem('projectsLength' + course.title); i++) {
+              localStorage.setItem('projectid' + course.title + i, res.data.data[i].id);
+              localStorage.setItem('projecttitle' + course.title + i, res.data.data[i].projectTitle);
+              localStorage.setItem('projectdescription' + course.title + i, res.data.data[i].projectDescription);
+              localStorage.setItem('projectstartdate' + course.title + i, res.data.data[i].projectStartDate);
+              localStorage.setItem('projectddl' + course.title + i, res.data.data[i].projectDeadline);
+              localStorage.setItem('projectstatus' + course.title + i, res.data.data[i].projectStatus);
+              localStorage.setItem('maxpeopleinteam' + course.title + i, res.data.data[i].maxPeopleInTeam);
+              localStorage.setItem('projectfileid' + course.title + i, res.data.data[i].fileId);
+              localStorage.setItem('teamddl' + course.title + i, res.data.data[i].teamDeadline);
               this.ddls.push({
-                date : res.data.data[i].projectDeadline,
-                title : course.title+"   "+res.data.data[i].projectTitle,
+                date: res.data.data[i].projectDeadline,
+                title: course.title + "   " + res.data.data[i].projectTitle,
               })
               console.log(res.data.data.length)
               console.log(res.data.data[i])
             }
-          }else {
-            localStorage.setItem('projectsLength'+course.title,0)
+          } else {
+            localStorage.setItem('projectsLength' + course.title, 0)
 
             console.log("error")
           }
@@ -536,33 +539,33 @@ export default {
             studentId: localStorage.getItem('id')
           }
         }).then((res) => {
-          console.log("grade"+course.title+res.data.data)
+          console.log("grade" + course.title + res.data.data)
 
           if (res.data.code === "0") {
-            localStorage.setItem('attendancesLength'+course.title,res.data.data.length)
-            for (let i = 0; i < localStorage.getItem('attendancesLength'+course.title); i++) {
-              localStorage.setItem('attendancedate'+course.title+i,res.data.data[i].attendanceDate);
-              localStorage.setItem('attendanceproportion'+course.title+i,res.data.data[i].proportion);
+            localStorage.setItem('attendancesLength' + course.title, res.data.data.length)
+            for (let i = 0; i < localStorage.getItem('attendancesLength' + course.title); i++) {
+              localStorage.setItem('attendancedate' + course.title + i, res.data.data[i].attendanceDate);
+              localStorage.setItem('attendanceproportion' + course.title + i, res.data.data[i].proportion);
               if (res.data.data[i].attended) {
-                localStorage.setItem('attendancegrade'+course.title+i,100);
-              }else {
-                localStorage.setItem('attendancegrade'+course.title+i,0);
+                localStorage.setItem('attendancegrade' + course.title + i, 100);
+              } else {
+                localStorage.setItem('attendancegrade' + course.title + i, 0);
               }
-              localStorage.setItem('attendancemaxScore'+course.title+i,res.data.data[i].maxScore);
+              localStorage.setItem('attendancemaxScore' + course.title + i, res.data.data[i].maxScore);
             }
           }
         }).catch(error => {
           console.error('Error loading course attendances:', error);
         });
         //加载assignment成绩
-        for (let i = 0; i < localStorage.getItem('courseAssignmentLength'+ course.title); i++) {
+        for (let i = 0; i < localStorage.getItem('courseAssignmentLength' + course.title); i++) {
           await this.$axios.get('/grade/getAssignmentGrade', {
             params: {
               studentId: localStorage.getItem('id'),
-              assignmentId: localStorage.getItem('assignmentid'+course.title+i)
+              assignmentId: localStorage.getItem('assignmentid' + course.title + i)
             }
           }).then((res) => {
-            console.log("grade2"+course.title+res.data.data)
+            console.log("grade2" + course.title + res.data.data)
 
             if (res.data.code === "0") {
               localStorage.setItem('assignmentgrade' + course.title + i, res.data.data[0].grade);
@@ -575,14 +578,14 @@ export default {
           });
         }
         //加载project成绩
-        for (let i = 0; i < localStorage.getItem('projectsLength'+ course.title); i++) {
+        for (let i = 0; i < localStorage.getItem('projectsLength' + course.title); i++) {
           await this.$axios.get('/grade/getProjectGrade', {
             params: {
               studentId: localStorage.getItem('id'),
-              projectId: localStorage.getItem('projectid'+course.title+i)
+              projectId: localStorage.getItem('projectid' + course.title + i)
             }
           }).then((res) => {
-            console.log("grade3"+course.title+res.data.data)
+            console.log("grade3" + course.title + res.data.data)
 
             if (res.data.code === "0") {
               localStorage.setItem('projectgrade' + course.title + i, res.data.data[0].grade);
@@ -594,6 +597,8 @@ export default {
             console.error('Error loading project grade:', error);
           });
         }
+
+      }
       }
     },
     async loadLocalStorageData() {

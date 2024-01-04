@@ -45,20 +45,38 @@
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
         <el-form-item label="截止日期" label-width="93px">
-          <el-date-picker v-model="projectForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="projectForm.deadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="最高分数" label-width="93px">
           <el-input-number v-model="projectForm.maxScore"></el-input-number>
         </el-form-item>
         <el-form-item label="占比" label-width="93px">
-          <el-input-number v-model="projectForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
+          <el-input-number v-model="projectForm.proportion" :min="0" :max="100" :step="0.01"></el-input-number>
         </el-form-item>
         <el-form-item label="组队截止日期" label-width="93px">
-          <el-date-picker v-model="projectForm.teamdeadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="projectForm.teamdeadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
         </el-form-item>
 
         <el-form-item label="队伍最大人数">
-          <el-input-number v-model="projectForm.maxPeopleInTeam" :min="1" :max="100" step="1"></el-input-number>
+          <el-input-number v-model="projectForm.maxPeopleInTeam" :min="1" :max="100" :step="1"></el-input-number>
         </el-form-item>
         <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
         <el-input type="hidden" v-model="projectForm.courseId"></el-input>
@@ -77,23 +95,43 @@
         <el-form-item label="Project描述">
           <el-input type="textarea" v-model="editProjectForm.description"></el-input>
         </el-form-item>
-        <el-form-item label="作业文件" >
+        <el-form-item label="作业文件" label-width="93px">
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
-        <el-form-item label="截止日期">
-          <el-date-picker v-model="editProjectForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+        <el-form-item label="截止日期" label-width="93px">
+
+          <el-date-picker
+              value-format='yyyy/MM/dd'
+              v-model="editProjectForm.deadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
+
         </el-form-item>
-        <el-form-item label="最高分数">
+        <el-form-item label="最高分数" label-width="93px">
           <el-input-number v-model="editProjectForm.maxScore"></el-input-number>
         </el-form-item>
-        <el-form-item label="占比">
-          <el-input-number v-model="editProjectForm.proportion" :min="0" :max="100" step="0.01"></el-input-number>
+        <el-form-item label="占比" label-width="93px">
+          <el-input-number v-model="editProjectForm.proportion" :min="0" :max="100" :step="0.01"></el-input-number>
         </el-form-item>
         <el-form-item label="组队截止日期" label-width="93px">
-          <el-date-picker v-model="editProjectForm.teamdeadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+
+          <el-date-picker
+              value-format='yyyy/MM/dd'
+              v-model="editProjectForm.teamdeadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
+
         </el-form-item>
-        <el-form-item label="队伍最大人数">
-          <el-input-number v-model="editProjectForm.maxPeopleInTeam" :min="1" :max="100" step="1"></el-input-number>
+        <el-form-item label="队伍最大人数" label-width="93px">
+          <el-input-number v-model="editProjectForm.maxPeopleInTeam" :min="1" :max="100" :step="1"></el-input-number>
         </el-form-item>
         <!-- courseId通常是选择的课程或从其他途径获得，这里假设是隐藏字段 -->
         <el-input type="hidden" v-model="editProjectForm.courseId"></el-input>
@@ -142,6 +180,34 @@ export default {
         teamdeadline:'',
         courseId: '',
       },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
+        shortcuts: [{
+          text: '明天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '后天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周后',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+
       editProjectForm:{
         title: '',
         description: '',
@@ -153,7 +219,8 @@ export default {
         releaserType: '',
         maxPeopleInTeam:'',
         courseId: '',
-        teamdeadline:''
+        teamdeadline:'',
+        file:'',
       },
       isPopupVisible: false,
       file:'',
@@ -171,6 +238,12 @@ export default {
     shitshansa
   },
   methods: {
+
+    formatDateToISOWithoutTimezone(date) {
+      const offset = date.getTimezoneOffset(); // 获取本地时间和 UTC 时间的分钟差
+      const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000)); // 调整日期
+      return adjustedDate.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+    },
     handleDownload(project){
       console.log("阻止进入"+project.title)
     },
@@ -296,6 +369,8 @@ export default {
               localStorage.setItem('maxpeopleinteam'+course.title+i,res.data.data[i].maxPeopleInTeam);
               localStorage.setItem('projectfileid'+course.title+i,res.data.data[i].fileId);
               localStorage.setItem('teamddl' + course.title+i,res.data.data[i].teamDeadline);
+              localStorage.setItem('projectproportion' + course.title+i,res.data.data[i].proportion);
+              localStorage.setItem('projectmaxscore' + course.title+i,res.data.data[i].maxScore);
               this.ddls.push({
                 date : res.data.data[i].projectDeadline,
                 title : course.title+"   "+res.data.data[i].projectTitle,
@@ -397,9 +472,9 @@ export default {
     },
     async addProject(){///问题：后端这个releaser是个string，而给的东西是个int
       let date = new Date(this.projectForm.deadline);
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate = this.formatDateToISOWithoutTimezone(date);
       let date2=new Date(this.projectForm.teamdeadline);
-      let formattedDate2 = date2.toISOString().split('T')[0];
+      let formattedDate2 = this.formatDateToISOWithoutTimezone(date2);
       let formData=new FormData();
       formData.append('projectTitle',this.projectForm.title);
       formData.append('projectDescription',this.projectForm.description);
@@ -460,7 +535,6 @@ export default {
     editProject(project) {
 
       // 打开编辑对话框并填充表单数据
-      this.dialogVisible2 = true;//在这里出问题
       // console.log(this.dialogVisible2)
       // console.log('设置可视化')
       // console.log(project)
@@ -469,16 +543,19 @@ export default {
       // console.log('ceshi:'+localStorage.getItem('status'+project.title))
       this.editProjectForm.title = project.title;
       this.editProjectForm. description = project.description;
-      this.editProjectForm.deadline = project.deadline;
+      this.editProjectForm.deadline = new Date(project.ddl);
       this.editProjectForm.status = project.status;
-      this.editProjectForm. maxScore = project.maxScore;
-      this.editProjectForm.proportion = project.proportion;
+      this.editProjectForm.maxScore = project.maxScore;
+      this.editProjectForm.proportion =project.proportion;
       this.editProjectForm.releaser = localStorage.getItem('id').toString();
       this.editProjectForm. releaserType = 'TEACHER';
-      this.editProjectForm.maxPeopleInTeam = project.maxPeopleInTeam;
+      this.editProjectForm.maxPeopleInTeam = project.maxpeopleinteam;
       this.editProjectForm. courseId = localStorage.getItem('currentcourseid');
-      this.editProjectForm.teamdeadline = project.teamdeadline;
+      this.editProjectForm.teamdeadline = new Date(project.teamddl);
       this.curteamddl=project.teamdeadline
+      this.editProjectForm.file=project.file
+      this.dialogVisible2 = true;//在这里出问题
+
       // console.log(this.editProjectForm.status )
       // console.log(this.editProjectForm.releaser )
       // console.log(this.editProjectForm.releaserType )
@@ -491,12 +568,12 @@ export default {
       //console.log('this.form:'+this.editProjectForm.deadline)
       let date = new Date(this.editProjectForm.deadline);
       //console.log('date:'+date)
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate =this.formatDateToISOWithoutTimezone(date);
       //console.log('format:'+formattedDate)
       //let tit = localStorage.getItem('currentassignmenttitle')
       //console.log('tit:'+tit)
       let date2=new Date(this.editProjectForm.teamdeadline);
-      let formattedDate2 = date2.toISOString().split('T')[0];
+      let formattedDate2 = this.formatDateToISOWithoutTimezone(date2);
       let formData=new FormData();
       formData.append('projectId',localStorage.getItem('currentprojectid'));
       formData.append('projectTitle',this.editProjectForm.title);
@@ -637,6 +714,8 @@ export default {
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
               teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('projectmaxscore' + localStorage.getItem("currentcourse")+i),
               file:this.file,
             });
           }else {
@@ -649,6 +728,8 @@ export default {
               status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
               maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
               teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('projectmaxscore' + localStorage.getItem("currentcourse")+i),
               file: "无文件",
             });
           }
@@ -662,6 +743,8 @@ export default {
             status: localStorage.getItem('projectstatus' + localStorage.getItem("currentcourse")+i),
             maxpeopleinteam: localStorage.getItem('maxpeopleinteam' + localStorage.getItem("currentcourse")+i),
             teamddl: localStorage.getItem('teamddl' + localStorage.getItem("currentcourse")+i),
+            proportion: localStorage.getItem('projectproportion' + localStorage.getItem("currentcourse")+i),
+            maxScore: localStorage.getItem('projectmaxscore' + localStorage.getItem("currentcourse")+i),
             file: "无文件",
           });
         }

@@ -18,7 +18,7 @@
                   {{ assignment.file.fileName }}
                 </a>                <p v-else class="placeholder">没有文件</p>
                 <p>截止日期：{{ assignment.ddl }}</p>
-                <el-button type="danger" size="small" @click.stop="deleteAssignment11(assignment)">删除课程</el-button>
+                <el-button type="danger" size="small" @click.stop="deleteAssignment11(assignment)">删除作业</el-button>
                 <el-button type="primary" size="small" @click.stop="editAssignment(assignment)">修改信息</el-button>
               </el-card>
             </el-col>
@@ -44,7 +44,17 @@
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
         <el-form-item label="截止日期">
-          <el-date-picker v-model="assignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="assignmentForm.deadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="最高分数">
           <el-input-number v-model="assignmentForm.maxScore"></el-input-number>
@@ -73,7 +83,16 @@
           <input type="file"     @change="onFileSelected"/>
         </el-form-item>
         <el-form-item label="截止日期">
-          <el-date-picker v-model="editAssignmentForm.deadline" type="date" placeholder="选择日期" :disabled-date="disabledDate"></el-date-picker>
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="editAssignmentForm.deadline"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="最高分数">
           <el-input-number v-model="editAssignmentForm.maxScore"></el-input-number>
@@ -110,6 +129,34 @@ import shitshansa from "@/components/shitshansa.vue";
 export default {
   data() {
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
+        shortcuts: [{
+          text: '明天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '后天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周后',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+
       courses: [],
       posts: [],
       materials: [],
@@ -156,6 +203,12 @@ export default {
     shitshansa
   },
   methods: {
+    formatDateToISOWithoutTimezone(date) {
+      const offset = date.getTimezoneOffset(); // 获取本地时间和 UTC 时间的分钟差
+      const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000)); // 调整日期
+      return adjustedDate.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+    },
+
     async loadLocalStorageData2() {
       await new Promise((resolve) => setTimeout(resolve, 10)); // 模拟异步操作，这里不是必要的，只是演示用例
       this.courses=[];
@@ -258,7 +311,9 @@ export default {
               localStorage.setItem('assignmenttitle'+course.title+i,res.data.data[i].assignmentTitle);
               localStorage.setItem('assignmentdescription'+course.title+i,res.data.data[i].assignmentDescription);
               localStorage.setItem('assignmentddl'+course.title+i,res.data.data[i].assignmentDeadline);
-              localStorage.setItem('assignmentfileid'+course.title+i,res.data.data[i].fileId);
+              localStorage.setItem('assignmentfileid' + course.title + i, res.data.data[i].fileId);
+              localStorage.setItem('assignmentproportion'+course.title+i,res.data.data[i].proportion);
+              localStorage.setItem('assignmentmaxscore'+course.title+i,res.data.data[i].maxScore);
               this.ddls.push({
                 date : res.data.data[i].assignmentDeadline,
                 title : course.title+"   "+res.data.data[i].assignmentTitle,
@@ -392,7 +447,7 @@ export default {
     async addAssignment(){
       console.log(localStorage.getItem('id'))
       let date = new Date(this.assignmentForm.deadline);
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate = this.formatDateToISOWithoutTimezone(date); // 转换为 YYYY-MM-DD 格式
       let formData=new FormData();
       formData.append('assignmentTitle', this.assignmentForm.title);
       formData.append('assignmentDescription', this.assignmentForm.description);
@@ -451,7 +506,7 @@ export default {
     editAssignment(assignment) {
 
       // 打开编辑对话框并填充表单数据
-      this.dialogVisible2 = true;//在这里出问题
+      this.dialogVisible2 = true;
       console.log(this.dialogVisible2)
       console.log('设置可视化')
       console.log(assignment)
@@ -460,7 +515,8 @@ export default {
       console.log('ceshi:'+localStorage.getItem('status'+assignment.title))
       this.editAssignmentForm.title = assignment.title;
       this.editAssignmentForm. description = assignment.description;
-      this.editAssignmentForm.deadline = assignment.deadline;
+      this.editAssignmentForm.deadline = new Date(assignment.ddl);
+
       this.editAssignmentForm.status = assignment.status;
       this.editAssignmentForm. maxScore = assignment.maxScore;
       this.editAssignmentForm.proportion = assignment.proportion;
@@ -479,7 +535,7 @@ export default {
       console.log('this.form:'+this.editAssignmentForm.deadline)
       let date = new Date(this.editAssignmentForm.deadline);
       console.log('date:'+date)
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate = this.formatDateToISOWithoutTimezone(date); // 转换为 YYYY-MM-DD 格式
       console.log('format:'+formattedDate)
       let tit = localStorage.getItem('currentassignmenttitle')
       console.log('tit:'+tit)
@@ -570,6 +626,8 @@ export default {
               title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
               description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
               ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('assignmentmaxscore' + localStorage.getItem("currentcourse")+i),
               file:this.file,
             });
           }else {
@@ -579,6 +637,8 @@ export default {
               title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
               description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
               ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+              proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+              maxScore: localStorage.getItem('assignmentmaxscore' + localStorage.getItem("currentcourse")+i),
               file: "无文件",
             });
           }
@@ -589,6 +649,8 @@ export default {
             title: localStorage.getItem('assignmenttitle' + localStorage.getItem("currentcourse")+i),
             description: localStorage.getItem('assignmentdescription' + localStorage.getItem("currentcourse")+i),
             ddl: localStorage.getItem('assignmentddl' + localStorage.getItem("currentcourse")+i),
+            proportion: localStorage.getItem('assignmentproportion' + localStorage.getItem("currentcourse")+i),
+            maxScore: localStorage.getItem('assignmentmaxscore' + localStorage.getItem("currentcourse")+i),
             file: "无文件",
           });
         }

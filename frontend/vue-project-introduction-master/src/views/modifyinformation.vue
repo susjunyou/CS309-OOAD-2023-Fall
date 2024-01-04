@@ -110,7 +110,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="答辩日期">
-          <el-date-picker v-model="dialogForm.presentationDate" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+              clearable="clearable"
+              value-format='yyyy/MM/dd'
+              v-model="dialogForm.presentationDate"
+              type="date"
+              label="Pick a date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions"
+              style="width: 22%"
+          />
         </el-form-item>
         <!--        <el-form-item label="答辩时间">-->
         <!--          <el-time-picker-->
@@ -202,6 +211,34 @@ import shitshan from "@/components/shitshan.vue";
 export default {
   data() {
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
+        shortcuts: [{
+          text: '明天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '后天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周后',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+
       courses: [],
       posts: [],
       materials: [],
@@ -269,6 +306,11 @@ export default {
     shitshan
   },
   methods: {
+    formatDateToISOWithoutTimezone(date) {
+      const offset = date.getTimezoneOffset(); // 获取本地时间和 UTC 时间的分钟差
+      const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000)); // 调整日期
+      return adjustedDate.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+    },
     showAddMemberDialog(team) {
       this.dialogVisibleAddMember = true;
       this.currentteamid=team.id;
@@ -362,8 +404,10 @@ export default {
       });
     },
     update1(row){
-      this.dialogForm.teacherId = row.teacherId;
-      this.dialogForm.presentationDate = row.presentationDate;
+      this.dialogForm.teacherId = row.teacherid;
+      if(row.presentationdate!=null&&row.presentationdate!=undefined&&row.presentationdate!=''&&row.presentationdate!=null){
+        this.dialogForm.presentationDate = new Date(row.presentationdate);
+      }
       this.dialogForm.presentationTime = row.presentationTime;
       localStorage.setItem('currentteamid', row.id);
       this.dialogVisible = true;
@@ -418,7 +462,8 @@ export default {
     updateDefenseInfo() {
       console.log(this.dialogForm.teacherId);
       let date = new Date(this.dialogForm.presentationDate);
-      let formattedDate = date.toISOString().split('T')[0]; // 转换为 YYYY-MM-DD 格式
+      let formattedDate = this.formatDateToISOWithoutTimezone(date);
+
       this.dialogForm.presentationDate = formattedDate;
       this.$axios.get('/presentation/addPresentation', {
         params: {
